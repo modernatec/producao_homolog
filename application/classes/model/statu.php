@@ -7,10 +7,11 @@
  * @copyright  (c) 2011 Devi Mandiri
  * @license    MIT
  */
-class Model_File extends ORM {
+class Model_Statu extends ORM {
 	//static $belongs_to = array('estado');
-	protected $_belongs_to  = array(
-		'status_task' => array(),
-		
-	);	
+
+	protected $_has_many = array(
+		'tasks' => array('through' => 'status_tasks'),
+		'taskflows' => array('model' => 'taskflow'),
+	);
 }

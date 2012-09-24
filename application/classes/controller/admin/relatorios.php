@@ -2,7 +2,7 @@
  
 class Controller_Admin_Relatorios extends Controller_Admin_Template {
  
-	public $auth_required		= array('login'); //Auth is required to access this controller
+	public $auth_required		= array('login','admin', 'coordenador'); //Auth is required to access this controller
  
 	public $secure_actions     	= array('post' => array('login','admin','coordenador', 'assistente'),
 								   'edit' => array('login','admin'),

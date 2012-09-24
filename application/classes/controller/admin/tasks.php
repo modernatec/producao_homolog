@@ -17,7 +17,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_index()
 	{	
 		$view = View::factory('admin/tasks/list');
-		$view->taskList = ORM::factory('task')->find_all();
+		$view->taskList = ORM::factory('tasks_user')->join('tasks', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
 	  	$this->template->content = $view;
 	} 
 
@@ -30,13 +30,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->usersList = ORM::factory('user')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
 		$view->priorityList = ORM::factory('priority')->find_all();
+		$view->statusList = ORM::factory('statu')->find_all();
 	  	
-
 	  	if (HTTP_Request::POST == $this->request->method()) 
         {
         	try {         
-        		$this->salvar();
-                $message = "You have added user '{$user->username}' to the database";                 
+        		$projeto = $this->salvar();
+                $message = "You have added a task"; 
+                //Request::current()->redirect(URL::base().'admin/tasks');  
+                $view->filesList = Controller_Admin_Files::listar($projeto->id);
+              
             } catch (ORM_Validation_Exception $e) {
                 $message = 'There were errors, please see form below.';
                 $errors = $e->errors('models');
@@ -62,53 +65,101 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	}
         
     public function action_edit($id){
-        $view = View::factory('admin/task/create')
+        $view = View::factory('admin/tasks/edit')
             ->bind('errors', $errors)
             ->bind('message', $message)
             ->set('values', $this->request->post());
       	
-      	$view->projeto = ORM::factory('task', $id);
+      	$task = ORM::factory('task', $id);
+      	$view->task = $task;
       	$view->isUpdate = true;
-        $view->filesList = Controller_Admin_Files::listar($projeto->id);
-                
-        $this->template->content = $view;
 
+      	$view->usersList = ORM::factory('user')->find_all();
+		$view->projectList = ORM::factory('project')->find_all();
+		$view->priorityList = ORM::factory('priority')->find_all();
+		$view->statusList = ORM::factory('statu')->find_all();
+		$status_task = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
+		$view->taskflows = $status_task;
+
+        $this->template->content = $view;
+        	
         if (HTTP_Request::POST == $this->request->method()) 
         {                                              
-            $view->projeto = $this->salvar($id); 
-            Request::current()->redirect(URL::base().'admin/projects');
+            if($this->salvar($id)){ 
+	            Request::current()->redirect(URL::base().'admin/tasks/edit/'.$id);            
+	        } 
         }
 	}
 
-
 	protected function salvar($id = null){
-		$this->template->content
-			->bind('errors', $errors)
-            ->bind('message', $message);
-
-        try {            
-            $task = ORM::factory('task')->values($this->request->post(), array('project_id','title','priority_id','description', 'crono_date', 'user_id'))->save();
-                
+        try {  
+            $task = ORM::factory('task', $id);
+            $task->project_id = $this->request->post('project_id');
+            $task->title = $this->request->post('title');
+            $task->priority_id = $this->request->post('priority_id');
+            $task->crono_date = $this->request->post('crono_date');
+            $task->user_id = Auth::instance()->get_user()->id;
+            $task->save();
             
+            $task->add('users', ORM::factory('user', Auth::instance()->get_user()->id));
+            $task->add('users', ORM::factory('user', $this->request->post('task_to')));
+
             $file = $_FILES['arquivo'];
             if(Upload::valid($file)){
                 if(Upload::not_empty($file))
-                {                
-                    $message = Controller_Admin_Files::subir($_FILES['arquivo'],$projeto->id);
+                {       
+                	Utils_Helper::mensagens('add',Controller_Admin_Files::subir($_FILES['arquivo'],$task->id));
                 }else
                 {
-                    $message = "Projeto '{$task->title}' salvo com sucesso.";
+                	Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
                 }
             }else
             {                    
-                $message = "Projeto '{$task->title}' salvo com sucesso.";
+                Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
+            }            
+
+			if($this->request->post('statu_id') != $this->request->post('old_status')){
+	           // $this->enviaEmail($task);  
+	            $status_tasks = ORM::factory('status_task');
+            }else{
+            	$status_tasks = ORM::factory('status_task', $this->request->post('status_task_id'));
             }
-            
-            return $projeto;
+
+            $status_tasks->status_id = $this->request->post('statu_id');
+			$status_tasks->task_id = $task->id;
+			$status_tasks->user_id = Auth::instance()->get_user()->id;
+			$status_tasks->date = date('Y-m-d H:i:s');
+			$status_tasks->description = $this->request->post('description');
+			$status_tasks->save();      	
+
+            return $task;
 
         } catch (ORM_Validation_Exception $e) {
             $message = 'Houveram alguns erros. Veja à seguir:';
             $errors = $e->errors('models');
+            var_dump($errors);
         }
+    }
+
+    protected function enviaEmail($task){
+    	$mailer = Email::connect();	   
+    	 
+	    $message = Swift_Message::newInstance()
+						  // Give the message a subject
+						  ->setSubject('Olá, '.$task->user->username.' vc possuí uma nova tarefa')
+						  // Set the From address with an associative array
+						  ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
+						  // Set the To addresses with an associative array
+						  ->setTo(array('roberto.ono.moderna@gmail.com' => 'Renato'))
+						  // Give it a body
+						  ->setBody('Here is the message itself')
+						  // And optionally an alternative body
+						  ->addPart('<q>Here is the message itself</q>', 'text/html');
+
+		//// Optionally add any attachments
+		//				  ->attach(Swift_Attachment::fromPath('my-document.pdf')				  
+
+	    $mail = $mailer->send($message);
+	    var_dump($mail);
     }
 }

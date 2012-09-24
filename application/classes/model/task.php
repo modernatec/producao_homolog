@@ -8,14 +8,19 @@
  * @license    MIT
  */
 class Model_Task extends ORM {
-	//static $belongs_to = array('estado');
-	protected $_has_one = array(
-		'priority' => array('model' => 'priority', 'foreign_key' => 'id',)
-	);
+	protected $load_with = array('statu');
 
-	//protected $belongs_to = array(
-	//	'priority' => array('model' => 'priority', 'foreign_key' => 'id',)
-	//);
+	//static $belongs_to = array('estado');
+	protected $_belongs_to  = array(
+		'project' => array('foreign_key' => 'project_id'),
+		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
+		'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+	);	
+
+	protected $_has_many = array(
+	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
+	    'users' => array('model'   => 'user','foreign_key' =>'user_id', 'through' => 'tasks_users'),
+	);
 
 
 	public function rules()
@@ -34,9 +39,6 @@ class Model_Task extends ORM {
 	        	array('not_empty'),
 		    ),
 		    'user_id' => array(
-	        	array('not_empty'),
-		    ),
-		    'description' => array(
 	        	array('not_empty'),
 		    ),
 	    );

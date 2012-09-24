@@ -7,10 +7,10 @@
  * @copyright  (c) 2011 Devi Mandiri
  * @license    MIT
  */
-class Model_File extends ORM {
+class Model_Tasks_User extends ORM {
 	//static $belongs_to = array('estado');
-	protected $_belongs_to  = array(
-		'status_task' => array(),
-		
-	);	
+	protected $_belongs_to = array(
+    	'task' => array('foreign_key' => 'task_id'),
+    	'user' => array('foreign_key' => 'user_id'),
+    );
 }

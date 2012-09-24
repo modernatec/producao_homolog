@@ -4,15 +4,17 @@
 	</div>
 	<?	
 		$title = ($task->title) ? ($task->title) : (Arr::get($values, 'title'));
-        $description = ($task->description) ? ($task->description) : (Arr::get($values, 'description'));
+        $description = ($statusHist[0]->description) ? ($statusHist[0]->description) : (Arr::get($values, 'description'));
         $crono_date = ($task->crono_date) ? ($task->crono_date) : (Arr::get($values, 'crono_date'));
+
+        $status_id = ($statusHist[0]->status_id) ? ($statusHist[0]->status_id) : (Arr::get($values, 'statu_id'));
 
         $project_id = ($task->project_id) ? ($task->project_id) : (Arr::get($values, 'project_id'));
         $user_id = ($task->user_id) ? ($task->user_id) : (Arr::get($values, 'user_id'));
         $priority_id = ($task->priority_id) ? ($task->priority_id) : (Arr::get($values, 'priority_id'));
     ?>   
 
-	<form name="frmTask" id="frmTask" method="post" class="form">
+	<form name="frmTask" id="frmTask" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
 	  	<dt>
@@ -42,10 +44,10 @@
 	      <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
 	    </dd>
 	    <dt>
-	      <label for="user_id">usuário responsável</label>
+	      <label for="task_to">usuário responsável</label>
 	    </dt>
 	    <dd>
-	      <select name="user_id" id="user_id" style="width:150px;">
+	      <select name="task_to" id="task_to" style="width:150px;">
 	     	<option value="">selecione</option>
 	      	<?foreach($usersList as $user){?>
 	      	<option value="<?=$user->id?>" <?=($user->id == $user_id) ? 'selected' : ''?>><?=$user->name?></option>
@@ -66,6 +68,18 @@
 	      <span class='error'><?=Arr::get($errors, 'priority_id');?></span>
 	    </dd>
 	    <dt>
+	      <label for="statu_id">Status</label>
+	    </dt>
+	    <dd>
+	      <select name="statu_id" id="statu_id" style="width:150px;">
+	     	<option value="">selecione</option>
+	      	<?foreach($statusList as $status){?>
+	      	<option value="<?=$status->id?>" <?=($status->id == $status_id) ? 'selected' : ''?>><?=$status->status?></option>
+	      	<?}?>
+	      </select>
+	      <span class='error'><?=($errors) ? $errors['project_id'] : '';?></span>
+	    </dd>
+	    <dt>
 	      <label for="description">descrição</label>
 	    </dt>
 	    <dd>
@@ -76,5 +90,6 @@
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Criar" />
 	    </dd>
 	  </dl>
+	  <?=$right?>
 	</form>
 </div>

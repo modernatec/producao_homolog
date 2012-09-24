@@ -22,7 +22,6 @@ class Controller_Admin_Home extends Controller_Admin_Template {
 
 		$view = View::factory('admin/home');
 	  	$view->title = "Home";
-                $view->taskList = ORM::factory('task')->find_all();
 	  	$this->template->content = $view;
 	} 
 }

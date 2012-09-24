@@ -8,10 +8,9 @@
  * @license    MIT
  */
 class Model_Priority extends ORM {
-	//static $belongs_to = array('estado');
-
-	//protected $_has_one = array(
-//		'task' => array('model' => 'task', 'foreign_key' => 'priority_id',)//
-//	);
+		
+	protected $_has_one = array(
+		'task' => array('model' => 'task', 'foreign_key' => 'priority_id')
+	);
 	
 }
