@@ -37,6 +37,31 @@ h1.logo{
 	float:right;
 }
 
+#user_info table{
+	border-collapse:collapse;
+}
+
+#user_info table tbody td{
+	padding:0 5px;
+	border:0;  
+}
+
+#user_info table tbody td a{
+    color:#FFF;
+}
+
+#user_info table tbody td a:hover{
+    text-decoration: none;
+}
+
+#user_info table tbody tr:hover td {
+    background-color:transparent; color: #fff;
+}
+
+#user_info table tbody tr:nth-child(odd){
+    background-color:transparent;
+}
+
 #menu{
 	width:200px;
 	float:left;
@@ -132,7 +157,7 @@ a.excluir{
 
 
 table tbody tr:nth-child(odd){
-    /*background-color: #fff;*/
+    background-color: #fff;
 }
 
 table tbody tr:nth-child(even){

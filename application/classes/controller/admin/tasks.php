@@ -37,9 +37,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	  	if (HTTP_Request::POST == $this->request->method()) 
         {
         	try {         
-        		$projeto = $this->salvar();
+                $projeto = $this->salvar();
                 $message = "You have added a task"; 
-                //Request::current()->redirect(URL::base().'admin/tasks');  
+                Request::current()->redirect(URL::base().'admin/tasks/edit/'.$projeto->id);
                 $view->filesList = Controller_Admin_Files::listar($projeto->id);
               
             } catch (ORM_Validation_Exception $e) {
@@ -155,23 +155,23 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         }
     }
 
-    protected function enviaEmail($email){
+    protected function enviaEmail($userInfo){
     	$mailer = Email::connect();	   
     	 
 	    $message = Swift_Message::newInstance()
-						  // Give the message a subject
-						  ->setSubject('Olá, '.$task->user->username.' vc possuí uma nova tarefa')
-						  // Set the From address with an associative array
-						  ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
-						  // Set the To addresses with an associative array
-						  ->setTo(array('roberto.ono.moderna@gmail.com' => 'Renato'))
-						  // Give it a body
-						  ->setBody('Here is the message itself')
-						  // And optionally an alternative body
-						  ->addPart('<q>Here is the message itself</q>', 'text/html');
+                // Give the message a subject
+                ->setSubject('Olá, '.$userInfo->nome.' vc possuí uma nova tarefa')
+                // Set the From address with an associative array
+                ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
+                // Set the To addresses with an associative array
+                ->setTo(array('roberto.ono.moderna@gmail.com' => 'Renato'))
+                // Give it a body
+                ->setBody('Here is the message itself')
+                // And optionally an alternative body
+                ->addPart('<q>Here is the message itself</q>', 'text/html');
 
 		//// Optionally add any attachments
-		//				  ->attach(Swift_Attachment::fromPath('my-document.pdf')				  
+		//->attach(Swift_Attachment::fromPath('my-document.pdf')				  
 
 	    $mail = $mailer->send($message);
 	    var_dump($mail);
