@@ -3,13 +3,6 @@
 		<a href="<?=URL::base();?>admin/projects" class="bar_button round">Voltar</a>
 	</div>
         <?
-        if($message!=''){
-        ?>
-        <div class="<? if(count($errors)>0){ ?>error<? }else{ ?>ok<? }?>">
-        	<p><?=$message?></p>
-        </div>
-        <?
-        }
         
         $name = ($projeto->name) ? ($projeto->name) : (Arr::get($values, 'name'));
         $target = ($projeto->target) ? ($projeto->target) : (Arr::get($values, 'target'));
