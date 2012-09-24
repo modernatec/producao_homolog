@@ -37,21 +37,6 @@ h1.logo{
 	float:right;
 }
 
-#user_info table{
-    	border-collapse:collapse;
-	width:auto;
-        float: left;
-}
-
-#user_info table tbody td{
-	padding:5px;
-	border-bottom:0;
-}
-
-#user_info table tbody tr:hover td {
-    background:none; color: #fff;
-}
-
 #menu{
 	width:200px;
 	float:left;
@@ -103,7 +88,6 @@ h1.logo{
 
 table{
 	border-collapse:collapse;
-	width:1000px;
 }
 
 table thead th{
@@ -133,7 +117,7 @@ table tbody tr:hover td {
     background-color: #FFFAF0; color: #000;
 }
 
-a.editar, a.excluir, a.download{
+a.editar, a.excluir{
     background: transparent url(../../image/admin/editar.png) no-repeat 0 0;
     width: 12px;
     height: 12px;
@@ -146,11 +130,6 @@ a.excluir{
     background: transparent url(../../image/admin/excluir.png) no-repeat 0 0;
 }
 
-a.download{
-    background: transparent url(../../image/admin/download.png) no-repeat 0 0;
-}
-
-
 
 table tbody tr:nth-child(odd){
     /*background-color: #fff;*/
@@ -160,8 +139,12 @@ table tbody tr:nth-child(even){
     background-color: #eee;
 }
 
+.list{
+	width:1000px;
+}
 
 /*****Forms****/
+
 .form dl, .form dt{
 	padding:5px 0;
 }
@@ -198,4 +181,22 @@ div.error, div.ok{
 
 .error{
     color:#EE0000;
+}
+
+.right{
+	float:left;
+	position:relative;
+	margin-left:10px;
+}
+
+/***Task***/
+
+.filelist{
+	width:100%;
+}
+
+.hist_task{
+	background:#DDD;
+	padding:10px;
+	margin:5px;
 }
