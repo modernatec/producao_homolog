@@ -53,7 +53,7 @@
 	      	<option value="<?=$user->id?>" <?=($user->id == $user_id) ? 'selected' : ''?>><?=$user->name?></option>
 	      	<?}?>
 	      </select>
-	      <span class='error'><?=($errors) ? $errors['user_id'] : '';?></span>
+	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
 	    </dd>
 	    <dt>
 	      <label for="priority_id">prioridade</label>
@@ -67,29 +67,24 @@
 	      </select>
 	      <span class='error'><?=Arr::get($errors, 'priority_id');?></span>
 	    </dd>
-	    <dt>
-	      <label for="statu_id">Status</label>
-	    </dt>
-	    <dd>
-	      <select name="statu_id" id="statu_id" style="width:150px;">
-	     	<option value="">selecione</option>
-	      	<?foreach($statusList as $status){?>
-	      	<option value="<?=$status->id?>" <?=($status->id == $status_id) ? 'selected' : ''?>><?=$status->status?></option>
-	      	<?}?>
-	      </select>
-	      <span class='error'><?=($errors) ? $errors['project_id'] : '';?></span>
-	    </dd>
-	    <dt>
-	      <label for="description">descrição</label>
-	    </dt>
-	    <dd>
-	      <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"><?=$description;?></textarea>
-	      <span class='error'><?=Arr::get($errors, 'description');?></span>
-	    </dd>
-	    <dd>
-	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Criar" />
-	    </dd>
+	    <?
+	    	echo View::factory('admin/tasks/status_task')
+	        					->bind('statusList', $statusList)
+	        					->bind('status_task', $taskflows[0])
+	        					->bind('isUpdate', $isUpdate)
+	        					->bind('usersList', $usersList);
+		?>	
 	  </dl>
-	  <?=$right?>
 	</form>
+	<div class='right'>	
+	<?
+		echo '<span class="header" style="margin-left:5px;">histórico</span>';
+
+		foreach($taskflows as $status_task){
+	    	echo View::factory('admin/tasks/hist_task')
+        					->bind('statusList', $statusList)
+        					->bind('status_task', $status_task);
+        }
+	?>
+	</div>
 </div>

@@ -19,7 +19,8 @@ class Model_Task extends ORM {
 
 	protected $_has_many = array(
 	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
-	    'users' => array('model'   => 'user','foreign_key' =>'user_id', 'through' => 'tasks_users'),
+	    'users' => array('model'   => 'user', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
+	  	  
 	);
 
 

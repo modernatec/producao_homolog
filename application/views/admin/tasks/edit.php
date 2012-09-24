@@ -58,7 +58,8 @@
 		    	echo View::factory('admin/tasks/status_task')
 		        					->bind('statusList', $statusList)
 		        					->bind('status_task', $taskflows[0])
-		        					->bind('isUpdate', $isUpdate); 
+		        					->bind('isUpdate', $isUpdate)
+		        					->bind('usersList', $usersList);
 			?>		    
 		  </dl>
 	</form>

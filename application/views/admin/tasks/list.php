@@ -13,18 +13,23 @@
 			<th>data de entrega</th>
 		</thead>
 		<tbody>
-			<? foreach($taskList as $taskUser){?>
+			<? foreach($taskList as $task){?>
             <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$taskUser->id;?>" title="Editar"><?=$taskUser->task->title?></a></td>
+				<td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$task->id;?>" title="Editar"><?=$task->title?></a></td>
 				<td>
 					<?
-						$status = $taskUser->task->status->find_all();
+						$status = $task->status->order_by('id', 'DESC')->limit('1')->find_all();
 						echo $status[0]->status;
 					?>
 				</td>		
-				<td><?=$taskUser->user->username?></td>
-				<td><?=$taskUser->task->priority->priority?></td>	
-				<td><?=Utils_Helper::data($taskUser->task->crono_date)?></td>			
+				<td>
+					<?
+						$task_user = ORM::factory('tasks_user')->where('task_id', '=', $task->id)->order_by('id', 'DESC')->limit('1')->find_all();
+						echo $task_user[0]->user->name;
+					?>
+				</td>
+				<td><?=$task->priority->priority?></td>	
+				<td><?=Utils_Helper::data($task->crono_date)?></td>			
 			</tr>
             <?}?>
 		</tbody>
