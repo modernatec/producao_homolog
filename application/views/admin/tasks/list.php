@@ -25,7 +25,7 @@
 				<td>
 					<?
 						$task_user = ORM::factory('tasks_user')->where('task_id', '=', $task->id)->order_by('id', 'DESC')->limit('1')->find_all();
-						echo $task_user[0]->user->name;
+						echo $task_user[0]->user->userInfos->nome;
 					?>
 				</td>
 				<td><?=$task->priority->priority?></td>	

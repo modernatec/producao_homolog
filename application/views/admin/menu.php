@@ -1,7 +1,7 @@
 <div>
 	<div id="user_info">
             <table> <tr> <td>
-            <img src='<?=URL::base();?><?=$userInfo->foto?>' height="25" alt="<?=ucfirst($user->username);?>" />
+            <img src='<?=URL::base();?><?=$user->userInfos->foto?>' height="25" alt="<?=ucfirst($user->username);?>" />
             </td><td>
             <?=ucfirst($user->username);?>
             </td> </tr> </table>

@@ -9,17 +9,18 @@
  */
 class Model_UserInfo extends ORM {
 
+    protected $_belongs_to  = array(
+        'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+    );
 
-	public function labels()
-	{
+    public function labels()
+    {
         return array(
             'nome'  => 'Nome',
             'email' => 'Email',
             'foto' => 'Foto',
             'data_aniversario' => 'Data de Aniversário',
         );
-	}
-
-	
+    }
      
 }

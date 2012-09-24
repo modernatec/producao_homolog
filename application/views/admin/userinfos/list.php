@@ -12,7 +12,7 @@
 		<tbody>
             <? foreach($userinfosList as $usuario){?>
             <tr>
-                <td><a href="<?=URL::base().'admin/userinfos/edit/'.$usuario->id;?>" title="Editar"><?=$usuario->name?></a></td>
+                <td><a href="<?=URL::base().'admin/userinfos/edit/'.$usuario->id;?>" title="Editar"><?=$usuario->nome?></a></td>
                 <td><?=$usuario->email?></td>
                 <td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/userinfos/delete/'.$usuario->id;?>" title="Excluir">Excluir</a>

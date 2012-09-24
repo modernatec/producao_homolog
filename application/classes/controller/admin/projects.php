@@ -59,6 +59,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
         public function action_edit($id)
         {
+            
             $view = View::factory('admin/projects/create')
                 ->bind('errors', $errors)
                 ->bind('message', $message)
@@ -67,7 +68,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
             $projeto = ORM::factory('project', $id);
             $view->projeto = $projeto;
             $view->isUpdate = true;
-            $view->filesList = Controller_Admin_Files::listar($projeto->id);
+            //$view->filesList = Controller_Admin_Files::listar($projeto->id);
 
             $this->template->content = $view;
 

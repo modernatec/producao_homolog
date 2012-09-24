@@ -37,7 +37,7 @@
 				<input type="hidden" name="crono_date" id="crono_date" value="<?=$task->crono_date?>"/>
 			</dd>
 	    	<dt>
-	      		<label for="user_id"><b>criada por:</b> <?=$task->user->name?></label>
+	      		<label for="user_id"><b>criada por:</b> <?=$task->user->userInfos->nome?></label>
 	    	</dt>
 		    <dd>
 		      	<input type="hidden" name="user_id" id="user_id" value="<?=$task->user->id?>"/>

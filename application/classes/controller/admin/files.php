@@ -15,7 +15,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 	}
         
  	
-	public static function subir($file,$task)
+	public static function subir($file,$task,$status_task)
         {
             $erro = array(
                 1=>'Tipo incorreto de arquivo',
@@ -37,7 +37,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
                 {
                     $arquivo = ORM::factory('file');
                     $arquivo->uri = $basedir.$fileName;
-                    $arquivo->task_id = $task->id;
+                    $arquivo->status_task_id = $status_task->id;
                     $arquivo->mime_type = $file['type'];
                     $arquivo->size = $file['size'];
                     $arquivo->user_id = Auth::instance()->get_user()->id;
@@ -56,7 +56,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 
 	public static function listar($taskId)
         {
-            return ORM::factory('file')->where('task_id','=',$taskId)->find_all();   
+            return ORM::factory('file')->where('status_task_id','=',$taskId)->find_all();   
         }
         
         public function action_download($id)

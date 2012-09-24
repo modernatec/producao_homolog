@@ -118,21 +118,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         		//email para quem abriu a task
         	}
 
-            $file = $_FILES['arquivo'];
-            if(Upload::valid($file)){
-                if(Upload::not_empty($file))
-                {       
-                	Utils_Helper::mensagens('add',Controller_Admin_Files::subir($_FILES['arquivo'],$task->id));
-                }else
-                {
-                	Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
-                }
-            }else
-            {                    
-                Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
-            }            
-
-			if($this->request->post('statu_id') != $this->request->post('old_status')){
+            if($this->request->post('statu_id') != $this->request->post('old_status')){
 	           // $this->enviaEmail($task);  
 	            $status_tasks = ORM::factory('status_task');
             }else{
@@ -144,7 +130,21 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$status_tasks->user_id = Auth::instance()->get_user()->id;
 			$status_tasks->date = date('Y-m-d H:i:s');
 			$status_tasks->description = $this->request->post('description');
-			$status_tasks->save();      	
+			$status_tasks->save();
+
+            $file = $_FILES['arquivo'];
+            if(Upload::valid($file)){
+                if(Upload::not_empty($file))
+                {       
+                	Utils_Helper::mensagens('add',Controller_Admin_Files::subir($_FILES['arquivo'],$task,$status_tasks));
+                }else
+                {
+                	Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
+                }
+            }else
+            {                    
+                Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
+            }
 
             return $task;
 
