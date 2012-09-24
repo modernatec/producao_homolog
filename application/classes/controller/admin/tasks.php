@@ -17,7 +17,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_index()
 	{	
 		$view = View::factory('admin/tasks/list');
-		$view->taskList = ORM::factory('tasks_user')->join('tasks', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
+		$view->taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
+		
+		//
 	  	$this->template->content = $view;
 	} 
 
@@ -65,8 +67,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	}
         
     public function action_edit($id){
-        $view = View::factory('admin/tasks/edit')
-            ->bind('errors', $errors)
+    	if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
+	        $view = View::factory('admin/tasks/create');
+    	}else{
+	        $view = View::factory('admin/tasks/edit');
+    	}
+
+        $view->bind('errors', $errors)
             ->bind('message', $message)
             ->set('values', $this->request->post());
       	
@@ -98,11 +105,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $task->title = $this->request->post('title');
             $task->priority_id = $this->request->post('priority_id');
             $task->crono_date = $this->request->post('crono_date');
-            $task->user_id = Auth::instance()->get_user()->id;
+            
+            if(!$id)	
+  	          $task->user_id = Auth::instance()->get_user()->id;
+            
             $task->save();
             
-            $task->add('users', ORM::factory('user', Auth::instance()->get_user()->id));
-            $task->add('users', ORM::factory('user', $this->request->post('task_to')));
+            if($this->request->post('task_to')){
+            	$task->remove('users');            	
+            	$task->add('users', ORM::factory('user', $this->request->post('task_to')));
+        	}else{
+        		//email para quem abriu a task
+        	}
 
             $file = $_FILES['arquivo'];
             if(Upload::valid($file)){
@@ -141,7 +155,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         }
     }
 
-    protected function enviaEmail($task){
+    protected function enviaEmail($email){
     	$mailer = Email::connect();	   
     	 
 	    $message = Swift_Message::newInstance()
