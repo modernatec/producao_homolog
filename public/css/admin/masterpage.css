@@ -1,0 +1,201 @@
+*{
+	font-family: 'verdana';
+	font-size:12px;
+	text-decoration:none;
+	padding:0;
+	margin:0;
+}
+body{
+	background: url('../../image/site/sprite.png') repeat-x 0 -270px;
+}
+
+h1.logo{
+	margin: 20px 0;
+	width:112px;
+	height:43px;
+	text-indent:-1000px;
+	overflow:hidden;
+	background: url('../../image/site/sprite.png') no-repeat 0 -18px;
+}
+
+.round{
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px;
+}
+
+#user_info{
+	background:#30301f;
+	color:#FFF;
+	overflow:hidden;
+	padding:10px;
+	margin-bottom:5px;
+}
+
+#user_info a{
+	float:right;
+}
+
+#user_info table{
+    	border-collapse:collapse;
+	width:auto;
+        float: left;
+}
+
+#user_info table tbody td{
+	padding:5px;
+	border-bottom:0;
+}
+
+#user_info table tbody tr:hover td {
+    background:none; color: #fff;
+}
+
+#menu{
+	width:200px;
+	float:left;
+	background: #008fc7;
+	padding:10px;
+	color:#FFF;
+	overflow:hidden;
+	margin: 0 5px;
+}
+
+#menu ul li{
+	padding:5px;
+}
+
+#menu a, #user_info a{
+	color:#FFF;
+	text-decoration:none;
+}
+
+#menu a:hover, #user_info a:hover{
+	text-decoration:underline;
+}
+
+.content{
+	position:relative;
+	width:1000px;
+	float:left;
+}
+
+/*Content itens*/
+
+.bar{
+	overflow:hidden;
+	padding:5px 5px 10px 0;
+}
+
+.header{
+	padding:10px 0;
+	display:block;
+	font-weight:bold;
+}
+
+.bar_button{
+	background:#7ec353;
+	padding:5px;
+	margin-right:5px;
+	color:#FFF;
+}
+
+table{
+	border-collapse:collapse;
+	width:1000px;
+}
+
+table thead th{
+	padding:5px;
+	color:#008fc7;
+	border-bottom:1px #CCC solid;
+}
+
+table tbody td{
+	padding:5px;
+	border-bottom:1px #CCC solid;
+}
+
+table tbody td.acao{
+	width:100px;
+}
+
+table tbody td a{
+    color:#666;
+}
+
+table tbody td a:hover{
+    text-decoration: underline;
+}
+
+table tbody tr:hover td {
+    background-color: #FFFAF0; color: #000;
+}
+
+a.editar, a.excluir, a.download{
+    background: transparent url(../../image/admin/editar.png) no-repeat 0 0;
+    width: 12px;
+    height: 12px;
+    float:left;
+    text-indent: -5000px;
+    margin:0 5px;
+}
+
+a.excluir{
+    background: transparent url(../../image/admin/excluir.png) no-repeat 0 0;
+}
+
+a.download{
+    background: transparent url(../../image/admin/download.png) no-repeat 0 0;
+}
+
+
+
+table tbody tr:nth-child(odd){
+    /*background-color: #fff;*/
+}
+
+table tbody tr:nth-child(even){
+    background-color: #eee;
+}
+
+
+/*****Forms****/
+.form dl, .form dt{
+	padding:5px 0;
+}
+
+.form dl{
+	float:left;
+}
+
+.form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea{
+	border:1px #CCC solid;
+	padding:5px;
+}
+
+.form input[type='submit']{
+	margin-top: 10px;
+}
+
+div.error, div.ok{
+    width:500px;
+    border:1px solid #EE0000;
+    border-radius: 10px;
+    background-color: #ffbcbc;
+    color:#EE0000;
+    padding: 10px;
+    display:block;
+    margin:10px 0;
+}
+
+.ok{
+    border:1px solid #7ec353;
+    background-color: #D6E8C4;
+    color:#7ec353;
+}
+
+.error{
+    color:#EE0000;
+}

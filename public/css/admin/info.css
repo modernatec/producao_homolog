@@ -1,0 +1,43 @@
+#info
+{
+	height:45px;	
+	background: -moz-linear-gradient(center bottom , #808080, #686868) repeat scroll 0 0 transparent;
+	border-bottom: 1px solid #C6C6C6;
+	color: #DDDDDD !important;
+	font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+	display: block;
+}
+#info h1
+{
+	float: left;
+    font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+	font-size: 18px;
+	color:#464646;
+    margin: 0;
+    padding: 10px 8px 5px;
+	font-weight: bold;
+	color: #DDD !important
+}
+#info p
+{
+	float: right;
+	margin-right: 10px;
+	font-size: 12px;
+	height: 46px;
+	line-height: 46px;
+}
+
+#info p span
+{
+	color:#FFF;
+}
+
+#info p a
+{
+	text-decoration:none;
+	color:#FFF;
+}
+#info p a:hover
+{
+	color:#900;
+}

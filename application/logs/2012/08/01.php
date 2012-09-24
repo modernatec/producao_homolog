@@ -1,0 +1,18 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2012-08-01 00:37:31 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 00:38:24 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 00:38:48 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 01:07:32 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 01:08:24 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 01:08:49 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 01:38:49 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 21:43:29 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 21:43:29 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 21:43:29 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:13:30 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:13:30 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:13:30 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:43:31 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:43:31 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]
+2012-08-01 22:43:31 --- ERROR: HTTP_Exception_404 [ 404 ]: The requested URL announce/index/1 was not found on this server. ~ SYSPATH\classes\kohana\request\client\internal.php [ 94 ]

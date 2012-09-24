@@ -1,0 +1,16 @@
+#submenu {
+    -moz-border-radius: 8px 8px 8px 8px;
+    background: none repeat scroll 0 0 #DEDEDE;
+    float: left;
+    margin: 5px;
+    width: 200px;
+}
+#submenu ul li {
+    padding: 3px 10px;
+}
+#submenu ul li a {
+    border-bottom: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    display: block;
+    text-decoration: none;
+}

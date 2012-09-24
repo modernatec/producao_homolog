@@ -1,0 +1,293 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cl",
+				"class"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Apache/htdocs/producao/application/bootstrap.php",
+			"settings":
+			{
+				"buffer_size": 6528,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Apache/htdocs/producao/application/classes/controller/site/home.php",
+			"settings":
+			{
+				"buffer_size": 517,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Apache/htdocs/producao/application/classes/controller/admin/home.php",
+			"settings":
+			{
+				"buffer_size": 764,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Apache/htdocs/producao/application/views/admin/template.php",
+			"settings":
+			{
+				"buffer_size": 733,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0,
+		"selected_items":
+		[
+		],
+		"width": 0
+	},
+	"console":
+	{
+		"height": 0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Apache/htdocs/producao/application/views/admin/masterpage.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/template.php",
+		"/C/Apache/htdocs/producao/application/bootstrap.php",
+		"/C/Apache/htdocs/producao/application/config/database.php",
+		"/C/Apache/htdocs/producao/application/views/site/home.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/user.php",
+		"/C/Apache/htdocs/producao/application/views/site/template.php",
+		"/C/Apache/htdocs/producao/application/views/admin/login.php",
+		"/C/Apache/htdocs/producao/public/css/admin/login.css",
+		"/C/Apache/htdocs/producao/application/views/site/login.php",
+		"/C/Apache/htdocs/producao/public/javascript/site/nivo-slider/jquery.nivo.slider.js",
+		"/C/Users/Sony/Desktop/prototipos/v1/index.html",
+		"/C/Users/Sony/Desktop/prototipos/v1/js/lib/base.js",
+		"/C/Users/Sony/Desktop/prototipos/v1/js/classes/Controles.js",
+		"/C/Users/Sony/Desktop/prototipos/v1/js/classes/GarbageCollector.js",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/Sony/MODERNA/Vereda digital/mapa conceito/abertos/br/com/moderna/pnld/model/CreditoDTO.as",
+		"/C/Users/Sony/Desktop/sites/teste/config/database.yml"
+	],
+	"find":
+	{
+		"height": 0
+	},
+	"find_in_files":
+	{
+		"height": 0,
+		"include_history":
+		[
+		],
+		"location_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Apache/htdocs/producao/application/bootstrap.php",
+					"settings":
+					{
+						"buffer_size": 6528,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6258,
+								6258
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 3024,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Apache/htdocs/producao/application/classes/controller/site/home.php",
+					"settings":
+					{
+						"buffer_size": 517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								517,
+								517
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Apache/htdocs/producao/application/classes/controller/admin/home.php",
+					"settings":
+					{
+						"buffer_size": 764,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								654,
+								654
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Apache/htdocs/producao/application/views/admin/template.php",
+					"settings":
+					{
+						"buffer_size": 733,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								604,
+								604
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0
+	},
+	"input":
+	{
+		"height": 0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0,
+			1
+		],
+		"rows":
+		[
+			0,
+			1
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0,
+		"selected_items":
+		[
+		],
+		"width": 0
+	},
+	"select_project":
+	{
+		"height": 0,
+		"selected_items":
+		[
+		],
+		"width": 0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 381,
+	"status_bar_visible": true
+}

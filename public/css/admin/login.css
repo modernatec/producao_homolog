@@ -1,0 +1,82 @@
+body
+{
+	/*background: #93AAB0 fixed url("../../image/common/.gif") no-repeat right 100% !important;*/
+}
+
+#login{
+	width: 600px;
+	min-height: 100px;
+	position: absolute;
+	padding: 5px;
+	top: 50%;
+	left: 50%;
+	margin: -50px 0 0 -300px;
+    -moz-box-sizing: border-box;
+}
+
+#login dd, #login dt{
+	float:left;
+}
+
+#login label{
+	margin:10px;
+}
+
+#login .error{
+	display:block;
+}
+
+#login input[type='text'], #login input[type='password'], #login input[type='submit']{
+	border:1px #CCC solid;
+	padding:5px;
+	margin-top: -5px;
+}
+
+#login input[type='submit']{
+	margin-left: 10px;
+}
+
+h1.logo{
+	float:left;
+	padding-right: 20px;
+	top:-25px;
+	position:relative;
+}
+/*
+#login p.label, #login p.error
+{
+	margin: 0 auto;
+	width: 350px;
+	font-family: "Lucida Grande", Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+	color: #2A3E45;
+}
+#login .boxLogin
+{
+	background-color: #FFF;
+	width: 350px;
+	height: 120px;
+	margin: 10px auto;
+	padding: 10px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+    -khtml-border-radius: 6px 6px 6px 6px;
+    border-radius: 6px 6px 6px 6px;
+    -moz-box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+	border-color: #DFDFDF;
+    outline: medium none;
+}
+
+#login form label
+{
+	width: 300px !important;
+	display:inline-block;
+}
+
+#login p.error
+{
+	color: #F00 !important;
+	font-size: 11px;
+}
+*/

@@ -1,0 +1,25 @@
+/* --- ERRORS --- */
+.error INPUT, .error TEXTAREA, .error SELECT {
+	background:#FFE6E7;
+}
+
+.iferror {
+	margin:0;
+	display:none;
+}
+
+.error .iferror {
+	display:block;
+    -moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	padding: 2px 5px;
+    text-align: center;
+	font-family: Verdana, Arial;
+	background:#FF0000;
+    color: #FFFFFF;
+	float:left;
+}
+
+.hint { color:#888; }
