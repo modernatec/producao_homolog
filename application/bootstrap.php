@@ -158,7 +158,7 @@ Route::set('logout', 'logout')
 	
 	
 Route::set(
-	'admin', 'admin(/<controller>(/<action>(/<page>)))', array('page' => '[0-9]+'))
+	'admin', 'admin(/<controller>(/<action>(/<page>)))', array('page' => '[0-9]+','page' => '.*'))
 	->defaults(array(
 		'controller' => 'home',
 		'action'     => 'index',

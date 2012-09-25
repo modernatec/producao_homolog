@@ -76,10 +76,10 @@ class Controller_Admin_Template extends Controller_Template {
  
 			$scripts = array(
 				//'public/js/common/jquery/jquery-1.5.2.min.js',
-				'public/js/common/jquery/jquery.validate.js',
-				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery-1.8.0.min.js',
 				'public/js/common/jquery/jquery-ui-1.8.23.custom.min.js',
+				'public/js/common/jquery/jquery.validate.js',
+				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/admin/admin.js',
 			);
  

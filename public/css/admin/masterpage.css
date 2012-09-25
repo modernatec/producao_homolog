@@ -244,3 +244,15 @@ div.error, div.ok{
 .ui-datepicker-title{ float: left;}
 .ui-datepicker .ui-datepicker-current-day{ background-color: #000;}
 .ui-datepicker .ui-datepicker-current-day a{color:#fff;}
+
+#filelist div{
+    border-bottom:1px solid #999;
+    padding: 5px 10px;
+    display: block;
+    clear: left;
+}
+
+
+#filelist div b{
+    color:#008fc7;
+}

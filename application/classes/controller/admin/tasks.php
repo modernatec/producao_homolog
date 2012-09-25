@@ -4,10 +4,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); //Auth is required to access this controller
  
-	public $secure_actions     	= array('post' => array('login','admin','coordenador', 'assistente'),
-								   'edit' => array('login','admin'),
-								   'delete' => array('login','admin'),
-								 );
+        public $secure_actions     	= array(
+                                                'edit' => array('login'),
+                                                'delete' => array('login','admin'),
+                                              );
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -22,32 +22,47 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		//
 	  	$this->template->content = $view;
 	} 
+        
+        protected function addPlupload(){
+            $scripts =   array(
+                "http://bp.yahooapis.com/2.4.21/browserplus-min.js",
+                "public/plupload/js/plupload.js",
+                "public/plupload/js/plupload.gears.js",
+                "public/plupload/js/plupload.silverlight.js",
+                "public/plupload/js/plupload.flash.js",
+                "public/plupload/js/plupload.browserplus.js",
+                "public/plupload/js/plupload.html4.js",
+                "public/plupload/js/plupload.html5.js",
+                "public/plupload/init.js",
+            );
+            $this->template->scripts = array_merge( $scripts, $this->template->scripts );
+        }
 
 	public function action_create(){
 		$view = View::factory('admin/tasks/create')
-			->bind('errors', $errors)
-            ->bind('message', $message)
-            ->set('values', $this->request->post());
-		
+                    ->bind('errors', $errors)
+                    ->bind('message', $message)
+                    ->set('values', $this->request->post());
+                		
 		$view->usersList = ORM::factory('user')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
 		$view->priorityList = ORM::factory('priority')->find_all();
 		$view->statusList = ORM::factory('statu')->find_all();
 	  	
 	  	if (HTTP_Request::POST == $this->request->method()) 
-        {
-        	try {         
-                $projeto = $this->salvar();
-                $message = "You have added a task"; 
-                Request::current()->redirect(URL::base().'admin/tasks/edit/'.$projeto->id);
-                $view->filesList = Controller_Admin_Files::listar($projeto->id);
-              
-            } catch (ORM_Validation_Exception $e) {
-                $message = 'There were errors, please see form below.';
-                $errors = $e->errors('models');
-            }
-        }
-        $this->template->content = $view;	
+                {
+                    try {         
+                        $projeto = $this->salvar();
+                        $message = "You have added a task"; 
+                        Request::current()->redirect(URL::base().'admin/tasks/edit/'.$projeto->id);
+                        $view->filesList = Controller_Admin_Files::listar($projeto->id);
+
+                    } catch (ORM_Validation_Exception $e) {
+                        $message = 'There were errors, please see form below.';
+                        $errors = $e->errors('models');
+                    }
+                }
+                $this->template->content = $view;	
 	}
 
 
@@ -72,6 +87,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     	}else{
 	        $view = View::factory('admin/tasks/edit');
     	}
+        
+        $this->addPlupload();
 
         $view->bind('errors', $errors)
             ->bind('message', $message)
@@ -139,6 +156,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $status_tasks->description = $this->request->post('description');
             $status_tasks->save();
 
+            /* FLUXO DE UPLOAD 1 ARQUIVO SÓ COM INPUT FILE
             $file = $_FILES['arquivo'];
             if(Upload::valid($file)){
                 if(Upload::not_empty($file)){
@@ -151,28 +169,50 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             {                    
                 Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
             }
+             */
             
-            if($this->request->post('statu_id')==7) // 7 = Concluído
+            $filesUploads = $this->request->post('filesUploads');
+            if($filesUploads!='')
             {
-                $email = new Email_Helper();
-                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
-                $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-                $email->mensagem = 'Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
-                    <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-                    <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome;
-                $email->enviaEmail();
-            }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
-            {
-                $email = new Email_Helper();
-                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
-                $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
-                $email->mensagem = 'Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
-                <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
-                <b>Título:</b> '.$task->title.'<br/>
-                <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
-                <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
-                <b>Descrição:</b> '.$this->request->post('description');
-                $email->enviaEmail();
+                $arrFiles = explode(',',$filesUploads);
+                $basedir = 'public/plupload/temporario/';
+                $newbasedir = 'public/upload/'.$pastaProjeto.'/'.$task->pasta.'/';
+                foreach($arrFiles as $file){
+                    if($file!='empty'){
+                        $size = filesize($basedir.$file);
+
+                        $mime = 'teste';
+
+                        Controller_Admin_Files::salvar(DOCROOT.$newbasedir.$file,$mime,$size,$status_tasks->id);
+
+                        rename($basedir.$file, $newbasedir.$file);
+                    }
+                }
+            }
+            
+            if($this->request->post('statu_id') != $this->request->post('old_status')){
+                if($this->request->post('statu_id')==7) // 7 = Concluído
+                {
+                    $email = new Email_Helper();
+                    $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
+                    $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
+                    $email->mensagem = 'Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
+                        <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
+                        <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome;
+                    $email->enviaEmail();
+                }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
+                {
+                    $email = new Email_Helper();
+                    $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
+                    $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
+                    $email->mensagem = 'Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
+                    <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
+                    <b>Título:</b> '.$task->title.'<br/>
+                    <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
+                    <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
+                    <b>Descrição:</b> '.$this->request->post('description');
+                    $email->enviaEmail();
+                }
             }
 
             return $task;

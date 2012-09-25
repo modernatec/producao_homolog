@@ -35,13 +35,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
                 $fileName = $nomeArquivo.'_'.(time()).'.'.$ext;
                 if(Upload::save($file,$fileName,$rootdir,0777))
                 {
-                    $arquivo = ORM::factory('file');
-                    $arquivo->uri = $basedir.$fileName;
-                    $arquivo->status_task_id = $status_task_id;
-                    $arquivo->mime_type = $file['type'];
-                    $arquivo->size = $file['size'];
-                    $arquivo->user_id = Auth::instance()->get_user()->id;
-                    $arquivo->save();
+                    self::salvar($basedir.$fileName,$file['type'],$file['size'], $status_task_id);
 
                     return $erro[3];
                 }else
@@ -52,6 +46,16 @@ class Controller_Admin_Files extends Controller_Admin_Template {
             {
                 return $erro[1];
             }
+        }
+        
+        public static function salvar($uri,$type,$size,$status_task_id){
+            $arquivo = ORM::factory('file');
+            $arquivo->uri = $uri;
+            $arquivo->status_task_id = $status_task_id;
+            $arquivo->mime_type = $type;
+            $arquivo->size = $size;
+            $arquivo->user_id = Auth::instance()->get_user()->id;
+            $arquivo->save();
         }
 
 	public static function listar($taskId)

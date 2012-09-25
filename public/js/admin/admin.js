@@ -13,6 +13,24 @@ function temMensagens(){
     },1000); //5 min (1000 * 60 * 5)
 }
 
+function excluirTemporario(id){
+    var filePath = $('#'+id).attr('filePath');
+    $.get('/admin/pluploader/delete/'+filePath,function(data){
+       if(data=='OK'){           
+           for(var i=0; i < filesUploads.length; i++){
+               if(filePath == filesUploads[i]){
+                   filesUploads[i] = 'empty';
+               }
+           }
+           $('#'+id).remove();
+           var val = filesUploads.join(',');
+           $('#filesUploads').val(val);
+       }else{
+           alert(data);
+       }
+    });
+}
+
 $(document).ready(function() {	
 	if(msgs.length>0)
 	{		

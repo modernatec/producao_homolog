@@ -55,10 +55,18 @@
 		      	<input type="hidden" name="priority_id" id="priority_id" value="<?=$task->priority->id?>"/>
 		    </dd>
 		    <dt>
-		      	<label for="arquivo">Anexar arquivo</label>
+		      	<label for="arquivo"><b>Anexar arquivo</b></label>
 		    </dt>	    
 		    <dd>
-		        <input type="file" class="text required round" name="arquivo" id="arquivo" style="width:300px;" />
+		        <? /*<input type="file" class="text required round" name="arquivo" id="arquivo" style="width:300px;" />*/?>
+                        <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
+                        <div id="container">
+                            <div id="filelist">No runtime found.</div>
+                            <br />
+                            <a id="pickfiles" href="javascript:;" class="bar_button round">Anexar arquivo</a> 
+                            <a id="uploadfiles" href="javascript:;" class="bar_button round">Subir</a>
+                        </div>
+                        <br/>
 		    </dd>
 		    <?
 		    	echo View::factory('admin/tasks/status_task')
