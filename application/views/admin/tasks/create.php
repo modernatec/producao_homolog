@@ -40,7 +40,7 @@
 	      <label for="crono_date">data de entrega</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="crono_date" id="crono_date" style="width:100px;"  value="<?=$crono_date?>"/>
+                <input type="text" class="text round" name="crono_date" id="crono_date" style="width:100px;"  value="<?=Utils_Helper::data($crono_date)?>"/>
 	      <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
 	    </dd>
 	    <dt>

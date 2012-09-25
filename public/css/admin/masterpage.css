@@ -216,3 +216,8 @@ div.error, div.ok{
 	padding:10px;
 	margin:5px;
 }
+
+.hist_task img{
+    margin-right:5px;
+    border:1px solid #999;
+}

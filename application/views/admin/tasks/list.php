@@ -13,7 +13,8 @@
 			<th>data de entrega</th>
 		</thead>
 		<tbody>
-			<? foreach($taskList as $task){?>
+			<? foreach($taskList as $task){
+                            ?>
             <tr>
 				<td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$task->id;?>" title="Editar"><?=$task->title?></a></td>
 				<td>

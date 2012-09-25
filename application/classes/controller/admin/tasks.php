@@ -114,31 +114,30 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             if($this->request->post('task_to')){
             	$task->remove('users');     	
             	$task->add('users', ORM::factory('user', $this->request->post('task_to')));
-            }else{
-                //email para quem abriu a task                
-                //$this->enviaEmail(,$this->request->post('description'));  
+            }
+            
+            if($this->request->post('statu_id')==7) // 7 = Concluído
+            {
                 $email = new Email_Helper();
                 $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
                 $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
                 $email->mensagem = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status.' em '.date('d/m/Y - H:i:s');
-                $email->enviaEmail(true);
+                $email->enviaEmail();
+            }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
+            {
+                $email = new Email_Helper();
+                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
+                $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
+                $email->mensagem = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!.
+Projeto: '.ORM::factory('project',$task->project_id)->name.'
+Título: '.$task->title.'
+Data de entrega: '.  Utils_Helper::data($task->crono_date).'
+Prioridade: '.ORM::factory('priority',$task->priority_id)->priority.'
+Descrição: '.$this->request->post('description');
+                $email->enviaEmail();
             }
 
             if($this->request->post('statu_id') != $this->request->post('old_status')){
-                //email para quem recebeu a task
-                //$this->enviaEmail(),$this->request->post('description'));  
-                
-                $email = new Email_Helper();
-                $email->userInfo = ORM::factory('userInfo',array('user_id'=>Auth::instance()->get_user()->id));
-                $email->assunto = 'Olá, '.$this->userInfo->nome.' você possuí uma nova tarefa!';
-                $email->mensagem = 'Olá, '.$this->userInfo->nome.' você possuí uma nova tarefa!. <br> 
-                    projeto: '.ORM::factory('project',$task->project_id)->name.' <br> 
-                    título: '.$task->title.' <br> 
-                    data de entrega: '.$task->crono_date.' <br> 
-                    prioridade: '.ORM::factory('priority',$task->priority_id)->priority.' <br> 
-                    descrição: '.$this->request->post('description');
-                $email->enviaEmail(true);
-                
                 $status_tasks = ORM::factory('status_task');
             }else{
             	$status_tasks = ORM::factory('status_task', $this->request->post('status_task_id'));
@@ -173,26 +172,4 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             var_dump($errors);
         }
     }
-
-    /*protected function enviaEmail($args){
-    	$mailer = Email::connect();   
-    	 
-        $message = Swift_Message::newInstance()
-            // Give the message a subject
-            ->setSubject('Olá, '.$userInfo->nome.' você possuí uma nova tarefa!')
-            // Set the From address with an associative array
-            ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
-            // Set the To addresses with an associative array
-            ->setTo(array($userInfo->email => $userInfo->nome))
-            // Give it a body
-            ->setBody($msgContent);
-            // And optionally an alternative body
-            //->addPart('<q>Here is the message itself</q>', 'text/html');
-
-            //// Optionally add any attachments
-            //->attach(Swift_Attachment::fromPath('my-document.pdf')				  
-
-        $mail = $mailer->send($message);
-        var_dump($mail);
-    }*/
 }

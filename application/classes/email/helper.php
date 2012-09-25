@@ -12,7 +12,7 @@ class Email_Helper
     public $assunto;
     public $mensagem;
     
-    public function enviaEmail($debug){
+    public function enviaEmail($debug=false){
         if(!$debug)
         {
             $mailer = Email::connect();   
@@ -32,8 +32,12 @@ class Email_Helper
 
                 //// Optionally add any attachments
                 ->attach(Swift_Attachment::fromPath('my-document.pdf')*/				  
-
-            $mail = $mailer->send($message);
+            try{
+                $mail = $mailer->send($message);
+            }catch(Swift_TransportException $e){
+                print $e->getMessage();
+                //exit;
+            }
         }else{
             print "<pre>";
             var_dump($this);

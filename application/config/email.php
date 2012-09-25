@@ -25,5 +25,6 @@ return array(
 	 * @param   string  sendmail: executable path, with -bs or equivalent attached
 	 * @param   array   smtp: hostname, (username), (password), (port), (encryption)
 	 */
-	'options' => array('hostname'=>'smtp.moderna.com.br', 'username'=>'editorial_tec15@moderna.com.br', 'password'=>'modern@09', 'port'=>587),
+	//'options' => array('hostname'=>'smtp.moderna.com.br', 'username'=>'editorial_tec15@moderna.com.br', 'password'=>'modern@09', 'port'=>587),
+        'options' => array('hostname'=>'smtp.gmail.com', 'username'=>'moderna.tec@gmail.com', 'password'=>'moderna@01', 'port'=>465, 'encryption'=>'ssl'),
 );
