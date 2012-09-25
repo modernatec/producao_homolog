@@ -112,25 +112,44 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $task->save();
             
             if($this->request->post('task_to')){
-            	$task->remove('users');            	
+            	$task->remove('users');     	
             	$task->add('users', ORM::factory('user', $this->request->post('task_to')));
-        	}else{
-        		//email para quem abriu a task
-        	}
+            }else{
+                //email para quem abriu a task                
+                //$this->enviaEmail(,$this->request->post('description'));  
+                $email = new Email_Helper();
+                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
+                $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
+                $email->mensagem = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status.' em '.date('d/m/Y - H:i:s');
+                $email->enviaEmail(true);
+            }
 
             if($this->request->post('statu_id') != $this->request->post('old_status')){
-	           // $this->enviaEmail($task);  
-	            $status_tasks = ORM::factory('status_task');
+                //email para quem recebeu a task
+                //$this->enviaEmail(),$this->request->post('description'));  
+                
+                $email = new Email_Helper();
+                $email->userInfo = ORM::factory('userInfo',array('user_id'=>Auth::instance()->get_user()->id));
+                $email->assunto = 'Olá, '.$this->userInfo->nome.' você possuí uma nova tarefa!';
+                $email->mensagem = 'Olá, '.$this->userInfo->nome.' você possuí uma nova tarefa!. <br> 
+                    projeto: '.ORM::factory('project',$task->project_id)->name.' <br> 
+                    título: '.$task->title.' <br> 
+                    data de entrega: '.$task->crono_date.' <br> 
+                    prioridade: '.ORM::factory('priority',$task->priority_id)->priority.' <br> 
+                    descrição: '.$this->request->post('description');
+                $email->enviaEmail(true);
+                
+                $status_tasks = ORM::factory('status_task');
             }else{
             	$status_tasks = ORM::factory('status_task', $this->request->post('status_task_id'));
             }
 
             $status_tasks->status_id = $this->request->post('statu_id');
-			$status_tasks->task_id = $task->id;
-			$status_tasks->user_id = Auth::instance()->get_user()->id;
-			$status_tasks->date = date('Y-m-d H:i:s');
-			$status_tasks->description = $this->request->post('description');
-			$status_tasks->save();
+            $status_tasks->task_id = $task->id;
+            $status_tasks->user_id = Auth::instance()->get_user()->id;
+            $status_tasks->date = date('Y-m-d H:i:s');
+            $status_tasks->description = $this->request->post('description');
+            $status_tasks->save();
 
             $file = $_FILES['arquivo'];
             if(Upload::valid($file)){
@@ -149,31 +168,31 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             return $task;
 
         } catch (ORM_Validation_Exception $e) {
-            $message = 'Houveram alguns erros. Veja à seguir:';
+            $message = 'Houveram alguns erros.';
             $errors = $e->errors('models');
             var_dump($errors);
         }
     }
 
-    protected function enviaEmail($userInfo){
-    	$mailer = Email::connect();	   
+    /*protected function enviaEmail($args){
+    	$mailer = Email::connect();   
     	 
-	    $message = Swift_Message::newInstance()
-                // Give the message a subject
-                ->setSubject('Olá, '.$userInfo->nome.' vc possuí uma nova tarefa')
-                // Set the From address with an associative array
-                ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
-                // Set the To addresses with an associative array
-                ->setTo(array('roberto.ono.moderna@gmail.com' => 'Renato'))
-                // Give it a body
-                ->setBody('Here is the message itself')
-                // And optionally an alternative body
-                ->addPart('<q>Here is the message itself</q>', 'text/html');
+        $message = Swift_Message::newInstance()
+            // Give the message a subject
+            ->setSubject('Olá, '.$userInfo->nome.' você possuí uma nova tarefa!')
+            // Set the From address with an associative array
+            ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
+            // Set the To addresses with an associative array
+            ->setTo(array($userInfo->email => $userInfo->nome))
+            // Give it a body
+            ->setBody($msgContent);
+            // And optionally an alternative body
+            //->addPart('<q>Here is the message itself</q>', 'text/html');
 
-		//// Optionally add any attachments
-		//->attach(Swift_Attachment::fromPath('my-document.pdf')				  
+            //// Optionally add any attachments
+            //->attach(Swift_Attachment::fromPath('my-document.pdf')				  
 
-	    $mail = $mailer->send($message);
-	    var_dump($mail);
-    }
+        $mail = $mailer->send($message);
+        var_dump($mail);
+    }*/
 }
