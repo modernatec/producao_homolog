@@ -20,7 +20,7 @@ class Model_Auth_User extends ORM {
 	);
         
         protected $_has_one = array(
-                'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'user_id'),
+        	'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'user_id'),
 	);
 
 	/**

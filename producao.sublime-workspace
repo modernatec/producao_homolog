@@ -11,38 +11,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/C/Apache/htdocs/producao/application/bootstrap.php",
-			"settings":
-			{
-				"buffer_size": 6528,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Apache/htdocs/producao/application/classes/controller/site/home.php",
-			"settings":
-			{
-				"buffer_size": 517,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Apache/htdocs/producao/application/classes/controller/admin/home.php",
-			"settings":
-			{
-				"buffer_size": 764,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Apache/htdocs/producao/application/views/admin/template.php",
-			"settings":
-			{
-				"buffer_size": 733,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -68,15 +36,100 @@
 	},
 	"file_history":
 	[
-		"/C/Apache/htdocs/producao/application/views/admin/masterpage.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/tasks.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/edit.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/create.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/status_task.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/hist_task.php",
+		"/C/Apache/htdocs/producao/application/classes/model/task.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/list.php",
+		"/C/Apache/htdocs/producao2/producao/application/classes/controller/admin/projects.php",
+		"/C/Apache/htdocs/producao/application/classes/request.php",
+		"/C/Apache/htdocs/producao/modules/orm/classes/model/auth/user.php",
+		"/C/Apache/htdocs/producao/application/classes/model/priority.php",
+		"/C/Apache/htdocs/producao/application/classes/model/tasks/user.php",
+		"/C/Apache/htdocs/producao/modules/orm/classes/kohana/orm.php",
 		"/C/Apache/htdocs/producao/application/classes/controller/admin/template.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/user.php",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/user.php",
+		"/C/Apache/htdocs/producao/application/views/admin/tasks/edit",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/files.php",
+		"/C/Apache/htdocs/producao/public/css/admin/masterpage.css",
+		"/C/Apache/htdocs/producao/application/views/admin/userinfos/list.php",
+		"/C/Apache/htdocs/producao/application/classes/model/status/task.php",
+		"/C/Apache/htdocs/producao/application/classes/model/statu.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/files.php",
+		"/C/Apache/htdocs/producao/application/classes/model/file.php",
+		"/C/Apache/htdocs/producao/application/views/admin/filesList.php",
+		"/C/Apache/htdocs/producao/application/classes/model/taskflow.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/projects.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/relatorios.php",
+		"/C/Apache/htdocs/producao/application/messages/project.php",
+		"/C/Apache/htdocs/producao/application/classes/model/project.php",
+		"/C/Apache/htdocs/producao/public/js/admin/admin.js",
+		"/C/Apache/htdocs/producao/public/css/common/jquery.jgrowl.css",
+		"/C/Apache/htdocs/producao/application/views/admin/template.php",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/template.php",
+		"/C/Users/Sony/Desktop/htdocs/application/views/admin/template.php",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/projects.php",
+		"/C/Apache/htdocs/producao/application/classes/model/userInfo.php",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/home2.php",
+		"/C/Users/Sony/Desktop/htdocs/application/classes/controller/admin/relatorios.php",
+		"/C/Apache/htdocs/producao/application/classes/model/statu/task.php",
+		"/C/Users/Sony/Desktop/producao/producao/application/classes/controller/admin/projects.php",
+		"/C/Apache/htdocs/producao/application/views/admin/filesList",
+		"/C/Apache/htdocs/producao/public/javascript/common/stanlemon-jgrowl-463438153435/examples/jgrowl-pool.html",
+		"/C/Apache/htdocs/producao/public/javascript/common/stanlemon-jgrowl-463438153435/examples/jgrowl.html",
+		"/C/Apache/htdocs/producao/application/views/admin/home.php",
+		"/C/Apache/htdocs/producao/public/javascript/admin/admin.js",
+		"/C/Apache/htdocs/producao/application/config/sendmail.php",
+		"/C/Apache/htdocs/producao/modules/sendmail/classes/sendmail.php",
+		"/C/Apache/htdocs/producao/modules/sendmail/classes/phpmailer.php",
+		"/C/Apache/htdocs/producao/application/config/email.php",
 		"/C/Apache/htdocs/producao/application/bootstrap.php",
+		"/C/Apache/htdocs/producao/modules/email/classes/email/core.php",
+		"/C/Apache/htdocs/producao/application/views/admin/projects/create.php",
+		"/C/Apache/htdocs/producao/application/classes/model/status.php",
+		"/C/Users/Sony/Desktop/projects.php",
+		"/C/Users/Sony/Desktop/producao/producao/application/classes/model/project.php",
+		"/C/Apache/htdocs/producao/application/views/admin/projects/list.php",
+		"/C/Apache/htdocs/producao/application/views/admin/menu.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/home.php",
+		"/C/Users/Sony/Desktop/producao/producao/public/css/admin/masterpage.css",
+		"/C/Users/Sony/Desktop/producao/producao/application/views/admin/projects/create.php",
+		"/C/Users/Sony/Desktop/project.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Priority.php",
+		"/C/Apache/htdocs/producao/public/css/admin/login.css",
+		"/C/Apache/htdocs/producao/application/messages/models.php",
+		"/C/Apache/htdocs/producao/application/messages/validation.php",
+		"/C/Apache/htdocs/producao/application/i18n/en.php",
+		"/C/Apache/htdocs/producao/public/javascript/admin/jquery.validate.messages.js",
+		"/C/Apache/htdocs/producao/public/javascript/site/4mypet.js",
+		"/C/Apache/htdocs/producao/public/javascript/site/validation.js",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/relatorios.html",
+		"/C/Apache/htdocs/producao/modules/orm/classes/model/auth/role.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Task.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Project.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Menu.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Files.php",
+		"/C/Apache/htdocs/producao/application/classes/model/TaskUser.php",
+		"/C/Apache/htdocs/producao/application/classes/model/StatusTask.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Status.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Menu_Roles.php",
+		"/C/Apache/htdocs/producao/public/css/admin/menu.css",
+		"/C/Apache/htdocs/producao/application/views/admin/footer.php",
+		"/C/Apache/htdocs/producao/application/classes/model/MenuRoles.php",
+		"/C/Apache/htdocs/producao/application/classes/model/MenuRoles.html",
+		"/C/Apache/htdocs/producao/application/classes/model/Cidade.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/site/home.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Dono.php",
+		"/C/Apache/htdocs/producao/application/classes/model/Especie.php",
+		"/C/Apache/htdocs/producao/application/classes/controller/admin/materias.php",
+		"/C/Apache/htdocs/producao/application/views/admin/masterpage.php",
 		"/C/Apache/htdocs/producao/application/config/database.php",
 		"/C/Apache/htdocs/producao/application/views/site/home.php",
-		"/C/Apache/htdocs/producao/application/classes/controller/admin/user.php",
 		"/C/Apache/htdocs/producao/application/views/site/template.php",
 		"/C/Apache/htdocs/producao/application/views/admin/login.php",
-		"/C/Apache/htdocs/producao/public/css/admin/login.css",
 		"/C/Apache/htdocs/producao/application/views/site/login.php",
 		"/C/Apache/htdocs/producao/public/javascript/site/nivo-slider/jquery.nivo.slider.js",
 		"/C/Users/Sony/Desktop/prototipos/v1/index.html",
@@ -89,7 +142,7 @@
 	],
 	"find":
 	{
-		"height": 0
+		"height": 32
 	},
 	"find_in_files":
 	{
@@ -106,6 +159,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"nome",
+			"back",
+			"<pre",
+			"create_user"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -125,110 +182,6 @@
 		{
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/C/Apache/htdocs/producao/application/bootstrap.php",
-					"settings":
-					{
-						"buffer_size": 6528,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6258,
-								6258
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 3024,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Apache/htdocs/producao/application/classes/controller/site/home.php",
-					"settings":
-					{
-						"buffer_size": 517,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								517,
-								517
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 0,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Apache/htdocs/producao/application/classes/controller/admin/home.php",
-					"settings":
-					{
-						"buffer_size": 764,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								654,
-								654
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 0,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Apache/htdocs/producao/application/views/admin/template.php",
-					"settings":
-					{
-						"buffer_size": 733,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								604,
-								604
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 0,
-						"zoom_level": 1
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -288,6 +241,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 381,
+	"side_bar_width": 377,
 	"status_bar_visible": true
 }

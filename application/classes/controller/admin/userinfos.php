@@ -24,21 +24,18 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
         
         public function action_delete($inId)
         {
-            $view = View::factory('admin/userinfos/list')
-            ->bind('errors', $errors)
-            ->bind('message', $message);
             try 
             {            
                 $userinfo = ORM::factory('userInfo', $inId);
                 $userinfo->delete();
                 $message = "Usuário excluído com sucesso.";
+                Utils_Helper::mensagens('add',$message); 
+                Request::current()->redirect(URL::base().'admin/userinfos');
             } catch (ORM_Validation_Exception $e) {
                 $message = 'Houveram alguns erros na validação dos dados.';
                 $errors = $e->errors('models');
+                Utils_Helper::mensagens('add',$message); 
             }
-            $view->userinfosList = ORM::factory('userInfo')->order_by('nome','ASC')->find_all();
-            $this->template->content = $view;
-            Utils_Helper::mensagens('add',$message); 
         }
 
         public function action_edit($id)
@@ -48,9 +45,7 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
                 ->bind('message', $message)
                 ->set('values', $this->request->post());
 
-            $userinfo = ORM::factory('userInfo', $id);
-            $view->userinfo = $userinfo;
-
+            $view->userinfo = ORM::factory('userInfo', $id);
             $this->template->content = $view;
             $this->template->isUpdate = 1;
             if (HTTP_Request::POST == $this->request->method()) 

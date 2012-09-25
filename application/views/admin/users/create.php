@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/userinfos" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/user" class="bar_button round">Voltar</a>
 	</div>
         <?
         
@@ -18,38 +18,58 @@
 	      <label for="nome">Nome</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text required round" name="nome" id="nome" style="width:500px;" value="<?=$nome;?>"/>
+	      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=$nome;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'nome');?></span>
 	    </dd>
 	    <dt>
 	      <label for="email">Email</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text required round" name="email" id="email" style="width:500px;" value="<?=$email;?>"/>
+	      <input type="text" class="text round" name="email" id="email" style="width:500px;" value="<?=$email;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'email');?></span>
-	    </dd>	    
-            <dt>
+	    </dd>
+	    
+	    <dt>
+	      <label for="email">Username</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="username" id="username" style="width:100px;" value="<?=$username;?>"/>
+	      <span class='error'><?=Arr::get($errors, 'username');?></span>
+	    </dd>
+	    <dt>
+	      <label for="password">Senha</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="password" id="password" style="width:100px;" value="<?=$password;?>"/>
+	      <span class='error'><?=Arr::get($errors, 'password');?></span>
+	    </dd>
+	    <dt>
+	      <label for="password_confirm">Confirme a senha</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
+	      <span class='error'><?=Arr::get($errors, 'password_confirm');?></span>
+	    </dd>
+	        
+        <dt>
 	      <label for="telefone">Telefone</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text required round" name="telefone" id="telefone" style="width:100px;" value="<?=$telefone;?>" maxlength="12"/>
+	      <input type="text" class="text round" name="telefone" id="telefone" style="width:100px;" value="<?=$telefone;?>" maxlength="12"/>
 	      <span class='error'><?=Arr::get($errors, 'telefone');?></span>
 	    </dd>
-            <?
-            if($userinfo->user_id){
-            ?>
-            <dt>
+        <dt>
 	      <label for="data_aniversario">Data do Aniversário (dd/mm)</label>
 	    </dt>
 	    <dd>
-                <input type="text" class="text required round" name="data_aniversario" id="data_aniversario" style="width:50px;" value="<?=$data_aniversario;?>" maxlength="5" />
+            <input type="text" class="text round" name="data_aniversario" id="data_aniversario" style="width:50px;" value="<?=$data_aniversario;?>" maxlength="5" />
 	      <span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
 	    </dd>
-            <dt>
+        <dt>
 	      <label for="ramal">Ramal</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text required round" name="ramal" id="ramal" style="width:50px;" value="<?=$ramal;?>" maxlength="5"/>
+	      <input type="text" class="text round" name="ramal" id="ramal" style="width:50px;" value="<?=$ramal;?>" maxlength="5"/>
 	      <span class='error'><?=Arr::get($errors, 'ramal');?></span>
 	    </dd>
             <dt>
@@ -65,9 +85,6 @@
                 ?>
                 <input type="file" class="text required round" name="arquivo" id="arquivo" style="width:500px;" />
 	    </dd>
-            <?
-            }
-            ?>
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate==1){?>Salvar<? }else{ ?>Criar<? }?>" />
 	    </dd>

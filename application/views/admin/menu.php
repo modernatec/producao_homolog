@@ -1,11 +1,9 @@
 <div>
 	<div id="user_info">
-            <table> <tr> <td>
-            <img src='<?=URL::base();?><?=$user->userInfos->foto?>' height="25" alt="<?=ucfirst($user->username);?>" />
-            </td><td>
-            <?=ucfirst($user->username);?>
-            </td> </tr> </table>
-            <a href="<?=URL::base();?>logout/">logout</a>
+        <img src='<?=URL::base();?><?=$user->userInfos->foto?>' height="25" style='float:left' alt="<?=ucfirst($user->username);?>" />
+        <?=ucfirst($user->username);?>
+        
+        <a href="<?=URL::base();?>logout/">logout</a>
 	</div>
 	<div id="menu" class="round">
 		<ul id="MainMenuList">
