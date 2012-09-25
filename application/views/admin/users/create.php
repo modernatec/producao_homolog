@@ -14,23 +14,8 @@
     <form name="frmCreateProject" id="frmCreateProject" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
-	    <dt>
-	      <label for="nome">Nome</label>
-	    </dt>
-	    <dd>
-	      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=$nome;?>"/>
-	      <span class='error'><?=Arr::get($errors, 'nome');?></span>
-	    </dd>
-	    <dt>
-	      <label for="email">Email</label>
-	    </dt>
-	    <dd>
-	      <input type="text" class="text round" name="email" id="email" style="width:500px;" value="<?=$email;?>"/>
-	      <span class='error'><?=Arr::get($errors, 'email');?></span>
-	    </dd>
-	    
-	    <dt>
-	      <label for="email">Username</label>
+              <dt>
+	      <label for="username">Username</label>
 	    </dt>
 	    <dd>
 	      <input type="text" class="text round" name="username" id="username" style="width:100px;" value="<?=$username;?>"/>
@@ -50,7 +35,33 @@
 	      <input type="password" class="text round" name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'password_confirm');?></span>
 	    </dd>
-	        
+	        	    
+	    <dt>
+	      <label for="role">Permissão</label>
+	    </dt>
+	    <dd>
+                <select name="role" id="role">
+                    <option value="">Selecione</option>
+                    <option value="3">Coordenador</option>
+                    <option value="4">Assistente</option>
+                </select>
+	      <span class='error'><?=Arr::get($errors, 'role');?></span>
+	    </dd>
+	    <dt>
+	      <label for="nome">Nome</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=$nome;?>"/>
+	      <span class='error'><?=Arr::get($errors, 'nome');?></span>
+	    </dd>
+	    <dt>
+	      <label for="email">Email</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="email" id="email" style="width:500px;" value="<?=$email;?>"/>
+	      <span class='error'><?=Arr::get($errors, 'email');?></span>
+	    </dd>	    
+	    
         <dt>
 	      <label for="telefone">Telefone</label>
 	    </dt>

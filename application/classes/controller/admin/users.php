@@ -66,16 +66,9 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 $user = ORM::factory('user')->create_user($this->request->post(), array(
                     'username',
                     'password'          
-                ));
-
-            	// Grant user login role
-                $user->add('roles', ORM::factory('role', array('name' => 'login')));
-            	//$userInfo = ORM::factory('userInfo');
-            	
-            }else{
-            	//$userInfo = ORM::factory('userInfo', $id);
-            }
-                             
+                ));           	
+            }                
+                                         
             $userinfo = ORM::factory('userInfo', $id)->values($this->request->post(), array(
                 'nome',
                 'email',
@@ -85,6 +78,16 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ));
             if($user){
             	$userinfo->user_id = $user->id;
+            }
+            
+            /* Fluxo para dar as permissões*/
+            if($this->request->post('role')!='')
+            {
+                $user = ORM::factory('user',$userinfo->user_id);
+
+                $user->remove('roles');
+                $user->add('roles', ORM::factory('role', array('name' => 'login')));
+                $user->add('roles', ORM::factory('role', array('id' => $this->request->post('role'))));            
             }
             
             $file = $_FILES['arquivo'];
