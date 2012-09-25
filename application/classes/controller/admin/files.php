@@ -15,7 +15,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 	}
         
  	
-	public static function subir($file,$task,$status_task)
+	public static function subir($file,$pasta,$status_task_id)
         {
             $erro = array(
                 1=>'Tipo incorreto de arquivo',
@@ -26,7 +26,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
             if(Upload::type($file,array('doc','docx','ppt','pptx','xls','xlsx','zip','rar','pdf','txt')))
             {
                 $fName = Utils_Helper::limparStr($file['name']);
-                $basedir = 'public/upload/'.$task->pasta.'/';
+                $basedir = 'public/upload/'.$pasta.'/';
                 $rootdir = DOCROOT.$basedir;
                 $ext = explode(".",$fName);
                 $ext = end($ext);                
@@ -37,7 +37,7 @@ class Controller_Admin_Files extends Controller_Admin_Template {
                 {
                     $arquivo = ORM::factory('file');
                     $arquivo->uri = $basedir.$fileName;
-                    $arquivo->status_task_id = $status_task->id;
+                    $arquivo->status_task_id = $status_task_id;
                     $arquivo->mime_type = $file['type'];
                     $arquivo->size = $file['size'];
                     $arquivo->user_id = Auth::instance()->get_user()->id;

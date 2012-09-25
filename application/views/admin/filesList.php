@@ -5,7 +5,7 @@
 	<tbody>
         <?foreach($filesList as $file){?>
         <tr>
-            <td><a href="<?=$linkEditar?>" title="Editar"><?=basename($file->uri)?></a></td>
+            <td><a href="<?=URL::base();?>admin/files/download/<?=$file->id?>" title="Download" target="_blank"><?=basename($file->uri)?></a></td>
         </tr>
         <?}?>			
 	</tbody>

@@ -1,0 +1,21 @@
+<skin file="assets/skin.swf">
+		<buttons>
+			<tituloAnimaBg x="0" Y="0" fixed="true" />
+			<somBar x="5" y="485" />
+			<som tooltip="volume" x="5" y="555" />
+			<prev tooltip="cena anterior" x="40" y="555"/>
+			<Play tooltip="tocar" x="75" y="545"/>
+			<Pause tooltip="pausar" x="75" y="545"/>
+			<next tooltip="próxima cena" x="125" y="555"/>
+			<rever x="5" y="550" fixed="true"/>
+			<Lettering x="20" fixed="true"/>			
+			<rever x="0" y="535" fixed="true"/>
+			<logo x="700" y="5" fixed="true"/>
+			<!-- Info sem animação sem botão I e showBg=false -->
+			<tituloAnima x="10" y="0" fixed="true" showBg="false" />
+			<!-- info com animação inseir botão I e showBg=true
+			<info x="675" y="4" fixed="true"/>
+			<infoBoard visible="false" x="550" y="35" fixed="true"/>
+			<closeInfo visible="false" x="782" y="5" fixed="true" />-->
+		</buttons>
+	</skin>	

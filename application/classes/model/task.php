@@ -36,12 +36,15 @@ class Model_Task extends ORM {
 	        'priority_id' => array(
 	        	array('not_empty'),
 		    ),
-		    'project_id' => array(
-	        	array('not_empty'),
-		    ),
-		    'user_id' => array(
-	        	array('not_empty'),
-		    ),
+                'project_id' => array(
+                    array('not_empty'),
+                ),
+                'user_id' => array(
+                    array('not_empty'),
+                ),
+                'pasta' => array(
+                    array('not_empty'),
+                ),
 	    );
 	}
 
@@ -50,7 +53,10 @@ class Model_Task extends ORM {
 		return array(
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
-			)
+			),
+                        'pasta' => array(
+                            array('Utils_Helper::limparStr')
+                        )
 		);
 	}
 
@@ -68,6 +74,7 @@ class Model_Task extends ORM {
 			'user_id'		=> __('Usuário responsável'),
 			'crono_date'	=> __('Data de entrega'),
 			'description'	=> __('Descrição'),
+			'pasta'	=> __('Pasta'),
 		);
 	}
 }

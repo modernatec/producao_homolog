@@ -12,6 +12,7 @@
         $project_id = ($task->project_id) ? ($task->project_id) : (Arr::get($values, 'project_id'));
         $user_id = ($task->user_id) ? ($task->user_id) : (Arr::get($values, 'user_id'));
         $priority_id = ($task->priority_id) ? ($task->priority_id) : (Arr::get($values, 'priority_id'));
+        $pasta = ($task->pasta) ? ($task->pasta) : (Arr::get($values, 'pasta'));
     ?>   
 
 	<form name="frmTask" id="frmTask" method="post" class="form" enctype="multipart/form-data">
@@ -42,6 +43,13 @@
 	    <dd>
                 <input type="text" class="text round" name="crono_date" id="crono_date" style="width:100px;"  value="<?=Utils_Helper::data($crono_date)?>"/>
 	      <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
+	    </dd>
+	    <dt>
+	      <label for="pasta">pasta</label>
+	    </dt>
+	    <dd>
+                <input type="text" class="text round" name="pasta" id="pasta" style="width:500px;"  value="<?=$pasta?>"/>
+	      <span class='error'><?=Arr::get($errors, 'pasta');?></span>
 	    </dd>
 	    <dt>
 	      <label for="task_to">usuário responsável</label>

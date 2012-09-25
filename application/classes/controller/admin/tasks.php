@@ -105,7 +105,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $task->title = $this->request->post('title');
             $task->priority_id = $this->request->post('priority_id');
             $task->crono_date = $this->request->post('crono_date');
+            $task->pasta = $this->request->post('pasta');
             
+            $pastaProjeto = ORM::factory('project',$task->project_id)->pasta;
+            
+            /* fluxo para criação de pastas no servidor */
+            $rootdir = DOCROOT.'public/upload/'.$pastaProjeto.'/'.$task->pasta;
+            if(!file_exists($rootdir))
+            {
+                mkdir($rootdir,0777);
+            } 
+            /* fluxo para criação de pastas no servidor */
             if(!$id)	
   	          $task->user_id = Auth::instance()->get_user()->id;
             
@@ -114,27 +124,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             if($this->request->post('task_to')){
             	$task->remove('users');     	
             	$task->add('users', ORM::factory('user', $this->request->post('task_to')));
-            }
-            
-            if($this->request->post('statu_id')==7) // 7 = Concluído
-            {
-                $email = new Email_Helper();
-                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
-                $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-                $email->mensagem = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status.' em '.date('d/m/Y - H:i:s');
-                $email->enviaEmail();
-            }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
-            {
-                $email = new Email_Helper();
-                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
-                $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
-                $email->mensagem = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!.
-Projeto: '.ORM::factory('project',$task->project_id)->name.'
-Título: '.$task->title.'
-Data de entrega: '.  Utils_Helper::data($task->crono_date).'
-Prioridade: '.ORM::factory('priority',$task->priority_id)->priority.'
-Descrição: '.$this->request->post('description');
-                $email->enviaEmail();
             }
 
             if($this->request->post('statu_id') != $this->request->post('old_status')){
@@ -152,9 +141,8 @@ Descrição: '.$this->request->post('description');
 
             $file = $_FILES['arquivo'];
             if(Upload::valid($file)){
-                if(Upload::not_empty($file))
-                {       
-                	Utils_Helper::mensagens('add',Controller_Admin_Files::subir($_FILES['arquivo'],$task,$status_tasks));
+                if(Upload::not_empty($file)){
+                	Utils_Helper::mensagens('add',Controller_Admin_Files::subir($_FILES['arquivo'],$pastaProjeto.'/'.$task->pasta,$status_tasks->id));
                 }else
                 {
                 	Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
@@ -162,6 +150,29 @@ Descrição: '.$this->request->post('description');
             }else
             {                    
                 Utils_Helper::mensagens('add',"tarefa salva com sucesso.");
+            }
+            
+            if($this->request->post('statu_id')==7) // 7 = Concluído
+            {
+                $email = new Email_Helper();
+                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
+                $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
+                $email->mensagem = 'Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
+                    <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
+                    <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome;
+                $email->enviaEmail();
+            }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
+            {
+                $email = new Email_Helper();
+                $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
+                $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
+                $email->mensagem = 'Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
+                <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
+                <b>Título:</b> '.$task->title.'<br/>
+                <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
+                <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
+                <b>Descrição:</b> '.$this->request->post('description');
+                $email->enviaEmail();
             }
 
             return $task;

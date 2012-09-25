@@ -25,7 +25,7 @@ class Email_Helper
 
                 ->setTo(array($this->userInfo->email => $this->userInfo->nome))
 
-                ->setBody($this->mensagem);
+                ->setBody($this->mensagem, 'text/html');
 
                 /*And optionally an alternative body
                 ->addPart('<q>Here is the message itself</q>', 'text/html');
@@ -34,7 +34,7 @@ class Email_Helper
                 ->attach(Swift_Attachment::fromPath('my-document.pdf')*/				  
             try{
                 $mail = $mailer->send($message);
-            }catch(Swift_TransportException $e){
+            }catch(Exception $e){
                 print $e->getMessage();
                 //exit;
             }
@@ -42,7 +42,6 @@ class Email_Helper
             print "<pre>";
             var_dump($this);
             print "</pre>";
-            exit;
         }
     }
 }
