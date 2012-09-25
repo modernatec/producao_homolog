@@ -61,19 +61,19 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     {
         try 
         {   
-        	if(!$id)
-        	{
-        		$user = ORM::factory('user')->create_user($this->request->post(), array(
-                		'username',
-                		'password'          
-            	));
+            if(!$id)
+            {
+                $user = ORM::factory('user')->create_user($this->request->post(), array(
+                    'username',
+                    'password'          
+                ));
 
             	// Grant user login role
-	            $user->add('roles', ORM::factory('role', array('name' => 'login')));
-            	$userInfo = ORM::factory('userInfo');
+                $user->add('roles', ORM::factory('role', array('name' => 'login')));
+            	//$userInfo = ORM::factory('userInfo');
             	
             }else{
-            	$userInfo = ORM::factory('userInfo', $id);
+            	//$userInfo = ORM::factory('userInfo', $id);
             }
                              
             $userinfo = ORM::factory('userInfo', $id)->values($this->request->post(), array(
@@ -82,7 +82,10 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 'data_aniversaril',
                 'ramal',
                 'telefone'
-            ));                                                
+            ));
+            if($user){
+            	$userinfo->user_id = $user->id;
+            }
             
             $file = $_FILES['arquivo'];
             if(Upload::valid($file))
@@ -93,10 +96,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 }
             }
             $userinfo->save();
-            
-            if($user){
-            	$user->add('userInfos', $userinfo);
-            }
             	
 
             $message = "Contato '{$userinfo->nome}' salvo com sucesso.";
@@ -106,7 +105,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             Request::current()->redirect(URL::base().'admin/users');
 
         } catch (ORM_Validation_Exception $e) {
-            $message = 'Houveram alguns erros. Veja à seguir:';
+            $message = 'Houveram alguns erros';
             $errors = $e->errors('models');
             Utils_Helper::mensagens('add',$message);
             print_r($errors);

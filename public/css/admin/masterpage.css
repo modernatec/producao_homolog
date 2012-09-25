@@ -31,31 +31,16 @@ h1.logo{
 	overflow:hidden;
 	padding:10px;
 	margin-bottom:5px;
+        line-height: 25px;
+}
+
+#user_info img{
+    margin-right:5px;
+    border:1px solid #ddd;
 }
 
 #user_info a{
 	float:right;
-}
-
-#user_info table{
-	border-collapse:collapse;
-}
-
-#user_info table tbody td{
-	padding:0 5px;
-	border:0;  
-}
-
-#user_info table tbody td a{
-    color:#FFF;
-}
-
-#user_info table tbody td a:hover{
-    text-decoration: none;
-}
-
-#user_info table tbody tr:hover td {
-    background-color:transparent; color: #fff;
 }
 
 #user_info table tbody tr:nth-child(odd){
@@ -124,6 +109,7 @@ table thead th{
 table tbody td{
 	padding:5px;
 	border-bottom:1px #CCC solid;
+        line-height:20px;
 }
 
 table tbody td.acao{
@@ -132,6 +118,11 @@ table tbody td.acao{
 
 table tbody td a{
     color:#666;
+}
+
+table tbody td img{
+    margin-right:5px;
+    border:1px solid #ddd;
 }
 
 table tbody td a:hover{

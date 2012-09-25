@@ -1,8 +1,7 @@
 <div>
 	<div id="user_info">
-        <img src='<?=URL::base();?><?=$user->userInfos->foto?>' height="25" style='float:left' alt="<?=ucfirst($user->username);?>" />
-        <?=ucfirst($user->username);?>
-        
+        <img src='<?=URL::base();?><?=($user->userInfos->foto)?($user->userInfos->foto):('public/image/admin/default.png')?>' height="25" style='float:left' alt="<?=ucfirst($user->username);?>" />
+        <?=ucfirst($user->username);?>        
         <a href="<?=URL::base();?>logout/">logout</a>
 	</div>
 	<div id="menu" class="round">

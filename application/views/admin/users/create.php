@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/user" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/users" class="bar_button round">Voltar</a>
 	</div>
         <?
         
@@ -40,14 +40,14 @@
 	      <label for="password">Senha</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="password" id="password" style="width:100px;" value="<?=$password;?>"/>
+	      <input type="password" class="text round" name="password" id="password" style="width:100px;" value="<?=$password;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'password');?></span>
 	    </dd>
 	    <dt>
 	      <label for="password_confirm">Confirme a senha</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
+	      <input type="password" class="text round" name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'password_confirm');?></span>
 	    </dd>
 	        

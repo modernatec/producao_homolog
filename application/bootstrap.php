@@ -143,14 +143,14 @@ Kohana::modules(array(
 
 Route::set('login', 'login')
 	->defaults(array(
-		'controller' => 'user',
+		'controller' => 'users',
 		'action'     => 'login',
 		'directory'  => 'admin'		
 	));
 
 Route::set('logout', 'logout')
 	->defaults(array(
-		'controller' => 'user',
+		'controller' => 'users',
 		'action'     => 'logout',
 		'directory'  => 'admin'
 	));
