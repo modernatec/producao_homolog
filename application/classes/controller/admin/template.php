@@ -87,8 +87,8 @@ class Controller_Admin_Template extends Controller_Template {
 			$this->template->scripts 	= array_merge( $scripts, $this->template->scripts );
  			
 		}
-		
-		$this->template->menu 			= ($this->user) ? View::factory('admin/menu') : '';
+		$this->template->title = " - ".ucfirst($this->request->controller());
+		$this->template->menu = ($this->user) ? View::factory('admin/menu') : '';
 		($this->user) ? $this->template->menu->user = $this->user : '';
 		
 		if($this->user){	

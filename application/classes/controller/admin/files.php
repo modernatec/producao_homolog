@@ -65,9 +65,17 @@ class Controller_Admin_Files extends Controller_Admin_Template {
         
         public function action_download($id)
 	{	
+            ini_set('memory_limit','500M'); 
             $file = ORM::factory('file',$id);
-            header('Content-disposition: attachment; filename='.basename($file->uri));
-            header('Content-type: '.$file->mime_type);
-            readfile($file->uri);          
+            if(file_exists($file->uri))
+            {
+                header('Content-disposition: attachment; filename='.basename($file->uri));
+                header('Content-type: '.$file->mime_type);
+                header('Content-Length: '.$file->size);
+                readfile($file->uri); 
+            }else{
+                print "<h1>Arquivo não encontrado!</h1>";
+            }
+            exit;
 	}
 }

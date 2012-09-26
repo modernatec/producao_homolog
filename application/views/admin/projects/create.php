@@ -3,11 +3,10 @@
 		<a href="<?=URL::base();?>admin/projects" class="bar_button round">Voltar</a>
 	</div>
         <?
-        
+        print_r($errors);
         $name = ($projeto->name) ? ($projeto->name) : (Arr::get($values, 'name'));
         $target = ($projeto->target) ? ($projeto->target) : (Arr::get($values, 'target'));
         $description = ($projeto->description) ? ($projeto->description) : (Arr::get($values, 'description'));
-        
         ?>
     <form name="frmCreateProject" id="frmCreateProject" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />

@@ -84,13 +84,12 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
             $this->template->content
                 ->bind('errors', $errors)
                 ->bind('message', $message);
-
             try 
             {            
                 $projeto = ORM::factory('project', $id)->values($this->request->post(), array(
                     'name',
                     'target',
-                    'description'            
+                    'description'
                 ));                
                 if(!$id)
                 {
@@ -106,20 +105,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
                 }
                 $projeto->save();
                 
-                /*$file = $_FILES['arquivo'];
-                if(Upload::valid($file))
-                {
-                    if(Upload::not_empty($file))
-                    {                
-                        $message = Controller_Admin_Files::subir($_FILES['arquivo'],$projeto);
-                    }else
-                    {
-                        $message = "Projeto '{$projeto->name}' salvo com sucesso.";
-                    }
-                }else
-                {                    
-                    $message = "Projeto '{$projeto->name}' salvo com sucesso.";
-                }*/
                 $message = "Projeto '{$projeto->name}' salvo com sucesso.";
                 Utils_Helper::mensagens('add',$message);
                 //return $projeto;

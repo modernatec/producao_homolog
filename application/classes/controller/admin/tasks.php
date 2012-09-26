@@ -11,15 +11,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);	
+		parent::__construct($request, $response);                
 	}
 	
 	public function action_index()
 	{	
 		$view = View::factory('admin/tasks/list');
 		$view->taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
-		
-		//
+
 	  	$this->template->content = $view;
 	} 
         
@@ -183,7 +182,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     if($file!='empty'){
                         $size = filesize($basedir.$file);
 
-                        Controller_Admin_Files::salvar(DOCROOT.$newbasedir.$file,$arrMimes[$k],$size,$status_tasks->id);
+                        Controller_Admin_Files::salvar($newbasedir.$file,$arrMimes[$k],$size,$status_tasks->id);
 
                         rename($basedir.$file, $newbasedir.$file);
                     }

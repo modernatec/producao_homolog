@@ -11,31 +11,31 @@ class Model_Project extends ORM {
 
 	public function rules()
 	{
-        return array(
-            'name' => array(
-                array('not_empty'),
-                array(array($this, 'name_available'), array(':validation', ':field')),
-            ),
-            'target' => array(
-                array('not_empty'),
-            ),
-            'description' => array(
-                array('not_empty'),
-            ),
-            'folder' => array(
-            	array('not_empty'),
-	        )
-        );
+            return array(
+                'name' => array(
+                    array('not_empty'),
+                    array(array($this, 'name_available'), array(':validation', ':field')),
+                ),
+                'target' => array(
+                    array('not_empty'),
+                ),
+                'description' => array(
+                    array('not_empty'),
+                ),
+                'pasta' => array(
+                    array('not_empty'),
+                    )
+            );
 	}
 
 	public function labels()
 	{
-        return array(
-            'name'  => 'Projeto',
-            'target' => 'Seguimento',
-            'description' => 'Descrição',
-            'folder' => 'Pasta',
-        );
+            return array(
+                'name'  => 'Projeto',
+                'target' => 'Seguimento',
+                'description' => 'Descrição',
+                'pasta' => 'Pasta',
+            );
 	}
 
 

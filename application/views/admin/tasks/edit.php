@@ -62,7 +62,7 @@
                         <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
                         <input type="hidden" name="mimeUploads" id="mimeUploads" value=""/>
                         <div id="container">
-                            <div id="filelist">No runtime found.</div>
+                            <div id="filelist">Carregando...</div>
                             <br />
                             <a id="pickfiles" href="javascript:;" class="bar_button round">Anexar arquivo</a> 
                             <a id="uploadfiles" href="javascript:;" class="bar_button round">Subir</a>
