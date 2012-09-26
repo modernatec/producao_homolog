@@ -41,7 +41,9 @@ class Controller_Admin_Pluploader extends Controller_Admin_Template {
 
                 // Clean the fileName for security reasons
                 $fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
-
+                
+                // pega o mimtype do arquivo
+                $mimeType = $_FILES['file']['type'];
                 // Make sure the fileName is unique but only if chunking is disabled
                 //if ($chunks < 2 && file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) { //original
                 if ($chunks < 2) {
@@ -133,7 +135,7 @@ class Controller_Admin_Pluploader extends Controller_Admin_Template {
                 $result = explode('/',$filePath);
                 $result = end($result);
                 // Return JSON-RPC response
-                die('{"jsonrpc" : "2.0", "result" : "'.$result.'", "id" : "id"}');
+                die('{"jsonrpc" : "2.0", "result" : "'.$result.'@'.$mimeType.'", "id" : "id"}');
 	}
         
         public static function excluir($fileName){

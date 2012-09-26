@@ -15,16 +15,23 @@ function temMensagens(){
 
 function excluirTemporario(id){
     var filePath = $('#'+id).attr('filePath');
+    //var mimeType = $('#'+id).attr('mimeType');
     $.get('/admin/pluploader/delete/'+filePath,function(data){
        if(data=='OK'){           
            for(var i=0; i < filesUploads.length; i++){
                if(filePath == filesUploads[i]){
                    filesUploads[i] = 'empty';
+                   mimeUploads[i] = 'empty';
                }
-           }
+           }                     
+           /*for(var i=0; i < mimeUploads.length; i++){
+               if(mimeType == mimeUploads[i]){
+                   mimeUploads[i] = 'empty';
+               }
+           }*/
            $('#'+id).remove();
-           var val = filesUploads.join(',');
-           $('#filesUploads').val(val);
+           $('#filesUploads').val(filesUploads.join(','));
+           $('#mimeUploads').val(mimeUploads.join(','));
        }else{
            alert(data);
        }

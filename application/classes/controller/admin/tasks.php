@@ -172,18 +172,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
              */
             
             $filesUploads = $this->request->post('filesUploads');
+            $mimeUploads = $this->request->post('mimeUploads');
             if($filesUploads!='')
             {
                 $arrFiles = explode(',',$filesUploads);
+                $arrMimes = explode(',',$mimeUploads);
                 $basedir = 'public/plupload/temporario/';
                 $newbasedir = 'public/upload/'.$pastaProjeto.'/'.$task->pasta.'/';
-                foreach($arrFiles as $file){
+                foreach($arrFiles as $k=>$file){
                     if($file!='empty'){
                         $size = filesize($basedir.$file);
 
-                        $mime = 'teste';
-
-                        Controller_Admin_Files::salvar(DOCROOT.$newbasedir.$file,$mime,$size,$status_tasks->id);
+                        Controller_Admin_Files::salvar(DOCROOT.$newbasedir.$file,$arrMimes[$k],$size,$status_tasks->id);
 
                         rename($basedir.$file, $newbasedir.$file);
                     }

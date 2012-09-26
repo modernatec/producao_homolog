@@ -224,17 +224,19 @@ div.error, div.ok{
 
 .ui-datepicker{
     background-color: #000;
-    border:1px solid #999;
+    /*border:1px solid #999;*/
     color: #fff;
 }
 
 .ui-datepicker table{
     border:0;
     background-color:#fff;
+    border:1px solid #bbb;
 }
 
 .ui-datepicker table tr:nth-child(even), .ui-datepicker table tr:nth-child(odd), .ui-datepicker table tr:hover{ background: none; }
-.ui-datepicker table tr td{ border:1px solid #999; width: 12px; text-align: center; }
+.ui-datepicker table tr td{ width: 12px; height: 15px; line-height: 15px; text-align: center; border-right: 1px solid #ddd; }
+.ui-datepicker table tr th{ background-color: #fefefe; }
 .ui-datepicker table tr td:hover{ background-color: #008fc7;}
 .ui-datepicker table tr td:hover a{ color:#fff; }
 .ui-datepicker table a{ color: #666; }
@@ -244,6 +246,8 @@ div.error, div.ok{
 .ui-datepicker-title{ float: left;}
 .ui-datepicker .ui-datepicker-current-day{ background-color: #000;}
 .ui-datepicker .ui-datepicker-current-day a{color:#fff;}
+.ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
+.ui-datepicker .ui-datepicker-today a{color:#fff;}
 
 #filelist div{
     border-bottom:1px solid #999;

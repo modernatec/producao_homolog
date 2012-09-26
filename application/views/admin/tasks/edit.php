@@ -60,6 +60,7 @@
 		    <dd>
 		        <? /*<input type="file" class="text required round" name="arquivo" id="arquivo" style="width:300px;" />*/?>
                         <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
+                        <input type="hidden" name="mimeUploads" id="mimeUploads" value=""/>
                         <div id="container">
                             <div id="filelist">No runtime found.</div>
                             <br />

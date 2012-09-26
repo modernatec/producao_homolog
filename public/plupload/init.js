@@ -15,6 +15,7 @@ var uploader = new plupload.Uploader({
 });
 
 var filesUploads = [];
+var mimeUploads = [];
 
 uploader.bind('Init', function(up, params) {
 	//document.getElementById('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
@@ -28,11 +29,12 @@ uploader.bind('FilesAdded', function(up, files) {
 });
 
 uploader.bind('FileUploaded', function(up, file, info) {
-    var php = JSON.parse(info.response);
-    filesUploads.push(php.result);
-    $('#'+file.id).attr('filePath',php.result);
+    var php = JSON.parse(info.response);    
+    var r = php.result.split("@");
+    filesUploads.push(r[0]);
+    mimeUploads.push(r[1]);
+    $('#'+file.id).attr('filePath',r[0]).attr('mimeType',r[1]);
     $('#'+file.id+' b').replaceWith('<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+file.id+'\')">excluir</a>');
-    
 });
 
 uploader.bind('UploadProgress', function(up, file) {
@@ -44,6 +46,7 @@ uploader.bind('UploadProgress', function(up, file) {
 uploader.bind('UploadComplete', function(up, file) {    
 	if (up.files.length === (up.total.uploaded + up.total.failed)) {
             $('#filesUploads').val(filesUploads.join(','));
+            $('#mimeUploads').val(mimeUploads.join(','));
         }        
 });
 
