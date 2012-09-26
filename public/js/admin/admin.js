@@ -38,6 +38,15 @@ function excluirTemporario(id){
     });
 }
 
+function sldBox(obj){
+    var dsp = $(obj).css('display');
+    if(dsp == 'none'){
+        $(obj).slideDown('slow');
+    }else{
+        $(obj).slideUp('slow');
+    }
+}
+
 $(document).ready(function() {	
 	if(msgs.length>0)
 	{		

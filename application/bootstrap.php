@@ -69,7 +69,7 @@ I18n::lang('pt-br');
 }
  * 
  * */
-if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== FALSE || strpos($_SERVER['HTTP_HOST'], '10.137.68.214') !== FALSE){
+if (strpos($_SERVER['HTTP_HOST'], 'm-12893') !== FALSE || strpos($_SERVER['HTTP_HOST'], '10.137.68.214') !== FALSE){
     Kohana::$environment = Kohana::DEVELOPMENT;
     error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 }
@@ -97,7 +97,7 @@ if (strpos($_SERVER['HTTP_HOST'], '.com.br') !== FALSE){
 
  
 Kohana::init(array(
-	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://10.137.68.214/',
+	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://m-12893/',
     'caching'    => Kohana::$environment === Kohana::PRODUCTION,
     'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
 	'index_file' => FALSE,

@@ -8,7 +8,8 @@
 	$filesList = $status_task->files->find_all();
 	if(count($filesList) > 0){
 		echo View::factory('admin/fileslist')
-				->bind('filesList', $filesList);
+				->bind('filesList', $filesList)
+                                ->bind('status_task', $status_task);
 	}
 ?>
 </div>

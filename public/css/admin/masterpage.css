@@ -106,6 +106,8 @@ table thead th{
 	border-bottom:1px #CCC solid;
 }
 
+table thead th a{ color:#008fc7;}
+
 table tbody td{
 	padding:5px;
 	border-bottom:1px #CCC solid;
@@ -208,19 +210,27 @@ div.error, div.ok{
 /***Task***/
 
 .filelist{
-	width:100%;
+	width: 100%;
+}
+
+.filelist tr td a{
+    word-wrap: break-word;
+    font-size: 11px;
 }
 
 .hist_task{
 	background:#DDD;
 	padding:10px;
 	margin:5px;
+        width: 400px;
 }
 
 .hist_task img{
     margin-right:5px;
     border:1px solid #999;
 }
+
+.sld{ display: none;}
 
 .ui-datepicker{
     background-color: #000;
@@ -250,7 +260,7 @@ div.error, div.ok{
 .ui-datepicker .ui-datepicker-today a{color:#fff;}
 
 #filelist div{
-    border-bottom:1px solid #999;
+    border-bottom:1px solid #ddd;
     padding: 5px 10px;
     display: block;
     clear: left;
