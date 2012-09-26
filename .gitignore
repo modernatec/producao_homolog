@@ -163,8 +163,9 @@ pip-log.txt
 .DS_Store
 
 #moderna
-public/upload/
-public/plupload/temporario/
+public/upload/*
+public/plupload/temporario/*
 application/bootstrap.php
-application/logs/
+application/logs/*
 application/config/database.php
+nbprojects/*
