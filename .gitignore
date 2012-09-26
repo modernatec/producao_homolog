@@ -162,15 +162,9 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
-<<<<<<< HEAD
 #moderna
 public/upload/
 public/plupload/temporario/
-bootstrap.php
-=======
-#pasta public
-public/upload/
-public/plupload/temporario/
-bootstrap.php
-
->>>>>>> commit
+application/bootstrap.php
+application/logs/
+application/config/database.php
