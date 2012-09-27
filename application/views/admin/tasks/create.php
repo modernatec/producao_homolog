@@ -58,7 +58,7 @@
 	      <select name="task_to" id="task_to" style="width:150px;">
 	     	<option value="">selecione</option>
 	      	<?foreach($usersList as $user){?>
-	      	<option value="<?=$user->id?>" <?=($user->id == $user_id) ? 'selected' : ''?>><?=$user->userInfos->nome?></option>
+	      	<option value="<?=$user->id?>" <?=($user->id == $task_to) ? 'selected' : ''?>><?=$user->userInfos->nome?></option>
 	      	<?}?>
 	      </select>
 	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>

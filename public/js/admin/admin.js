@@ -1,15 +1,37 @@
 function temMensagens(){
     setInterval(function(){    
         $.get('/admin/tasks/searchnew/',function(data){  
-            $(".jGrowl").remove();
+            /*$(".jGrowl").remove(); é realmente necessário? */
             data = JSON.parse(data);    
             $.each(data.dados,function(i){
                 var dado = data.dados[i];
                 var msg = 'Existem tarefas para você:<br/><br/><a href="/admin/tasks/edit/'+dado.id+'">Tarefa <b>"'+dado.title+'"</b> &raquo;</a>';
-                $.jGrowl(msg,{position:'bottom-right',sticky: true});                
+                $.jGrowl(msg,
+                    {
+                        position:'bottom-right',
+                        sticky: true                       
+                    }
+                );
             });
         });
     },300000); //5 min = 300000
+}
+
+function aniversariantes(){
+    $.get('/admin/users/aniversariantes/',function(data){  
+        data = JSON.parse(data);    
+        $.each(data.dados,function(i){
+            var dado = data.dados[i];
+            var msg = 'Hoje <b>'+dado.nome+'</b> faz aniversário!!<br/><br/>Dê os parabéns!!!</a>';
+            $.jGrowl(msg,
+                {
+                    theme:'aniversariantes',
+                    position:'bottom-left',
+                    sticky:true                       
+                }
+            );
+        });
+    });
 }
 
 function excluirTemporario(id){
@@ -55,4 +77,5 @@ $(document).ready(function() {
 		} 
 	}
         temMensagens();
+        aniversariantes();
 });

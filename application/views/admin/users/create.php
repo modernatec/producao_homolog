@@ -3,10 +3,10 @@
 		<a href="<?=URL::base();?>admin/users" class="bar_button round">Voltar</a>
 	</div>
         <?
-        
+        $idU = ($userinfo->id) ? true : false;
         $nome = ($userinfo->nome) ? ($userinfo->nome) : (Arr::get($values, 'nome'));
         $email = ($userinfo->email) ? ($userinfo->email) : (Arr::get($values, 'email'));
-        $data_aniversario = ($userinfo->data_aniversario) ? ($userinfo->data_aniversario) : (Arr::get($values, 'data_aniversario'));
+        $data_aniversario = ($userinfo->data_aniversario) ? (Utils_Helper::data($userinfo->data_aniversario.' 00:00:00','d/m')) : (Arr::get($values, 'data_aniversario'));
         $ramal = ($userinfo->ramal) ? ($userinfo->ramal) : (Arr::get($values, 'ramal'));
         $telefone = ($userinfo->telefone) ? ($userinfo->telefone) : (Arr::get($values, 'telefone'));
         $foto = ($userinfo->foto) ? ($userinfo->foto) : ('');
@@ -18,21 +18,21 @@
 	      <label for="username">Username</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="username" id="username" style="width:100px;" value="<?=$username;?>"/>
+	      <input type="text" class="text round" <?=(($idU)?'ignore="true"':'')?> name="username" id="username" style="width:100px;" value="<?=$username;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'username');?></span>
 	    </dd>
 	    <dt>
 	      <label for="password">Senha</label>
 	    </dt>
 	    <dd>
-	      <input type="password" class="text round" name="password" id="password" style="width:100px;" value="<?=$password;?>"/>
+	      <input type="password" class="text round" <?=(($idU)?'ignore="true"':'')?> name="password" id="password" style="width:100px;" value="<?=$password;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'password');?></span>
 	    </dd>
 	    <dt>
 	      <label for="password_confirm">Confirme a senha</label>
 	    </dt>
 	    <dd>
-	      <input type="password" class="text round" name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
+	      <input type="password" class="text round" <?=(($idU)?'ignore="true"':'')?> name="password_confirm" id="password_confirm" style="width:100px;" value="<?=$password_confirm;?>"/>
 	      <span class='error'><?=Arr::get($errors, 'password_confirm');?></span>
 	    </dd>
 	        	    
@@ -40,7 +40,7 @@
 	      <label for="role">Permissão</label>
 	    </dt>
 	    <dd>
-                <select name="role" id="role">
+                <select name="role" id="role" <?=(($idU)?'ignore="true"':'')?>>
                     <option value="">Selecione</option>
                     <option value="3">Coordenador</option>
                     <option value="4">Assistente</option>
@@ -94,7 +94,7 @@
                     <?
                 }
                 ?>
-                <input type="file" class="text required round" name="arquivo" id="arquivo" style="width:500px;" />
+                <input type="file" class="text round" name="arquivo" id="arquivo" style="width:500px;" />
 	    </dd>
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate==1){?>Salvar<? }else{ ?>Criar<? }?>" />

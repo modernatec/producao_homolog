@@ -134,6 +134,12 @@ div.jGrowl div.jGrowl-closer {
 	text-align: 			center;
 }
 
+div.jGrowl div.aniversariantes {
+        background-color: #fff;
+        color:#000;
+        border: 1px solid #008fc7;
+}
+
 /** Hide jGrowl when printing **/
 @media print {
 	div.jGrowl {

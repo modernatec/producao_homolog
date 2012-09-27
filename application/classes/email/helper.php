@@ -21,7 +21,7 @@ class Email_Helper
 
                 ->setSubject($this->assunto)
 
-                ->setFrom(array('editorial_tec15@moderna.com.br' => 'Santillana'))
+                ->setFrom(array('moderna.tec@gmail.com' => 'Flow'))
 
                 ->setTo(array($this->userInfo->email => $this->userInfo->nome))
 

@@ -81,7 +81,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $userinfo = ORM::factory('userInfo', $id)->values($this->request->post(), array(
                 'nome',
                 'email',
-                'data_aniversaril',
+                'data_aniversario',
                 'ramal',
                 'telefone'
             ));
@@ -120,7 +120,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $message = 'Houveram alguns erros';
             $errors = $e->errors('models');
             Utils_Helper::mensagens('add',$message);
-            print_r($errors);
+            //print_r($errors);
         }
 
         return false;
@@ -162,5 +162,22 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         // Redirect to login page
         Request::current()->redirect('login');
     }
+    
+    public function action_aniversariantes()
+    {	
+        $callback = $this->request->query('callback');        
+        $dados = array();
+        $userList = ORM::factory('userinfo')
+                ->where('data_aniversario', '=', '2000-'.date('m-d')) //'2000-'.date('m-d')
+                ->order_by('nome','ASC')
+                ->find_all();
+        foreach($userList as $user){
+            $dado = array('nome'=>$user->nome);
+            array_push($dados,$dado);
+        }
+        $arr = array('dados'=>$dados);
+        print $callback.json_encode($arr);
+        exit;
+    } 
  
 }

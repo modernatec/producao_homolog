@@ -22,5 +22,20 @@ class Model_UserInfo extends ORM {
             'data_aniversario' => 'Data de Aniversário',
         );
     }
+    
+    public function filters()
+    {
+            return array(
+                    'data_aniversario' => array(
+                            array(array($this, 'setup_date'))
+                    )
+            );
+    }
+    
+    public function setup_date($value)
+    {
+        $data = explode('/',$value);
+        return  '2000-'.$data[1].'-'.$data[0];
+    }
      
 }

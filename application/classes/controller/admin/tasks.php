@@ -22,11 +22,45 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                         ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
                         ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
                         ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC','priority','DESC')
+                        ->order_by('crono_date','ASC','priority','ASC')
                         ->find_all();
-
+                if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
+                    $view->showFiltro = true;
+                }else{
+                    $view->showFiltro = false;
+                }
+                $view->usersList = ORM::factory('user')->find_all();
 	  	$this->template->content = $view;
 	} 
+        
+        public function action_filter($id)
+	{	
+		$view = View::factory('admin/tasks/list');
+                $view->task_to = $id;
+                if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
+                    $view->showFiltro = true;
+                }else{
+                    $view->showFiltro = false;
+                }                
+                if($view->task_to!=''){
+                    $view->taskList = ORM::factory('task')
+                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                        ->where('tasks_users.user_id', '=', $view->task_to)
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC','priority','ASC')
+                        ->find_all();
+                }else{
+                    $view->taskList = ORM::factory('task')
+                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                        ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
+                        ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC','priority','ASC')
+                        ->find_all();
+                }
+                $view->usersList = ORM::factory('user')->find_all();                
+	  	$this->template->content = $view;
+	}
         
         protected function addPlupload(){
             $scripts =   array(
@@ -116,11 +150,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
       	$view->isUpdate = true;
 
       	$view->usersList = ORM::factory('user')->find_all();
-		$view->projectList = ORM::factory('project')->find_all();
-		$view->priorityList = ORM::factory('priority')->find_all();
-		$view->statusList = ORM::factory('statu')->find_all();
-		$status_task = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
-		$view->taskflows = $status_task;
+        $view->projectList = ORM::factory('project')->find_all();
+        $view->priorityList = ORM::factory('priority')->find_all();
+        $view->statusList = ORM::factory('statu')->find_all();
+        $status_task = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
+        $view->taskflows = $status_task;
 
         $this->template->content = $view;
         	
@@ -213,21 +247,21 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     $email = new Email_Helper();
                     $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
                     $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-                    $email->mensagem = 'Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
+                    $email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
                         <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-                        <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome;
+                        <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'</font>';
                     $email->enviaEmail();
                 }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
                 {
                     $email = new Email_Helper();
                     $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
                     $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
-                    $email->mensagem = 'Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
+                    $email->mensagem = '<font face="arial">Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
                     <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
                     <b>Título:</b> '.$task->title.'<br/>
                     <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
                     <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
-                    <b>Descrição:</b> '.$this->request->post('description');
+                    <b>Descrição:</b> '.$this->request->post('description').'</font>';
                     $email->enviaEmail();
                 }
             }
@@ -251,7 +285,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
                 ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
                 ->group_by('tasks_users.task_id')
-                ->order_by('crono_date','ASC','priority','DESC')
+                ->order_by('crono_date','ASC','priority','ASC')
                 ->find_all();
         foreach($taskList as $task){
             $status = $task->status->order_by('id', 'DESC')->limit('1')->find_all();

@@ -1,6 +1,6 @@
 $(document).ready(function() {
-        $("#frmCreateUsers").validate({
-            //debug: true,
+        $("#frmCreateUsers").validate({            
+            ignore: 'input[ignore="true"], select[ignore="true"]',
             rules: {
                 username: {required:true},
                 password: {required:true},
@@ -29,8 +29,8 @@ $(document).ready(function() {
                     email:"Digite um e-mail válido."
                 }
             },
-            submitHandler: function(form) {
+            submitHandler: function(form){
               $(form).submit();
             }
-        })
+        })        
 });
