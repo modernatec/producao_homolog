@@ -25,7 +25,9 @@ uploader.bind('Init', function(up, params) {
 
 uploader.bind('FilesAdded', function(up, files) {
 	for (var i in files) {
-            $('#filelist').append('<div id="' + files[i].id + '">' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b>0%</b></div>');
+            $('#filelist').append('<div id="' + files[i].id + '">'+
+                '<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+files[i].id+'\')">excluir</a> '
+                + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>');
 	}
 });
 
@@ -35,20 +37,19 @@ uploader.bind('FileUploaded', function(up, file, info) {
     filesUploads.push(r[0]);
     mimeUploads.push(r[1]);
     $('#'+file.id).attr('filePath',r[0]).attr('mimeType',r[1]);
-    $('#'+file.id+' b').replaceWith('<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+file.id+'\')">excluir</a>');
+    $('#'+file.id+' b').replaceWith('<a class="active" title="Upload OK">Upload OK</a>');
 });
 
 uploader.bind('UploadProgress', function(up, file) {
-	var f = document.getElementById(file.id);
-        $(f).children('b').html('<span>' + file.percent + "%</span>");
-        
+    $('#'+file.id+' b').html(file.percent+"%"); 
 });
 
 uploader.bind('UploadComplete', function(up, file) {    
-	if (up.files.length === (up.total.uploaded + up.total.failed)) {
-            $('#filesUploads').val(filesUploads.join(','));
-            $('#mimeUploads').val(mimeUploads.join(','));
-        }        
+    if (up.files.length === (up.total.uploaded + up.total.failed)) {
+        $('#filesUploads').val(filesUploads.join(','));
+        $('#mimeUploads').val(mimeUploads.join(','));
+        $.jGrowl("Upload concluído com sucesso.",{position:'bottom-right',sticky: true});
+    }        
 });
 
 $('#uploadfiles').click(function() {

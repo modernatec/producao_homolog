@@ -19,7 +19,7 @@
 				<td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$task->id;?>" title="Editar"><?=$task->title?></a></td>
 				<td>
 					<?
-						$status = $task->status->order_by('id', 'DESC')->limit('1')->find_all();
+						$status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();
 						echo $status[0]->status;
 					?>
 				</td>		

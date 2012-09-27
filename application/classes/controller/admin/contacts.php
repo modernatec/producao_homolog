@@ -5,8 +5,8 @@ class Controller_Admin_Contacts extends Controller_Admin_Template {
 	public $auth_required		= array('login'); //Auth is required to access this controller
  
 	public $secure_actions     	= array(
-								   	'edit' => array('login', 'admin', 'coordenador'),
-								   	'delete' => array('login', 'admin', 'coordenador'),
+								   	'edit' => array('login', 'coordenador'),
+								   	'delete' => array('login', 'coordenador'),
 								 );
 					 
 	public function __construct(Request $request, Response $response)

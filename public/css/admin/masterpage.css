@@ -18,9 +18,15 @@ h1.logo{
 	background: url('../../image/site/sprite.png') no-repeat 0 -18px;
 }
 
+a.editar, a.excluir, a.download, a.active{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 12px; float:left; text-indent: -5000px; margin:0 5px; }
+a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; }
+a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
+a.active{ background: transparent url(../../image/admin/active.png) no-repeat 0 0; }
+
 .round{
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
+    -o-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
     border-radius: 6px;
 }
@@ -55,6 +61,8 @@ h1.logo{
 	color:#FFF;
 	overflow:hidden;
 	margin: 0 5px;
+        border: 1px solid #02678f;
+        box-shadow:#999 0 2px 2px;
 }
 
 #menu ul li{
@@ -94,6 +102,7 @@ h1.logo{
 	padding:5px;
 	margin-right:5px;
 	color:#FFF;
+        box-shadow:#999 2px 2px 2px;
 }
 
 table{
@@ -104,9 +113,10 @@ table thead th{
 	padding:5px;
 	color:#008fc7;
 	border-bottom:1px #CCC solid;
+        text-shadow:#999 1px 1px 1px;
 }
 
-table thead th a{ color:#008fc7;}
+table thead th a{ color:#008fc7; }
 
 table tbody td{
 	padding:5px;
@@ -130,20 +140,6 @@ table tbody td img{
 table tbody td a:hover{
     text-decoration: underline;
 }
-
-a.editar, a.excluir{
-    background: transparent url(../../image/admin/editar.png) no-repeat 0 0;
-    width: 12px;
-    height: 12px;
-    float:left;
-    text-indent: -5000px;
-    margin:0 5px;
-}
-
-a.excluir{
-    background: transparent url(../../image/admin/excluir.png) no-repeat 0 0;
-}
-
 
 table tbody tr:nth-child(odd){
     background-color: #fff;
@@ -174,6 +170,11 @@ table tbody tr:hover {
 .form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea{
 	border:1px #CCC solid;
 	padding:5px;
+        box-shadow:#ccc 1px 1px 3px;
+}
+
+.form select{
+        box-shadow:#ccc 1px 1px 3px;
 }
 
 .form input[type='submit']{
@@ -185,23 +186,6 @@ table tbody tr:hover {
         border:1px #fea2a2 solid;
         background-color: #ebebeb;
         display:inline;
-}
-
-div.error, div.ok{
-    width:500px;
-    border:1px solid #EE0000;
-    border-radius: 10px;
-    background-color: #ffbcbc;
-    color:#EE0000;
-    padding: 10px;
-    display:block;
-    margin:10px 0;
-}
-
-.ok{
-    border:1px solid #7ec353;
-    background-color: #D6E8C4;
-    color:#7ec353;
 }
 
 .error{
@@ -219,19 +203,59 @@ div.error, div.ok{
 /***Task***/
 
 .filelist{
-	width: 100%;
+    width: 400px;
 }
 
-.filelist tr td a{
+.filelist a.h{ color:#008fc7; margin: 5px 0; display: block; }
+
+.filelist ul{ 
+    width: 400px;
+    border: 1px solid #999;
+    background-color:#999;
+    box-shadow:#999 2px 2px 2px;
+    border-radius:5px; 
+}
+
+.filelist ul li{
+    padding:5px;
+    border-bottom:1px #CCC solid;
+    line-height:20px;
+    border-radius:5px; 
+}
+
+.filelist ul li a{
+    color:#666;
     word-wrap: break-word;
-    font-size: 11px;
+    font-size: 12px;
+}
+
+.filelist ul li a:hover{
+    text-decoration: underline;
+}
+
+.filelist ul li:nth-child(odd){
+    background-color: #fff;
+}
+
+.filelist ul li:nth-child(even){
+    background-color: #eee;
+}
+
+.filelist ul li:hover {
+    background-color: #FFFAF0; color: #000;
 }
 
 .hist_task{
-	background:#DDD;
-	padding:10px;
-	margin:5px;
-        width: 400px;
+    background:#ddd;
+    padding:10px;
+    margin:5px;
+    width: 400px;
+    /*border: 1px solid #666;*/
+    /*box-shadow:#999 2px 2px 2px;*/
+}
+
+.hist_task:hover{
+    background:#e5e5e5;
 }
 
 .hist_task img{
@@ -239,20 +263,8 @@ div.error, div.ok{
     border:1px solid #999;
 }
 
-.sld{ display: none;}
-
-.ui-datepicker{
-    background-color: #000;
-    /*border:1px solid #999;*/
-    color: #fff;
-}
-
-.ui-datepicker table{
-    border:0;
-    background-color:#fff;
-    border:1px solid #bbb;
-}
-
+.ui-datepicker{ background-color: #000; box-shadow:#999 0 5px 10px; color: #fff; }
+.ui-datepicker table{ border:0; background-color:#fff; border:1px solid #bbb; }
 .ui-datepicker table tr:nth-child(even), .ui-datepicker table tr:nth-child(odd), .ui-datepicker table tr:hover{ background: none; }
 .ui-datepicker table tr td{ width: 12px; height: 15px; line-height: 15px; text-align: center; border-right: 1px solid #ddd; }
 .ui-datepicker table tr th{ background-color: #fefefe; }
@@ -268,14 +280,8 @@ div.error, div.ok{
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
 .ui-datepicker .ui-datepicker-today a{color:#fff;}
 
-#filelist div{
-    border-bottom:1px solid #ddd;
-    padding: 5px 10px;
-    display: block;
-    clear: left;
-}
-
-
-#filelist div b{
-    color:#008fc7;
-}
+#filelist div{ border:1px outset #eee; padding: 5px 10px; margin: 5px 0; display: block; border-radius:2px; box-shadow:#999 2px 2px 2px; word-wrap: break-word; width: 480px; }
+#filelist div b{ color:#008fc7; }
+#filelist div:nth-child(odd){ background-color: #fff; }
+#filelist div:nth-child(even){ background-color: #eee; }
+#filelist div:hover { background-color: #FFFAF0; }

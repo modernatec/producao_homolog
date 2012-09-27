@@ -242,14 +242,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             }
             
             if($this->request->post('statu_id') != $this->request->post('old_status')){
+                $linkTask = (URL::base().'admin/tasks/edit/'.$task->id);
                 if($this->request->post('statu_id')==7) // 7 = Concluído
                 {
                     $email = new Email_Helper();
                     $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
                     $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
                     $email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
-                        <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-                        <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'</font>';
+                    <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
+                    <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
+                    <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
                     $email->enviaEmail();
                 }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
                 {
@@ -261,7 +263,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     <b>Título:</b> '.$task->title.'<br/>
                     <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
                     <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
-                    <b>Descrição:</b> '.$this->request->post('description').'</font>';
+                    <b>Descrição:</b> '.$this->request->post('description').'<br/>
+                    <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
                     $email->enviaEmail();
                 }
             }
@@ -288,7 +291,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 ->order_by('crono_date','ASC','priority','ASC')
                 ->find_all();
         foreach($taskList as $task){
-            $status = $task->status->order_by('id', 'DESC')->limit('1')->find_all();
+            $status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();
             if($status[0]->id == 5 && in_array('assistente', $rls)){
                 $dado = array('id'=>$task->id,'title'=>$task->title,'status'=>$status[0]->id);
                 array_push($dados,$dado);

@@ -85,14 +85,16 @@
 	  </dl>
 	</form>
 	<div class='right'>	
+            <span class="header" style="margin-left:5px;">histórico</span>
 	<?
-		echo '<span class="header" style="margin-left:5px;">histórico</span>';
-
+                $cntStsTsk = 0;
 		foreach($taskflows as $status_task){
-	    	echo View::factory('admin/tasks/hist_task')
-        					->bind('statusList', $statusList)
-        					->bind('status_task', $status_task);
-        }
+                    echo View::factory('admin/tasks/hist_task')
+                        ->bind('statusList', $statusList)
+                        ->bind('status_task', $status_task)
+                        ->bind('cntStsTsk', $cntStsTsk);                    
+                    $cntStsTsk++;
+                }
 	?>
 	</div>
 </div>
