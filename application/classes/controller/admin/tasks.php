@@ -24,7 +24,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         
         protected function addPlupload(){
             $scripts =   array(
-                "http://bp.yahooapis.com/2.4.21/browserplus-min.js",
+                //"http://bp.yahooapis.com/2.4.21/browserplus-min.js",
                 "public/plupload/js/plupload.js",
                 "public/plupload/js/plupload.gears.js",
                 "public/plupload/js/plupload.silverlight.js",
@@ -222,4 +222,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             var_dump($errors);
         }
     }
+    
+    public function action_searchnew()
+    {	
+        $callback = $this->request->query('callback');
+        //header('Content-type: text/json');
+        $arr = array("msg"=>"teste");
+        $taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
+
+        print $callback.json_encode($arr);
+        exit;
+    } 
 }

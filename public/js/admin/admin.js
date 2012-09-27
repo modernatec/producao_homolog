@@ -1,16 +1,18 @@
 function temMensagens(){
-    setInterval(function(){
-        $.getJSON('/admin/tasks/searchNew/',function(data){
-            var mss = data.mss;
+    //setInterval(function(){    
+        $.get('/admin/tasks/searchnew/',function(data){  
+            data = JSON.parse(data);    
+            alert(data.msg);
+            /*var mss = data.mss;
             if(mss.length>0)
             {		
                 for(var i=0; i<mss.length; i++)
                 {
-                    $.jGrowl(mss[i],{position:'bottom-right'}); 
+                    $.jGrowl(mss[i],{position:'bottom-right',sticky: true}); 
                 } 
-            }
+            }*/
         });
-    },1000); //5 min (1000 * 60 * 5)
+    //},1000); //5 min (1000 * 60 * 5)
 }
 
 function excluirTemporario(id){
@@ -65,5 +67,6 @@ $(document).ready(function() {
             prevText:'Ant.',
             dateFormat: "dd/mm/yy"
         });
+        temMensagens();
 });
 
