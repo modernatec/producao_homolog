@@ -180,6 +180,13 @@ table tbody tr:hover {
 	margin-top: 10px;
 }
 
+.form input[type='text'].error, .form input[type='password'].error, .form select.error, .form textarea.error{
+        color:#000;
+        border:1px #fea2a2 solid;
+        background-color: #ebebeb;
+        display:inline;
+}
+
 div.error, div.ok{
     width:500px;
     border:1px solid #EE0000;
@@ -199,6 +206,8 @@ div.error, div.ok{
 
 .error{
     color:#EE0000;
+    margin-left: 5px;
+    display:block;
 }
 
 .right{

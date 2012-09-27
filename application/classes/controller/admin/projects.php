@@ -14,6 +14,13 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
+        protected function addValidateJs(){
+            $scripts =   array(
+                "public/js/admin/validateProjects.js",
+            );
+            $this->template->scripts = array_merge( $scripts, $this->template->scripts );
+        }
+        
 	public function action_index()
 	{	
             $view = View::factory('admin/projects/list')
@@ -29,6 +36,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
                 ->bind('message', $message)
                 ->set('values', $this->request->post());
 
+            $this->addValidateJs();
             $this->template->content = $view;
 
             if (HTTP_Request::POST == $this->request->method()) 
@@ -69,7 +77,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
             $view->projeto = $projeto;
             $view->isUpdate = true;
             //$view->filesList = Controller_Admin_Files::listar($projeto->id);
-
+            $this->addValidateJs();
             $this->template->content = $view;
 
             if (HTTP_Request::POST == $this->request->method()) 

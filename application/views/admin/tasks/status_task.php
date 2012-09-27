@@ -10,7 +10,7 @@
   	</select>
 	<input type='hidden' name='status_task_id' value='<?=$status_task->id?>'/>
   	<input type='hidden' name='old_status' value='<?=$status_task->status_id?>'/>
-  	<span class='error'><?=($errors) ? $errors['project_id'] : '';?></span>
+  	<span class='error'><?=($errors) ? $errors['statu_id'] : '';?></span>
 </dd>
 <dt>
   	<label for="description">descrição</label>

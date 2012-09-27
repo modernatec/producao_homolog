@@ -3,7 +3,7 @@
 		<a href="<?=URL::base();?>admin/projects" class="bar_button round">Voltar</a>
 	</div>
         <?
-        print_r($errors);
+        //print_r($errors);
         $name = ($projeto->name) ? ($projeto->name) : (Arr::get($values, 'name'));
         $target = ($projeto->target) ? ($projeto->target) : (Arr::get($values, 'target'));
         $description = ($projeto->description) ? ($projeto->description) : (Arr::get($values, 'description'));

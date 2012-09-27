@@ -1,18 +1,15 @@
 function temMensagens(){
-    //setInterval(function(){    
+    setInterval(function(){    
         $.get('/admin/tasks/searchnew/',function(data){  
+            $(".jGrowl").remove();
             data = JSON.parse(data);    
-            alert(data.msg);
-            /*var mss = data.mss;
-            if(mss.length>0)
-            {		
-                for(var i=0; i<mss.length; i++)
-                {
-                    $.jGrowl(mss[i],{position:'bottom-right',sticky: true}); 
-                } 
-            }*/
+            $.each(data.dados,function(i){
+                var dado = data.dados[i];
+                var msg = 'Existem tarefas para você:<br/><br/><a href="/admin/tasks/edit/'+dado.id+'">Tarefa <b>"'+dado.title+'"</b> &raquo;</a>';
+                $.jGrowl(msg,{position:'bottom-right',sticky: true});                
+            });
         });
-    //},1000); //5 min (1000 * 60 * 5)
+    },300000); //5 min = 300000
 }
 
 function excluirTemporario(id){
@@ -57,16 +54,5 @@ $(document).ready(function() {
 			$.jGrowl(msgs[i],{position:'bottom-right'}); 
 		} 
 	}
-        $( "#crono_date" ).datepicker({ 
-            dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-            dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qi", "Sx", "Sa"],
-            dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-            monthNames: ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
-            monthNamesShort: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
-            nextText:'Próx.',
-            prevText:'Ant.',
-            dateFormat: "dd/mm/yy"
-        });
         temMensagens();
 });
-

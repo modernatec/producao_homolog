@@ -17,7 +17,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_index()
 	{	
 		$view = View::factory('admin/tasks/list');
-		$view->taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
+		$view->taskList = ORM::factory('task')
+                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                        ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
+                        ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC','priority','DESC')
+                        ->find_all();
 
 	  	$this->template->content = $view;
 	} 
@@ -36,12 +42,23 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             );
             $this->template->scripts = array_merge( $scripts, $this->template->scripts );
         }
+        
+        protected function addValidateJs(){
+            $scripts =   array(
+                "public/js/admin/validateTasks.js",
+            );
+            $this->template->scripts = array_merge( $scripts, $this->template->scripts );
+        }
+        
+        
 
 	public function action_create(){
 		$view = View::factory('admin/tasks/create')
                     ->bind('errors', $errors)
                     ->bind('message', $message)
                     ->set('values', $this->request->post());
+                
+                $this->addValidateJs();
                 		
 		$view->usersList = ORM::factory('user')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
@@ -88,6 +105,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     	}
         
         $this->addPlupload();
+        $this->addValidateJs();
 
         $view->bind('errors', $errors)
             ->bind('message', $message)
@@ -226,10 +244,27 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     public function action_searchnew()
     {	
         $callback = $this->request->query('callback');
-        //header('Content-type: text/json');
-        $arr = array("msg"=>"teste");
-        $taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
-
+        $rls = $this->user->roles->find_all()->as_array('id','name');       
+        $dados = array();
+        $taskList = ORM::factory('task')
+                ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
+                ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
+                ->group_by('tasks_users.task_id')
+                ->order_by('crono_date','ASC','priority','DESC')
+                ->find_all();
+        foreach($taskList as $task){
+            $status = $task->status->order_by('id', 'DESC')->limit('1')->find_all();
+            if($status[0]->id == 5 && in_array('assistente', $rls)){
+                $dado = array('id'=>$task->id,'title'=>$task->title,'status'=>$status[0]->id);
+                array_push($dados,$dado);
+            }
+            if($status[0]->id == 7 && in_array('coordenador', $rls)){
+                $dado = array('id'=>$task->id,'title'=>$task->title,'status'=>$status[0]->id);
+                array_push($dados,$dado);
+            }
+        }
+        $arr = array('role_user'=>$roles[0]->role_id,'dados'=>$dados);
         print $callback.json_encode($arr);
         exit;
     } 

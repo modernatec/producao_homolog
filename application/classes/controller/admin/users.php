@@ -9,6 +9,13 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view->userinfosList = ORM::factory('userInfo')->order_by('nome','ASC')->find_all();
         $this->template->content = $view;             
 	} 
+        
+    protected function addValidateJs(){
+        $scripts =   array(
+            "public/js/admin/validateUsers.js",
+        );
+        $this->template->scripts = array_merge( $scripts, $this->template->scripts );
+    }
 
 	public function action_delete($inId)
     {
@@ -33,6 +40,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->bind('message', $message)
             ->set('values', $this->request->post());
 
+        $this->addValidateJs();
         $view->userinfo = ORM::factory('userInfo', $id);
         $this->template->content = $view;
         $this->template->isUpdate = 1;
@@ -49,6 +57,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->bind('message', $message)
             ->set('values', $this->request->post());
 
+        $this->addValidateJs();
         $this->template->content = $view;
 
         if (HTTP_Request::POST == $this->request->method()) 

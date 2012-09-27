@@ -11,7 +11,7 @@
         $telefone = ($userinfo->telefone) ? ($userinfo->telefone) : (Arr::get($values, 'telefone'));
         $foto = ($userinfo->foto) ? ($userinfo->foto) : ('');
         ?>
-    <form name="frmCreateProject" id="frmCreateProject" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
+    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
               <dt>
