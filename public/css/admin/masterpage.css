@@ -210,8 +210,6 @@ table tbody tr:hover {
 
 .filelist ul{ 
     width: 400px;
-    border: 1px solid #999;
-    background-color:#999;
     box-shadow:#999 2px 2px 2px;
     border-radius:5px; 
 }

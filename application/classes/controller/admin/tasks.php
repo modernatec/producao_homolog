@@ -22,7 +22,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                         ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
                         ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
                         ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC','priority','ASC')
+                        ->order_by('crono_date','ASC')->order_by('priority_id','ASC')
                         ->find_all();
                 if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
                     $view->showFiltro = true;
@@ -30,35 +30,74 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     $view->showFiltro = false;
                 }
                 $view->usersList = ORM::factory('user')->find_all();
+                $view->statusList = ORM::factory('statu')->find_all();   
 	  	$this->template->content = $view;
 	} 
         
-        public function action_filter($id)
+        public function action_filter()
 	{	
 		$view = View::factory('admin/tasks/list');
-                $view->task_to = $id;
+                $view->task_to = $this->request->query('task_to');
+                $view->status = $this->request->query('status');
                 if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
                     $view->showFiltro = true;
                 }else{
                     $view->showFiltro = false;
-                }                
-                if($view->task_to!=''){
+                }
+                if($view->task_to!='' && $view->status!='')
+                {  
                     $view->taskList = ORM::factory('task')
-                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                        ->join('tasks_users','INNER')
+                        ->on('tasks.id','=','tasks_users.task_id')
+                        ->where('tasks_users.user_id', '=', $view->task_to)
+                        ->and_where(DB::Expr('(SELECT status_id FROM moderna_status_tasks WHERE task_id = `moderna_tasks`.`id` ORDER BY id DESC LIMIT 1)'),'=',(int)$view->status)
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC')
+                        ->order_by('priority_id','ASC')
+                        ->find_all();
+                }elseif($view->task_to!='')
+                {  
+                    $view->taskList = ORM::factory('task')
+                        ->join('tasks_users','INNER')
+                        ->on('tasks.id','=','tasks_users.task_id')
                         ->where('tasks_users.user_id', '=', $view->task_to)
                         ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC','priority','ASC')
-                        ->find_all();
-                }else{
-                    $view->taskList = ORM::factory('task')
-                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-                        ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
-                        ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
-                        ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC','priority','ASC')
+                        ->order_by('crono_date','ASC')
+                        ->order_by('priority_id','ASC')
                         ->find_all();
                 }
-                $view->usersList = ORM::factory('user')->find_all();                
+                elseif($view->status!='')
+                {  
+                    $view->taskList = ORM::factory('task')
+                        ->join('tasks_users','INNER')
+                        ->on('tasks.id','=','tasks_users.task_id')
+                        ->where_open()
+                        ->where('tasks_users.user_id','=',Auth::instance()->get_user()->id)
+                        ->or_where('tasks.user_id','=',Auth::instance()->get_user()->id)
+                        ->where_close()
+                        ->where(DB::Expr('(SELECT status_id FROM moderna_status_tasks WHERE task_id = `moderna_tasks`.`id` ORDER BY id DESC LIMIT 1)'),'=',(int)$view->status)
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC')
+                        ->order_by('priority_id','ASC')
+                        ->find_all();
+                }
+                else
+                {
+                    $view->taskList = ORM::factory('task')
+                        ->join('tasks_users','INNER')
+                        ->on('tasks.id','=','tasks_users.task_id')
+                        ->where_open()
+                        ->where('tasks_users.user_id','=',Auth::instance()->get_user()->id)
+                        ->or_where('tasks.user_id','=',Auth::instance()->get_user()->id)
+                        ->where_close()
+                        ->group_by('tasks_users.task_id')
+                        ->order_by('crono_date','ASC')
+                        ->order_by('priority_id','ASC')
+                        ->find_all();
+                }
+                //Utils_Helper::debug($view->taskList);
+                $view->usersList = ORM::factory('user')->find_all();  
+                $view->statusList = ORM::factory('statu')->find_all();    
 	  	$this->template->content = $view;
 	}
         
@@ -288,7 +327,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 ->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)
                 ->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)
                 ->group_by('tasks_users.task_id')
-                ->order_by('crono_date','ASC','priority','ASC')
+                ->order_by('crono_date','ASC')->order_by('priority_id','ASC')
                 ->find_all();
         foreach($taskList as $task){
             $status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();

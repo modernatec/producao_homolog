@@ -7,22 +7,36 @@
 		<thead>
                     <tr valign="bottom">
 			<th>nome</th>
-			<th>status atual</th>
 			<th>
-                        <?
-                        if($showFiltro){
-                        ?>
-                        <select id="taks_to" name="task_to" onchange="window.location = '<?=URL::base();?>admin/tasks/filter/'+this.value">
-                            <option value=''>Todos</option>
-                            <?foreach($usersList as $user){?>
-                            <option value="<?=$user->id?>" <?=($user->id == $task_to) ? 'selected' : ''?>><?=$user->userInfos->nome?></option>
-                            <?}?>
-                        </select>
-                        <br/>
-                        <?                         
-                        }
-                        ?>
-                        responsável
+                            <?
+                            if($showFiltro){
+                            ?>
+                            <select id="status" name="status" onchange="filtraTasks()">
+                                <option value=''>Todos</option>
+                                <?foreach($statusList as $sts){?>
+                                <option value="<?=$sts->id?>" <?=($sts->id == $status) ? 'selected' : ''?>><?=$sts->status?></option>
+                                <?}?>
+                            </select>
+                            <br/>
+                            <?                         
+                            }
+                            ?>
+                            status atual</th>
+			<th>
+                            <?
+                            if($showFiltro){
+                            ?>
+                            <select id="task_to" name="task_to" onchange="filtraTasks()">
+                                <option value=''>Todos</option>
+                                <?foreach($usersList as $user){?>
+                                <option value="<?=$user->id?>" <?=($user->id == $task_to) ? 'selected' : ''?>><?=$user->userInfos->nome?></option>
+                                <?}?>
+                            </select>
+                            <br/>
+                            <?                         
+                            }
+                            ?>
+                            responsável
                         </th>			
 			<th>prioridade</th>
 			<th>data de entrega</th>

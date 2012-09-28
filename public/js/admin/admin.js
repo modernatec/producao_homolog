@@ -68,6 +68,12 @@ function sldBox(obj){
     }
 }
 
+function filtraTasks(){
+    var status = ($('#status').val())?($('#status').val()):'';
+    var task_to = ($('#task_to').val())?($('#task_to').val()):'';
+    window.location = '/admin/tasks/filter/?status='+status+'&task_to='+task_to;
+}
+
 $(document).ready(function() {	
 	if(msgs.length>0)
 	{		

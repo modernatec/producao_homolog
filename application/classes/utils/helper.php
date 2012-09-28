@@ -47,6 +47,14 @@ class Utils_Helper
         return str_replace($a,$b,$str);
     }
     
+    public static function debug($var,$exit=true)
+    {
+        print '<pre>';
+        print_r($var);
+        print '</pre>';
+        if($exit) exit;
+    }
+    
     public static function uploadNoAssoc($file,$pasta,$tipagem=array('jpg','jpeg','gif','png'))
     {
         $erro = array(
