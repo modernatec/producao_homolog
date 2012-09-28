@@ -169,3 +169,4 @@ application/bootstrap.php
 application/logs/*
 application/config/database.php
 nbprojects/*
+sandbox/*
