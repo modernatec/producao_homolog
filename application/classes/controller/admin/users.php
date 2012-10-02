@@ -44,8 +44,10 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 
         $this->addValidateJs();
         $view->userinfo = ORM::factory('userInfo', $id);
+        $view->user = ORM::factory('user',$view->userinfo->user_id);
+        $view->isUpdate = 1;
         $this->template->content = $view;
-        $this->template->isUpdate = 1;
+        
         if (HTTP_Request::POST == $this->request->method()) 
         {                                              
             $this->salvar($id);

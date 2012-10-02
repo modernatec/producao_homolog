@@ -286,25 +286,29 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 {
                     $email = new Email_Helper();
                     $email->userInfo = ORM::factory('userInfo',array('user_id'=>$task->user_id));
-                    $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-                    $email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
-                    <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-                    <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
-                    <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-                    $email->enviaEmail();
+                    if($email->userInfo->email!=''){
+                        $email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
+                        $email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
+                        <b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
+                        <b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
+                        <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+                        $email->enviaEmail();
+                    }
                 }elseif($this->request->post('statu_id')==5)// 5 = Aguardando
                 {
                     $email = new Email_Helper();
                     $email->userInfo = ORM::factory('userInfo',array('user_id'=>$this->request->post('task_to')));
-                    $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
-                    $email->mensagem = '<font face="arial">Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
-                    <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
-                    <b>Título:</b> '.$task->title.'<br/>
-                    <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
-                    <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
-                    <b>Descrição:</b> '.$this->request->post('description').'<br/>
-                    <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-                    $email->enviaEmail();
+                    if($email->userInfo->email!=''){
+                        $email->assunto = 'Olá, '.$email->userInfo->nome.' você possuí uma tarefa!';
+                        $email->mensagem = '<font face="arial">Olá, <b>'.$email->userInfo->nome.'</b> você possuí uma tarefa!.<br/><br/>
+                        <b>Projeto:</b> '.ORM::factory('project',$task->project_id)->name.'<br/>
+                        <b>Título:</b> '.$task->title.'<br/>
+                        <b>Data de entrega:</b> '.  Utils_Helper::data($task->crono_date).'<br/>
+                        <b>Prioridade:</b> '.ORM::factory('priority',$task->priority_id)->priority.'<br/>
+                        <b>Descrição:</b> '.$this->request->post('description').'<br/>
+                        <b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+                        $email->enviaEmail();
+                    }
                 }
             }
 

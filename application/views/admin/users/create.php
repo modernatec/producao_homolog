@@ -5,14 +5,23 @@
         <?
         $idU = ($userinfo->id) ? true : false;
         $nome = ($userinfo->nome) ? ($userinfo->nome) : (Arr::get($values, 'nome'));
-        $username = ($userinfo->username) ? ($userinfo->username) : (Arr::get($values, 'username'));
-        $password = ($userinfo->password) ? ($userinfo->password) : (Arr::get($values, 'password'));
-        $role = ($userinfo->role) ? ($userinfo->role) : (Arr::get($values, 'role'));
+        $username = (($user->username) ? ($user->username) : Arr::get($values, 'username'));
+        $password = (Arr::get($values, 'password'));
+        
+        $roles = $user->roles->find_all()->as_array('id','name');
+        if(in_array('coordenador', $roles)){
+            $role = 3;
+        }elseif(in_array('assistente', $roles)){
+            $role = 4;
+        }else{
+            $role = Arr::get($values, 'role');
+        }       
+        
         $email = ($userinfo->email) ? ($userinfo->email) : (Arr::get($values, 'email'));
         $data_aniversario = ($userinfo->data_aniversario) ? (Utils_Helper::data($userinfo->data_aniversario.' 00:00:00','d/m')) : (Arr::get($values, 'data_aniversario'));
         $ramal = ($userinfo->ramal) ? ($userinfo->ramal) : (Arr::get($values, 'ramal'));
         $telefone = ($userinfo->telefone) ? ($userinfo->telefone) : (Arr::get($values, 'telefone'));
-        $foto = ($userinfo->foto) ? ($userinfo->foto) : ('');
+        $foto = ($userinfo->foto) ? ($userinfo->foto) : ('');        
         ?>
     <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
@@ -21,7 +30,7 @@
 	      <label for="username">Username</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" <?=(($idU)?'ignore="true"':'')?> name="username" id="username" style="width:100px;" value="<?=$username;?>"/>
+	      <input type="text" class="text round" <?=(($idU)?'ignore="true"':'')?> name="username" id="username" style="width:100px;" value="<?=$username;?>" <? if($isUpdate==1){?>readolny<? }?>/>
 	      <span class='error'><?=Arr::get($errors, 'username');?></span>
 	    </dd>
 	    <dt>
@@ -45,8 +54,8 @@
 	    <dd>
                 <select name="role" id="role" <?=(($idU)?'ignore="true"':'')?>>
                     <option value="">Selecione</option>
-                    <option value="3">Coordenador</option>
-                    <option value="4">Assistente</option>
+                    <option value="3" <?(($role == 3)?('selected'):(''))?>>Coordenador</option>
+                    <option value="4" <?(($role == 4)?('selected'):(''))?>>Assistente</option>
                 </select>
 	      <span class='error'><?=Arr::get($errors, 'role');?></span>
 	    </dd>
