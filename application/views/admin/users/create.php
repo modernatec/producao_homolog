@@ -5,6 +5,9 @@
         <?
         $idU = ($userinfo->id) ? true : false;
         $nome = ($userinfo->nome) ? ($userinfo->nome) : (Arr::get($values, 'nome'));
+        $username = ($userinfo->username) ? ($userinfo->username) : (Arr::get($values, 'username'));
+        $password = ($userinfo->password) ? ($userinfo->password) : (Arr::get($values, 'password'));
+        $role = ($userinfo->role) ? ($userinfo->role) : (Arr::get($values, 'role'));
         $email = ($userinfo->email) ? ($userinfo->email) : (Arr::get($values, 'email'));
         $data_aniversario = ($userinfo->data_aniversario) ? (Utils_Helper::data($userinfo->data_aniversario.' 00:00:00','d/m')) : (Arr::get($values, 'data_aniversario'));
         $ramal = ($userinfo->ramal) ? ($userinfo->ramal) : (Arr::get($values, 'ramal'));

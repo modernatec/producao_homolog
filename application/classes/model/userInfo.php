@@ -20,6 +20,9 @@ class Model_UserInfo extends ORM {
             'email' => 'Email',
             'foto' => 'Foto',
             'data_aniversario' => 'Data de Aniversário',
+            'username' => 'Username',
+            'password' => 'Senha',
+            'role' => 'Permissão',
         );
     }
     
@@ -34,8 +37,12 @@ class Model_UserInfo extends ORM {
     
     public function setup_date($value)
     {
-        $data = explode('/',$value);
-        return  '2000-'.$data[1].'-'.$data[0];
+        if($value != ''){
+            $data = explode('/',$value);
+            return  '2000-'.$data[1].'-'.$data[0];
+        }else{
+            return  NULL;
+        }
     }
      
 }

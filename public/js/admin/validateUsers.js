@@ -9,11 +9,11 @@ $(document).ready(function() {
                     equalTo: "#password"
                 },
                 role: {required:true},
-                nome: {required:true},
+                nome: {required:true}/*,
                 email: {
                     required:true,
                     email:true
-                }
+                }*/
             },
             messages: {
                 username: { required:"Digite o username."},
@@ -23,11 +23,11 @@ $(document).ready(function() {
                     equalTo:"As senhas não conhecidem."
                 },
                 role: {required:"Escolha uma permissão"},
-                nome: {required:"Digite o nome."},
+                nome: {required:"Digite o nome."}/*,
                 email: {
                     required:"Digite o e-mail.",
                     email:"Digite um e-mail válido."
-                }
+                }*/
             },
             submitHandler: function(form){
               $(form).submit();

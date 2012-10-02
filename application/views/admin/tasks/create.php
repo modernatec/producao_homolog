@@ -75,6 +75,21 @@
 	      </select>
 	      <span class='error'><?=Arr::get($errors, 'priority_id');?></span>
 	    </dd>
+            <dt>
+                <label for="arquivo"><b>Anexar arquivo</b></label>
+            </dt>	    
+            <dd>
+                <? /*<input type="file" class="text required round" name="arquivo" id="arquivo" style="width:300px;" />*/?>
+                <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
+                <input type="hidden" name="mimeUploads" id="mimeUploads" value=""/>
+                <div id="container">
+                    <div id="filelist">Carregando...</div>
+                    <br />
+                    <a id="pickfiles" href="javascript:;" class="bar_button round">Anexar arquivo</a> 
+                    <a id="uploadfiles" href="javascript:;" class="bar_button round">Subir</a>
+                </div>
+                <br/>
+            </dd>
 	    <?
 	    	echo View::factory('admin/tasks/status_task')
 	        					->bind('statusList', $statusList)

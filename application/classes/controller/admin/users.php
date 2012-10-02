@@ -7,7 +7,9 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
         $view->userinfosList = ORM::factory('userInfo')->order_by('nome','ASC')->find_all();
-        $this->template->content = $view;             
+        $this->template->content = $view;    
+        
+        //Utils_Helper::debug(ORM::factory('user')->where('username','=','teste')->find_all());
 	} 
         
     protected function addValidateJs(){
@@ -68,6 +70,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 
     protected function salvar($id = null)
     {
+        $db = Database::instance();
+        $db->begin();
         try 
         {   
             if(!$id)
@@ -113,14 +117,30 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $message = "Contato '{$userinfo->nome}' salvo com sucesso.";
             
             Utils_Helper::mensagens('add',$message);
+            $db->commit();
+            
             return $userinfo;
             Request::current()->redirect(URL::base().'admin/users');
 
         } catch (ORM_Validation_Exception $e) {
             $message = 'Houveram alguns erros';
             $errors = $e->errors('models');
-            Utils_Helper::mensagens('add',$message);
             //print_r($errors);
+            if($errors['username']){
+                $message .= '<br/><br/>'.$errors['username'];
+            }
+            if($errors['_external']){
+                if($errors['_external']['password']){
+                    $message .= '<br/><br/>'.$errors['_external']['password'];
+                }
+            }
+            Utils_Helper::mensagens('add',$message);    
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros';
+            $errors = $e->errors('models');
+            Utils_Helper::mensagens('add',$message);
+            $db->rollback();
         }
 
         return false;
