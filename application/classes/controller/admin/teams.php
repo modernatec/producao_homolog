@@ -53,9 +53,9 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
             ->bind('message', $message);
             try 
             {            
-                $contact = ORM::factory('team', $inId);
-                $contact->delete();
-                $message = "Contato excluído com sucesso.";
+                $team = ORM::factory('team', $inId);
+                $team->delete();
+                $message = "Equipe excluída com sucesso.";
             } catch (ORM_Validation_Exception $e) {
                 $message = 'Houveram alguns erros na validação dos dados.';
                 $errors = $e->errors('models');

@@ -6,7 +6,7 @@ var uploader = new plupload.Uploader({
 	max_file_size : '1024mb',
         chunk_size : '1mb',
 	url : '/admin/pluploader/',
-	resize : {width : 320, height : 240, quality : 90},
+	//resize : {width : 320, height : 240, quality : 90},
 	flash_swf_url : '/public/plupload/js/plupload.flash.swf',
 	silverlight_xap_url : '/public/plupload/js/plupload.silverlight.xap',
 	filters : [

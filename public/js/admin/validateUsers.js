@@ -9,6 +9,7 @@ $(document).ready(function() {
                     equalTo: "#password"
                 },
                 role: {required:true},
+                team: {required:true},
                 nome: {required:true}/*,
                 email: {
                     required:true,
@@ -23,6 +24,7 @@ $(document).ready(function() {
                     equalTo:"As senhas não conhecidem."
                 },
                 role: {required:"Escolha uma permissão"},
+                team: {required:"Escolha uma equipe"},
                 nome: {required:"Digite o nome."}/*,
                 email: {
                     required:"Digite o e-mail.",

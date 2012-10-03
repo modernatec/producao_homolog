@@ -11,7 +11,7 @@ class Model_Team extends ORM {
 	//static $belongs_to = array('estado');
 
 	protected $_has_many = array(
-		'users'       => array('model' => 'user', 'through' => 'teams_users'),
+		'user'       => array('model' => 'userInfo', 'through' => 'teams_users'),
 	);
         
         public function rules()

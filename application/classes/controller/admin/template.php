@@ -3,6 +3,8 @@
 class Controller_Admin_Template extends Controller_Template {
  
       public $template = 'admin/template';
+      
+      public $lightbox = '';
  
       // Controls access for the whole controller, if not set to FALSE we will only allow user roles specified
       // Can be set to a string or an array, for example 'login' or array('login', 'admin')
@@ -65,40 +67,42 @@ class Controller_Admin_Template extends Controller_Template {
        */
       public function after()
       {
-		if ($this->auto_render)
-		{
-			$styles = array(
-				'public/css/common/reset.css' => 'screen',
-				'public/css/admin/masterpage.css' => 'screen',
-				'public/css/common/jquery.jgrowl.css' => 'screen',
-				
-			);
- 
-			$scripts = array(
-				//'public/js/common/jquery/jquery-1.5.2.min.js',
-				'public/js/common/jquery/jquery-1.8.0.min.js',
-				'public/js/common/jquery/jquery-ui-1.8.23.custom.min.js',
-				'public/js/common/jquery/jquery.validate.js',
-				'public/js/common/jgrowl/jquery.jgrowl.js',
-				'public/js/admin/admin.js',
-			);
- 
-			$this->template->styles 	= array_merge( $styles, $this->template->styles );
-			$this->template->scripts 	= array_merge( $scripts, $this->template->scripts );
- 			
-		}
-		$this->template->title = " - ".ucfirst($this->request->controller());
-		$this->template->menu = ($this->user) ? View::factory('admin/menu') : '';
-		($this->user) ? $this->template->menu->user = $this->user : '';
-		
-		if($this->user){	
-			$user_roles = $this->user->roles->find_all();
-			foreach($user_roles as $role){
-				$this->template->menu->menuList = $role->menus->find_all();
-			}
-		}
-		
-		$this->template->mensagens = Utils_Helper::mensagens('print');
-		parent::after();
-      }
-  }
+
+            if ($this->auto_render)
+            {
+                    $styles = array(
+                            'public/css/common/reset.css' => 'screen',
+                            'public/css/admin/masterpage.css' => 'screen',
+                            'public/css/common/jquery.jgrowl.css' => 'screen',
+
+                    );
+
+                    $scripts = array(
+                            //'public/js/common/jquery/jquery-1.5.2.min.js',
+                            'public/js/common/jquery/jquery-1.8.0.min.js',
+                            'public/js/common/jquery/jquery-ui-1.8.23.custom.min.js',
+                            'public/js/common/jquery/jquery.validate.js',
+                            'public/js/common/jgrowl/jquery.jgrowl.js',
+                            'public/js/admin/admin.js',
+                            'public/js/common/Popup.js',
+                    );
+
+                    $this->template->styles 	= array_merge( $styles, $this->template->styles );
+                    $this->template->scripts 	= array_merge( $scripts, $this->template->scripts );
+
+            }
+            $this->template->title = " - ".ucfirst($this->request->controller());
+            $this->template->menu = ($this->user) ? View::factory('admin/menu') : '';
+            ($this->user) ? $this->template->menu->user = $this->user : '';
+
+            if($this->user){	
+                    $user_roles = $this->user->roles->find_all();
+                    foreach($user_roles as $role){
+                            $this->template->menu->menuList = $role->menus->find_all();
+                    }
+            }
+
+            $this->template->mensagens = Utils_Helper::mensagens('print');
+            parent::after();
+    }
+}

@@ -18,10 +18,13 @@ h1.logo{
 	background: url('../../image/site/sprite.png') no-repeat 0 -18px;
 }
 
-a.editar, a.excluir, a.download, a.active{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 12px; float:left; text-indent: -5000px; margin:0 5px; }
+a.editar, a.excluir, a.download, a.active, a.preview{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 12px; float:left; text-indent: -5000px; margin:0 5px; }
 a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; }
 a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
 a.active{ background: transparent url(../../image/admin/active.png) no-repeat 0 0; }
+a.preview{ background: transparent url(../../image/admin/preview.png) no-repeat 0 0; width: 16px; height: 16px; }
+
+.floatNone{ float: none !important; display: inline-block;}
 
 .round{
     -o-border-radius: 6px;
@@ -283,3 +286,7 @@ table tbody tr:hover {
 #filelist div:nth-child(odd){ background-color: #fff; }
 #filelist div:nth-child(even){ background-color: #eee; }
 #filelist div:hover { background-color: #FFFAF0; }
+
+.lightbox{ display: block; background-color:#ddd; border-radius:5px; box-shadow:#999 5px 5px 15px; padding:10px; position: relative; }
+.lightbox #btFechar{ position: absolute; top:-20px; right:0; cursor: pointer;}
+.lightbox video{ background-color:#000; }

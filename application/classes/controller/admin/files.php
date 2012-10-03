@@ -78,4 +78,17 @@ class Controller_Admin_Files extends Controller_Admin_Template {
             }
             exit;
 	}
+        
+        public function action_preview($id)
+        {
+            $view = View::factory('admin/pop_preview');
+            $view->file = ORM::factory('file',$id);                        
+            foreach(Utils_Helper::getDefaultExtPreview() as $key=>$arr){
+                if(in_array(Utils_Helper::getExt($view->file->uri),$arr)){
+                    $view->type_preview = $key;
+                    break;
+                }
+            }
+            $this->template->lightbox = $view;
+        }
 }

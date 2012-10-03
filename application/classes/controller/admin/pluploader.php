@@ -138,15 +138,11 @@ class Controller_Admin_Pluploader extends Controller_Admin_Template {
                 die('{"jsonrpc" : "2.0", "result" : "'.$result.'@'.$mimeType.'", "id" : "id"}');
 	}
         
-        public static function excluir($fileName){
-            unlink($fileName);
-        }
-        
         public function action_delete($fileName){
             $basedir = DOCROOT.'public/plupload/temporario/';
             if(file_exists($basedir.$fileName))
             {
-                self::excluir($basedir.$fileName);
+                unlink($basedir.$fileName);
             }
             die('OK');
         }

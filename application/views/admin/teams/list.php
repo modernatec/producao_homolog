@@ -13,7 +13,7 @@
             <tr>
 				<td><a style='display:block' href="<?=URL::base().'admin/teams/edit/'.$teams->id;?>" title="Editar"><?=$teams->name?></a></td>				
 				<td class="acao">
-                    <a class="excluir" href="<?=URL::base().'admin/teams/delete/'.$contacts->id;?>" title="Excluir">Excluir</a>
+                    <a class="excluir" href="<?=URL::base().'admin/teams/delete/'.$teams->id;?>" title="Excluir">Excluir</a>
                 </td>
 			</tr>
             <?}?>

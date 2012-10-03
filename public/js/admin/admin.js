@@ -74,6 +74,43 @@ function filtraTasks(){
     window.location = '/admin/tasks/filter/?status='+status+'&task_to='+task_to;
 }
 
+function getUsersByEquipe(inId){
+    $('#task_to').html('<option value="">aguarde...</a>');
+    setTimeout(function(){
+        $.get('/admin/users/equipe/'+inId,function(data){
+            data = JSON.parse(data);
+            $('#task_to').html('<option value="">Selecione</a>');
+            $.each(data.dados,function(i){
+                var dado = data.dados[i];
+                $('#task_to').append('<option value="'+dado.id+'">'+dado.nome+'</a>');
+            });
+        });
+    },500);
+}
+
+var popup = false;
+function openPop(pagina){
+    pagina = (pagina.indexOf('?')!=-1)?pagina+"&nocache="+Math.random():pagina+"?nocache="+Math.random();
+    if(!popup){
+        $.post(pagina, function(data){
+            popup = new Popup({
+                bt_close:'#btFechar',
+                mask:true,
+                maskColor:'#000',
+                Fixed:false,
+                zIndex:90,
+                posRelScroll:true,//posicao relacionada ao Scroll 
+                closeToEsc:true,
+                fade:true
+            });
+            popup.open(data);
+            popup.onClose = function(){
+                popup = false;
+            }
+        });	
+    }
+}
+
 $(document).ready(function() {	
 	if(msgs.length>0)
 	{		

@@ -9,6 +9,7 @@
 	</head>
 	<body>
     <div id="nav">
+        <?=$lightbox?>
     	<?=$menu;?>
     	<?=$content;?>
     </div>

@@ -4,7 +4,7 @@ $(document).ready(function() {
                 name: {required:true}
             },
             messages: {
-                name: { required:"Digite o nome do contato."}
+                name: { required:"Digite o nome da equipe."}
             },
             submitHandler: function(form) {
               $(form).submit();

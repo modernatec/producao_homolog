@@ -7,7 +7,7 @@
  * @author     Renato Ibiapina
  */
 class Utils_Helper
-{        
+{  
     public static function mensagens($acao,$msg='')
     {
         $session = Session::instance();
@@ -82,6 +82,36 @@ class Utils_Helper
         }else
         {
             return 1;
+        }
+    }
+    
+    public static function getExt($filename){
+        $ext = explode('.',$filename);
+        return end($ext);
+    }
+    
+    public static function getDefaultExtPreview()
+    {   
+        return array(
+            'image'=>array('jpg','jpeg','gif','png'),
+            'audio'=>array('mp3','wav'),
+            'video'=>array('mp4','avi','ogg')
+        );
+    }
+    
+    public static function preview($file){
+        
+        $has_preview = false;
+        foreach(self::getDefaultExtPreview() as $key=>$arr){
+            if(in_array(self::getExt($file->uri),$arr)){
+                $has_preview = true;
+                break;
+            }
+        }        
+        if($has_preview){
+            return '<a href="javascript:openPop(\'/admin/files/preview/'.$file->id.'\');" title="Preview" class="preview floatNone">Preview</a></li>';
+        }else{
+            return '';
         }
     }
 }

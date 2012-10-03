@@ -45,6 +45,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $this->addValidateJs();
         $view->userinfo = ORM::factory('userInfo', $id);
         $view->user = ORM::factory('user',$view->userinfo->user_id);
+        $view->teamsList = ORM::factory('team')->find_all();
         $view->isUpdate = 1;
         $this->template->content = $view;
         
@@ -62,6 +63,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->set('values', $this->request->post());
 
         $this->addValidateJs();
+        $view->teamsList = ORM::factory('team');
         $this->template->content = $view;
 
         if (HTTP_Request::POST == $this->request->method()) 
@@ -105,6 +107,13 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 $user->add('roles', ORM::factory('role', array('id' => $this->request->post('role'))));            
             }
             
+            /* Fluxo para gravar a equipe*/
+            if($this->request->post('team')!='')
+            {
+                $userinfo->remove('team');
+                $userinfo->add('team', ORM::factory('team', array('id' => $this->request->post('team'))));            
+            }
+            
             $file = $_FILES['arquivo'];
             if(Upload::valid($file))
             {
@@ -139,8 +148,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros';
-            $errors = $e->errors('models');
+            $message = 'Houveram alguns erros: '.$e->getMessage();
             Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
@@ -195,6 +203,21 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 ->find_all();
         foreach($userList as $user){
             $dado = array('nome'=>$user->nome);
+            array_push($dados,$dado);
+        }
+        $arr = array('dados'=>$dados);
+        print $callback.json_encode($arr);
+        exit;
+    } 
+    
+    public function action_equipe($id)
+    {	
+        $callback = $this->request->query('callback');        
+        $dados = array();
+        $team = ORM::factory('team',$id);
+        $userList = $team->user->find_all();
+        foreach($userList as $userinfo){
+            $dado = array('id'=>$userinfo->user->id,'nome'=>$userinfo->nome);
             array_push($dados,$dado);
         }
         $arr = array('dados'=>$dados);

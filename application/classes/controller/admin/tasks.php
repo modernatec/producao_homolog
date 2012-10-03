@@ -105,11 +105,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $scripts =   array(
                 //"http://bp.yahooapis.com/2.4.21/browserplus-min.js",
                 "public/plupload/js/plupload.js",
-                "public/plupload/js/plupload.gears.js",
+                /*"public/plupload/js/plupload.gears.js",
                 "public/plupload/js/plupload.silverlight.js",
                 "public/plupload/js/plupload.flash.js",
                 "public/plupload/js/plupload.browserplus.js",
-                "public/plupload/js/plupload.html4.js",
+                "public/plupload/js/plupload.html4.js",*/
                 "public/plupload/js/plupload.html5.js",
                 "public/plupload/init.js",
             );
@@ -133,76 +133,68 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 
                 $this->addValidateJs();
                 		
-		$view->usersList = ORM::factory('user')->find_all();
+		//$view->usersList = ORM::factory('user')->find_all(); fluxo para pegar os usuário. Agora é feito com ajax
+                $view->teamsList = ORM::factory('team')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
 		$view->priorityList = ORM::factory('priority')->find_all();
 		$view->statusList = ORM::factory('statu')->find_all();
-	  	
+	  	$this->template->content = $view;	
+                
 	  	if (HTTP_Request::POST == $this->request->method()) 
-                {
-                    try {         
-                        $projeto = $this->salvar();
-                        $message = "You have added a task"; 
-                        Request::current()->redirect(URL::base().'admin/tasks/edit/'.$projeto->id);
-                        $view->filesList = Controller_Admin_Files::listar($projeto->id);
-
-                    } catch (ORM_Validation_Exception $e) {
-                        $message = 'There were errors, please see form below.';
-                        $errors = $e->errors('models');
-                    }
+                {                                             
+                    $this->salvar($id);
                 }
-                $this->template->content = $view;	
+                
 	}
 
 
 	public function action_delete($inId){
-		$this->template->content = View::factory('admin/projects/delete')
+            $this->template->content = View::factory('admin/projects/delete')
                 ->bind('errors', $errors)
                 ->bind('message', $message);
             
-        try {            
-            $projeto = ORM::factory('task', $inId);
-            $projeto->delete();
-            $message = "Projeto excluído com sucesso.";
-        } catch (ORM_Validation_Exception $e) {
-            $message = 'Houveram alguns erros. Veja à seguir:';
-            $errors = $e->errors('models');
-        }
+            try {            
+                $projeto = ORM::factory('task', $inId);
+                $projeto->delete();
+                $message = "Projeto excluído com sucesso.";
+            } catch (ORM_Validation_Exception $e) {
+                $message = 'Houveram alguns erros. Veja à seguir:';
+                $errors = $e->errors('models');
+            }
 	}
         
-    public function action_edit($id){
-    	if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
-	        $view = View::factory('admin/tasks/create');
-    	}else{
-	        $view = View::factory('admin/tasks/edit');
-    	}
-        
-        $this->addPlupload();
-        $this->addValidateJs();
+        public function action_edit($id){
+            if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){
+                    $view = View::factory('admin/tasks/create');
+            }else{
+                    $view = View::factory('admin/tasks/edit');
+            }
 
-        $view->bind('errors', $errors)
-            ->bind('message', $message)
-            ->set('values', $this->request->post());
-      	
-      	$task = ORM::factory('task', $id);
-      	$view->task = $task;
-      	$view->isUpdate = true;
+            $this->addPlupload();
+            $this->addValidateJs();
 
-      	$view->usersList = ORM::factory('user')->find_all();
-        $view->projectList = ORM::factory('project')->find_all();
-        $view->priorityList = ORM::factory('priority')->find_all();
-        $view->statusList = ORM::factory('statu')->find_all();
-        $status_task = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
-        $view->taskflows = $status_task;
+            $view->bind('errors', $errors)
+                ->bind('message', $message)
+                ->set('values', $this->request->post());
 
-        $this->template->content = $view;
-        	
-        if (HTTP_Request::POST == $this->request->method()) 
-        {                                              
-            if($this->salvar($id)){ 
-	            Request::current()->redirect(URL::base().'admin/tasks/edit/'.$id);            
-	        } 
-        }
+            $task = ORM::factory('task', $id);
+            $view->task = $task;
+            $view->isUpdate = true;
+
+            //$view->usersList = ORM::factory('user')->find_all(); fluxo para pegar os usuário. Agora é feito com ajax
+            $view->teamsList = ORM::factory('team')->find_all();
+            $view->projectList = ORM::factory('project')->find_all();
+            $view->priorityList = ORM::factory('priority')->find_all();
+            $view->statusList = ORM::factory('statu')->find_all();
+            $status_task = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
+            $view->taskflows = $status_task;
+
+            $this->template->content = $view;
+
+            if (HTTP_Request::POST == $this->request->method()) 
+            {                                              
+                $this->salvar($id);
+            }
 	}
 
 	protected function salvar($id = null){
@@ -311,13 +303,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     }
                 }
             }
-
-            return $task;
+            $message = "Tarefa salva com sucesso."; 
+            Utils_Helper::mensagens('add',$message);
+            Request::current()->redirect(URL::base().'admin/tasks/edit/'.$id);
 
         } catch (ORM_Validation_Exception $e) {
             $message = 'Houveram alguns erros.';
+            Utils_Helper::mensagens('add',$message);
             $errors = $e->errors('models');
-            var_dump($errors);
+            
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros:<br/>'.$e->getMessage();
+            Utils_Helper::mensagens('add',$message);
         }
     }
     

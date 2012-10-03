@@ -21,7 +21,6 @@ class Model_Auth_User extends ORM {
         
         protected $_has_one = array(
         	'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'user_id'),
-                'teams' => array('model'   => 'team', 'foreign_key' =>'user_id'),
 	);
 
 	/**

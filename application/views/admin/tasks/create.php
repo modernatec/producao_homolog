@@ -51,15 +51,24 @@
                 <input type="text" class="text round" name="pasta" id="pasta" style="width:500px;"  value="<?=$pasta?>"/>
 	      <span class='error'><?=Arr::get($errors, 'pasta');?></span>
 	    </dd>
+            <dt>
+	      <label for="team">equipe responsável</label>
+	    </dt>
+	    <dd>
+	      <select name="team" id="team" style="width:150px;" onchange="getUsersByEquipe(this.value)">
+	     	<option value="">selecione</option>
+	      	<?foreach($teamsList as $team){?>
+	      	<option value="<?=$team->id?>"><?=$team->name?></option>
+	      	<?}?>
+	      </select>
+	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
+	    </dd>
 	    <dt>
 	      <label for="task_to">usuário responsável</label>
 	    </dt>
 	    <dd>
 	      <select name="task_to" id="task_to" style="width:150px;">
-	     	<option value="">selecione</option>
-	      	<?foreach($usersList as $user){?>
-	      	<option value="<?=$user->id?>" <?=($user->id == $task_to) ? 'selected' : ''?>><?=$user->userInfos->nome?></option>
-	      	<?}?>
+	     	<option value="">aguarde...</option>	      	
 	      </select>
 	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
 	    </dd>
