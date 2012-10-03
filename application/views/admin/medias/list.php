@@ -14,11 +14,12 @@
                     <tr>
                         <td>
                             <a href="javascript:sldBox('#tag_<?=$k?>');"><?=$tag?></a>
-                <table id="tag_<?=$k?>" style="display:none; width:990px;">
+                <table id="tag_<?=$k?>" style="display:none; width:950px;">
                     <? foreach($mediasList[$tag] as $medias){?>
 
                     <tr>
-                        <td><a style='display:block' href="<?=URL::base().'admin/medias/download/'.$medias->id;?>" title="Baixar" target="_blank"><?=basename($medias->uri)?></a></td>
+                        <? /*<td><a style='display:block' href="<?=URL::base().'admin/medias/download/'.$medias->id;?>" title="Baixar" target="_blank"><?=basename($medias->uri)?></a></td>*/?>
+                        <td><a style='display:block' href="<?=URL::base().$medias->uri;?>" title="Preview" target="_blank"><?=basename($medias->uri)?></a></td>
                         <td class="acao">
                             <a class="excluir" href="<?=URL::base().'admin/medias/delete/'.$medias->id;?>" title="Excluir">Excluir</a>
                         </td>

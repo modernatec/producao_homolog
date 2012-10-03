@@ -153,7 +153,13 @@ table tbody tr:nth-child(even){
 }
 
 table tbody tr:hover {
-    background-color: #FFFAF0; color: #000;
+    background-color: #ccc; color: #000;
+}
+
+table tbody td table{
+    margin:15px;
+    border:1px solid #ddd;
+    box-shadow:#666 0 5px 15px;
 }
 
 table tbody td table tbody tr:nth-child(odd){

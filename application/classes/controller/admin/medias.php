@@ -96,7 +96,11 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
             $media->delete();
             $message = "Media excluída com sucesso.";
             
-            $view->mediasList = ORM::factory('media')->order_by('uri','ASC')->find_all();
+            $view->tags = ORM::factory('media')->group_by('tag')->order_by('tag','ASC')->find_all()->as_array('id','tag');
+            $view->mediasList = array();
+            foreach($view->tags as $tag){
+                $view->mediasList[$tag] = ORM::factory('media')->where('tag','=',$tag)->order_by('uri','ASC')->find_all();
+            }
             $this->template->content = $view;
             Utils_Helper::mensagens('add',$message); 
         }

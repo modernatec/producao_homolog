@@ -95,21 +95,27 @@ class Utils_Helper
         return array(
             'image'=>array('jpg','jpeg','gif','png'),
             'audio'=>array('mp3','wav'),
-            'video'=>array('mp4','avi','ogg')
+            'video'=>array('mp4','avi','ogg'),
+            'pdf'=>array('pdf')
         );
     }
     
     public static function preview($file){
         
         $has_preview = false;
+        $ext = self::getExt($file->uri);
         foreach(self::getDefaultExtPreview() as $key=>$arr){
-            if(in_array(self::getExt($file->uri),$arr)){
+            if(in_array($ext,$arr)){
                 $has_preview = true;
                 break;
             }
         }        
         if($has_preview){
-            return '<a href="javascript:openPop(\'/admin/files/preview/'.$file->id.'\');" title="Preview" class="preview floatNone">Preview</a></li>';
+            if($ext=='pdf'){
+                return '<a href="'.URL::base().$file->uri.'" target="_blank" title="Preview" class="preview floatNone">Preview</a></li>';
+            }else{
+                return '<a href="javascript:openPop(\'/admin/files/preview/'.$file->id.'\');" title="Preview" class="preview floatNone">Preview</a></li>';
+            }
         }else{
             return '';
         }
