@@ -156,6 +156,18 @@ table tbody tr:hover {
     background-color: #FFFAF0; color: #000;
 }
 
+table tbody td table tbody tr:nth-child(odd){
+    background-color: #fefefe;
+}
+
+table tbody td table tbody tr:nth-child(even){
+    background-color: #f0f0ff;
+}
+
+table tbody td table tbody tr:hover {
+    background-color: #e0e0eF; color: #000;
+}
+
 .list{
 	width:1000px;
 }
