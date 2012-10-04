@@ -24,7 +24,9 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         try 
         {            
             $userinfo = ORM::factory('userInfo', $inId);
+            $user = ORM::factory('user', $userinfo->user_id);
             $userinfo->delete();
+            $user->delete();
             $message = "Usuário excluído com sucesso.";
             Utils_Helper::mensagens('add',$message); 
             Request::current()->redirect(URL::base().'admin/users');
@@ -63,7 +65,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->set('values', $this->request->post());
 
         $this->addValidateJs();
-        $view->teamsList = ORM::factory('team');
+        $view->teamsList = ORM::factory('team')->find_all();
         $this->template->content = $view;
 
         if (HTTP_Request::POST == $this->request->method()) 
@@ -97,6 +99,16 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             	$userinfo->user_id = $user->id;
             }
             
+            $file = $_FILES['arquivo'];
+            if(Upload::valid($file))
+            {
+                if(Upload::not_empty($file))
+                {                
+                    $userinfo->foto = Utils_Helper::uploadNoAssoc($_FILES['arquivo'],'userinfos');
+                }
+            }
+            $userinfo->save();
+            
             /* Fluxo para dar as permissões*/
             if($this->request->post('role')!='')
             {
@@ -114,17 +126,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 $userinfo->add('team', ORM::factory('team', array('id' => $this->request->post('team'))));            
             }
             
-            $file = $_FILES['arquivo'];
-            if(Upload::valid($file))
-            {
-                if(Upload::not_empty($file))
-                {                
-                    $userinfo->foto = Utils_Helper::uploadNoAssoc($_FILES['arquivo'],'userinfos');
-                }
-            }
-            $userinfo->save();
-            	
-
             $message = "Contato '{$userinfo->nome}' salvo com sucesso.";
             
             Utils_Helper::mensagens('add',$message);
