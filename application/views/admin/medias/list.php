@@ -13,8 +13,8 @@
             foreach($tags as $tag){?>
                     <tr>
                         <td>
-                            <a href="javascript:sldBox('#tag_<?=$k?>');"><?=$tag?></a>
-                <table id="tag_<?=$k?>" style="display:none; width:950px;">
+                            <a href="javascript:sldBox('#blk_tag_<?=$k?>');" id="tag_<?=$k?>" class="tags" rightClick="true" title="Para editar esta tag, clique com o botão direito do mouse"><?=$tag?></a>
+                <table id="blk_tag_<?=$k?>" style="display:none; width:950px;">
                     <? foreach($mediasList[$tag] as $medias){?>
 
                     <tr>

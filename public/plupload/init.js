@@ -21,12 +21,12 @@ var mimeUploads = [];
 
 uploader.bind('Init', function(up, params) {
 	//document.getElementById('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
-        $('#filelist').html('');
+        //$('#filelist').html('');
 });
 
 uploader.bind('FilesAdded', function(up, files) {
 	for (var i in files) {
-            $('#filelist').append('<div id="' + files[i].id + '">'+
+            $('#filelist').append('<div id="' + files[i].id + '" class="delFiles">'+
                 '<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+files[i].id+'\')">excluir</a> '
                 + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>');
 	}
@@ -56,6 +56,18 @@ uploader.bind('UploadComplete', function(up, file) {
 $('#uploadfiles').click(function() {
 	uploader.start();
 	return false;
+});
+
+$('#excluirTodos').click(function() {
+    if(confirm('Deseja realmente excluir todos os arquivos?')){
+        if($('.delFiles').size() > 0){
+            $('.delFiles').each(function(){
+                excluirTemporario($(this).attr('id'));
+            });
+        }else{
+            alert('Nenhum arquivo à excluir!');
+        }
+    }
 });
 
 uploader.init();

@@ -131,4 +131,13 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
             }
             exit;
 	}
+        
+        public function action_alterartag($str)
+        {
+            list($old_tag,$new_tag) = explode("@@@",$str);
+            $q = DB::query(Database::UPDATE,'UPDATE `producao`.`moderna_media` SET `tag`="'.$new_tag.'" WHERE `tag`="'.$old_tag.'"');
+            print $q->execute();
+            
+            exit;
+        }
 }
