@@ -311,5 +311,5 @@ table tbody td table tbody tr:hover {
 .lightbox #btFechar{ position: absolute; top:-20px; right:0; cursor: pointer;}
 .lightbox video{ background-color:#000; }
 
-.dhtml{ display: block; background-color:#fff; border-radius:5px; box-shadow:#999 5px 5px 15px; padding:10px; position: relative; }
+.dhtml{ display: block; background-color:#fff; border: 1px solid #eee; border-radius:5px; box-shadow:#999 5px 5px 15px; padding:10px; position: relative; }
 .dhtml input[type='text']{ border:1px #CCC solid; padding:5px; box-shadow:#ccc 1px 1px 3px; display: block; margin: 10px 0; width: 250px; }

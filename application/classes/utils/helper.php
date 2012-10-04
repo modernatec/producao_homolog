@@ -120,5 +120,25 @@ class Utils_Helper
             return '';
         }
     }
+    
+    public static function getSize($val)
+    {
+        if($val < 1024){
+            return $val.' b';
+        }else{
+            $kbval = (int)($val / 1024);
+            if($kbval < 1024){
+                return $kbval.' kb';
+            }else{
+                $mbval = (int)($kbval / 1024);
+                if($mbval < 1024){
+                    return $mbval.' mb';
+                }else{
+                    $gbval = (int)($kbval / 1024);
+                    return $gbval.' gb';
+                }
+            }
+        }
+    }
 }
 ?>

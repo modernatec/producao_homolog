@@ -134,10 +134,17 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
         
         public function action_alterartag($str)
         {
-            list($old_tag,$new_tag) = explode("@@@",$str);
-            $q = DB::query(Database::UPDATE,'UPDATE `producao`.`moderna_media` SET `tag`="'.$new_tag.'" WHERE `tag`="'.$old_tag.'"');
-            print $q->execute();
-            
+            if(in_array('coordenador', $this->user->roles->find_all()->as_array('id','name'))){                
+                list($old_tag,$new_tag) = explode("@@@",$str);
+                if($old_tag!='' && $new_tag!=''){
+                    $q = DB::query(Database::UPDATE,'UPDATE `producao`.`moderna_media` SET `tag`="'.$new_tag.'" WHERE `tag`="'.$old_tag.'"');
+                    print $q->execute();
+                }else{
+                    print 'ERR';
+                }
+            }else{
+                print 'DENIED';
+            }
             exit;
         }
 }

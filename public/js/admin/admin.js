@@ -145,6 +145,8 @@ function openDhtml(html)
         bt_close:'#btOk',
         mask:false,
         Fixed:false,
+        Top: m_y,
+        Left:m_x,
         zIndex:95,
         posRelScroll:true,//posicao relacionada ao Scroll 
         closeToEsc:true,
@@ -170,7 +172,16 @@ function alterarTag()
     {
         $.get('/admin/medias/alterartag/'+old_tag+'@@@'+new_tag,function(data)
         {
-            $.jGrowl('Tag alterada!',
+            dhtml.close();
+            var msg = '';
+            if(data=='ERR'){
+                msg = 'Tag alterada!';
+            }else if(data=='DENIED'){
+                msg = 'Você não tem permissão para executar esta ação!';
+            }else{
+                msg = 'Houve um erro ao alterar a tag, dados não alterados!';                
+            }
+            $.jGrowl(msg,
                 {
                     position:'bottom-right',
                     sticky: true,
@@ -186,6 +197,9 @@ function alterarTag()
         alert('As tags são idênticas, nada foi alterado!');
     }
 }
+
+var m_x = 0;
+var m_y = 0;
 
 $(document).ready(function()
 {	
@@ -216,5 +230,10 @@ $(document).ready(function()
                 openDhtml(html);
             });
         }
+    });
+    
+     $(document).mousemove(function(e){
+         m_x = e.pageX;
+         m_y = e.pageY;
     });
 });

@@ -19,7 +19,9 @@
 
                     <tr>
                         <? /*<td><a style='display:block' href="<?=URL::base().'admin/medias/download/'.$medias->id;?>" title="Baixar" target="_blank"><?=basename($medias->uri)?></a></td>*/?>
-                        <td><a style='display:block' href="<?=URL::base().$medias->uri;?>" title="Preview" target="_blank"><?=basename($medias->uri)?></a></td>
+                        <td>
+                            <a style='display:block' href="<?=URL::base().$medias->uri;?>" title="Preview" target="_blank"><?=basename($medias->uri)?> (<?=  Utils_Helper::getSize($medias->size)?>)</a>                            
+                        </td>
                         <td class="acao">
                             <a class="excluir" href="<?=URL::base().'admin/medias/delete/'.$medias->id;?>" title="Excluir">Excluir</a>
                         </td>
