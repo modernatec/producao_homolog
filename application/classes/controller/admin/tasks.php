@@ -6,7 +6,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
  
         public $secure_actions     	= array(
                                                 'edit' => array('login'),
-                                                'delete' => array('login','admin'),
+                                                'delete' => array('login','coordenador'),
+												'create' => array('login','coordenador'),
                                               );
 					 
 	public function __construct(Request $request, Response $response)
