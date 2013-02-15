@@ -9,17 +9,22 @@
  */
 class Model_Team extends ORM {
 	//static $belongs_to = array('estado');
+	protected $_belongs_to = array(
+		'userInfo'       => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
+	);
 
 	protected $_has_many = array(
-		'user'       => array('model' => 'userInfo', 'through' => 'teams_users'),
+		'userInfos'       => array('model' => 'userInfo', 'foreign_key' => 'team_id'),
 	);
         
-        public function rules()
+    public function rules()
 	{
             return array(
                 'name' => array(
-                    array('not_empty'),
-                    
+                    array('not_empty'),                    
+                ),
+				'userInfo_id' => array(
+                    array('not_empty'),                    
                 )
             );
 	}
@@ -28,6 +33,7 @@ class Model_Team extends ORM {
 	{
             return array(
                 'name'  => 'Equipe',
+				'userInfo_id'  => 'Coordenador',
             );
 	}
 }

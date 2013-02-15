@@ -8,8 +8,6 @@
   			<option value="<?=$status->id?>" <?=($status->id == $status_task->status_id) ? 'selected' : ''?>><?=$status->status?></option>
   		<?}?>
   	</select>
-	<input type='hidden' name='status_task_id' value='<?=$status_task->id?>'/>
-  	<input type='hidden' name='old_status' value='<?=$status_task->status_id?>'/>
   	<span class='error'><?=($errors) ? $errors['statu_id'] : '';?></span>
 </dd>
 <dt>

@@ -2,10 +2,6 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/medias" class="bar_button round">Voltar</a>
 	</div>
-        <?
-        //print_r($errors);
-        $tag = ($media->tag) ? ($media->tag) : (Arr::get($values, 'tag'));
-        ?>
     <form name="frmMedia" id="frmMedia" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
@@ -13,7 +9,7 @@
 	      <label for="tag">Tag</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="tag" id="tag" style="width:500px;" value="<?=$tag;?>"/>
+	      <input type="text" class="text round" name="tag" id="tag" style="width:500px;" value="<?=@$mediaVO['tag'];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'tag');?></span>
 	    </dd>
             <dt>

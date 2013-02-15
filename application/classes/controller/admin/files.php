@@ -13,82 +13,107 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
- 	
-	public static function subir($file,$pasta,$status_task_id)
-        {
-            $erro = array(
-                1=>'Tipo incorreto de arquivo',
-                2=>'Erro ao fazer o upload do arquivo',
-                3=>'Upload concluído com sucesso.'
-            );
-            
-            if(Upload::type($file,array('doc','docx','ppt','pptx','xls','xlsx','zip','rar','pdf','txt')))
-            {
-                $fName = Utils_Helper::limparStr($file['name']);
-                $basedir = 'public/upload/'.$pasta.'/';
-                $rootdir = DOCROOT.$basedir;
-                $ext = explode(".",$fName);
-                $ext = end($ext);                
-                $nomeArquivo = str_replace(".$ext","",$fName);
-
-                $fileName = $nomeArquivo.'_'.(time()).'.'.$ext;
-                if(Upload::save($file,$fileName,$rootdir,0777))
-                {
-                    self::salvar($basedir.$fileName,$file['type'],$file['size'], $status_task_id);
-
-                    return $erro[3];
-                }else
-                {
-                    return $erro[2];
-                }
-            }else
-            {
-                return $erro[1];
-            }
-        }
-        
-        public static function salvar($uri,$type,$size,$status_task_id){
-            $arquivo = ORM::factory('file');
-            $arquivo->uri = $uri;
-            $arquivo->status_task_id = $status_task_id;
-            $arquivo->mime_type = $type;
-            $arquivo->size = $size;
-            $arquivo->user_id = Auth::instance()->get_user()->id;
-            $arquivo->save();
-        }
-
-	public static function listar($taskId)
-        {
-            return ORM::factory('file')->where('status_task_id','=',$taskId)->find_all();   
-        }
-        
-        public function action_download($id)
-	{	
-            ini_set('memory_limit','500M'); 
-            $file = ORM::factory('file',$id);
-            if(file_exists($file->uri))
-            {
-                header('Content-disposition: attachment; filename='.basename($file->uri));
-                header('Content-type: '.$file->mime_type);
-                header('Content-Length: '.$file->size);
-                readfile($file->uri); 
-            }else{
-                print "<h1>Arquivo não encontrado!</h1>";
-            }
-            exit;
+	
+	public static function addJs(){
+		return array(
+			"public/plupload/js/plupload.js",
+			"public/plupload/js/plupload.html5.js",
+			"public/plupload/init.js",
+		);
 	}
         
-        public function action_preview($id)
+	public static function salvar($request, $pasta, $model_id, $model, $user)
+	{
+		$erro = array(
+			1=>'Tipo incorreto de arquivo',
+			2=>'Erro ao fazer o upload do arquivo',
+			3=>'Upload concluído com sucesso.'
+		);
+		
+		$basedir = 'public/plupload/temporario/';
+		$filesUploads = $request->post('filesUploads');
+        $mimeUploads = $request->post('mimeUploads');
+        if($filesUploads!='')
         {
-            $view = View::factory('admin/pop_preview');
-            $view->file = ORM::factory('file',$id);                        
-            foreach(Utils_Helper::getDefaultExtPreview() as $key=>$arr){
-                if(in_array(Utils_Helper::getExt($view->file->uri),$arr)){
-                    $view->type_preview = $key;
-                    break;
-                }
-            }
-            $this->template->lightbox = $view;
-        }
+			$arrFiles = explode(',',$filesUploads);
+			$arrMimes = explode(',',$mimeUploads);
+			//$newbasedir = 'public/upload/'.$pastaProjeto.'/'.$task->pasta.'/';
+			foreach($arrFiles as $k=>$file){
+				if($file!='empty'){
+					$size = filesize($basedir.$file);
+					
+					$arquivo = ORM::factory('file');
+					$arquivo->uri = $pasta.$file;
+					$arquivo->model = $model;
+					$arquivo->model_id = $model_id;
+					$arquivo->mime_type = $arrMimes[$k];
+					$arquivo->size = $size;
+					$arquivo->userInfo_id = $user->userInfos->id;
+					$arquivo->save();
+					
+					rename($basedir.$file, $pasta.$file);
+				}
+			}
+		}
+		
+		/*
+		if(Upload::type($file,array('doc','docx','ppt','pptx','xls','xlsx','zip','rar','pdf','txt')))
+		{
+			$fName = Utils_Helper::limparStr($file['name']);
+			$basedir = 'public/upload/'.$pasta.'/';
+			$rootdir = DOCROOT.$basedir;
+			$ext = explode(".",$fName);
+			$ext = end($ext);                
+			$nomeArquivo = str_replace(".$ext","",$fName);
+
+			$fileName = $nomeArquivo.'_'.(time()).'.'.$ext;
+			if(Upload::save($file,$fileName,$rootdir,0777))
+			{
+				self::salvar($basedir.$fileName,$file['type'],$file['size'], $model_id,$model);
+
+				return $erro[3];
+			}else
+			{
+				return $erro[2];
+			}
+		}else
+		{
+			return $erro[1];
+		}
+		*/
+	}
+	
+	public static function listar($model_id,$model)
+	{
+		return ORM::factory('file')->where('model_id','=',$model_id)->and_where('model','=',$model)->find_all();   
+	}
+        
+    public function action_download($id)
+	{	
+		ini_set('memory_limit','500M'); 
+		$file = ORM::factory('file',$id);
+		if(file_exists($file->uri))
+		{
+			header('Content-disposition: attachment; filename='.basename($file->uri));
+			header('Content-type: '.$file->mime_type);
+			header('Content-Length: '.$file->size);
+			readfile($file->uri); 
+		}else{
+			print "<h1>Arquivo não encontrado!</h1>";
+		}
+		exit;
+	}
+        
+    public function action_preview($id)
+	{
+		$view = View::factory('admin/pop_preview');
+		$view->file = ORM::factory('file',$id);                        
+		foreach(Utils_Helper::getDefaultExtPreview() as $key=>$arr){
+			if(in_array(Utils_Helper::getExt($view->file->uri),$arr)){
+				$view->type_preview = $key;
+				break;
+			}
+		}
+		$this->template->lightbox = $view;
+	}
 }

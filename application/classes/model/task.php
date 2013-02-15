@@ -1,26 +1,17 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-/**
- * Arm Auth Role Model.
- *
- * @package    Arm Auth
- * @author     Devi Mandiri <devi.mandiri@gmail.com>
- * @copyright  (c) 2011 Devi Mandiri
- * @license    MIT
- */
-class Model_Task extends ORM {
-	protected $load_with = array('statu');
 
-	//static $belongs_to = array('estado');
+class Model_Task extends ORM {
+	//protected $load_with = array('statu');
+
 	protected $_belongs_to  = array(
 		'project' => array('foreign_key' => 'project_id'),
 		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
-		'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+		'userInfo' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
 	);	
 
 	protected $_has_many = array(
 	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
-	    'users' => array('model'   => 'user', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
-	  	  
+	    'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
 	);
 
 
@@ -39,7 +30,7 @@ class Model_Task extends ORM {
                 'project_id' => array(
                     array('not_empty'),
                 ),
-                'user_id' => array(
+                'userInfo_id' => array(
                     array('not_empty'),
                 ),
                 'pasta' => array(
@@ -54,9 +45,9 @@ class Model_Task extends ORM {
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			),
-                        'pasta' => array(
-                            array('Utils_Helper::limparStr')
-                        )
+			'pasta' => array(
+				array('Utils_Helper::limparStr')
+			)
 		);
 	}
 
@@ -71,7 +62,7 @@ class Model_Task extends ORM {
 			'title'         => __('Título'),
 			'priority_id'   => __('Prioridade'),
 			'project_id'    => __('Projeto'),
-			'user_id'		=> __('Usuário responsável'),
+			'userInfo_id'	=> __('Usuário responsável'),
 			'crono_date'	=> __('Data de entrega'),
 			'description'	=> __('Descrição'),
 			'pasta'	=> __('Pasta'),

@@ -1,6 +1,6 @@
 $(document).ready(function() {
         $("#frmCreateUsers").validate({            
-            ignore: 'input[ignore="true"], select[ignore="true"]',
+            ignore: ".ignore",
             rules: {
                 username: {required:true},
                 password: {required:true},
@@ -10,7 +10,8 @@ $(document).ready(function() {
                 },
                 role: {required:true},
                 team: {required:true},
-                nome: {required:true}/*,
+                nome: {required:true}
+				/*,
                 email: {
                     required:true,
                     email:true
@@ -25,7 +26,8 @@ $(document).ready(function() {
                 },
                 role: {required:"Escolha uma permissão"},
                 team: {required:"Escolha uma equipe"},
-                nome: {required:"Digite o nome."}/*,
+                nome: {required:"Digite o nome."}
+				/*,
                 email: {
                     required:"Digite o e-mail.",
                     email:"Digite um e-mail válido."

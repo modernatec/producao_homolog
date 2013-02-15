@@ -1,12 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-/**
- * Arm Auth Role Model.
- *
- * @package    Arm Auth
- * @author     Devi Mandiri <devi.mandiri@gmail.com>
- * @copyright  (c) 2011 Devi Mandiri
- * @license    MIT
- */
+
 class Model_Project extends ORM {
 
 	public function rules()
@@ -16,7 +9,7 @@ class Model_Project extends ORM {
                     array('not_empty'),
                     array(array($this, 'name_available'), array(':validation', ':field')),
                 ),
-                'target' => array(
+                'segmento_id' => array(
                     array('not_empty'),
                 ),
                 'description' => array(
@@ -32,7 +25,7 @@ class Model_Project extends ORM {
 	{
             return array(
                 'name'  => 'Projeto',
-                'target' => 'Seguimento',
+                'segmento_id' => 'Segmento',
                 'description' => 'Descrição',
                 'pasta' => 'Pasta',
             );

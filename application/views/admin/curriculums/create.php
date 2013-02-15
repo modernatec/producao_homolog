@@ -2,44 +2,53 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/curriculums" class="bar_button round">Voltar</a>
 	</div>
-        <?
-        //print_r($errors);
-        $name = ($curriculum->name) ? ($curriculum->name) : (Arr::get($values, 'name'));
-        $objective = ($curriculum->objective) ? ($curriculum->objective) : (Arr::get($values, 'objective'));
-        $description = ($curriculum->description) ? ($curriculum->description) : (Arr::get($values, 'description'));
-        $file = ($curriculum->file) ? ($curriculum->file) : (Arr::get($values, 'file'));
-        ?>
     <form name="frmCurriculum" id="frmCurriculum" method="post" class="form" enctype="multipart/form-data">
-	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
 	    <dt>
 	      <label for="name">Nome</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="name" id="name" style="width:500px;" value="<?=$name;?>"/>
+	      <input type="text" class="text round" name="name" id="name" style="width:500px;" value="<?=@$curriculumVO['name'];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'name');?></span>
 	    </dd>
-            <dt>
+        <dt>
 	      <label for="objective">Objetivo</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="objective" id="objective" style="width:500px;" value="<?=$objective;?>"/>
+	      <input type="text" class="text round" name="objective" id="objective" style="width:500px;" value="<?=@$curriculumVO["objective"];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'objective');?></span>
 	    </dd>
-            <dt>
-	      <label for="description">Descrição</label>
-	    </dt>	    
-	    <dd>
-	      <textarea class="text required round" name="description" id="description" style="width:500px; height:200px;"><?=$description;?></textarea>
-	      <span class='error'><?=Arr::get($errors, 'description');?></span>
-	    </dd>
-            <dt>
-	      <label for="file">Arquivo</label>
+        <dt>
+	      <label for="formado">Formado</label>
 	    </dt>
 	    <dd>
-	      <input type="file" name="file" id="file" />
-	      <span class='error'><?=Arr::get($errors, 'file');?></span>
-              <a href="<?=URL::base();?>admin/curriculums/download/<?=$curriculum->id?>"><?=basename($file);?></a>
+			<select name="formado" id="formado">
+				<option value="">Selecione</option>
+                <option value="1" <?=((@$curriculumVO["formado"] == 1)?('selected'):(''))?> >Sim</option>
+				<option value="0" <?=((@$curriculumVO["formado"] == 0)?('selected'):(''))?> >Não</option>
+			</select>
+			<span class='error'><?=Arr::get($errors, 'role');?></span>
+	    </dd>
+        <dt>
+	      <label for="description">Observações</label>
+	    </dt>	    
+	    <dd>
+	      <textarea class="text required round" name="description" id="description" style="width:500px; height:200px;"><?=@$curriculumVO['description'];?></textarea>
+	      <span class='error'><?=Arr::get($errors, 'description');?></span>
+	    </dd>
+        <?=$anexosView?>
+	    <dd>
+        	<ul>
+            <?
+             	if(isset($curriculumVO['file'])){
+					foreach($curriculumVO['file'] as $file){
+			?>
+            			<li><a href="<?=URL::base();?>admin/files/download/<?=$file->id?>" ><?=basename($file->uri);?></a></li>
+            <?		
+					}	
+				}
+			?>  
+            </ul>
 	    </dd>	    
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />

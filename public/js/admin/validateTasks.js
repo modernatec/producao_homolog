@@ -30,7 +30,7 @@ $(document).ready(function() {
                 description: {required:"Digite uma descrição para a tarefa."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+				checkUpload(form);
             }
         })
 });

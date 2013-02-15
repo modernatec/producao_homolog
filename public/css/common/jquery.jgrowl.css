@@ -72,9 +72,10 @@ div.jGrowl.bottom-right {
 }
 
 div.jGrowl.center {
-	top: 				0px;
+	top: 				50%;
 	width: 				50%;
-	left: 				25%;
+	margin-left: 		-120px;
+	left: 				50%;
 }
 
 /** Cross Browser Styling **/
@@ -97,7 +98,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	font-size: 				1em;
 	text-align: 			left;
 	display: 				none;
-        border-radius: 	5px;
+    border-radius: 	5px;
 	-moz-border-radius: 	5px;
 	-webkit-border-radius:	5px;
 	-o-border-radius:	5px;

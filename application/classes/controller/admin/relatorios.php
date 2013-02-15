@@ -16,6 +16,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	
 	public function action_index()
 	{	
+		echo "ok";
 		//$user = ORM::factory('user', 1);
 		//$view = View::factory('admin/tasks/list');
 	  	//$this->template->content = $view;

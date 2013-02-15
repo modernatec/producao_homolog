@@ -69,7 +69,7 @@ I18n::lang('pt-br');
 }
  * 
  * */
-if (strpos($_SERVER['HTTP_HOST'], 'm-12893') !== FALSE || strpos($_SERVER['HTTP_HOST'], '10.137.68.214') !== FALSE){
+if (strpos($_SERVER['HTTP_HOST'], 'm-14759') !== FALSE || strpos($_SERVER['HTTP_HOST'], '10.137.68.35') !== FALSE){
     Kohana::$environment = Kohana::DEVELOPMENT;
     error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 }
@@ -97,7 +97,7 @@ if (strpos($_SERVER['HTTP_HOST'], '.com.br') !== FALSE){
 
  
 Kohana::init(array(
-	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://m-12893/',
+	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : '/producao/',
     'caching'    => Kohana::$environment === Kohana::PRODUCTION,
     'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
 	'index_file' => FALSE,
@@ -120,7 +120,7 @@ Kohana::$config->attach(new Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-	'cache'			=> MODPATH.'cache',      	// Caching with multiple backends
+	//'cache'			=> MODPATH.'cache',      	// Caching with multiple backends
 	'auth'       	=> MODPATH.'auth',       	// Basic authentication
 	'sendmail'      => MODPATH.'sendmail',      // Basic Mail
 	'database'   	=> MODPATH.'database',   	// Database access
@@ -159,49 +159,13 @@ Route::set('logout', 'logout')
 	
 Route::set('admin', 'admin(/<controller>(/<action>(/<page>)))', array('page' => '[0-9]+','page' => '.*'))
 	->defaults(array(
-		'controller' => 'home',
+		'controller' => 'tasks',
 		'action'     => 'index',
 		'page'	 	 => '',
 		'directory'	 =>	'admin',
 	));
 	
 	
-/*Route::set(
-	'site', 'site(/<controller>(/<action>(/<page>)))', array('page' => '[0-9]+'))
-	->defaults(array(
-		'controller' => 'home',
-		'action'     => 'index',
-		'page'	 	 => 1,
-		'directory'	 =>	'site',
-	));
-	
- START CHANEL*
-Route::set('canal', '<canal>(/<action>(/<page>))', array('page' => '[0-9]+', 'canal' => '(namoro|amigos)'))
-	->defaults(array(
-		'controller' => 'canal',
-		'action'     => 'index',
-		'page'	 	 => 1,
-		'directory'	 => 'site',
-	));
-/*
-Route::set('namoro', 'namoro(<controller>(/<action>(/<page>)))', array('page' => '[0-9]+'))
-	->defaults(array(
-		'controller' => 'canal',
-		'action'     => 'index',
-		'page'	 	 => 1,
-		'directory'	 => 'site',
-	));
-*/
-/* END CHANEL	
-	
-Route::set('amfphp/browser', 'amfphp/browser(/<controller>(/<action>))')
-	->defaults(array(
-		'controller' => 'amfphp',
-		'action'     => 'browser',
-	));
-*//**
-* Error router
-*/
 Route::set('error', 'error(/<action>)(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
 	->defaults(array(
 		'controller' => 'error',
@@ -211,10 +175,9 @@ Route::set('error', 'error(/<action>)(/<message>)', array('action' => '[0-9]++',
 
 Route::set('default', '(<controller>(/<action>(/<page>)))', array('page' => '[0-9]+'))
 	->defaults(array(
-		'controller' => 'home',
+		'controller' => 'tasks',
 		'action'     => 'index',
-		'page'	 	 => 1,
-		'directory'	 => 'site',
+		'directory'  => 'admin'		
 	));
 	
 /*
@@ -223,6 +186,7 @@ Route::set('default', '(<controller>(/<action>(/<page>)))', array('page' => '[0-
   // This will loop trough all the defined routes and
   // tries to match them with the URI defined above
   echo '<pre>';
+  echo SYSPATH;
   foreach (Route::all() as $r)
   {
       echo Debug::dump($r->matches($uri));

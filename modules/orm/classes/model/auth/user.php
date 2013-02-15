@@ -19,8 +19,8 @@ class Model_Auth_User extends ORM {
 		'roles'       => array('model' => 'role', 'through' => 'roles_users'),
 	);
         
-        protected $_has_one = array(
-        	'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'user_id'),
+	protected $_has_one = array(
+		'userInfos' => array('model' => 'userInfo', 'foreign_key' =>'user_id'),
 	);
 
 	/**

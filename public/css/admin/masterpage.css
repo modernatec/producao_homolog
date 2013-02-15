@@ -18,6 +18,11 @@ h1.logo{
 	background: url('../../image/site/sprite.png') no-repeat 0 -18px;
 }
 
+hr{
+	padding:0;
+	margin:0;
+}
+
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 12px; float:left; text-indent: -5000px; margin:0 5px; }
 a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; }
 a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
@@ -118,7 +123,6 @@ table thead th{
 	padding:5px;
 	color:#008fc7;
 	border-bottom:1px #CCC solid;
-        text-shadow:#999 1px 1px 1px;
 }
 
 table thead th a{ color:#008fc7; }
@@ -159,9 +163,8 @@ table tbody tr:hover {
 }
 
 table tbody td table{
-    margin:15px;
+    padding:15px;
     border:1px solid #ddd;
-    box-shadow:#666 0 5px 15px;
 }
 
 table tbody td table tbody tr:nth-child(odd){
@@ -182,7 +185,7 @@ table tbody td table tbody tr:hover {
 
 /*****Forms****/
 
-.form dl, .form dt{
+.form dl, .form dt, .form dd{
 	padding:5px 0;
 }
 
@@ -190,13 +193,9 @@ table tbody td table tbody tr:hover {
 	float:left;
 }
 
-.form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea{
+.form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
-        box-shadow:#ccc 1px 1px 3px;
-}
-
-.form select{
         box-shadow:#ccc 1px 1px 3px;
 }
 
@@ -210,6 +209,19 @@ table tbody td table tbody tr:hover {
         background-color: #ebebeb;
         display:inline;
 }
+
+.form input[type='checkbox']{
+	margin-right:5px;
+}
+
+.form label
+{
+	margin-bottom: 4px;
+	font-weight:bold;
+}
+
+
+.form p{ padding:2px 5px; display:inline-block; }
 
 .error{
     color:#EE0000;
@@ -284,22 +296,25 @@ table tbody td table tbody tr:hover {
     border:1px solid #999;
 }
 
+.anexos{
+    background:#ddd;
+    padding:5px;
+    /*border: 1px solid #666;*/
+    /*box-shadow:#999 2px 2px 2px;*/
+}
+
 .ui-datepicker{ background-color: #000; box-shadow:#999 0 5px 10px; color: #fff; }
 .ui-datepicker table{ border:0; background-color:#fff; border:1px solid #bbb; }
 .ui-datepicker table tr:nth-child(even), .ui-datepicker table tr:nth-child(odd), .ui-datepicker table tr:hover{ background: none; }
 .ui-datepicker table tr td{ width: 12px; height: 15px; line-height: 15px; text-align: center; border-right: 1px solid #ddd; }
 .ui-datepicker table tr th{ background-color: #fefefe; }
 .ui-datepicker table tr td:hover{ background-color: #008fc7;}
-.ui-datepicker table tr td:hover a{ color:#fff; }
 .ui-datepicker table a{ color: #666; }
 .ui-datepicker-header{ padding: 5px; height: 20px;}
 .ui-datepicker-prev{ float:left; margin-right: 10px; cursor: pointer;}
 .ui-datepicker-next{ float:right; cursor: pointer;}
 .ui-datepicker-title{ float: left;}
-.ui-datepicker .ui-datepicker-current-day{ background-color: #000;}
-.ui-datepicker .ui-datepicker-current-day a{color:#fff;}
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
-.ui-datepicker .ui-datepicker-today a{color:#fff;}
 
 #filelist div{ border:1px outset #eee; padding: 5px 10px; margin: 5px 0; display: block; border-radius:2px; box-shadow:#999 2px 2px 2px; word-wrap: break-word; width: 480px; }
 #filelist div b{ color:#008fc7; }
@@ -313,3 +328,59 @@ table tbody td table tbody tr:hover {
 
 .dhtml{ display: block; background-color:#fff; border: 1px solid #eee; border-radius:5px; box-shadow:#999 5px 5px 15px; padding:10px; position: relative; }
 .dhtml input[type='text']{ border:1px #CCC solid; padding:5px; box-shadow:#ccc 1px 1px 3px; display: block; margin: 10px 0; width: 250px; }
+
+.tags{ padding: 5px; }
+.tags div{ 
+	background:#dcf1fa; 
+	padding:5px; 
+	margin: 5px; 
+	border:1px solid #008fc7; 
+	border-radius: 5px; 
+	color:#008fc7; 
+	box-shadow:#ccc 1px 1px 3px; 
+	display:inline-block; 
+}
+.tags div a{ 
+	color:#008fc7; 
+	font-weight: bold; 
+}
+
+.boxfilter{
+    padding: 20px; 
+    box-shadow:#999 5px 5px 15px;
+    display:block;
+    width:50%;
+    margin:10px;
+    border-radius:5px;
+    background-color: #fff;
+}
+
+.boxfilter input[type='text'], .boxfilter select{
+    border:1px #CCC solid;
+    padding:5px;
+    box-shadow:#ccc 1px 1px 3px;
+    width:100%;
+}
+.boxfilter label{
+    font-weight: bold;
+    display: block;
+    padding:5px 0;
+}
+.boxfilter p{
+    padding:5px 0;
+}
+
+.pagination{
+    padding:10px 0;
+    color:#008fc7;
+    text-align: center;
+    font-size: 15px;
+}
+.pagination a{
+    color:#008fc7;
+    font-size: 15px;
+}
+.pagination strong{
+    font-weight: bold;
+    font-size: 15px;
+}

@@ -1,34 +1,34 @@
 var uploader = new plupload.Uploader({
 	//runtimes : 'gears,html5,flash,silverlight,browserplus',
-        runtimes : 'html5,flash',
+    runtimes : 'html5,flash',
 	browse_button : 'pickfiles',
 	container: 'container',
 	max_file_size : '1024mb',
-        //chunk_size : '1mb',
-        chunk_size : '500kb',
-	url : '/admin/pluploader/',
+    //chunk_size : '1mb',
+    chunk_size : '500kb',
+	url : base_url + 'admin/pluploader/',
 	//resize : {width : 320, height : 240, quality : 90},
-	flash_swf_url : '/public/plupload/js/plupload.flash.swf',
-	silverlight_xap_url : '/public/plupload/js/plupload.silverlight.xap',
+	flash_swf_url : base_url + '/public/plupload/js/plupload.flash.swf',
+	silverlight_xap_url : base_url + '/public/plupload/js/plupload.silverlight.xap',
 	filters : [
-		/*{title : "Image files", extensions : "jpg,gif,png"},
-		{title : "Zip files", extensions : "zip"}*/
+	/*{title : "Image files", extensions : "jpg,gif,png"},
+	{title : "Zip files", extensions : "zip"}*/
 	]
 });
 
 var filesUploads = [];
 var mimeUploads = [];
+var formUp;
 
 uploader.bind('Init', function(up, params) {
-	//document.getElementById('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
-        //$('#filelist').html('');
+	formUp = $('form');
 });
 
 uploader.bind('FilesAdded', function(up, files) {
 	for (var i in files) {
-            $('#filelist').append('<div id="' + files[i].id + '" class="delFiles">'+
-                '<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+files[i].id+'\')">excluir</a> '
-                + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>');
+		$('#filelist').append('<div id="' + files[i].id + '" class="delFiles">'+
+			'<a class="excluir" title="excluir" href="javascript:excluirTemporario(\''+files[i].id+'\')">excluir</a> '
+			+ files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>');
 	}
 });
 
@@ -49,7 +49,10 @@ uploader.bind('UploadComplete', function(up, file) {
     if (up.files.length === (up.total.uploaded + up.total.failed)) {
         $('#filesUploads').val(filesUploads.join(','));
         $('#mimeUploads').val(mimeUploads.join(','));
-        $.jGrowl("Upload concluído com sucesso.",{position:'bottom-right',sticky: true});
+        //$.jGrowl("Upload concluído com sucesso.",{position:'bottom-right',sticky: true});
+		if(formUp){
+			formUp.submit();
+		}
     }        
 });
 

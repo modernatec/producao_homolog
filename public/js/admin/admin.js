@@ -2,7 +2,7 @@ function temMensagens()
 {
     setInterval(function()
     {    
-        $.get('/admin/tasks/searchnew/',function(data)
+        $.get(base_url + 'tasks/searchnew/',function(data)
         {  
             /*$(".jGrowl").remove(); é realmente necessário? */
             data = JSON.parse(data);    
@@ -23,7 +23,7 @@ function temMensagens()
 
 function aniversariantes()
 {
-    $.get('/admin/users/aniversariantes/',function(data)
+    $.get(base_url + 'users/aniversariantes/',function(data)
     {  
         data = JSON.parse(data);    
         $.each(data.dados,function(i)
@@ -45,7 +45,7 @@ function excluirTemporario(id)
 {
     var filePath = $('#'+id).attr('filePath');
     //var mimeType = $('#'+id).attr('mimeType');
-    $.get('/admin/pluploader/delete/'+filePath,function(data)
+    $.get(base_url + 'pluploader/delete/'+filePath,function(data)
     {
        if(data=='OK')
        {           
@@ -83,11 +83,27 @@ function sldBox(obj){
     }
 }
 
+function checkUpload(form){
+	console.log("chamou " + form);
+	
+	if($('.delFiles').size() > 0){
+		if(filesUploads.length <= 0){
+			uploader.start();
+		}else{
+			form.submit();
+		}
+	}else{
+		form.submit();
+	}
+		
+}
+
+
 function filtraTasks()
 {
     var status = ($('#status').val())?($('#status').val()):'';
     var task_to = ($('#task_to').val())?($('#task_to').val()):'';
-    window.location = '/admin/tasks/filter/?status='+status+'&task_to='+task_to;
+    window.location = 'tasks/filter/?status='+status+'&task_to='+task_to;
 }
 
 function getUsersByEquipe(inId)
@@ -95,7 +111,7 @@ function getUsersByEquipe(inId)
     $('#task_to').html('<option value="">aguarde...</a>');
     setTimeout(function()
     {
-        $.get('/admin/users/equipe/'+inId,function(data)
+        $.get(base_url + '/admin/users/equipe/'+inId,function(data)
         {
             data = JSON.parse(data);
             $('#task_to').html('<option value="">Selecione</a>');
@@ -170,7 +186,7 @@ function alterarTag()
     var new_tag = $('#new_tag').val();
     if(new_tag != old_tag)
     {
-        $.get('/admin/medias/alterartag/'+old_tag+'@@@'+new_tag,function(data)
+        $.get(base_url + '/admin/medias/alterartag/'+old_tag+'@@@'+new_tag,function(data)
         {
             dhtml.close();
             var msg = '';
@@ -198,8 +214,65 @@ function alterarTag()
     }
 }
 
+function addTag(cmp,iptHidden)
+{
+    var id = cmp.options[cmp.selectedIndex].value,
+        txt = cmp.options[cmp.selectedIndex].text;
+    if($('#tag_'+id).length <= 0)
+    {
+        $('.tags').append('<div id="tag_'+id+'"> <b>'+txt+'</b> <a href="javascript:;" onclick="serializeTag('+iptHidden+')">X</a> </div>');
+        serializeTag(iptHidden);
+        cmp.selectedIndex = 0;
+    }
+    else
+    {
+        $.jGrowl('Conteúdo já adicionado!',{ position:'bottom-right', sticky: true } );
+    }    
+}
+function removeTag(id,iptHidden)
+{
+    $('#tag_'+id).remove();
+    serializeTag(iptHidden);
+}
+function serializeTag(iptHidden)
+{
+    var strIptHidden = '';
+    $('.tags div').each(
+        function(idx,elem)
+        {
+            var _id = $(elem).attr('id').replace('tag_','');
+            strIptHidden += ','+_id;
+        }
+    );
+    $('#'+iptHidden).val(strIptHidden.substr(1)).attr('class','');
+    $('[for='+iptHidden+'].error').remove();
+}
+
 var m_x = 0;
 var m_y = 0;
+
+$(function () {
+    $("a:contains('Excluir')").click(function() {        
+        var NewDialog = $('<div id="MenuDialog">\
+            <p>Deseja realmente excluir este conteúdo?</p>\
+        </div>'),
+            btExcluir = this;
+        NewDialog.dialog({
+            modal: true,
+            title: "Excluir",
+            show: 'clip',
+            hide: 'clip',
+            resizable:false,
+            buttons: [
+                {text: "OK", click: function() {
+                    window.location.href = $(btExcluir).attr('href');	
+                }},
+                {text: "Cancelar", click: function() {$(this).dialog("close")}}
+            ]
+        });
+        return false;
+    });
+});
 
 $(document).ready(function()
 {	
@@ -210,8 +283,9 @@ $(document).ready(function()
             $.jGrowl(msgs[i],{position:'bottom-right'}); 
         } 
     }
+	
     temMensagens();
-    aniversariantes();
+    //aniversariantes();
     rightClick(window);        
     $('[rightClick="true"]').each(function()
     {
@@ -237,3 +311,57 @@ $(document).ready(function()
          m_y = e.pageY;
     });
 });
+
+function pop_load_pais(){
+    $.get(base_url + '/producao/admin/objects/popload',function(data){
+        data = JSON.parse(data); 
+        $('#pop_pais').html('<option value="">Selecione</option>');
+        $.each(data.dados,function(i)
+        {
+            var dado = data.dados[i];
+            $('#pop_pais').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
+        });
+    })
+}
+
+function pop_load_colecao(){
+    var pop_pais = $('#pop_pais').val();
+    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais,function(data){
+        data = JSON.parse(data); 
+        $('#pop_colecao').html('<option value="">Selecione</option>');
+        $.each(data.dados,function(i)
+        {
+            var dado = data.dados[i];
+            $('#pop_colecao').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
+        });
+    });
+}
+
+function pop_load_ano(){
+    var pop_pais = $('#pop_pais').val(),
+        pop_colecao = $('#pop_colecao').val();
+    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais+'&colecao='+pop_colecao,function(data){
+        data = JSON.parse(data); 
+        $('#pop_ano').html('<option value="">Selecione</option>');
+        $.each(data.dados,function(i)
+        {
+            var dado = data.dados[i];
+            $('#pop_ano').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
+        });
+    })
+}
+
+function pop_load_objeto(){
+    var pop_pais = $('#pop_pais').val(),
+        pop_colecao = $('#pop_colecao').val(),
+        pop_ano = $('#pop_ano').val();
+    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais+'&colecao='+pop_colecao+'&ano='+pop_ano,function(data){
+        data = JSON.parse(data); 
+        $('#pop_objeto').html('<option value="">Selecione</option>');
+        $.each(data.dados,function(i)
+        {
+            var dado = data.dados[i];
+            $('#pop_objeto').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
+        });
+    })
+}

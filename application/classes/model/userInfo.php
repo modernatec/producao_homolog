@@ -13,8 +13,8 @@ class Model_UserInfo extends ORM {
         'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
     );
     
-    protected $_has_many = array(
-            'team'       => array('model' => 'team', 'through' => 'teams_users', 'foreign_key' => 'user_id'),
+    protected $_has_one = array(
+         'team'       => array('model' => 'team', 'foreign_key' => 'team_id'),
     );
 
     public function labels()

@@ -2,95 +2,64 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/tasks" class="bar_button round">Voltar</a>
 	</div>
-	<?	
-		$title = ($task->title) ? ($task->title) : (Arr::get($values, 'title'));
-        $description = ($statusHist[0]->description) ? ($statusHist[0]->description) : (Arr::get($values, 'description'));
-        $crono_date = ($task->crono_date) ? ($task->crono_date) : (Arr::get($values, 'crono_date'));
-
-        $status_id = ($statusHist[0]->status_id) ? ($statusHist[0]->status_id) : (Arr::get($values, 'statu_id'));
-        
-        $project_id = ($task->project_id) ? ($task->project_id) : (Arr::get($values, 'project_id'));
-        $user_id = ($task->user_id) ? ($task->user_id) : (Arr::get($values, 'user_id'));
-        $priority_id = ($task->priority_id) ? ($task->priority_id) : (Arr::get($values, 'priority_id'));
-        $pasta = ($task->pasta) ? ($task->pasta) : (Arr::get($values, 'pasta'));
-    ?>   
-
 	<form name="frmTask" id="frmTask" method="post" class="form" enctype="multipart/form-data">
 		<dl>
 			<dt>
-				<label for="project_id"><b><?=$task->project->name?></b></label>
+           		<?=@$taskVO["title"]?><br/>
+                <b>para:</b> <?=@$taskVO['crono_date']?><br/>
+                <b>prioridade:</b> <?=@$taskVO['priority']?><br/>
+                <b>solicitada por:</b> <?=$taskflows[0]->userInfo->nome;?>
+                
 			</dt>
 			<dd>
-				<input type='hidden' name='project_id' value='<?=$task->project->id?>' />
+				<input type="hidden" name="title" id="title" value="<?=@$taskVO["title"]?>"/>
+				<input type="hidden" name="project_id" id="project_id" value="<?=@$taskVO["project_id"]?>"/>
+				<input type="hidden" name="crono_date" id="crono_date" value="<?=@$taskVO['crono_date']?>"/>
+				<input type="hidden" name="pasta" id="pasta" value="<?=@$taskVO['pasta']?>"/>
+		      	<input type="hidden" name="user_id" id="user_id" value="<?=@$taskVO['userInfo_id']?>"/>
+		      	<input type="hidden" name="priority_id" id="priority_id" value="<?=@$taskVO['priority_id']?>"/>
 			</dd>
+            <hr>
 			<dt>
-				<label for="title"><?=$task->title?></label>
+				<b>descrição</b><br/>
+				<?=$taskflows[0]->description;?>
 			</dt>
-			<dd>
-				<input type="hidden" name="title" id="title" value="<?=$task->title?>"/>
-			</dd>
-			<dt>
-				<hr>
-				<label for="crono_date"><b>data de entrega:</b> <?=Utils_Helper::data($task->crono_date)?></label>
-			</dt>
-			<dd>
-				<input type="hidden" name="crono_date" id="crono_date" value="<?=$task->crono_date?>"/>
-			</dd>
-			<dt>
-				<label for="pasta"><b>pasta:</b> <?=$pasta?></label>
-			</dt>
-			<dd>
-				<input type="hidden" name="pasta" id="pasta" value="<?=$task->pasta?>"/>
-			</dd>
-	    	<dt>
-	      		<label for="user_id"><b>criada por:</b> <?=$task->user->userInfos->nome?></label>
-	    	</dt>
-		    <dd>
-		      	<input type="hidden" name="user_id" id="user_id" value="<?=$task->user->id?>"/>
-		    </dd>
+		    <?=$anexosView?>
 		    <dt>
-		      	<label for="priority_id"><b>prioridade: </b> <?=$task->priority->priority?></label>
-		    </dt>
-		    <dd>
-		      	<input type="hidden" name="priority_id" id="priority_id" value="<?=$task->priority->id?>"/>
-		    </dd>
-		    <dt>
-		      	<label for="arquivo"><b>Anexar arquivo</b></label>
-		    </dt>	    
-		    <dd>
-		        <? /*<input type="file" class="text required round" name="arquivo" id="arquivo" style="width:300px;" />*/?>
-                        <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
-                        <input type="hidden" name="mimeUploads" id="mimeUploads" value=""/>
-                        <div id="container">
-                            <div id="filelist">
-                                 <a id="excluirTodos" class="excluir_todos">Excluir todos</a>
-                            </div>
-                            <br />                            
-                            <a id="pickfiles" href="javascript:;" class="bar_button round">Anexar arquivo</a> 
-                            <a id="uploadfiles" href="javascript:;" class="bar_button round">Subir</a>
-                        </div>
-                        <br/>
-		    </dd>
-		    <?
-		    	echo View::factory('admin/tasks/status_task')
-		        					->bind('statusList', $statusList)
-		        					->bind('status_task', $taskflows[0])
-		        					->bind('isUpdate', $isUpdate)
-		        					->bind('usersList', $usersList);
-			?>		    
-		  </dl>
+                <label for="statu_id"><b>status atual: </b> </label>
+            </dt>
+            <dd>
+                <select name="statu_id" id="statu_id" style="width:150px;">
+                    <option value="">selecione</option>
+                    <? foreach($statusList as $status){?>
+                        <option value="<?=$status->id?>" ><?=$status->status?></option>
+                    <?}?>
+                </select>
+                <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
+            </dd>
+            <dt>
+            	<label for="description">observações</label>
+            </dt>
+            <dd>
+                  <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"></textarea>
+                  <span class='error'><?=Arr::get($errors, 'description');?></span>
+            </dd>
+            <dd>
+              <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="<?=(@$isUpdate) ? 'Salvar' : 'Criar'?>" />
+            </dd>	    
+		</dl>
 	</form>
-	<div class='right'>
-		<span class="header" style="margin-left:5px;">histórico</span>
+	<div class='right'>	
+            <span class="header" style="margin-left:5px;">histórico</span>
 	<?
-                $cntStsTsk = 0;
-		foreach($taskflows as $status_task){
-                    echo View::factory('admin/tasks/hist_task')
-                        ->bind('statusList', $statusList)
-                        ->bind('status_task', $status_task)
-                        ->bind('cntStsTsk', $cntStsTsk);
-                    $cntStsTsk++;
-                }
+		if(isset($taskflows)){
+			foreach($taskflows as $status_task){
+				echo View::factory('admin/tasks/hist_task')
+					->bind('statusList', $statusList)
+					->bind('status_task', $status_task)
+					->bind('cntStsTsk', $cntStsTsk); 
+			}	
+		}
 	?>
 	</div>
 </div>

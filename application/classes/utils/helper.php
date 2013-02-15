@@ -55,7 +55,7 @@ class Utils_Helper
         if($exit) exit;
     }
     
-    public static function uploadNoAssoc($file,$pasta,$tipagem=array('jpg','jpeg','gif','png'))
+    public static function uploadNoAssoc($file,$pasta,$tipagem = array('jpg','jpeg','gif','png'))
     {
         $erro = array(
             1=>'Tipo incorreto de arquivo',
