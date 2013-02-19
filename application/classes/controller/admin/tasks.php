@@ -74,7 +74,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->priorityList = ORM::factory('priority')->find_all();
 		$view->statusList = ORM::factory('statu')->find_all();
 		
-		$view->anexosView = View::factory('admin/common/anexos');
+		$view->anexosView = View::factory('admin/files/anexos');
 	  	$this->template->content = $view;	
                 
 	  	if (HTTP_Request::POST == $this->request->method()) 
@@ -109,7 +109,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->where('team_id', '=', $view->taskVO['team_id'])->find_all();
 		$view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
 		
-		$view->anexosView = View::factory('admin/common/anexos');
+		$view->anexosView = View::factory('admin/files/anexos');
 		$view->teamsList = ORM::factory('team')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
 		$view->priorityList = ORM::factory('priority')->find_all();

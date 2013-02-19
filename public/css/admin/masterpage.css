@@ -214,10 +214,10 @@ table tbody td table tbody tr:hover {
 	margin-right:5px;
 }
 
-.form label
+label
 {
-	margin-bottom: 4px;
-	font-weight:bold;
+	margin-bottom: 8px;
+	color:#008fc7;
 }
 
 
@@ -237,45 +237,31 @@ table tbody td table tbody tr:hover {
 
 /***Task***/
 
-.filelist{
-    width: 400px;
-}
-
-.filelist a.h{ color:#008fc7; margin: 5px 0; display: block; }
-
-.filelist ul{ 
-    width: 400px;
-    box-shadow:#999 2px 2px 2px;
-    border-radius:5px; 
-}
-
-.filelist ul li{
+.filelist li{
     padding:5px;
-    border-bottom:1px #CCC solid;
-    line-height:20px;
-    border-radius:5px; 
+    border-bottom:1px #eee solid;
 }
 
-.filelist ul li a{
+.filelist li a{
     color:#666;
     word-wrap: break-word;
     font-size: 12px;
 }
 
-.filelist ul li a:hover{
+.filelist li a:hover{
     text-decoration: underline;
 }
 
-.filelist ul li:nth-child(odd){
+.filelist li:nth-child(odd){
     background-color: #fff;
 }
 
-.filelist ul li:nth-child(even){
+.filelist li:nth-child(even){
     background-color: #eee;
 }
 
-.filelist ul li:hover {
-    background-color: #FFFAF0; color: #000;
+.filelist li:hover {
+    background-color: #7ec353; color: #000;
 }
 
 .hist_task{

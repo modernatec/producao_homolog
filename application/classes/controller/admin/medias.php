@@ -45,6 +45,7 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 		
 		$this->addValidateJs(Controller_Admin_Files::addJs());
 		$view->mediaVO = $this->setVO('media');
+		$view->anexosView = View::factory('admin/files/anexos');
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -52,10 +53,32 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 			$this->salvar();
 		}    
 	}
+	
+	public function action_edit($id)
+	{ 
+		$view = View::factory('admin/medias/create')
+			->bind('errors', $errors)
+			->bind('message', $message);
+		
+		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$media = ORM::factory('media', $id);
+		
+		$view->mediaFiles = $media->getFiles($id);
+		$view->mediaVO = $this->setVO('media', $media);
+		
+		$view->anexosView = View::factory('admin/files/anexos');
+		$this->template->content = $view;
+
+		if (HTTP_Request::POST == $this->request->method()) 
+		{           
+			$this->salvar($id);
+		}    
+	}
+	
        
-	protected function salvar()
+	protected function salvar($id)
 	{
-		$media = ORM::factory('media');
+		$media = ORM::factory('media', $id);
 		$media->tag = $this->request->post('tag');
 		$media->userInfo_id = $this->current_user->userInfos->id;
 		$media->save();
@@ -63,7 +86,7 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 		$folder = 'public/upload/medias/';
 		Controller_Admin_Files::salvar($this->request, $folder, $media->id, "media", $this->current_user);
 		
-		Request::current()->redirect('admin/medias');		
+		Request::current()->redirect('admin/medias/edit/'.$media->id);		
 	}
 	
 	public function action_alterartag($str)

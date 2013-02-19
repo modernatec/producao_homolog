@@ -79,16 +79,29 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
 				}
 			}
 			$userinfo->save();
+			$db->commit();
 			$message = "Contato '{$userinfo->nome}' salvo com sucesso.";
 			
 			Utils_Helper::mensagens('add',$message);
 			return $userinfo;
 
-		} catch (ORM_Validation_Exception $e) {
-			$message = 'Houveram alguns erros. Veja à seguir:';
-			$errors = $e->errors('models');
-			Utils_Helper::mensagens('add',$message);
-		}
+		}  catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+		    Utils_Helper::mensagens('add',$message);    
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        }
+
+        return false;
 	}
 	
 	public function action_delete($inId)

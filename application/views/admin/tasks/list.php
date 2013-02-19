@@ -6,7 +6,7 @@
 	<table class="list">
 		<thead>
             <tr valign="bottom">
-                <th>nome</th>
+                <th>título</th>
                 <th>status atual</th>
                 <th>de:</th>
                 <th>para:</th>			
@@ -46,7 +46,7 @@
 	<table class="list">
 		<thead>
             <tr valign="bottom">
-                <th>nome</th>
+                <th>título</th>
                 <th>status atual</th>
                 <th>de:</th>
                 <th>para:</th>			

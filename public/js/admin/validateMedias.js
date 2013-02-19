@@ -7,7 +7,7 @@ $(document).ready(function() {
                 tag: { required:"Digite uma tag."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              checkUpload(form);
             }
         })
 });

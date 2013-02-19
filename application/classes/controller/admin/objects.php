@@ -16,19 +16,16 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addPlupload(){
-		$scripts =   array(
-			"public/plupload/js/plupload.js",
-			"public/plupload/js/plupload.html5.js",
-			"public/plupload/Uploader.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	protected function addValidateJs(){
 		$scripts =   array(
 			"public/js/admin/validateObjects.js",
 		);
+		
+		if($arr){
+			foreach($arr as $item){
+				array_push($scripts, $item);	
+			}
+		}
 		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
 	}
         
@@ -48,9 +45,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->segmentos = ORM::factory('segmento')->order_by('nome','ASC')->find_all();
 		$view->colecaoList = DB::select('colecao')->from('objects')->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();
 		$view->dataLancamentoList = DB::select('data_lancamento')->from('objects')->group_by('data_lancamento')->order_by('data_lancamento','ASC')->as_object()->execute();
-		$view->titulo = '';
-		$view->linkPage = ($this->assistente)?('view'):('edit');
-		$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
+		//$view->titulo = '';
+		//$view->linkPage = ($this->assistente)?('view'):('edit');
+		//$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
 		$this->template->content = $view;             
 	} 
         
@@ -103,14 +100,22 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 			
-			
-		$view->segmentoVO = $this->setVO('segmento', $segmento);
-               $this->template->content = $view;
+		$view->objVO = $this->setVO('object');
+        $view->typeObjects = ORM::factory('typeobject')->find_all();
+		$view->countries = ORM::factory('country')->find_all();
+		$view->suppliers = ORM::factory('supplier')->find_all();
+		$view->segmentos = ORM::factory('segmento')->find_all();
+		$view->softwares = ORM::factory('sfwprod')->order_by('nome', 'ASC')->find_all();
+		$view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
+		$view->materias = ORM::factory('materia')->order_by('nome', 'ASC')->find_all();
+		
+		$this->template->content = $view;
                 
-                $this->addPlupload();
-		$this->addValidateJs();
+		$this->addValidateJs(Controller_Admin_Files::addJs());
+		
+		
                 
-                $tiposObj = $this->getTypeObjetcs(Arr::get($values, 'typeobject_id'));
+        /*        $tiposObj = $this->getTypeObjetcs(Arr::get($values, 'typeobject_id'));
                 $segmentos = $this->getSegmentos(Arr::get($values, 'segmento_id'));                
                 $countries = $this->getCountries(Arr::get($values, 'country_id'));   
                 $sfwprodsList = $this->getSfwprodsList();
@@ -118,6 +123,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                 $materiasList = $this->getMateriasList();
                 
                 $objectpai = ORM::factory('object',Arr::get($values, 'objectpai_id'));
+		*/		
 		if (HTTP_Request::POST == $this->request->method()) 
 		{           
                     $objeto = $this->salvar();
@@ -319,9 +325,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	protected function salvar($id = null)
 	{
-		$this->template->content
-			->bind('errors', $errors)
-			->bind('message', $message);
+		$db = Database::instance();
+        $db->begin();
 		
 		try 
 		{            
@@ -329,101 +334,115 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			                
 			if(!$id)
 			{
-                            $objeto->data_ins = date('Y-m-d H:i:s');
-                            $objeto->status = 1;
+				$objeto->data_ins = date('Y-m-d H:i:s');
+				$objeto->status = 1;
 			}
                         
-                        if($this->request->post('objectpai_id') != ''){
-                            $objeto->objectpai_id = $this->request->post('objectpai_id');
-                        }else{
-                            $objeto->objectpai_id = 0;
-                        }
+			if($this->request->post('objectpai_id') != ''){
+				$objeto->objectpai_id = $this->request->post('objectpai_id');
+			}else{
+				$objeto->objectpai_id = 0;
+			}
                         
 			$objeto->data_alt = date('Y-m-d H:i:s');
 			$objeto->save();
                         
-                        $basedir = 'public/upload/objetos';
-                        $rootdir = DOCROOT.$basedir;
-                        if($objeto->data_lancamento != ''){
-                            $ano = Utils_Helper::data($objeto->data_lancamento,'Y');
-                            $rootdir .= '/'.$ano;
-                            if(!file_exists($rootdir))
-                            {                                
-                                mkdir($rootdir,0777);
-                            }
-                            
-                            if($objeto->colecao != ''){
-                                $colecao = Utils_Helper::limparStr($objeto->colecao);
-                                $rootdir .= '/'.$colecao;
-                                if(!file_exists($rootdir))
-                                {   
-                                    mkdir($rootdir,0777);
-                                }
-                                
-                                if($objeto->nome_arq != ''){
-                                    $nome_arq = Utils_Helper::limparStr($objeto->nome_arq);
-                                    $rootdir .= '/'.$nome_arq;
-                                    if(!file_exists($rootdir))
-                                    {                                        
-                                        mkdir($rootdir,0777);
-                                    }
-                                }
-                            }
-                        }
-                                           
-                        $filesUploads = $this->request->post('filesUploads');
-                        $mimeUploads = $this->request->post('mimeUploads');
-                        if($filesUploads!='')
-                        {
-                            $arrFiles = explode(',',$filesUploads);
-                            $arrMimes = explode(',',$mimeUploads);
-                            $basedir = 'public/plupload/temporario/';
-                            $newbasedir = str_replace(DOCROOT,'',$rootdir).'/';
-                            foreach($arrFiles as $k=>$file){
-                                if($file!='empty'){
-                                    $size = filesize($basedir.$file);
+			$basedir = 'public/upload/objetos';
+			$rootdir = DOCROOT.$basedir;
+			if($objeto->data_lancamento != ''){
+				$ano = Utils_Helper::data($objeto->data_lancamento,'Y');
+				$rootdir .= '/'.$ano;
+				if(!file_exists($rootdir))
+				{                                
+					mkdir($rootdir,0777);
+				}
+				
+				if($objeto->colecao != ''){
+					$colecao = Utils_Helper::limparStr($objeto->colecao);
+					$rootdir .= '/'.$colecao;
+					if(!file_exists($rootdir))
+					{   
+						mkdir($rootdir,0777);
+					}
+					
+					if($objeto->nome_arq != ''){
+						$nome_arq = Utils_Helper::limparStr($objeto->nome_arq);
+						$rootdir .= '/'.$nome_arq;
+						if(!file_exists($rootdir))
+						{                                        
+							mkdir($rootdir,0777);
+						}
+					}
+				}
+			}
+							   
+			$filesUploads = $this->request->post('filesUploads');
+			$mimeUploads = $this->request->post('mimeUploads');
+			if($filesUploads!='')
+			{
+				$arrFiles = explode(',',$filesUploads);
+				$arrMimes = explode(',',$mimeUploads);
+				$basedir = 'public/plupload/temporario/';
+				$newbasedir = str_replace(DOCROOT,'',$rootdir).'/';
+				foreach($arrFiles as $k=>$file){
+					if($file!='empty'){
+						$size = filesize($basedir.$file);
 
-                                    Controller_Admin_Files::salvar($newbasedir.$file,$arrMimes[$k],$size,$objeto->id,'object');
+						Controller_Admin_Files::salvar($newbasedir.$file,$arrMimes[$k],$size,$objeto->id,'object');
 
-                                    rename($basedir.$file, $newbasedir.$file);
-                                }
-                            }
-                        }
+						rename($basedir.$file, $newbasedir.$file);
+					}
+				}
+			}
+			
+			$software_producao = $this->request->post('software_producao');
+			if(count($software_producao)>0)
+			{
+				$objeto->remove('sfwprods');
+				foreach($software_producao as $sfwprod_id){
+					$objeto->add('sfwprods', ORM::factory('sfwprod', array('id' => $sfwprod_id)));
+				}
+			}
+			
+			$produtora = $this->request->post('produtora');
+			if(count($produtora)>0)
+			{
+				$objeto->remove('suppliers');
+				foreach($produtora as $supplier_id){
+					$objeto->add('suppliers', ORM::factory('supplier', array('id' => $supplier_id)));
+				}
+			}
                         
-                        $software_producao = $this->request->post('software_producao');
-                        if(count($software_producao)>0)
-                        {
-                            $objeto->remove('sfwprods');
-                            foreach($software_producao as $sfwprod_id){
-                                $objeto->add('sfwprods', ORM::factory('sfwprod', array('id' => $sfwprod_id)));
-                            }
-                        }
-                        
-                        $produtora = $this->request->post('produtora');
-                        if(count($produtora)>0)
-                        {
-                            $objeto->remove('suppliers');
-                            foreach($produtora as $supplier_id){
-                                $objeto->add('suppliers', ORM::factory('supplier', array('id' => $supplier_id)));
-                            }
-                        }
-                        
-                        $materia = $this->request->post('materia');
-                        if(count($materia)>0)
-                        {
-                            $objeto->remove('materias');
-                            foreach($materia as $materia_id){
-                                $objeto->add('materias', ORM::factory('materia', array('id' => $materia_id)));
-                            }
-                        }
+			$materia = $this->request->post('materia');
+			if(count($materia)>0)
+			{
+				$objeto->remove('materias');
+				foreach($materia as $materia_id){
+					$objeto->add('materias', ORM::factory('materia', array('id' => $materia_id)));
+				}
+			}
 			
 			Utils_Helper::mensagens('add','Objeto '.$objeto->nome_obj.' salvo com sucesso.');
+			$db->commit();
 			Request::current()->redirect('admin/objects');
 
-		} catch (ORM_Validation_Exception $e) {
-			$errors = $e->errors('models');
-			Utils_Helper::mensagens('add','Houveram alguns erros.');
-		}
+		}  catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+		    Utils_Helper::mensagens('add',$message);    
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        }
+
+        return false;
 	}
     
 	/*    
@@ -448,7 +467,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             }
             return $segmentos;
         }
-      */   
+         
         protected function getCountries($id = null){
             $countries = '';                
             $countriesList = ORM::factory('country')->order_by('nome','ASC')->find_all();
@@ -496,7 +515,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         
         protected function getColecoes($txt = ''){
             $colecoes = '';                
-            $colecoesList = 
+            $colecoesList = '';
             foreach($colecoesList as $cl){
                 $sld = '';
                 if($txt == $cl->colecao) $sld = 'selected="selected"';
@@ -507,7 +526,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         
         protected function getDataLancamento($txt = ''){
             $dataLancamentos = '';                
-            $dataLancamentosList = 
+            $dataLancamentosList = '';
             foreach($dataLancamentosList as $dl){
                 $sld = '';
                 $ano = Utils_Helper::data($dl->data_lancamento,'Y');
@@ -533,7 +552,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             }
             return $materias;
         }
-        
+        */
         protected function getFilesList($id){
             $filesList = ORM::factory('file')->where('model','=','object')->and_where('model_id','=',$id)->find_all(); 
             $files = '';

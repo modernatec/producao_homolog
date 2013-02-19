@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
-class Controller_Admin_Projects extends Controller_Admin_Template {
+class Controller_Admin_Collections extends Controller_Admin_Template {
  
 	public $auth_required		= array('login', 'admin');
  	
@@ -19,30 +19,30 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         
 	protected function addValidateJs(){
 		$scripts =   array(
-			"public/js/admin/validateProjects.js",
+			"public/js/admin/validateCollections.js",
 		);
 		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
 	}
         
 	public function action_index()
 	{	
-		$view = View::factory('admin/projects/list')
+		$view = View::factory('admin/collections/list')
 			->bind('message', $message);
 		
-		$view->projectsList = ORM::factory('project')->order_by('name','ASC')->find_all();
+		$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;    
 	} 
 
 	public function action_create()
     { 
-		$view = View::factory('admin/projects/create')
+		$view = View::factory('admin/collections/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 
 		$this->addValidateJs();
 		$view->isUpdate = false;
 		
-		$view->projectVO = $this->setVO('project');		
+		$view->projectVO = $this->setVO('collection');		
 		$view->segmentosList = ORM::factory('segmento')->find_all();
 		$this->template->content = $view;
 
@@ -54,15 +54,15 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 	public function action_edit($id)
     {        
-		$view = View::factory('admin/projects/create')
+		$view = View::factory('admin/collections/create')
 				->bind('errors', $errors)
 				->bind('message', $message);
 	
 		$this->addValidateJs();
 		$view->isUpdate = true;
 				
-		$projeto = ORM::factory('project', $id);
-		$view->projectVO = $this->setVO('project', $projeto);
+		$collection = ORM::factory('collection', $id);
+		$view->collectionVO = $this->setVO('collection', $collection);
 		$view->segmentosList = ORM::factory('segmento')->find_all();
 		$this->template->content = $view;	
 	   
@@ -79,28 +79,18 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
+			$colecao = ORM::factory('collection', $id)->values($this->request->post(), array(
 				'name',
+				'year',
 				'segmento_id',
-				'description'
 			));
-			                
-			if(!$id)
-			{
-				$pastaProjeto = Utils_Helper::limparStr($projeto->name);
-				$basedir = 'public/upload/projetos/';
-				$rootdir = DOCROOT.$basedir;
-				
-				if(!file_exists($rootdir.$pastaProjeto)){
-					mkdir($rootdir.$pastaProjeto,0777);
-				}
-				$projeto->pasta = $pastaProjeto;                    
-			}
+			               
 			
-			$projeto->save();
+			$colecao->save();
+			
 			$db->commit();
-			Utils_Helper::mensagens('add','Projeto '.$projeto->name.' salvo com sucesso.');
-			Request::current()->redirect('admin/projects');
+			Utils_Helper::mensagens('add','Coleção '.$colecao->name.' salvo com sucesso.');
+			Request::current()->redirect('admin/collections');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -123,20 +113,15 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{
-		$view = View::factory('admin/projects/list')
-			->bind('errors', $errors)
-			->bind('message', $message);
-		/*
 		try 
 		{            
-			$projeto = ORM::factory('project', $id);
+			$projeto = ORM::factory('collection', $id);
 			$projeto->delete();
-			Utils_Helper::mensagens('add','Projeto excluído com sucesso.'); 
+			Utils_Helper::mensagens('add','Coleção excluída com sucesso.'); 
 		} catch (ORM_Validation_Exception $e) {
 			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
 			$errors = $e->errors('models');
 		}
-		*/
-		Request::current()->redirect('admin/projects');
+		Request::current()->redirect('admin/collections');
 	}
 }

@@ -1,5 +1,5 @@
 <dt>
-    <label for="arquivo"><b>Anexar arquivo</b></label>
+    <label for="arquivo">Anexar arquivo</label>
 </dt>	    
 <div class='anexos round' style="margin:0;">
 <dd>
