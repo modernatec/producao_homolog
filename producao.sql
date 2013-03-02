@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2013 at 08:51 PM
+-- Generation Time: Mar 02, 2013 at 05:56 PM
 -- Server version: 5.5.29
 -- PHP Version: 5.4.11
 
@@ -19,6 +19,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `producao`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `moderna_collections`
+--
+
+CREATE TABLE IF NOT EXISTS `moderna_collections` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `year` varchar(9) NOT NULL,
+  `segmento_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `segmento_id` (`segmento_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `moderna_collections`
+--
+
+INSERT INTO `moderna_collections` (`id`, `name`, `year`, `segmento_id`) VALUES
+(1, 'Araribá', '2010', 3);
 
 -- --------------------------------------------------------
 
@@ -81,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `moderna_files` (
   PRIMARY KEY (`id`),
   KEY `model` (`model`),
   KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `moderna_files`
@@ -96,7 +118,12 @@ INSERT INTO `moderna_files` (`id`, `uri`, `created_at`, `model_id`, `mime_type`,
 (9, 'public/upload/curriculumTulips.jpg', '2013-02-07 19:19:13', 14, 'application/octet-stream', '620888', 11, 'task'),
 (10, 'public/upload/curriculummapa_brasil.eps', '2013-02-07 19:54:38', 16, 'application/octet-stream', '881870', 11, 'task'),
 (11, 'public/upload/curriculumDesert.jpg', '2013-02-08 11:28:34', 19, 'application/octet-stream', '845941', 4, 'task'),
-(12, 'public/upload/medias/liberacao_tablet_1360936416.txt', '2013-02-15 13:54:05', 1, 'text/plain', '1842', 4, 'media');
+(12, 'public/upload/medias/liberacao_tablet_1360936416.txt', '2013-02-15 13:54:05', 1, 'text/plain', '1842', 4, 'media'),
+(13, 'public/upload/medias/contatos_tec_1361191600.xls', '2013-02-18 12:46:40', 1, 'application/vnd.ms-excel', '39424', 4, 'media'),
+(14, 'public/upload/medias/coder__1361191764.xml', '2013-02-18 12:49:25', 1, 'text/xml', '3722', 4, 'media'),
+(15, 'public/upload/medias/autoriza_o_de_desconto_efetivo_clt_forma_o_em_adobe_e_cs5_v_deo._1361191791.pdf', '2013-02-18 12:49:51', 1, 'application/pdf', '55534', 4, 'media'),
+(16, 'public/upload/medias/declara_o_prestador_forma_o_em_adobe_e_cs5_v_deo._1361191791.pdf', '2013-02-18 12:49:51', 1, 'application/pdf', '54508', 4, 'media'),
+(17, 'public/upload/curriculumform_1361293534.txt', '2013-02-19 17:05:41', 2, 'text/plain', '1317', 4, 'task');
 
 -- --------------------------------------------------------
 
@@ -153,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `moderna_menus` (
   `ordem` tinyint(4) NOT NULL,
   `sub` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `moderna_menus`
@@ -168,12 +195,13 @@ INSERT INTO `moderna_menus` (`id`, `display`, `link`, `ordem`, `sub`) VALUES
 (6, 'Equipes', 'admin/teams', 0, 4),
 (7, 'Arquivos comuns', 'admin/medias', 7, 0),
 (8, 'Curriculums', 'admin/curriculums', 3, 0),
-(9, 'Catálogo', 'admin/objects', 2, 0),
+(9, 'Acervo', 'admin/objects', 2, 0),
 (10, 'Tipos de Objetos', 'admin/typeobjects', 0, 9),
 (11, 'Segmentos', 'admin/segmentos', 0, 9),
 (12, 'Software de Produção', 'admin/sfwprods', 0, 9),
 (13, 'Países', 'admin/countries', 0, 9),
-(14, 'Matérias', 'admin/materias', 0, 9);
+(14, 'Matérias', 'admin/materias', 0, 9),
+(15, 'Coleção', 'admin/collections', 0, 9);
 
 -- --------------------------------------------------------
 
@@ -207,6 +235,7 @@ INSERT INTO `moderna_menus_roles` (`menu_id`, `role_id`) VALUES
 (12, 2),
 (13, 2),
 (14, 2),
+(15, 2),
 (2, 3),
 (4, 3),
 (5, 3),
@@ -225,17 +254,16 @@ INSERT INTO `moderna_menus_roles` (`menu_id`, `role_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `moderna_objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome_obj` varchar(100) NOT NULL,
-  `nome_arq` varchar(500) NOT NULL,
+  `nome` varchar(200) NOT NULL,
+  `taxonomia` varchar(100) NOT NULL,
   `typeobject_id` int(11) NOT NULL,
-  `colecao` varchar(100) NOT NULL,
-  `segmento_id` int(11) NOT NULL,
+  `collection_id` int(11) NOT NULL,
   `arq_aberto` tinyint(4) NOT NULL,
   `extensao_arq` varchar(45) NOT NULL,
   `interatividade` tinyint(4) NOT NULL,
-  `empresa` varchar(45) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
   `data_lancamento` date DEFAULT NULL,
-  `sinopse` varchar(255) DEFAULT NULL,
+  `sinopse` text,
   `obs` text,
   `objectpai_id` int(11) DEFAULT '0',
   `country_id` int(11) NOT NULL,
@@ -244,8 +272,8 @@ CREATE TABLE IF NOT EXISTS `moderna_objects` (
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tipo_obj_fk_idx` (`typeobject_id`),
-  KEY `segmento_fk_idx` (`segmento_id`),
-  KEY `cmp_pais_fk_idx` (`country_id`)
+  KEY `cmp_pais_fk_idx` (`country_id`),
+  KEY `collection_id` (`collection_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -472,7 +500,15 @@ CREATE TABLE IF NOT EXISTS `moderna_status_tasks` (
   KEY `task_id` (`task_id`),
   KEY `status_id` (`status_id`),
   KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `moderna_status_tasks`
+--
+
+INSERT INTO `moderna_status_tasks` (`id`, `status_id`, `task_id`, `date`, `description`, `userInfo_id`) VALUES
+(1, 5, 1, '2013-02-18 13:22:00', 'Gravar locução', 4),
+(2, 5, 1, '2013-02-19 17:05:41', 'teste', 4);
 
 -- --------------------------------------------------------
 
@@ -519,7 +555,14 @@ CREATE TABLE IF NOT EXISTS `moderna_tasks` (
   KEY `fk_moderna_tasks_moderna_users1` (`userInfo_id`),
   KEY `priority_id` (`priority_id`),
   KEY `project_id` (`project_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `moderna_tasks`
+--
+
+INSERT INTO `moderna_tasks` (`id`, `created_at`, `priority_id`, `project_id`, `crono_date`, `userInfo_id`, `title`, `pasta`) VALUES
+(1, '2013-02-18 13:21:54', 2, 2, '2013-02-19 00:00:00', 4, 'Gravar locução', 'locucao');
 
 -- --------------------------------------------------------
 
@@ -534,7 +577,14 @@ CREATE TABLE IF NOT EXISTS `moderna_tasks_users` (
   PRIMARY KEY (`id`,`task_id`,`userInfo_id`),
   KEY `task_id` (`task_id`),
   KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `moderna_tasks_users`
+--
+
+INSERT INTO `moderna_tasks_users` (`id`, `task_id`, `userInfo_id`) VALUES
+(2, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -592,6 +642,7 @@ CREATE TABLE IF NOT EXISTS `moderna_userinfos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
+  `cargo` varchar(50) NOT NULL,
   `foto` varchar(255) DEFAULT 'public/image/admin/default.png',
   `data_aniversario` date DEFAULT NULL,
   `user_id` int(11) unsigned NOT NULL,
@@ -607,15 +658,15 @@ CREATE TABLE IF NOT EXISTS `moderna_userinfos` (
 -- Dumping data for table `moderna_userinfos`
 --
 
-INSERT INTO `moderna_userinfos` (`id`, `nome`, `email`, `foto`, `data_aniversario`, `user_id`, `team_id`, `ramal`, `telefone`, `mailer`) VALUES
-(4, 'Roberto', 'roberto.ono@moderna.com.br', 'public/image/admin/default.png', '2000-10-19', 3, 1, '1330', '2790-1330', 1),
-(8, 'Ana', 'editorial_tec22@moderna.com.br', 'public/upload/userinfos/penguins_1359665367.jpg', '2000-01-16', 7, 1, '2435', '', 1),
-(9, 'Renato', 'renato.rocha@moderna.com.br', 'public/upload/userinfos/desert_1358364620.jpg', NULL, 8, 1, '2483', '', 1),
-(10, 'Luciana', 'editorial_tec18@moderna.com.br', 'public/image/admin/default.png', NULL, 9, 4, '2168', '', 1),
-(11, 'Fabio Ventura', 'fabio.ventura@moderna.com.br', 'public/image/admin/default.png', NULL, 10, 3, '', '', 1),
-(12, 'Renate', '', 'public/image/admin/default.png', NULL, 11, 5, '', '', 1),
-(13, 'Eduardo Bertolini', '', 'public/image/admin/default.png', NULL, 12, 3, '2180', '', 1),
-(17, 'Renata Michelin', '', 'public/image/admin/default.png', NULL, 16, 1, '', '', 1);
+INSERT INTO `moderna_userinfos` (`id`, `nome`, `email`, `cargo`, `foto`, `data_aniversario`, `user_id`, `team_id`, `ramal`, `telefone`, `mailer`) VALUES
+(4, 'Roberto', 'roberto.ono@moderna.com.br', '', 'public/image/admin/default.png', '2000-10-19', 3, 1, '1330', '2790-1330', 1),
+(8, 'Ana', 'editorial_tec22@moderna.com.br', '', 'public/upload/userinfos/penguins_1359665367.jpg', '2000-01-16', 7, 1, '2435', '', 1),
+(9, 'Renato', 'renato.rocha@moderna.com.br', '', 'public/upload/userinfos/desert_1358364620.jpg', NULL, 8, 1, '2483', '', 1),
+(10, 'Luciana', 'editorial_tec18@moderna.com.br', '', 'public/image/admin/default.png', NULL, 9, 4, '2168', '', 1),
+(11, 'Fabio Ventura', 'fabio.ventura@moderna.com.br', '', 'public/image/admin/default.png', NULL, 10, 3, '', '', 1),
+(12, 'Renate', '', '', 'public/image/admin/default.png', NULL, 11, 5, '', '', 1),
+(13, 'Eduardo Bertolini', '', '', 'public/image/admin/default.png', NULL, 12, 3, '2180', '', 1),
+(17, 'Renata Michelin', '', '', 'public/image/admin/default.png', NULL, 16, 1, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -638,7 +689,7 @@ CREATE TABLE IF NOT EXISTS `moderna_users` (
 --
 
 INSERT INTO `moderna_users` (`id`, `username`, `password`, `logins`, `last_login`) VALUES
-(3, 'roberto.ono', '165bbc63336c60ac8e5246c8f11c9616863925c3', 32, 1360941068),
+(3, 'roberto.ono', '165bbc63336c60ac8e5246c8f11c9616863925c3', 34, 1361293501),
 (7, 'ana.totaro', '165bbc63336c60ac8e5246c8f11c9616863925c3', 15, 1360266542),
 (8, 'renato.rocha', '165bbc63336c60ac8e5246c8f11c9616863925c3', 4, 1358364901),
 (9, 'luciana.soares', '165bbc63336c60ac8e5246c8f11c9616863925c3', 0, NULL),
@@ -650,6 +701,12 @@ INSERT INTO `moderna_users` (`id`, `username`, `password`, `logins`, `last_login
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `moderna_collections`
+--
+ALTER TABLE `moderna_collections`
+  ADD CONSTRAINT `moderna_collections_ibfk_1` FOREIGN KEY (`segmento_id`) REFERENCES `moderna_segmentos` (`id`);
 
 --
 -- Constraints for table `moderna_files`
@@ -675,7 +732,7 @@ ALTER TABLE `moderna_menus_roles`
 --
 ALTER TABLE `moderna_objects`
   ADD CONSTRAINT `cmp_pais_fk` FOREIGN KEY (`country_id`) REFERENCES `moderna_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `segmento_fk` FOREIGN KEY (`segmento_id`) REFERENCES `moderna_segmentos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `moderna_objects_ibfk_1` FOREIGN KEY (`collection_id`) REFERENCES `moderna_collections` (`id`),
   ADD CONSTRAINT `tipo_obj_fk` FOREIGN KEY (`typeobject_id`) REFERENCES `moderna_typeobjects` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
