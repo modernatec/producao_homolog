@@ -43,14 +43,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
 		$view->tiposObj = ORM::factory('typeobject')->order_by('nome','ASC')->find_all();
 		$view->segmentos = ORM::factory('segmento')->order_by('nome','ASC')->find_all();
-		$view->colecaoList = DB::select('colecao')->from('objects')->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();
-		$view->dataLancamentoList = DB::select('data_lancamento')->from('objects')->group_by('data_lancamento')->order_by('data_lancamento','ASC')->as_object()->execute();
+		//$view->colecaoList = DB::select('colecao')->from('objects')->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();
+		//$view->dataLancamentoList = DB::select('data_lancamento')->from('objects')->group_by('data_lancamento')->order_by('data_lancamento','ASC')->as_object()->execute();
 		//$view->titulo = '';
 		//$view->linkPage = ($this->assistente)?('view'):('edit');
 		//$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
 		$this->template->content = $view;             
 	} 
-        
+    /* 
     public function action_filter()
 	{	
 		$view = View::factory('admin/objects/list')
@@ -94,12 +94,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
 		$this->template->content = $view;             
 	} 
-
+	*/
 	public function action_create(){ 
 		$view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 			
+		$this->addValidateJs(Controller_Admin_Files::addJs());
 		$view->objVO = $this->setVO('object');
         $view->typeObjects = ORM::factory('typeobject')->find_all();
 		$view->countries = ORM::factory('country')->find_all();
@@ -110,10 +111,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->materias = ORM::factory('materia')->order_by('nome', 'ASC')->find_all();
 		
 		$this->template->content = $view;
-                
-		$this->addValidateJs(Controller_Admin_Files::addJs());
-		
-		
                 
         /*        $tiposObj = $this->getTypeObjetcs(Arr::get($values, 'typeobject_id'));
                 $segmentos = $this->getSegmentos(Arr::get($values, 'segmento_id'));                

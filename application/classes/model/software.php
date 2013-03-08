@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_Sfwprod extends ORM {
+class Model_Software extends ORM {
         
         protected $_has_many = array(
 		'objects'       => array('model' => 'object', 'through' => 'objects_sfwprods'),

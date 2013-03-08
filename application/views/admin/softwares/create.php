@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/sfwprods" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/softwares" class="bar_button round">Voltar</a>
 	</div>
     <form name="frmCreateSfwprod" id="frmCreateSfwprod" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />

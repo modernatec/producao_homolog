@@ -97,7 +97,7 @@ if (strpos($_SERVER['HTTP_HOST'], '.com.br') !== FALSE){
 
  
 Kohana::init(array(
-	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : '/producao/',
+	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://producao/',
     'caching'    => Kohana::$environment === Kohana::PRODUCTION,
     'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
 	'index_file' => FALSE,
@@ -127,12 +127,12 @@ Kohana::modules(array(
 	'image'      	=> MODPATH.'image',      	// Image manipulation
 	'orm'			=> MODPATH.'orm',			// Object Relationship Mapping
 	'pagination'    => MODPATH.'pagination',    // Object Paginator
-	'amfphp'        => MODPATH.'amfphp',      	// AMFPHP integration
-	'pagseguro'     => MODPATH.'pagseguro',     // Pague seguro
-	'unittest'   	=> MODPATH.'unittest',   	// Unit testing
+	//'amfphp'        => MODPATH.'amfphp',      	// AMFPHP integration
+	//'pagseguro'     => MODPATH.'pagseguro',     // Pague seguro
+	//'unittest'   	=> MODPATH.'unittest',   	// Unit testing
 	// 'codebench'  => MODPATH.'codebench',  	// Benchmarking tool
 	// 'userguide'  => MODPATH.'userguide',  	// User guide and API documentation
-        'email'      => MODPATH.'email',
+    'email'      => MODPATH.'email',
 ));
 
 

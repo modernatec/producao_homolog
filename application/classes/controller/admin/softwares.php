@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
-class Controller_Admin_Sfwprods extends Controller_Admin_Template {
+class Controller_Admin_Softwares extends Controller_Admin_Template {
  
 	public $auth_required		= array('login', 'admin'); //Auth is required to access this controller
  	
@@ -26,22 +26,22 @@ class Controller_Admin_Sfwprods extends Controller_Admin_Template {
         
 	public function action_index()
 	{	
-		$view = View::factory('admin/sfwprods/list')
+		$view = View::factory('admin/softwares/list')
 			->bind('message', $message);
 		
-		$view->sfwprodsList = ORM::factory('sfwprod')->order_by('id','DESC')->find_all();
+		$view->sfwprodsList = ORM::factory('software')->order_by('id','DESC')->find_all();
 		$this->template->content = $view;             
 	} 
 
 	public function action_create()
     { 
-		$view = View::factory('admin/sfwprods/create')
+		$view = View::factory('admin/softwares/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 
 		$this->addValidateJs();
 		$view->isUpdate = false;  
-		$view->sfwprodVO = $this->setVO('sfwprod');
+		$view->sfwprodVO = $this->setVO('software');
 		$this->template->content = $view;
 		
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -52,15 +52,15 @@ class Controller_Admin_Sfwprods extends Controller_Admin_Template {
         
 	public function action_edit($id)
     {  
-		$view = View::factory('admin/sfwprods/create')
+		$view = View::factory('admin/softwares/create')
 		->bind('errors', $errors)
 		->bind('message', $message);
 		
 		$this->addValidateJs();
 		$view->isUpdate = true;   
 		
-		$sfwprod = ORM::factory('sfwprod', $id);
-		$view->sfwprodVO = $this->setVO('sfwprod', $sfwprod);
+		$sfwprod = ORM::factory('software', $id);
+		$view->sfwprodVO = $this->setVO('software', $sfwprod);
 		$this->template->content = $view; 
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -76,14 +76,14 @@ class Controller_Admin_Sfwprods extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$sfwprod = ORM::factory('sfwprod', $id)->values($this->request->post(), array(
+			$sfwprod = ORM::factory('software', $id)->values($this->request->post(), array(
 				'nome',
 			));
 			                
 			$sfwprod->save();
 			$db->commit();
 			Utils_Helper::mensagens('add','Software de produção '.$sfwprod->nome.' salvo com sucesso.');
-			Request::current()->redirect('admin/sfwprods');
+			Request::current()->redirect('admin/softwares');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -107,7 +107,7 @@ class Controller_Admin_Sfwprods extends Controller_Admin_Template {
 	public function action_delete($id)
 	{	
 		try{            
-			$objeto = ORM::factory('sfwprod', $id);
+			$objeto = ORM::factory('software', $id);
 			$objeto->delete();
 			Utils_Helper::mensagens('add','Software de produção excluído com sucesso.'); 
 		} catch (ORM_Validation_Exception $e) {
@@ -115,6 +115,6 @@ class Controller_Admin_Sfwprods extends Controller_Admin_Template {
 			$errors = $e->errors('models');
 		}
 		
-		Request::current()->redirect('admin/sfwprods');
+		Request::current()->redirect('admin/softwares');
 	}
 }

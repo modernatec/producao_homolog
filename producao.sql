@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.6
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 02, 2013 at 05:56 PM
--- Server version: 5.5.29
--- PHP Version: 5.4.11
+-- Generation Time: Mar 08, 2013 at 02:03 AM
+-- Server version: 5.5.17
+-- PHP Version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -198,7 +198,7 @@ INSERT INTO `moderna_menus` (`id`, `display`, `link`, `ordem`, `sub`) VALUES
 (9, 'Acervo', 'admin/objects', 2, 0),
 (10, 'Tipos de Objetos', 'admin/typeobjects', 0, 9),
 (11, 'Segmentos', 'admin/segmentos', 0, 9),
-(12, 'Software de Produção', 'admin/sfwprods', 0, 9),
+(12, 'Software de Produção', 'admin/softwares', 0, 9),
 (13, 'Países', 'admin/countries', 0, 9),
 (14, 'Matérias', 'admin/materias', 0, 9),
 (15, 'Coleção', 'admin/collections', 0, 9);
@@ -258,18 +258,18 @@ CREATE TABLE IF NOT EXISTS `moderna_objects` (
   `taxonomia` varchar(100) NOT NULL,
   `typeobject_id` int(11) NOT NULL,
   `collection_id` int(11) NOT NULL,
-  `arq_aberto` tinyint(4) NOT NULL,
+  `arq_aberto` enum('0','1') NOT NULL DEFAULT '0',
   `extensao_arq` varchar(45) NOT NULL,
-  `interatividade` tinyint(4) NOT NULL,
+  `interatividade` enum('0','1') NOT NULL DEFAULT '0',
   `supplier_id` int(11) NOT NULL,
   `data_lancamento` date DEFAULT NULL,
   `sinopse` text,
   `obs` text,
-  `objectpai_id` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT '0',
   `country_id` int(11) NOT NULL,
-  `data_ins` datetime NOT NULL,
-  `data_alt` datetime NOT NULL,
-  `status` tinyint(4) NOT NULL,
+  `data_alt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `thumb` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tipo_obj_fk_idx` (`typeobject_id`),
   KEY `cmp_pais_fk_idx` (`country_id`),
@@ -292,10 +292,10 @@ CREATE TABLE IF NOT EXISTS `moderna_objects_materias` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `moderna_objects_sfwprods`
+-- Table structure for table `moderna_objects_softwares`
 --
 
-CREATE TABLE IF NOT EXISTS `moderna_objects_sfwprods` (
+CREATE TABLE IF NOT EXISTS `moderna_objects_softwares` (
   `object_id` int(11) NOT NULL,
   `sfwprod_id` int(11) NOT NULL,
   KEY `object_id` (`object_id`),
@@ -405,7 +405,6 @@ CREATE TABLE IF NOT EXISTS `moderna_roles_users` (
 INSERT INTO `moderna_roles_users` (`role_id`, `user_id`) VALUES
 (1, 3),
 (2, 3),
-(3, 3),
 (1, 7),
 (4, 7),
 (1, 8),
@@ -445,20 +444,20 @@ INSERT INTO `moderna_segmentos` (`id`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `moderna_sfwprods`
+-- Table structure for table `moderna_softwares`
 --
 
-CREATE TABLE IF NOT EXISTS `moderna_sfwprods` (
+CREATE TABLE IF NOT EXISTS `moderna_softwares` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `moderna_sfwprods`
+-- Dumping data for table `moderna_softwares`
 --
 
-INSERT INTO `moderna_sfwprods` (`id`, `nome`) VALUES
+INSERT INTO `moderna_softwares` (`id`, `nome`) VALUES
 (1, 'Flash CS5'),
 (2, 'After Effects CS5');
 
@@ -659,7 +658,7 @@ CREATE TABLE IF NOT EXISTS `moderna_userinfos` (
 --
 
 INSERT INTO `moderna_userinfos` (`id`, `nome`, `email`, `cargo`, `foto`, `data_aniversario`, `user_id`, `team_id`, `ramal`, `telefone`, `mailer`) VALUES
-(4, 'Roberto', 'roberto.ono@moderna.com.br', '', 'public/image/admin/default.png', '2000-10-19', 3, 1, '1330', '2790-1330', 1),
+(4, 'Roberto', 'roberto.ono@moderna.com.br', '', 'public/upload/userinfos/colorful___28__1362718858.jpg', '2000-03-08', 3, 1, '1330', '2790-1330', 1),
 (8, 'Ana', 'editorial_tec22@moderna.com.br', '', 'public/upload/userinfos/penguins_1359665367.jpg', '2000-01-16', 7, 1, '2435', '', 1),
 (9, 'Renato', 'renato.rocha@moderna.com.br', '', 'public/upload/userinfos/desert_1358364620.jpg', NULL, 8, 1, '2483', '', 1),
 (10, 'Luciana', 'editorial_tec18@moderna.com.br', '', 'public/image/admin/default.png', NULL, 9, 4, '2168', '', 1),
@@ -689,7 +688,7 @@ CREATE TABLE IF NOT EXISTS `moderna_users` (
 --
 
 INSERT INTO `moderna_users` (`id`, `username`, `password`, `logins`, `last_login`) VALUES
-(3, 'roberto.ono', '165bbc63336c60ac8e5246c8f11c9616863925c3', 34, 1361293501),
+(3, 'roberto.ono', '165bbc63336c60ac8e5246c8f11c9616863925c3', 35, 1362714719),
 (7, 'ana.totaro', '165bbc63336c60ac8e5246c8f11c9616863925c3', 15, 1360266542),
 (8, 'renato.rocha', '165bbc63336c60ac8e5246c8f11c9616863925c3', 4, 1358364901),
 (9, 'luciana.soares', '165bbc63336c60ac8e5246c8f11c9616863925c3', 0, NULL),
@@ -743,11 +742,11 @@ ALTER TABLE `moderna_objects_materias`
   ADD CONSTRAINT `moderna_objects_materias_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `moderna_materias` (`id`);
 
 --
--- Constraints for table `moderna_objects_sfwprods`
+-- Constraints for table `moderna_objects_softwares`
 --
-ALTER TABLE `moderna_objects_sfwprods`
-  ADD CONSTRAINT `moderna_objects_sfwprods_ibfk_1` FOREIGN KEY (`object_id`) REFERENCES `moderna_objects` (`id`),
-  ADD CONSTRAINT `moderna_objects_sfwprods_ibfk_2` FOREIGN KEY (`sfwprod_id`) REFERENCES `moderna_sfwprods` (`id`);
+ALTER TABLE `moderna_objects_softwares`
+  ADD CONSTRAINT `moderna_objects_softwares_ibfk_1` FOREIGN KEY (`object_id`) REFERENCES `moderna_objects` (`id`),
+  ADD CONSTRAINT `moderna_objects_softwares_ibfk_2` FOREIGN KEY (`sfwprod_id`) REFERENCES `moderna_softwares` (`id`);
 
 --
 -- Constraints for table `moderna_objects_suppliers`
