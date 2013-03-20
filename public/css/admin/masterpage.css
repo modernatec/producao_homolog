@@ -6,7 +6,7 @@
 	margin:0;
 }
 body{
-	/*background: url('../../image/site/sprite.png') repeat-x 0 -270px;*/
+	background: url('../../image/admin/bkg.jpg') repeat-x 0 70px;
 }
 
 h1.logo{
@@ -49,57 +49,62 @@ a.excluir_todos:hover{color:#666; font-weight: bold;}
 }
 
 #user_info{
-	background:#30301f;
+	background:#000;
 	color:#FFF;
 	overflow:hidden;
-	padding:10px;
-	margin-bottom:5px;
-        line-height: 25px;
-    box-shadow:#999 0 2px 5px;    
-}
-
-#user_info img{
-    margin-right:5px;
-    border:1px solid #ddd;
-}
-
-#user_info a{
-	float:right;
+    line-height: 25px;
+    padding-left:100px;
 }
 
 #user_info table tbody tr:nth-child(odd){
     background-color:transparent;
 }
 
+#user_info .foto{
+	width:100px;
+	height: 100px;
+	background:#CCC;
+	position:absolute;
+	border:3px #FFF solid;
+	border-radius:100px;
+	box-shadow: 0 0 10px 3px rgba(0,0,0, .5);
+	top:-17px;
+	left:-17px;
+}
+
+
 #menu{
-	width:200px;
-	float:left;
-	background: #008fc7;
+	background: -webkit-linear-gradient(top, #008fc7, #06608d);
+	/*background: #008fc7;*/
 	padding:10px;
+	padding-left:100px;
 	color:#FFF;
 	overflow:hidden;
-	margin: 0 5px;
-        border: 1px solid #02678f;
-        box-shadow:#999 0 2px 2px;
+    box-shadow:0 2px 6px 2px rgba(0,0,0, .4);
 }
 
 #menu ul li{
 	padding:5px;
+	float:left;
+	box-shadow:1px 0 0 rgba(255, 255, 255, .3);
 }
 
-#menu a, #user_info a{
+#menu ul li:last-child{
+	box-shadow:none;
+}
+
+a{
 	color:#FFF;
 	text-decoration:none;
 }
 
-#menu a:hover, #user_info a:hover{
+a:hover{
 	text-decoration:underline;
 }
 
 .content{
-	position:relative;
-	width:1000px;
-	float:left;
+	margin-top:20px;
+	padding-left:100px;
 }
 
 /*Content itens*/
@@ -376,4 +381,26 @@ label
 .pagination strong{
     font-weight: bold;
     font-size: 15px;
+}
+
+
+
+input[type='text'], input[type='password']{
+	border:1px #CCC solid;
+	color:#666;
+	padding:8px 5px;
+  	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+  	outline: none; 
+}
+
+input[type='text']:hover, input[type='password']:hover{
+	border:1px #00a4e4 solid;
+}
+
+
+input[type='text']:focus, input[type='password']:focus{
+	border-color: #00a4e4;
+  	-webkit-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+  	-moz-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+  	box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
 }

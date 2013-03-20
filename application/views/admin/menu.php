@@ -1,13 +1,11 @@
 <div>
 	<div id="user_info">
-        <a href="<?=URL::base();?>admin/users/editInfo" style="float:left;" >
-        	<img src='<?=URL::base();?><?=$user->userInfos->foto?>' height="25" style='float:left' alt="<?=ucfirst($user->username);?>" />
-        	<?=ucfirst($user->username);?>
-        </a>
+		<div class="foto" style="background: url('<?=URL::base();?><?=$user->userInfos->foto?>')"><!--style="background: url('<?=URL::base();?><?=$user->userInfos->foto?>')"--></div>
+	        <a href="<?=URL::base();?>admin/users/editInfo" style="float:left;" ><?=ucfirst($user->userInfos->nome);?></a>
         <a href="<?=URL::base();?>logout/">logout</a>
 	</div>
-	<div id="menu" class="round">
-		<ul id="MainMenuList">
+	<div id="menu">
+		<ul >
 			<?foreach($menuList as $key=>$menuItem){?>
 				<li><a href="<?=URL::base();?><?=$menuItem['link']?>" ><?=$menuItem['display']?></a></li>
                 <?
