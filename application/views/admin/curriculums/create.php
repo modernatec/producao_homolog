@@ -43,7 +43,7 @@
              	if(isset($curriculumVO['file'])){
 					foreach($curriculumVO['file'] as $file){
 			?>
-            			<li><a href="<?=URL::base();?>admin/files/download/<?=$file->id?>" ><?=basename($file->uri);?></a></li>
+            			<li><a class="link" href="<?=URL::base();?>admin/files/download/<?=$file->id?>" ><?=basename($file->uri);?></a></li>
             <?		
 					}	
 				}

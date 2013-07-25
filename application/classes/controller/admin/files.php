@@ -22,13 +22,15 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 		);
 	}
         
-	public static function salvar($request, $pasta, $model_id, $model, $user)
+	public static function salvar($request, $pasta, $model_id, $model, $user, $width = null)
 	{
 		$erro = array(
 			1=>'Tipo incorreto de arquivo',
 			2=>'Erro ao fazer o upload do arquivo',
 			3=>'Upload concluído com sucesso.'
 		);
+
+		$uploadedFiles = array();
 		
 		$basedir = 'public/plupload/temporario/';
 		$filesUploads = $request->post('filesUploads');
@@ -52,9 +54,20 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 					$arquivo->save();
 					
 					rename($basedir.$file, $pasta.$file);
+
+					if($width != ''){
+						$image = Image::factory($pasta.$file);
+						$image->resize(NULL, $width);
+						$image->crop($width, $width);
+						$image->save();
+					}
+
+					array_push($uploadedFiles, $arquivo->uri);
 				}
 			}
 		}
+
+		return $uploadedFiles;
 		
 		/*
 		if(Upload::type($file,array('doc','docx','ppt','pptx','xls','xlsx','zip','rar','pdf','txt')))

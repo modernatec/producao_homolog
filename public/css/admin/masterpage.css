@@ -6,7 +6,7 @@
 	margin:0;
 }
 body{
-	background: url('../../image/admin/bkg.jpg') repeat-x 0 70px;
+	background: url('../../image/admin/bkg.jpg') repeat-x 0 70px fixed;
 }
 
 h1.logo{
@@ -23,13 +23,27 @@ hr{
 	margin:0;
 }
 
-a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 12px; float:left; text-indent: -5000px; margin:0 5px; }
-a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; }
+a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; margin:0 5px; display: block;}
+a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; width: 20px; height: 20px; }
 a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
 a.active{ background: transparent url(../../image/admin/active.png) no-repeat 0 0; }
 a.preview{ background: transparent url(../../image/admin/preview.png) no-repeat 0 0; width: 16px; height: 16px; }
-a.excluir_todos{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; padding-left: 17px; text-indent: 0; width: auto; color:#000; line-height: 12px; float:none; display:block; cursor: pointer;}
-a.excluir_todos:hover{color:#666; font-weight: bold;}
+a.excluir_todos{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; padding-left: 20px; text-indent: 0; color:#000; line-height: 20px; float:none; cursor: pointer; width: 200px;}
+a.excluir_todos:hover{color:#666;}
+a.link{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; padding-left: 30px; text-indent: 0; width: auto; color:#000; line-height: 20px; float:none; cursor: pointer;}
+a.link:hover{color:#666; text-decoration: underline;}
+
+.logout{
+	color:#FFF; 
+	background: transparent url(../../image/admin/logout.png) no-repeat 0 0; 
+	position: absolute;
+	text-indent: -300px;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	right: 5px;
+	top: 5px;
+}
 
 .floatNone{ float: none !important; display: inline-block;}
 
@@ -49,7 +63,8 @@ a.excluir_todos:hover{color:#666; font-weight: bold;}
 }
 
 #user_info{
-	background:#000;
+	/*background:#000;*/
+	background: transparent url(../../image/admin/bg_menu.jpg);
 	color:#FFF;
 	overflow:hidden;
     line-height: 25px;
@@ -63,7 +78,7 @@ a.excluir_todos:hover{color:#666; font-weight: bold;}
 #user_info .foto{
 	width:100px;
 	height: 100px;
-	background:#CCC;
+	background:#CCC no-repeat 10px 10px;
 	position:absolute;
 	border:3px #FFF solid;
 	border-radius:100px;
@@ -72,22 +87,59 @@ a.excluir_todos:hover{color:#666; font-weight: bold;}
 	left:-17px;
 }
 
+#head{
+	position: fixed;
+	width: 100%;
+	top:0;
+	left:0;
+	z-index: 999;
+}
 
 #menu{
-	background: -webkit-linear-gradient(top, #008fc7, #06608d);
+	background: -webkit-linear-gradient(top, #008fc7, #06608d, #06608d);
 	/*background: #008fc7;*/
 	padding:10px;
 	padding-left:100px;
 	color:#FFF;
-	overflow:hidden;
+	height: 25px;
     box-shadow:0 2px 6px 2px rgba(0,0,0, .4);
 }
 
 #menu ul li{
-	padding:5px;
+	padding:5px 10px;
 	float:left;
 	box-shadow:1px 0 0 rgba(255, 255, 255, .3);
+	position: relative;
 }
+
+#menu ul li:hover{
+	background: transparent url(../../image/admin/bg_menu.jpg);
+}
+
+
+#menu ul li:hover ul{
+	display: block;
+	margin-top: 5px;
+}
+
+#menu ul li > ul{
+	position: absolute;
+	background: transparent url(../../image/admin/bg_menu.jpg);
+	width: 150px;
+	left: -.5px;
+	display: none;
+}
+
+#menu ul li > ul li{
+	display: block;
+	float: none;
+}
+
+#menu ul li > ul li:hover{
+	background: #333;
+}
+
+
 
 #menu ul li:last-child{
 	box-shadow:none;
@@ -98,13 +150,11 @@ a{
 	text-decoration:none;
 }
 
-a:hover{
-	text-decoration:underline;
-}
 
 .content{
-	margin-top:20px;
+	margin-top: 100px;
 	padding-left:100px;
+
 }
 
 /*Content itens*/
@@ -244,7 +294,6 @@ label
 
 .right{
 	float:left;
-	position:relative;
 	margin-left:10px;
 }
 

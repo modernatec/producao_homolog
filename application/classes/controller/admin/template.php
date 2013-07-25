@@ -156,4 +156,19 @@ class Controller_Admin_Template extends Controller_Template {
 		}
 		return $arr;
 	}
+
+	protected function addValidateJs($js = null){
+		$arr = Controller_Admin_Files::addJs();
+
+		$validateArr = array();
+
+		if($arr){
+			foreach($arr as $item){
+				array_push($validateArr, $item);	
+			}
+		}
+		array_push($validateArr, $js);	
+		
+		$this->template->scripts = array_merge($validateArr, $this->template->scripts);
+	}
 }

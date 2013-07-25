@@ -6,7 +6,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
  	
 	public $secure_actions     	= array(
 									'index' => array('login'),
-									'create' => array('login','coordenador'),
 									'edit' => array('login','coordenador'),
 									'delete' => array('login','admin'),
 									'create' => array('login','admin'),											
@@ -16,13 +15,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);                
 	}
-	
-	protected function addValidateJs(){
-        $scripts =   array(
-            "public/js/admin/validateUsers.js",
-        );
-        $this->template->scripts = array_merge( $scripts, $this->template->scripts );
-    }
 	
     public function action_index()
 	{	
@@ -42,10 +34,12 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
             ->bind('message', $message);
 		
+        $this->addValidateJs("public/js/admin/validateUsersEdit.js");
 		$userInfo = ORM::factory('userInfo', $userInfo_id);
 		$view->teamsList = ORM::factory('team')->find_all();
 		$view->rolesList = ORM::factory('role')->where('id', ">", "2")->order_by('name')->find_all();
 		$view->isUpdate = true;
+        $view->anexosView = View::factory('admin/files/anexos');
 		$this->template->content = $view;			
 		
 		$roles = $userInfo->user->roles->find_all();
@@ -110,7 +104,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-        $this->addValidateJs();
+        $this->addValidateJs("public/js/admin/validateUsers.js");
         $view->teamsList 	= ORM::factory('team')->find_all();
 		$view->rolesList 	= ORM::factory('role')->where('id', ">", "2")->find_all();
 		$view->userInfoVO 	= $this->setVO('userInfo');
@@ -149,16 +143,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 			
 			$user->save();
 			$userinfo->user_id = $user->id;
-			           
-            $file = $_FILES['arquivo'];
-            if(Upload::valid($file))
-            {
-                if(Upload::not_empty($file))
-                {                
-                    $userinfo->foto = Utils_Helper::uploadNoAssoc($_FILES['arquivo'],'userinfos');
-                }
-            }			
-			
+
+            $resposta = Controller_Admin_Files::salvar($this->request, "public/upload/userinfos/", $userinfo->user_id, "userinfos", $this->current_user, 150);         
+            
+            if($resposta){
+                $userinfo->foto = $resposta[0];
+            }
+
+
             $userinfo->save();
 			
             /* Fluxo para dar as permissões*/

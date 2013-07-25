@@ -20,7 +20,7 @@ return array
 			'hostname'   => 'localhost',
 			'database'   => 'producao',
 			'username'   => 'root',
-			'password'   => 'carambis',
+			'password'   => 'modern@',
 			'persistent' => TRUE,
 		),
 		'table_prefix' => 'moderna_',

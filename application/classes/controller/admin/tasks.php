@@ -3,7 +3,9 @@
 class Controller_Admin_Tasks extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); 
-	public $secure_actions     	= array('delete' => array('login','admin'),);
+	public $secure_actions     	= array(
+										'create' => array('login','coordenador'),
+										'delete' => array('login','admin'),);
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -67,7 +69,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                     ->bind('errors', $errors)
                     ->bind('message', $message);
                 
-        $this->addValidateJs(Controller_Admin_Files::addJs());
+        $this->addValidateJs();
 		$view->isUpdate = false;                		
         $view->teamsList = ORM::factory('team')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
@@ -94,7 +96,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs();
 		$view->isUpdate = true;
 		
 		$task = ORM::factory('task', $id);
@@ -160,8 +162,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				
 				$envio = $taskUser->nome;
 				if($taskUser->mailer == '1'){
-					$linkTask = 'http://m-14759/'.URL::base().'admin/tasks/edit/'.$task->id;
-					if($this->request->post('statu_id') == 5)// 5 = Aguardando
+					$linkTask = URL::base().'admin/tasks/edit/'.$task->id;
+					if($this->request->post('statu_id') == 5)// 5 = Solicitada
 					{
 						$email = new Email_Helper();
 						$email->userInfo = $taskUser;
@@ -253,20 +255,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	}
 	
 	
-	/*-----------*/
-	protected function addValidateJs($arr){
-		$scripts =   array(
-			"public/js/admin/validateTasks.js",
-		);
-		
-		if($arr){
-			foreach($arr as $item){
-				array_push($scripts, $item);	
-			}
-		}
-		
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
 	
 	public function action_filter()
 	{	

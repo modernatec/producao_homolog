@@ -15,20 +15,6 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs($arr = null){
-		$scripts =   array(
-			"public/js/admin/validateCurriculums.js",
-		);
-		
-		if($arr){
-			foreach($arr as $item){
-				array_push($scripts, $item);	
-			}
-		}
-		
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/curriculums/list')
@@ -43,7 +29,7 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs("public/js/admin/validateCurriculums.js");
 
 		$view->isUpdate = false;  
 		$view->curriculumVO = $this->setVO('curriculum');
@@ -62,13 +48,15 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 		
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs("public/js/admin/validateCurriculums.js");
 		$view->isUpdate = true;
 		$view->anexosView = View::factory('admin/files/anexos');
+
 		$curriculum = ORM::factory('curriculum', $id);
 		$view->curriculumVO = $this->setVO('curriculum', $curriculum);
 		$view->curriculumVO["file"] = ORM::factory('file')->where('model', '=', 'curriculum')->and_where('model_id', '=', $id)->find_all();
 		$this->template->content = $view;
+
 		
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
@@ -86,14 +74,15 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 			$curriculum = ORM::factory('curriculum', $id)->values($this->request->post(), array(
 				'name',
 				'objective',
-				'description'
+				'description',
+				'formado'
 			)); 
 			
 			$curriculum->save();
 			Controller_Admin_Files::salvar($this->request, "public/upload/curriculum/", $curriculum->id, "curriculum", $this->current_user);			
 			$db->commit();
 			
-			$message = "Curriculum '{$curriculum->name}' salvo com sucesso.";
+			$message = "Curriculum salvo com sucesso.";
 			Utils_Helper::mensagens('add',$message);
 			Request::current()->redirect('admin/curriculums');
 

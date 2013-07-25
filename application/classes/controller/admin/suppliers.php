@@ -24,7 +24,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 	{	
             $view = View::factory('admin/suppliers/list')
                 ->bind('message', $message);
-            $view->suppliersList = ORM::factory('supplier')->order_by('nome','ASC')->find_all();
+            $view->suppliersList = ORM::factory('supplier')->order_by('empresa','ASC')->find_all();
             $this->template->content = $view;             
 	} 
 

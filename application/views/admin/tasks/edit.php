@@ -26,7 +26,7 @@
 			</dt>
 		    <?=$anexosView?>
 		    <dt>
-                <label for="statu_id"><b>status atual: </b> </label>
+                <label for="statu_id">status atual:</label>
             </dt>
             <dd>
                 <select name="statu_id" id="statu_id" style="width:150px;">

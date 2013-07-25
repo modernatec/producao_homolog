@@ -1,7 +1,4 @@
-<dt>
-    <label for="arquivo">Anexar arquivo</label>
-</dt>	    
-<div class='anexos round' style="margin:0;">
+<div class='anexos round'>
 <dd>
     <input type="hidden" name="filesUploads" id="filesUploads" value=""/>
     <input type="hidden" name="mimeUploads" id="mimeUploads" value=""/>

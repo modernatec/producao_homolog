@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/curriculums/create" class="bar_button round">Criar Curriculum</a>
+		<a href="<?=URL::base();?>admin/curriculums/create" class="bar_button round">Cadastrar curriculum</a>
 	</div>
 	<span class="header">Curriculums</span>
 	<table class="list">

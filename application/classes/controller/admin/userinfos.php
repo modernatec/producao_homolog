@@ -27,8 +27,12 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
 		$view = View::factory('admin/userinfos/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
+
+		$this->addValidateJs("public/js/admin/validateUsers.js");	
 			
 		$view->userinfo = ORM::factory('userInfo', $id);
+		$view->anexosView = View::factory('admin/files/anexos');
+
 		$this->template->content = $view;
 		$this->template->isUpdate = 1;
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -70,7 +74,7 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
 				'telefone'
 			));                                                
 			
-			$file = $_FILES['arquivo'];
+			/*$file = $_FILES['arquivo'];
 			if(Upload::valid($file))
 			{
 				if(Upload::not_empty($file))
@@ -78,9 +82,13 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
 					$userinfo->foto = Utils_Helper::uploadNoAssoc($_FILES['arquivo'],'userinfos');
 				}
 			}
+			*/
+			Controller_Admin_Files::salvar($this->request, "public/upload/userinfos/", $curriculum->id, "userinfos", $this->current_user, 100);			
+				
+
 			$userinfo->save();
 			$db->commit();
-			$message = "Contato '{$userinfo->nome}' salvo com sucesso.";
+			$message = "Contato salvo com sucesso.";
 			
 			Utils_Helper::mensagens('add',$message);
 			return $userinfo;

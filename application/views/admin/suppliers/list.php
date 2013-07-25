@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers/create" class="bar_button round">Criar Fornecedores</a>
+		<a href="<?=URL::base();?>admin/suppliers/create" class="bar_button round">Cadastrar fornecedores</a>
 	</div>
 	<span class="header">Fornecedores</span>
 	<table class="list">

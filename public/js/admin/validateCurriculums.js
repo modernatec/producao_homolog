@@ -9,7 +9,8 @@ $(document).ready(function() {
                 objective: { required:"Digite o objetivo."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              checkUpload(form);
+              //$(form).submit();
             }
         })
 });

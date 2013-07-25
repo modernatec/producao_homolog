@@ -1,6 +1,8 @@
 <? if($status_task){?>
 <div style='clear:both'>
-	<img src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25" style='float:left; margin-top:5px' alt="<?=ucfirst($status_task->userInfo->nome);?>" /> 
+	<div style='width:25px; float:left; margin-top:5px'>
+		<img src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25" alt="<?=ucfirst($status_task->userInfo->nome);?>" /> 
+	</div>
 	<div class='hist_task round' style='float:left;'>
 	<div class='separator'>
 		<?=$status_task->userInfo->nome;?> <em>em <?=Utils_Helper::data($status_task->date, 'd/m/Y - H:i:s');?></em><br/><b><?=$status_task->statu->status;?></b> 

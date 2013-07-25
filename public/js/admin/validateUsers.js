@@ -34,7 +34,7 @@ $(document).ready(function() {
                 }*/
             },
             submitHandler: function(form){
-              $(form).submit();
+              checkUpload(form);
             }
         })        
 });

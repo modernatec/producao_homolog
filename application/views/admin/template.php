@@ -5,9 +5,9 @@
 		<meta http-equiv="content-language" content="<?=I18n::$lang ?>" /> 
 		<title>Flow <?php echo $title; ?></title>
 	    <?php foreach ($styles as $file => $type) echo HTML::style($file, array('media' => $type)), PHP_EOL ?>
-        <script>var base_url = <?=URL::base();?>;</script>  
-        <link rel="icon" type="image/vnd.microsoft.icon" href="/public/image/admin/flow.png" />
-        <link rel="shortcut icon" href="/public/image/admin/flow.png" />
+        <script>var base_url = "<?=URL::base();?>"</script>  
+        <link rel="icon" type="image/vnd.microsoft.icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
+        <link rel="shortcut icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
 	</head>
 	<body>
     <div id="nav">

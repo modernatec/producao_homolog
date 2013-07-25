@@ -67,12 +67,12 @@
 	    </dd>
         <dt>
 			<label for="arquivo">Anexar Foto</label>
-	    </dt>	    
+	    </dt>
+	    <?=$anexosView?> 	    
 	    <dd>
         	<? if(@$userInfoVO["foto"]){ ?>
         	<img src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" width="150" alt="<?=@$userInfoVO["nome"];?>" />
            	<? }?>
-			<input type="file" class="text round" name="arquivo" id="arquivo" style="width:500px; display:block;" />
 	    </dd>
         <br/>
         <dt>

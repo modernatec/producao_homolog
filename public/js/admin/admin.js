@@ -280,7 +280,7 @@ $(document).ready(function()
     {		
         for(var i=0; i<msgs.length; i++)
         {
-            $.jGrowl(msgs[i],{position:'bottom-right'}); 
+            $.jGrowl(msgs[i],{ theme:'aniversariantes', position:'bottom-right',}); 
         } 
     }
 	
