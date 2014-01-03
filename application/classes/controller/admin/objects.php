@@ -41,8 +41,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->page_links = $pag->render();
                 
 		$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
-		$view->tiposObj = ORM::factory('typeobject')->order_by('nome','ASC')->find_all();
-		$view->segmentos = ORM::factory('segmento')->order_by('nome','ASC')->find_all();
+		$view->tiposObj = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
+		$view->segmentos = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		//$view->colecaoList = DB::select('colecao')->from('objects')->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();
 		//$view->dataLancamentoList = DB::select('data_lancamento')->from('objects')->group_by('data_lancamento')->order_by('data_lancamento','ASC')->as_object()->execute();
 		//$view->titulo = '';
@@ -106,9 +106,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->countries = ORM::factory('country')->find_all();
 		$view->suppliers = ORM::factory('supplier')->find_all();
 		$view->segmentos = ORM::factory('segmento')->find_all();
-		$view->softwares = ORM::factory('sfwprod')->order_by('nome', 'ASC')->find_all();
+		$view->softwares = ORM::factory('sfwprod')->order_by('name', 'ASC')->find_all();
 		$view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-		$view->materias = ORM::factory('materia')->order_by('nome', 'ASC')->find_all();
+		$view->materias = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
 		
 		$this->template->content = $view;
                 

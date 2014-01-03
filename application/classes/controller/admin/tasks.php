@@ -24,7 +24,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$query = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
                         ->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
                         ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC')->order_by('priority_id','ASC');
+                        ->order_by('crono_date','ASC');
 						
 		$view->taskList	= $query->find_all();
 		
@@ -41,7 +41,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$query_team = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
 							->where('tasks_users.userInfo_id', 'IN', $arr_users)
 							->group_by('tasks_users.task_id')
-							->order_by('crono_date','ASC')->order_by('priority_id','ASC');
+							->order_by('crono_date','ASC');
 							
 				$view->taskTeam = $query_team->find_all();			
 			}
@@ -57,7 +57,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$query_team = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
 							->where('tasks_users.userInfo_id', 'IN', $arr_users)
 							->group_by('tasks_users.task_id')
-							->order_by('crono_date','ASC')->order_by('priority_id','ASC');	
+							->order_by('crono_date','ASC');	
 			$view->taskTeam = $query_team->find_all();	
 		}
 				
@@ -73,10 +73,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->isUpdate = false;                		
         $view->teamsList = ORM::factory('team')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
-		$view->priorityList = ORM::factory('priority')->find_all();
-		$view->statusList = ORM::factory('statu')->find_all();
+		//$view->statusList = ORM::factory('statu')->find_all();
+		$view->materiasList = ORM::factory('materia')->find_all();
+		$view->collectionList = ORM::factory('collection')->find_all();
+		$view->typeObjList = ORM::factory('typeobject')->find_all();
+		$view->supplierList = ORM::factory('supplier')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->find_all();
 		
-		$view->anexosView = View::factory('admin/files/anexos');
+
+		//$view->anexosView = View::factory('admin/files/anexos');
 	  	$this->template->content = $view;	
                 
 	  	if (HTTP_Request::POST == $this->request->method()) 
@@ -87,11 +92,46 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	}
 	
 	public function action_edit($id){
-		if($this->current_auth == 'assistente'){
-			$view = View::factory('admin/tasks/edit');
-		}else{
-			$view = View::factory('admin/tasks/create');
+		$view = View::factory('admin/tasks/create');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+
+		$this->addValidateJs();
+		$view->isUpdate = true;
+		
+		$task = ORM::factory('task', $id);
+		$view->taskVO = $this->setVO('task', $task);
+		
+		$userId = $task->userInfos->find_all();
+		foreach($userId as $userInfo){
+			$view->taskVO['userInfo_id'] = $userInfo->id;
+			$view->taskVO['team_id'] = $userInfo->team_id;
 		}
+		
+		//$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->where('team_id', '=', $view->taskVO['team_id'])->find_all();
+		//$view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
+		
+		//$view->anexosView = View::factory('admin/files/anexos');
+		$view->teamsList = ORM::factory('team')->find_all();
+		$view->projectList = ORM::factory('project')->find_all();
+		//$view->statusList = ORM::factory('statu')->find_all();
+		$view->materiasList = ORM::factory('materia')->find_all();
+		$view->collectionList = ORM::factory('collection')->find_all();
+		$view->typeObjList = ORM::factory('typeobject')->find_all();
+		$view->supplierList = ORM::factory('supplier')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->find_all();
+		
+		$this->template->content = $view;
+
+		if (HTTP_Request::POST == $this->request->method()) 
+		{                                              
+			$this->salvar($id);
+		}
+	}
+
+	public function action_assign($id){
+		$view = View::factory('admin/tasks/assign');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -114,8 +154,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->anexosView = View::factory('admin/files/anexos');
 		$view->teamsList = ORM::factory('team')->find_all();
 		$view->projectList = ORM::factory('project')->find_all();
-		$view->priorityList = ORM::factory('priority')->find_all();
 		$view->statusList = ORM::factory('statu')->find_all();
+		$view->materiasList = ORM::factory('materia')->find_all();
+		$view->collectionList = ORM::factory('collection')->find_all();
+		$view->typeObjList = ORM::factory('typeobject')->find_all();
+		$view->supplierList = ORM::factory('supplier')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->find_all();
+		$view->projectStepsList = ORM::factory('projects_step')->where('project_id','=', $task->project_id)->find_all();
 		
 		$this->template->content = $view;
 
@@ -136,9 +181,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$task->values($this->request->post(), array(
 				'project_id',
 				'title',
-				'priority_id',
 				'crono_date',
-				'pasta'
+				'taxonomia',
+				'obs',
+				'collection_id',
+				'supplier_id',
+				'typeobject_id',
+				'source',
+				'vol_ano',
+				'uni',
+				'cap',	
 			)); 
             
 			
@@ -154,7 +206,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
   	          $task->userInfo_id = $this->current_user->userInfos->id;
             
             $task->save();
-            
+            /*------
             if($this->request->post('task_to')){
 				$task->remove('userInfos');
 				$taskUser = ORM::factory('userInfo', $this->request->post('task_to'));     	
@@ -173,7 +225,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 							<b>Projeto:</b> '.$task->project->name.'<br/>
 							<b>Título:</b> '.$task->title.'<br/>
 							<b>Data de entrega:</b> '.Utils_Helper::data($task->crono_date).'<br/>
-							<b>Prioridade:</b> '.$task->priority->priority.'<br/>
 							<b>Descrição:</b> '.$this->request->post('description').'<br/>
 							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
 							$envio.= $email->enviaEmail();
@@ -181,9 +232,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 	}
             	}
 				
-				/*
-				else
-				*/
             }
 
             if($this->request->post('statu_id')){
@@ -210,14 +258,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$status_tasks->save();
 	
 	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
-            }		
+            }	
+
+            if(isset($envio)){
+				$message.= "<br/>Email enviado ".$envio; 	
+			}
+            */	
 			            
 			$db->commit();
 			
             $message = "Tarefa salva com sucesso."; 
-			if(isset($envio)){
-				$message.= "<br/>Email enviado ".$envio; 	
-			}
+			
 			Utils_Helper::mensagens('add',$message);
             Request::current()->redirect('admin/tasks/edit/'.$task->id);
 

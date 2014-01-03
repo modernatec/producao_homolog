@@ -87,6 +87,7 @@ class Controller_Admin_Template extends Controller_Template {
 						'public/css/admin/masterpage.css' => 'screen',
 						'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
 						'public/css/common/jquery.jgrowl.css' => 'screen',
+						'public/css/admin/nested.css' => 'screen',
                     );
 
                     $scripts = array(
@@ -95,6 +96,7 @@ class Controller_Admin_Template extends Controller_Template {
 						'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
 						'public/js/common/jquery/jquery.validate.js',
 						'public/js/common/jgrowl/jquery.jgrowl.js',
+						'public/js/common/Nestable-master/jquery.nestable.js',						
 						'public/js/admin/admin.js',
 						'public/js/common/Popup.js',
                     );

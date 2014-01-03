@@ -1,0 +1,82 @@
+<!--
+            <span class="header" style="margin-left:5px;">histórico</span>
+        <dt>
+	      <label for="team">equipe responsável</label>
+	    </dt>
+	    <dd>
+	      <select name="team" id="team" style="width:150px;" onchange="getUsersByEquipe(this.value)">
+	     	<option value="">selecione</option>
+	      	<? foreach($teamsList as $team){?>
+		      	<option value="<?=$team->id?>" <?=((@$taskVO["team_id"] == $team->id)?('selected'):(''))?> ><?=$team->name?></option>
+	      	<? }?>
+	      </select>
+	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
+	    </dd>
+	    <dt>
+	      <label for="task_to">usuário responsável</label>
+	    </dt>
+	    <dd>
+	      <select name="task_to" id="task_to" style="width:150px;">
+	     	<option value="">Selecione</option>	  
+            <? 
+				if(isset($taskVO["equipeUsers"])){
+					foreach($taskVO["equipeUsers"] as $userInfo){?>
+					<option value="<?=$userInfo->id?>" <?=((@$taskVO["userInfo_id"] == $userInfo->id)?('selected'):(''))?> ><?=$userInfo->nome?></option>
+	      	<? }}?>   	
+	      </select>
+          
+	      <span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
+	    </dd>
+        <!--?=$anexosView?--
+        <dt>
+            <label for="statu_id">status atual:</label>
+        </dt>
+        <dd>
+            <select name="statu_id" id="statu_id" style="width:150px;">
+                <option value="">selecione</option>
+                <? foreach($statusList as $status){?>
+                    <option value="<?=$status->id?>" ><?=$status->status?></option>
+                <?}?>
+            </select>
+            <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
+        </dd>
+        <dt>
+            <label for="description">descrição</label>
+        </dt>
+        <dd>
+          <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"></textarea>
+          <span class='error'><?=Arr::get($errors, 'description');?></span>
+        </dd>    
+
+	<?
+		if(isset($taskflows)){
+			foreach($taskflows as $status_task){
+				echo View::factory('admin/tasks/hist_task')
+					->bind('statusList', $statusList)
+					->bind('status_task', $status_task)
+					->bind('cntStsTsk', $cntStsTsk); 
+			}	
+		}
+	?>
+	-->
+
+
+	<div class='right'>	
+        
+	</div>
+
+
+
+
+	<dt>
+                <label for="statu_id">status atual:</label>
+            </dt>
+            <dd>
+                <select name="statu_id" id="statu_id" style="width:150px;">
+                    <option value="">selecione</option>
+                    <? /*foreach($statusList as $status){ */?>
+                        <option value="<?=$status->id?>" ><?=$status->status?></option>
+                    <?}?>
+                </select>
+                <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
+            </dd>

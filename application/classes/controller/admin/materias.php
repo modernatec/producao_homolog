@@ -72,16 +72,16 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 	{
 		$db = Database::instance();
         $db->begin();
-		
+
 		try 
 		{            
 			$materia = ORM::factory('materia', $id)->values($this->request->post(), array(
-				'nome',
+				'name',
 			));
 			                
 			$materia->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','Matéria '.$materia->nome.' salvo com sucesso.');
+			Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
 			Request::current()->redirect('admin/materias');
 
 		} catch (ORM_Validation_Exception $e) {

@@ -2,7 +2,7 @@
 
 class Model_Collection extends ORM {
 	protected $_belongs_to = array(
-		'segmento' => array('foreign_key' => 'segmento_id'),
+		'project' => array('foreign_key' => 'project_id'),
 	);
 	
 	
@@ -13,7 +13,7 @@ class Model_Collection extends ORM {
                     array('not_empty'),
                     array(array($this, 'name_available'), array(':validation', ':field')),
                 ),
-                'segmento_id' => array(
+                'project_id' => array(
                     array('not_empty'),
                 )
             );
@@ -23,7 +23,7 @@ class Model_Collection extends ORM {
 	{
             return array(
                 'name'  => 'Coleção',
-                'segmento_id' => 'Segmento',
+                'project_id' => 'Projeto',
             );
 	}
 

@@ -33,7 +33,7 @@ class Model_Task extends ORM {
                 'userInfo_id' => array(
                     array('not_empty'),
                 ),
-                'pasta' => array(
+                'taxonomia' => array(
                     array('not_empty'),
                 ),
 	    );
@@ -45,7 +45,7 @@ class Model_Task extends ORM {
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			),
-			'pasta' => array(
+			'taxonomia' => array(
 				array('Utils_Helper::limparStr')
 			)
 		);
@@ -65,7 +65,7 @@ class Model_Task extends ORM {
 			'userInfo_id'	=> __('Usuário responsável'),
 			'crono_date'	=> __('Data de entrega'),
 			'description'	=> __('Descrição'),
-			'pasta'	=> __('Pasta'),
+			'taxonomia'	=> __('Taxonomia'),
 		);
 	}
 }

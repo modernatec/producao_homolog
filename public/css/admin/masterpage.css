@@ -170,6 +170,8 @@ a{
 	font-weight:bold;
 }
 
+
+
 .bar_button{
 	background:#7ec353;
 	padding:5px;
@@ -244,6 +246,20 @@ table tbody td table tbody tr:hover {
 
 .list{
 	width:1000px;
+}
+
+.title_list{
+	color:#666;
+	font-size: 10px;
+}
+
+.sortable{
+	margin-top: 10px;
+}
+
+.sortable li{
+	padding:5px;
+	padding-left: 10px;
 }
 
 /*****Forms****/
@@ -452,4 +468,24 @@ input[type='text']:focus, input[type='password']:focus{
   	-webkit-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
   	-moz-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
   	box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+}
+
+
+.steps{
+	margin-bottom: 4px;
+}
+
+.round_imgList{
+	-o-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -khtml-border-radius: 25px;
+    border-radius: 25px;
+
+}
+
+.stepList{
+	display: inline-block;
+	width: 70px;
+	text-align: center;
 }

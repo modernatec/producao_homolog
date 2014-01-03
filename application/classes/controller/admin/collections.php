@@ -16,14 +16,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateCollections.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
+             
 	public function action_index()
 	{	
 		$view = View::factory('admin/collections/list')
@@ -39,11 +32,11 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateCollections.js");
 		$view->isUpdate = false;
 		
 		$view->projectVO = $this->setVO('collection');		
-		$view->segmentosList = ORM::factory('segmento')->find_all();
+		$view->projectList = ORM::factory('project')->find_all();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -58,12 +51,12 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				->bind('errors', $errors)
 				->bind('message', $message);
 	
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateCollections.js");
 		$view->isUpdate = true;
 				
 		$collection = ORM::factory('collection', $id);
 		$view->collectionVO = $this->setVO('collection', $collection);
-		$view->segmentosList = ORM::factory('segmento')->find_all();
+		$view->projectList = ORM::factory('project')->find_all();
 		$this->template->content = $view;	
 	   
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -81,8 +74,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		{            
 			$colecao = ORM::factory('collection', $id)->values($this->request->post(), array(
 				'name',
-				'year',
-				'segmento_id',
+				'op',
+				'project_id',
 			));
 			               
 			

@@ -83,6 +83,7 @@ function sldBox(obj){
     }
 }
 
+
 function checkUpload(form){
 	console.log("chamou " + form);
 	
@@ -111,7 +112,7 @@ function getUsersByEquipe(inId)
     $('#task_to').html('<option value="">aguarde...</a>');
     setTimeout(function()
     {
-        $.get(base_url + '/admin/users/equipe/'+inId,function(data)
+        $.get(base_url + 'admin/users/equipe/'+inId,function(data)
         {
             data = JSON.parse(data);
             $('#task_to').html('<option value="">Selecione</a>');
@@ -123,6 +124,25 @@ function getUsersByEquipe(inId)
         });
     },500);
 }
+
+function getCollectionByProject(inId)
+{
+    $('#collection_id').html('<option value="">aguarde...</a>');
+    setTimeout(function()
+    {
+        $.get(base_url + 'admin/projects/collections/'+inId,function(data)
+        {
+            data = JSON.parse(data);
+            $('#collection_id').html('<option value="">Selecione</a>');
+            $.each(data.dados,function(i)
+            {
+                var dado = data.dados[i];
+                $('#collection_id').append('<option value="'+dado.id+'">'+dado.name+'</a>');
+            });
+        });
+    },500);
+}
+
 
 var popup = false;
 function openPop(pagina)
@@ -285,6 +305,7 @@ $(document).ready(function()
     }
 	
     temMensagens();
+
     //aniversariantes();
     rightClick(window);        
     $('[rightClick="true"]').each(function()
@@ -310,6 +331,59 @@ $(document).ready(function()
          m_x = e.pageX;
          m_y = e.pageY;
     });
+
+
+    
+     var updateOutput = function(e)
+    {
+        var list   = e.length ? e : $(e.target),
+            output = list.data('output');
+
+            //alert(list.data);
+        
+        if (window.JSON) {           
+            output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+        } else {
+            output.val('JSON browser support required for this demo.');
+        }
+    };
+
+
+    $('#nestable3').nestable()
+    .on('change', updateOutput);
+
+    updateOutput($('#nestable3').data('output', $('#nestable-output')));
+    
+    
+    /*
+    // activate Nestable for list 1
+    $('#nestable').nestable({
+        group: 1
+    })
+   // .on('change', updateOutput);
+    
+    // activate Nestable for list 2
+    $('#nestable2').nestable({
+        group: 1
+    })
+   // .on('change', updateOutput);
+
+    // output initial serialised data
+   // updateOutput($('#nestable').data('output', $('#nestable-output')));
+   // updateOutput($('#nestable2').data('output', $('#nestable2-output')));
+
+    $('#nestable-menu').on('click', function(e)
+    {
+        var target = $(e.target),
+            action = target.data('action');
+        if (action === 'expand-all') {
+            $('.dd').nestable('expandAll');
+        }
+        if (action === 'collapse-all') {
+            $('.dd').nestable('collapseAll');
+        }
+    });
+    */
 });
 
 function pop_load_pais(){
@@ -365,3 +439,10 @@ function pop_load_objeto(){
         });
     })
 }
+
+var n = 0
+function add_ProjectSteps(item_number){
+    $("#nestable3 >ol").append("<li class='steps' >Passo <input class='round' type='text' name='passo[]' /> Tempo <input class='round' style='width:20px;' type='text' name='tempo[]' /> dia(s)<input type='hidden' name='id_step[]' value='0'/></li>");
+    n = n + 1;
+}
+

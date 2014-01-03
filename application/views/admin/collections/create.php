@@ -12,23 +12,23 @@
 	      <span class='error'><?=Arr::get($errors, 'name');?></span>
 	    </dd>
         <dt>
-	      <label for="ano">ano</label>
+	      <label for="op">OP</label>
 	    </dt>	    
 	    <dd>
-	      <input type="text" class="text required round" name="year" id="year" style="width:100px;" maxlength="4" value="<?=@$collectionVO['year'];?>"/>
-	      <span class='error'><?=Arr::get($errors, 'year');?></span>
+	      <input type="text" class="text required round" name="op" id="op" style="width:300px;" value="<?=@$collectionVO['op'];?>"/>
+	      <span class='error'><?=Arr::get($errors, 'op');?></span>
 	    </dd>
 	    <dt>
-	      <label for="target">Seguimento</label>
+	      <label for="project_id">projeto</label>
 	    </dt>
 	    <dd>
-	      <select name="segmento_id" id="segmento_id" style="width:150px;">
+	      <select name="project_id" id="project_id" style="width:150px;">
                 <option value="">selecione</option>
-                <? foreach($segmentosList as $segmento){?>
-                <option value="<?=$segmento->id?>" <?=((@$collectionVO["segmento_id"] == $segmento->id)?('selected'):(''))?> ><?=$segmento->nome?></option>
+                <? foreach($projectList as $project){?>
+                <option value="<?=$project->id?>" <?=((@$collectionVO["project_id"] == $project->id)?('selected'):(''))?> ><?=$project->name?></option>
                 <? }?>
             </select>
-            <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
+            <span class='error'><?=($errors) ? $errors['project_id'] : '';?></span>
 	    </dd>
 	    
 	    <dd>

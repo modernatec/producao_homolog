@@ -29,7 +29,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 		$view = View::factory('admin/segmentos/list')
 			->bind('message', $message);
 		
-		$view->segmentosList = ORM::factory('segmento')->order_by('nome','ASC')->find_all();
+		$view->segmentosList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;             
 	} 
 
@@ -77,12 +77,12 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 		try 
 		{            
 			$segmento = ORM::factory('segmento', $id)->values($this->request->post(), array(
-				'nome',
+				'name',
 			));
 			                
 			$segmento->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','Segmento '.$segmento->nome.' salvo com sucesso.');
+			Utils_Helper::mensagens('add','Segmento '.$segmento->name.' salvo com sucesso.');
 			Request::current()->redirect('admin/segmentos');
 
 		} catch (ORM_Validation_Exception $e) {

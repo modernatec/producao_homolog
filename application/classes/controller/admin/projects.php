@@ -30,7 +30,26 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->projectsList = ORM::factory('project')->order_by('name','ASC')->find_all();
-		$this->template->content = $view;    
+		$this->template->content = $view; 
+
+
+		$XLSX = new Spreadsheet();
+		/*
+		$data = array(
+			'Users' => array(
+				1 => array('ID', 'Name'),
+				2 => array(1, 'Jane Doe'),
+				3 => array(2, 'Fred Smith')
+			),
+			'Products' => array(
+				1 => array('ID', 'Name'),
+				2 => array(1, 'Torch'),
+				3 => array(2, 'Hat')
+			),
+		);
+		$XLSX->setData( $data, 1 );
+		$XLSX->save(array('name'=>$name));
+		*/
 	} 
 
 	public function action_create()
@@ -44,6 +63,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		
 		$view->projectVO = $this->setVO('project');		
 		$view->segmentosList = ORM::factory('segmento')->find_all();
+		$view->stepsList = array();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -60,9 +80,13 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	
 		$this->addValidateJs();
 		$view->isUpdate = true;
+
+		//$json = '[{"id":14,"children":[{"id":16,"children":[{"id":18}]}]},{"id":17},{"id":15}]';
+		//var_dump(json_decode($json, true));
 				
 		$projeto = ORM::factory('project', $id);
 		$view->projectVO = $this->setVO('project', $projeto);
+		$view->stepsList = ORM::factory('projects_step')->where('project_id', '=', $id)->find_all();
 		$view->segmentosList = ORM::factory('segmento')->find_all();
 		$this->template->content = $view;	
 	   
@@ -96,8 +120,18 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				}
 				$projeto->pasta = $pastaProjeto;                    
 			}
+
 			
 			$projeto->save();
+			//$stepsList = json_decode($this->request->post("list_order"), true);
+			foreach ($this->request->post('passo') as $key => $value) {
+				$project_step = ORM::factory('projects_step', $this->request->post('id_step')[$key]);
+				$project_step->project_id = $projeto->id;
+				$project_step->step = $this->request->post('passo')[$key];
+				$project_step->time = $this->request->post('tempo')[$key];	
+				$project_step->save();		
+			}
+			
 			$db->commit();
 			Utils_Helper::mensagens('add','Projeto '.$projeto->name.' salvo com sucesso.');
 			Request::current()->redirect('admin/projects');
@@ -120,7 +154,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
         return false;
 	}
-	
+
 	public function action_delete($id)
 	{
 		$view = View::factory('admin/projects/list')
@@ -129,6 +163,11 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		/*
 		try 
 		{            
+			$steps = ORM::factory('projects_step')->where('project_id', '=', $id)->find_all();
+			foreach ($steps as $step) {
+				$step->delete();
+			}
+
 			$projeto = ORM::factory('project', $id);
 			$projeto->delete();
 			Utils_Helper::mensagens('add','Projeto excluído com sucesso.'); 
@@ -139,4 +178,18 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		*/
 		Request::current()->redirect('admin/projects');
 	}
+
+	public function action_collections($id)
+    {	
+        $callback = $this->request->query('callback');        
+        $dados = array();
+        $collectionList = ORM::factory('collection')->where('project_id', '=', $id)->find_all();
+        foreach($collectionList as $collection){
+            $dado = array('id'=>$collection->id,'name'=>$collection->name);
+            array_push($dados,$dado);
+        }
+        $arr = array('dados'=>$dados);
+        print $callback.json_encode($arr);
+        exit;
+    } 
 }

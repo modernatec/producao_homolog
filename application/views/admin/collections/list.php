@@ -6,16 +6,16 @@
 	<table class="list">
 		<thead>
 			<th>nome</th>	
-            <th>ano</th>
-            <th>segmento</th>				
+            <th>projeto</th>				
+            <th>Op</th>
 			<th>ação</th>
 		</thead>
 		<tbody>
             <? foreach($collectionsList as $collection){?>
             <tr>
 				<td><a style='display:block' href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" title="Editar"><?=$collection->name?></a></td>
-                <td><?=$collection->year?></td>
-                <td><?=$collection->segmento->nome?></td>				
+                <td><?=$collection->project->name?></td>				
+                <td><?=$collection->op?></td>
 				<td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/collections/delete/'.$projeto->id;?>" title="Excluir">Excluir</a>
                 </td>

@@ -1,7 +1,7 @@
 <? if($status_task){?>
 <div style='clear:both'>
 	<div style='width:25px; float:left; margin-top:5px'>
-		<img src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25" alt="<?=ucfirst($status_task->userInfo->nome);?>" /> 
+		<img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
 	</div>
 	<div class='hist_task round' style='float:left;'>
 	<div class='separator'>

@@ -6,21 +6,20 @@
 	<table class="list">
 		<thead>
             <tr valign="bottom">
-                <th width="150">título</th>
                 <th width="200">taxonomia</th>
                 <th width="100">status atual</th>
-                <th width="100">de:</th>
-                <th width="100">para:</th>	
+                <th width="20">de:</th>
+                <th width="20">para:</th>  
                 <th width="50">projeto</th>		
-                <th width="50">prioridade</th>
                 <th width="100">data de entrega</th>
             </tr>
 		</thead>
 		<tbody>
 				<? foreach($taskList as $task){?>
                 <tr>
-                    <td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$task->id;?>" title="Editar"><?=$task->title?></a></td>
-                    <td><?=$task->pasta?></td>
+                    <td>
+                        <a style='display:block' href="<?=URL::base().'admin/tasks/assign/'.$task->id;?>" title="Editar"><?=$task->taxonomia?><br/><?=$task->title?></a>
+                    </td>
                     <td>
                         <?
                             $status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();
@@ -28,18 +27,17 @@
                         ?>
                     </td>
                     <td>
-                        <?=$task->userInfo->nome;?>
-                    </td>		
+                        <img class='round_imgList' src='<?=URL::base();?><?=$task->userInfo->foto?>' height="25" title="<?=ucfirst($task->userInfo->nome);?>" /> 
+                    </td>       
                     <td>
                         <?
                             $task_user = ORM::factory('tasks_user')->where('task_id', '=', $task->id)->order_by('id', 'DESC')->limit('1')->find_all();
-                            echo $task_user[0]->userInfo->nome;
                         ?>
+                            <img class='round_imgList' src='<?=URL::base();?><?=$task_user[0]->userInfo->foto?>' height="25" title="<?=ucfirst($task_user[0]->userInfo->nome);?>" /> 
                     </td>
                     <td>
                         <?=$task->project->name;?>
                     </td>   
-                    <td><?=$task->priority->priority?></td>	
                     <td><?=Utils_Helper::data($task->crono_date)?></td>			
                 </tr>
                 <? }?>
@@ -52,21 +50,21 @@
 	<table class="list">
 		<thead>
             <tr valign="bottom">
-                 <th width="150">título</th>
                 <th width="200">taxonomia</th>
                 <th width="100">status atual</th>
-                <th width="100">de:</th>
-                <th width="100">para:</th>  
+                <th width="20">de:</th>
+                <th width="20">para:</th>  
                 <th width="50">projeto</th>     
-                <th width="50">prioridade</th>
                 <th width="100">data de entrega</th>
             </tr>
 		</thead>
 		<tbody>
 				<? foreach($taskTeam as $task){?>
                 <tr>
-                    <td><a style='display:block' href="<?=URL::base().'admin/tasks/edit/'.$task->id;?>" title="Editar"><?=$task->title?></a></td>
-                    <td><?=$task->pasta?></td>
+                    <td>
+                        <a style='display:block' href="<?=URL::base().'admin/tasks/assign/'.$task->id;?>" title="Editar"><?=$task->taxonomia?></a>
+                        <span class='title_list'><?=$task->title?></span>
+                    </td>
                     <td>
                         <?
                             $status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();
@@ -74,18 +72,17 @@
                         ?>
                     </td>
                     <td>
-                        <?=$task->userInfo->nome;?>
+                        <img class='round_imgList' src='<?=URL::base();?><?=$task->userInfo->foto?>' height="25" title="<?=ucfirst($task->userInfo->nome);?>" /> 
                     </td>		
                     <td>
                         <?
                             $task_user = ORM::factory('tasks_user')->where('task_id', '=', $task->id)->order_by('id', 'DESC')->limit('1')->find_all();
-                            echo $task_user[0]->userInfo->nome;
                         ?>
+                            <img class='round_imgList' src='<?=URL::base();?><?=$task_user[0]->userInfo->foto?>' height="25" title="<?=ucfirst($task_user[0]->userInfo->nome);?>" /> 
                     </td>
                     <td>
-                        <?=$task->project->name;?>
+                        <span class="title_list"><?=$task->project->name;?></span>
                     </td> 
-                    <td><?=$task->priority->priority?></td>	
                     <td><?=Utils_Helper::data($task->crono_date)?></td>			
                 </tr>
                 <? }?>

@@ -5,7 +5,7 @@ class Model_Segmento extends ORM {
 	public function rules()
 	{
             return array(
-                'nome' => array(
+                'name' => array(
                     array('not_empty'),
                 )
             );
@@ -14,7 +14,7 @@ class Model_Segmento extends ORM {
 	public function labels()
 	{
             return array(
-                'nome'  => 'Nome',
+                'name'  => 'Nome',
             );
 	}
 }

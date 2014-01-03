@@ -127,6 +127,7 @@ Kohana::modules(array(
 	'image'      	=> MODPATH.'image',      	// Image manipulation
 	'orm'			=> MODPATH.'orm',			// Object Relationship Mapping
 	'pagination'    => MODPATH.'pagination',    // Object Paginator
+	'phpexcel'	    => MODPATH.'phpexcel',    // Object Paginator
 	//'amfphp'        => MODPATH.'amfphp',      	// AMFPHP integration
 	//'pagseguro'     => MODPATH.'pagseguro',     // Pague seguro
 	//'unittest'   	=> MODPATH.'unittest',   	// Unit testing

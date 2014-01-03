@@ -11,7 +11,7 @@
 		<tbody>
             <? foreach($materiasList as $materia){?>
             <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" title="Editar"><?=$materia->nome?></a></td>				
+				<td><a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" title="Editar"><?=$materia->name?></a></td>				
 				<td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/materias/delete/'.$materia->id;?>" title="Excluir">Excluir</a>
                 </td>

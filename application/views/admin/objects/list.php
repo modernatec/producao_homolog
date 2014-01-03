@@ -58,9 +58,9 @@
                 <td>
                     <a href="<?=URL::base().'admin/objects/'.$linkPage.'/'.$objeto->id;?>" title="Editar"><?=$objeto->nome_obj?></a>
                 </td>
-                <td><a><?=$objeto->typeobject->nome?></a></td>
+                <td><a><?=$objeto->typeobject->name?></a></td>
                 <td><a><?=$objeto->colecao?></a></td>
-                <td><a><?=$objeto->segmento->nome?></a></td>
+                <td><a><?=$objeto->segmento->name?></a></td>
                 <td><a><?=Utils_Helper::data($objeto->data_alt,'d/m/Y \a\s H:i:s')?></a></td>
                 <td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/objects/delete/'.$objeto->id;?>" title="Excluir" <?=$styleExclusao?>>Excluir</a>
