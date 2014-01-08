@@ -62,6 +62,16 @@ a.link:hover{color:#666; text-decoration: underline;}
     border-radius: 4px;
 }
 
+.roundTop{
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.roundBottom{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
 #user_info{
 	/*background:#000;*/
 	background: transparent url(../../image/admin/bg_menu.jpg);
@@ -153,6 +163,7 @@ a{
 
 .content{
 	margin-top: 100px;
+	margin-right: 10px;
 	padding-left:100px;
 
 }
@@ -245,7 +256,7 @@ table tbody td table tbody tr:hover {
 }
 
 .list{
-	width:1000px;
+	width:100%;
 }
 
 .title_list{
@@ -262,15 +273,13 @@ table tbody td table tbody tr:hover {
 	padding-left: 10px;
 }
 
+
 /*****Forms****/
 
 .form dl, .form dt, .form dd{
 	padding:5px 0;
 }
 
-.form dl{
-	float:left;
-}
 
 .form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea, .form select{
 	border:1px #CCC solid;
@@ -309,8 +318,12 @@ label
 }
 
 .right{
-	float:left;
+	float:right;
 	margin-left:10px;
+}
+
+.left{
+	float:left;
 }
 
 /***Task***/
@@ -345,7 +358,8 @@ label
 .hist_task{
     padding:10px;
     margin:5px;
-    width: 400px;
+    min-width: 600px;
+    max-width: 600px;
     border: 1px solid #CCC;
     /*box-shadow:#999 2px 2px 2px;*/
 }
@@ -365,6 +379,18 @@ label
     /*border: 1px solid #666;*/
     /*box-shadow:#999 2px 2px 2px;*/
 }
+
+.box{
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.boxwired{
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-top: 5px;
+}
+
 
 .ui-datepicker{ background-color: #000; box-shadow:#999 0 5px 10px; color: #fff; }
 .ui-datepicker table{ border:0; background-color:#fff; border:1px solid #bbb; }
@@ -485,7 +511,11 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .stepList{
-	display: inline-block;
+	display: inline-table;
 	width: 70px;
+	padding: 5px;
+	min-height: 30px;
 	text-align: center;
+	background: #ccc;
+	margin-right: 4px;
 }

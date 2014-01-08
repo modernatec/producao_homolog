@@ -22,7 +22,7 @@
 	      	<label for="pasta">taxonomia</label>
 	    </dt>
 	    <dd>
-        	<input type="hidden" name="pasta" id="pasta" value="<?=@$taskVO["pasta"]?>"/>
+        	<input type="hidden" name="pasta" id="pasta" width="100" value="<?=@$taskVO["pasta"]?>"/>
             <?=@$taskVO["pasta"]?>
 	    </dd>
 	    <dt>

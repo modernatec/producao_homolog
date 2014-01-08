@@ -3,6 +3,7 @@
 class Model_Statu extends ORM {
 	protected $_has_many = array(
 		'tasks' => array('through' => 'status_tasks'),
+		'steps' => array('through' => 'status_tasks'),
 		'taskflows' => array('model' => 'taskflow'),
 	);
 }

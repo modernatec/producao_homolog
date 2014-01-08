@@ -5,7 +5,8 @@
 	</div>
 	<div class='hist_task round' style='float:left;'>
 	<div class='separator'>
-		<?=$status_task->userInfo->nome;?> <em>em <?=Utils_Helper::data($status_task->date, 'd/m/Y - H:i:s');?></em><br/><b><?=$status_task->statu->status;?></b> 
+		<?=$status_task->userInfo->nome;?> <em>em <?=Utils_Helper::data($status_task->date, 'd/m/Y - H:i:s');?></em>
+		<br/><b><?=$status_task->step->step;?></b> - <?=$status_task->statu->status;?>
 	</div>
 	<?=$status_task->description;?>
 	<?	

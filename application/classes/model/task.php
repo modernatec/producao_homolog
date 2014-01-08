@@ -10,6 +10,7 @@ class Model_Task extends ORM {
 	);	
 
 	protected $_has_many = array(
+		'steps' => array('model'   => 'projects_step', 'through' => 'status_tasks'),
 	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
 	    'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
 	);
@@ -27,15 +28,16 @@ class Model_Task extends ORM {
 	        'priority_id' => array(
 	        	array('not_empty'),
 		    ),
-                'project_id' => array(
-                    array('not_empty'),
-                ),
-                'userInfo_id' => array(
-                    array('not_empty'),
-                ),
-                'taxonomia' => array(
-                    array('not_empty'),
-                ),
+            'project_id' => array(
+                array('not_empty'),
+            ),
+            'userInfo_id' => array(
+                array('not_empty'),
+            ),
+            'taxonomia' => array(
+                array('not_empty'),
+                array(array($this, 'name_available'), array(':validation', ':field')),
+            ),
 	    );
 	}
 
@@ -50,6 +52,39 @@ class Model_Task extends ORM {
 			)
 		);
 	}
+
+	/**
+	 * Does the reverse of unique_key_exists() by triggering error if folder exists.
+	 * Validation callback.
+	 *
+	 * @param   Validation  Validation object
+	 * @param   string      Field folder
+	 * @return  void
+	 */
+	public function name_available(Validation $validation, $field)
+	{	
+		if ($this->unique_name_exists($validation[$field], 'title'))
+		{
+			$validation->error($field, 'name_available', array($validation[$field]));
+		}
+	}
+
+	/**
+	 * Tests if a unique key value exists in the database.
+	 *
+	 * @param   mixed    the value to test
+	 * @param   string   field name
+	 * @return  boolean
+	 */
+	public function unique_name_exists($value, $field = NULL)
+	{
+		return (bool) DB::select(array('COUNT("*")', 'total_count'))
+			->from($this->_table_name)
+			->where($field, '=', $value)
+			->execute($this->_db)
+			->get('total_count');
+	}
+
 
 	public function setup_date($value)
 	{

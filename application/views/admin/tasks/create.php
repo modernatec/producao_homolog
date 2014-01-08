@@ -14,10 +14,10 @@
 	    </dd>
 	    
 	    <dt>
-	      	<label for="taxonomia">taxonomia</label>
+	      	<label for="taxonomia">taxonomia</label>	
 	    </dt>
 	    <dd>
-            <input type="text" class="text round" name="taxonomia" id="taxonomia" style="width:500px;"  value="<?=@$taskVO['taxonomia']?>"/>
+            <input type="text" class="text round" name="taxonomia" id="taxonomia" style="width:250px;"  value="<?=@$taskVO['taxonomia']?>"/>
 	      	<span class='error'><?=Arr::get($errors, 'taxonomia');?></span>
 	    </dd>
 	    <dt>
@@ -84,7 +84,7 @@
 	      	<label for="source">origem</label>
 	    </dt>
 	    <dd>
-            <input type="text" class="text round" name="source" id="source" style="width:500px;"  value="<?=@$taskVO['source']?>"/>
+            <input type="text" class="text round" name="source" id="source" style="width:250px;"  value="<?=@$taskVO['source']?>"/>
 	      	<span class='error'><?=Arr::get($errors, 'source');?></span>
 	    </dd>
 	    <dt>

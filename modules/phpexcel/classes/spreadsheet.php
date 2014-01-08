@@ -133,21 +133,8 @@ class Spreadsheet
 		}
 
 		//  Get worksheet dimensions
-		$sheet = $objPHPExcel->getSheet(0); 
-		$highestRow = $sheet->getHighestRow(); 
-		$highestColumn = $sheet->getHighestColumn();
-
-		//  Loop through each row of the worksheet in turn
-		for ($row = 1; $row <= $highestRow; $row++){ 
-		    //  Read a row of data into an array
-		    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
-		                                    NULL,
-		                                    TRUE,
-		                                    FALSE);
-
-		    //print_r($rowData);
-		    //  Insert row data array into your database of choice here
-		}
+		return $sheet = $objPHPExcel->getSheet(0); 
+		
 
 
 	}

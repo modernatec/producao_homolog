@@ -11,7 +11,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);                
 	}
-	
+
 	public function action_index()
 	{	
 		if(Auth::instance()->logged_in()== 0){	
@@ -22,6 +22,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		
 		/* Tasks para o user ou geradas por ele */      
 		$query = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+		
                         ->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
                         ->group_by('tasks_users.task_id')
                         ->order_by('crono_date','ASC');
@@ -148,7 +149,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$view->taskVO['team_id'] = $userInfo->team_id;
 		}
 		
-		$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->where('team_id', '=', $view->taskVO['team_id'])->find_all();
+		$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
 		$view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
 		
 		$view->anexosView = View::factory('admin/files/anexos');
@@ -206,13 +207,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
   	          $task->userInfo_id = $this->current_user->userInfos->id;
             
             $task->save();
-            /*------
+
+
+           
             if($this->request->post('task_to')){
 				$task->remove('userInfos');
 				$taskUser = ORM::factory('userInfo', $this->request->post('task_to'));     	
             	$task->add('userInfos', $taskUser);
 				
 				$envio = $taskUser->nome;
+				
+				/*
 				if($taskUser->mailer == '1'){
 					$linkTask = URL::base().'admin/tasks/edit/'.$task->id;
 					if($this->request->post('statu_id') == 5)// 5 = Solicitada
@@ -231,7 +236,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 						}
                 	}
             	}
-				
+            	*/				
             }
 
             if($this->request->post('statu_id')){
@@ -240,6 +245,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$email = new Email_Helper();
 					$email->userInfo = $task->userInfo;
 					
+					/*
 					if($task->userInfo->email!=''){
 						$email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
 						$email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
@@ -248,6 +254,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
 						$email->enviaEmail();
 					}
+					*/
 				}
 				
             	$status_tasks = ORM::factory('status_task');
@@ -255,6 +262,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$status_tasks->task_id = $task->id;
 				$status_tasks->userInfo_id = $this->current_user->userInfos->id;
 				$status_tasks->description = $this->request->post('description');
+				$status_tasks->step_id = $this->request->post('step_id');
 				$status_tasks->save();
 	
 	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
@@ -263,7 +271,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             if(isset($envio)){
 				$message.= "<br/>Email enviado ".$envio; 	
 			}
-            */	
+            	
 			            
 			$db->commit();
 			
@@ -305,6 +313,112 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		Request::current()->redirect('admin/tasks');
 	}
 	
+
+	/*******************************************/
+
+	public function action_load()
+	{
+		$db = Database::instance();
+        $db->begin();
+		
+		try {  
+
+			$file = new Spreadsheet();
+			$sheet = $file->read();
+
+			$highestRow = $sheet->getHighestRow(); 
+			$highestColumn = $sheet->getHighestColumn();
+
+			//  Loop through each row of the worksheet in turn
+			for ($row = 1; $row <= $highestRow; $row++){ 
+
+			    //  Read a row of data into an array
+			    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+
+			   	if($rowData[0][0] == "END_SHEET"){
+					break;
+				}
+			    
+			    $task = ORM::factory('task');	
+				$task->project_id = '4';
+				$task->title = (empty($rowData[0][0])) ? "definir" : $rowData[0][0];
+				$task->priority_id = '2';
+				$task->crono_date = "01/02/2014";				
+				$task->taxonomia = (empty($rowData[0][2])) ? "definir" : $rowData[0][2];
+				$task->obs = (empty($rowData[0][7])) ? "-" : $rowData[0][7];
+				//$task->vol_ano = $rowData[0][3];
+				//$task->uni = $rowData[0][4];
+				$task->cap = "-";
+				$task->source = (empty($rowData[0][6])) ? "definir" : $rowData[0][6];
+		        $task->userInfo_id = $this->current_user->userInfos->id;
+	            $task->save();
+
+	            $task_user = ORM::factory('tasks_user');
+	            $task_user->task_id = $task->id;
+				$task_user->userInfo_id = $task->userInfo_id;
+				$task_user->save();
+
+				$status_task = ORM::factory('status_task');
+	            $status_task->status_id = 8;
+				$status_task->task_id = $task->id;
+				$status_task->date = date("Y-m-d H:i:s");
+				$status_task->userInfo_id = $task->userInfo_id;
+				$status_task->save();
+			    //  Insert row data array into your database of choice here
+			}
+
+			$db->commit();
+			
+            $message = "Tarefas carregadas com sucesso."; 
+			
+			Utils_Helper::mensagens('add',$message);
+            Request::current()->redirect('admin/tasks/tasks');
+
+        } catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+			Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+			Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        }
+
+        
+        return false;
+
+		/*
+
+		$view = View::factory('admin/tasks/create')
+                    ->bind('errors', $errors)
+                    ->bind('message', $message);
+                
+        $this->addValidateJs();
+		$view->isUpdate = false;                		
+        $view->teamsList = ORM::factory('team')->find_all();
+		$view->projectList = ORM::factory('project')->find_all();
+		//$view->statusList = ORM::factory('statu')->find_all();
+		$view->materiasList = ORM::factory('materia')->find_all();
+		$view->collectionList = ORM::factory('collection')->find_all();
+		$view->typeObjList = ORM::factory('typeobject')->find_all();
+		$view->supplierList = ORM::factory('supplier')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->find_all();
+		
+
+		//$view->anexosView = View::factory('admin/files/anexos');
+	  	$this->template->content = $view;	
+                
+	  	if (HTTP_Request::POST == $this->request->method()) 
+		{                                             
+			$this->salvar();
+		}
+		*/
+	}
 	
 	
 	public function action_filter()

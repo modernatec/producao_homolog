@@ -305,6 +305,7 @@ $(document).ready(function()
     }
 	
     temMensagens();
+    $("#tabs").tabs();
 
     //aniversariantes();
     rightClick(window);        
