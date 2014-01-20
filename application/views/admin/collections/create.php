@@ -11,27 +11,37 @@
 	      <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$collectionVO['name'];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'name');?></span>
 	    </dd>
-        <dt>
-	      <label for="op">OP</label>
-	    </dt>	    
-	    <dd>
-	      <input type="text" class="text required round" name="op" id="op" style="width:300px;" value="<?=@$collectionVO['op'];?>"/>
-	      <span class='error'><?=Arr::get($errors, 'op');?></span>
-	    </dd>
 	    <dt>
-	      <label for="project_id">projeto</label>
+	      <label for="target">Matéria</label>
 	    </dt>
 	    <dd>
-	      <select name="project_id" id="project_id" style="width:150px;">
+	      <select name="materia_id" id="materia_id" style="width:150px;">
                 <option value="">selecione</option>
-                <? foreach($projectList as $project){?>
-                <option value="<?=$project->id?>" <?=((@$collectionVO["project_id"] == $project->id)?('selected'):(''))?> ><?=$project->name?></option>
+                <? foreach($materiaList as $materia){?>
+                <option value="<?=$materia->id?>" <?=((@$collectionVO["materia_id"] == $materia->id)?('selected'):(''))?> ><?=$materia->name?></option>
                 <? }?>
             </select>
-            <span class='error'><?=($errors) ? $errors['project_id'] : '';?></span>
+            <span class='error'><?=($errors) ? $errors['materia_id'] : '';?></span>
 	    </dd>
-	    
-	    <dd>
+        <div class="left">
+	        <dt>
+		      <label for="op">OP</label>
+		    </dt>	    
+		    <dd>
+		      <input type="text" class="text required round" name="op" id="op" style="width:50px;" value="<?=@$collectionVO['op'];?>"/>
+		      <span class='error'><?=Arr::get($errors, 'op');?></span>
+		    </dd>
+	    </div>
+	    <div class="left">
+		    <dt>
+		      <label for="ano">Ano</label>
+		    </dt>	    
+		    <dd>
+		      <input type="text" class="text required round" name="ano" id="ano" style="width:50px;" value="<?=@$collectionVO['ano'];?>"/>
+		      <span class='error'><?=Arr::get($errors, 'ano');?></span>
+		    </dd>
+	    </div>
+	    <dd class='clear'>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
 	    </dd>
 	  </dl>

@@ -4,34 +4,32 @@ class Model_Project extends ORM {
 
 	public function rules()
 	{
-            return array(
-                'name' => array(
-                    array('not_empty'),
-                    array(array($this, 'name_available'), array(':validation', ':field')),
-                ),
-                'segmento_id' => array(
-                    array('not_empty'),
-                ),
-                'description' => array(
-                    array('not_empty'),
-                ),
-                'pasta' => array(
-                    array('not_empty'),
-                    )
-            );
+        return array(
+            'name' => array(
+                array('not_empty'),                
+            ),
+            'segmento_id' => array(
+                array('not_empty'),
+            ),
+            'description' => array(
+                array('not_empty'),
+            ),
+            'pasta' => array(
+                array('not_empty'),
+                )
+        );
 	}
+	//array(array($this, 'name_available'), array(':validation', ':field')),
 
 	public function labels()
 	{
-            return array(
-                'name'  => 'Projeto',
-                'segmento_id' => 'Segmento',
-                'description' => 'Descrição',
-                'pasta' => 'Pasta',
-            );
+        return array(
+            'name'  => 'Projeto',
+            'segmento_id' => 'Segmento',
+            'description' => 'Descrição',
+            'pasta' => 'Pasta',
+        );
 	}
-
-
 
 	/**
 	 * Does the reverse of unique_key_exists() by triggering error if folder exists.

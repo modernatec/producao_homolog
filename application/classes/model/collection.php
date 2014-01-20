@@ -11,9 +11,15 @@ class Model_Collection extends ORM {
             return array(
                 'name' => array(
                     array('not_empty'),
+                ),
+                'op' => array(
+                    array('not_empty'),
                     array(array($this, 'name_available'), array(':validation', ':field')),
                 ),
-                'project_id' => array(
+                'materia_id' => array(
+                    array('not_empty'),
+                ),
+                'ano' => array(
                     array('not_empty'),
                 )
             );
@@ -26,8 +32,6 @@ class Model_Collection extends ORM {
                 'project_id' => 'Projeto',
             );
 	}
-
-
 
 	/**
 	 * Does the reverse of unique_key_exists() by triggering error if folder exists.

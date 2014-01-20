@@ -125,12 +125,12 @@ function getUsersByEquipe(inId)
     },500);
 }
 
-function getCollectionByProject(inId)
+function getCollection()
 {
-    $('#collection_id').html('<option value="">aguarde...</a>');
     setTimeout(function()
     {
-        $.get(base_url + 'admin/projects/collections/'+inId,function(data)
+        $.get(base_url + 'admin/collections/getCollections',
+        function(data)
         {
             data = JSON.parse(data);
             $('#collection_id').html('<option value="">Selecione</a>');
@@ -143,6 +143,33 @@ function getCollectionByProject(inId)
     },500);
 }
 
+$(function (){
+        $('a.ajax').click(function() {
+            var url = this.href;
+            // show a spinner or something via css
+            var dialog = $('<div style="display:none" class="loading"></div>').appendTo('body');
+            // open the dialog
+            dialog.dialog({
+                // add a close listener to prevent adding multiple divs to the document
+                close: function(event, ui) {
+                    // remove div with all data and events
+                    dialog.remove();
+                },
+                modal: true
+            });
+            // load remote content
+            dialog.load(
+                url, 
+                {}, // omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
+                function (responseText, textStatus, XMLHttpRequest) {
+                    // remove the loading class
+                    dialog.removeClass('loading');
+                }
+            );
+            //prevent the browser to follow the link
+            return false;
+        });
+    });
 
 var popup = false;
 function openPop(pagina)
@@ -200,6 +227,7 @@ function rightClick(obj,func)
     $(obj).bind("contextmenu", function(e) { e.preventDefault(); if(func){ func(); } });
 }
 
+/*
 function alterarTag()
 {
     var old_tag = $('#old_tag').val();
@@ -267,6 +295,7 @@ function serializeTag(iptHidden)
     $('#'+iptHidden).val(strIptHidden.substr(1)).attr('class','');
     $('[for='+iptHidden+'].error').remove();
 }
+*/
 
 var m_x = 0;
 var m_y = 0;
@@ -277,7 +306,7 @@ $(function () {
             <p>Deseja realmente excluir este conteúdo?</p>\
         </div>'),
             btExcluir = this;
-        NewDialog.dialog({
+            NewDialog.dialog({
             modal: true,
             title: "Excluir",
             show: 'clip',

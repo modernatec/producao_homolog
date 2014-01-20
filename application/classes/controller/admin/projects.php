@@ -47,7 +47,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		
 		$view->projectVO = $this->setVO('project');		
 		$view->segmentosList = ORM::factory('segmento')->find_all();
-		$view->stepsList = array();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -70,7 +69,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				
 		$projeto = ORM::factory('project', $id);
 		$view->projectVO = $this->setVO('project', $projeto);
-		$view->stepsList = ORM::factory('projects_step')->where('project_id', '=', $id)->find_all();
 		$view->segmentosList = ORM::factory('segmento')->find_all();
 		$this->template->content = $view;	
 	   
@@ -107,6 +105,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 			
 			$projeto->save();
+			
+			/*
 			//$stepsList = json_decode($this->request->post("list_order"), true);
 			foreach ($this->request->post('passo') as $key => $value) {
 				$project_step = ORM::factory('projects_step', $this->request->post('id_step')[$key]);
@@ -115,9 +115,10 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$project_step->time = $this->request->post('tempo')[$key];	
 				$project_step->save();		
 			}
+			*/
 			
 			$db->commit();
-			Utils_Helper::mensagens('add','Projeto '.$projeto->name.' salvo com sucesso.');
+			Utils_Helper::mensagens('add','Projeto salvo com sucesso.');
 			Request::current()->redirect('admin/projects');
 
 		} catch (ORM_Validation_Exception $e) {

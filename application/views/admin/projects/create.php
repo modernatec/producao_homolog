@@ -27,21 +27,8 @@
 	      <label for="description">Descrição</label>
 	    </dt>	    
 	    <dd>
-	      <textarea class="text required round" name="description" id="description" style="width:500px; height:200px;"><?=@$projectVO['description'];?></textarea>
+	      <textarea class="text required round" name="description" id="description" style="width:500px; height:60px;"><?=@$projectVO['description'];?></textarea>
 	      <span class='error'><?=Arr::get($errors, 'description');?></span>
-	    </dd>
-		<dd>
-			<a href='#' class="bar_button round" style="float:left;margin-bottom:10px;" onclick="javascript:add_ProjectSteps(0)" >+ Passos</a>
-			<div style='float:left;clear:left;width:700px;'>
-		    
-		    <div id="nestable3">
-	            <ol >
-	            	<? foreach($stepsList as $key => $step){?>
-		            <li class='steps'>Passo <input class='round' type='text' name='passo[]' value="<?=$step->step?>" /> Tempo <input class='round' type='text' style='width:20px;' name='tempo[]' value="<?=$step->time?>"/> dia(s)<input type='hidden' name='id_step[]' value="<?=$step->id?>"/></li>
-	                <? }?>
-	            </ol>
-	        </div>
-	        </div>
 	    </dd>
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />

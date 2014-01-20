@@ -494,7 +494,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	/*--------------*/
     public function action_searchnew()
     {	
-        /*
+        
 		$callback = $this->request->query('callback');
         $rls = $this->current_user->roles->find_all()->as_array('id','name');       
         $dados = array();
@@ -520,6 +520,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         $arr = array('role_user'=>$rls->role_id,'dados'=>$dados);
         print $callback.json_encode($arr);
         exit;
-		*/
+		
     } 
 }

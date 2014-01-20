@@ -324,6 +324,11 @@ label
 
 .left{
 	float:left;
+	margin-right:10px;
+}
+
+.clear{
+	clear: both;
 }
 
 /***Task***/

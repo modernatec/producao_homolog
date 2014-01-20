@@ -36,7 +36,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view->isUpdate = false;
 		
 		$view->projectVO = $this->setVO('collection');		
-		$view->projectList = ORM::factory('project')->find_all();
+		$view->materiaList = ORM::factory('materia')->find_all();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -56,7 +56,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				
 		$collection = ORM::factory('collection', $id);
 		$view->collectionVO = $this->setVO('collection', $collection);
-		$view->projectList = ORM::factory('project')->find_all();
+		$view->materiaList = ORM::factory('materia')->find_all();
 		$this->template->content = $view;	
 	   
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -75,7 +75,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$colecao = ORM::factory('collection', $id)->values($this->request->post(), array(
 				'name',
 				'op',
-				'project_id',
+				'materia_id',
+				'ano'
 			));
 			               
 			
@@ -116,5 +117,15 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$errors = $e->errors('models');
 		}
 		Request::current()->redirect('admin/collections');
+	}
+
+	/*******************************************/
+
+	public function action_getCollections()
+	{
+		$view = View::factory('admin/collections/list')
+			->bind('message', $message);
+		
+		return "OK";//$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
 	}
 }
