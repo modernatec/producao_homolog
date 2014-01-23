@@ -47,24 +47,20 @@
 		<thead>
 			<th>nome</th>	
             <th>tipo de objeto</th>
+            <th>tarefas</th>
             <th>coleção</th>
-            <th>segmento</th>
             <th>data de alteração</th>
-			<th>ação</th>
 		</thead>
 		<tbody>
             <? foreach($objectsList as $objeto){?>
             <tr>
                 <td>
-                    <a href="<?=URL::base().'admin/objects/'.$linkPage.'/'.$objeto->id;?>" title="Editar"><?=$objeto->nome_obj?></a>
+                    <a href="<?=URL::base().'admin/objects/view/'.$objeto->id;?>" title="Editar"><?=$objeto->taxonomia?><br/><?=$objeto->title?></a>
                 </td>
                 <td><a><?=$objeto->typeobject->name?></a></td>
-                <td><a><?=$objeto->colecao?></a></td>
-                <td><a><?=$objeto->segmento->name?></a></td>
-                <td><a><?=Utils_Helper::data($objeto->data_alt,'d/m/Y \a\s H:i:s')?></a></td>
-                <td class="acao">
-                    <a class="excluir" href="<?=URL::base().'admin/objects/delete/'.$objeto->id;?>" title="Excluir" <?=$styleExclusao?>>Excluir</a>
-                </td>
+                <td>0</td>
+                <td><a><?=$objeto->collection->name?></a></td>
+                <td><a><?=Utils_Helper::data($objeto->updated_at,'d/m/Y \à\s H:i')?></a></td>
 			</tr>
             <?}?>
 		</tbody>

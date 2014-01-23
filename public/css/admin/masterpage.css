@@ -18,6 +18,14 @@ h1.logo{
 	background: url('../../image/site/sprite.png') no-repeat 0 -18px;
 }
 
+.wordwrap {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */ 
+}
+
 hr{
 	padding:0;
 	margin:0;
@@ -188,7 +196,7 @@ a{
 	padding:5px;
 	margin-right:5px;
 	color:#FFF;
-        box-shadow:#999 2px 2px 2px;
+    /*box-shadow:#999 2px 2px 2px;*/
 }
 
 table{
@@ -284,11 +292,12 @@ table tbody td table tbody tr:hover {
 .form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
-        box-shadow:#ccc 1px 1px 3px;
+    box-shadow:#ccc 1px 1px 3px;
 }
 
 .form input[type='submit']{
 	margin-top: 10px;
+	box-shadow: none;
 }
 
 .form input[type='text'].error, .form input[type='password'].error, .form select.error, .form textarea.error{
@@ -524,3 +533,13 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #ccc;
 	margin-right: 4px;
 }
+
+.list_item{
+	overflow: auto;;
+	color: #000;
+}
+
+.list_item a{
+	color: #000;
+}
+

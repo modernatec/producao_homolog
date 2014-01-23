@@ -4,6 +4,10 @@ class Model_Collection extends ORM {
 	protected $_belongs_to = array(
 		'project' => array('foreign_key' => 'project_id'),
 	);
+
+	protected $_has_many = array(
+		'objects' => array('model' => 'object', 'foreign_key' => 'collection_id'),
+	);
 	
 	
 	public function rules()

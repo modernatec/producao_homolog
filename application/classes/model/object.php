@@ -10,43 +10,22 @@ class Model_Object extends ORM {
         
 	protected $_belongs_to  = array(
 		'typeobject' => array('foreign_key' => 'typeobject_id'),
-		'segmento' => array('foreign_key' => 'segmento_id'),
 		'country' => array('foreign_key' => 'country_id'),
+		'collection' => array('foreign_key' => 'collection_id'),
 	);
 
 	public function rules()
 	{
 		return array(
-			'nome_obj' => array(
+			'title' => array(
 				array('not_empty'),
 			),
-			'nome_arq' => array(
+			'taxonomia' => array(
 				array('not_empty'),
 			),
-			'typeobject_id' => array(
+			'collection_id' => array(
 				array('not_empty'),
 			),
-			'colecao' => array(
-				array('not_empty'),
-				),
-			'segmento_id' => array(
-				array('not_empty'),
-			),
-			'arq_aberto' => array(
-				array('not_empty'),
-			),
-			'extensao_arq' => array(
-				array('not_empty'),
-				),
-			'interatividade' => array(
-				array('not_empty'),
-			),
-			'empresa' => array(
-				array('not_empty'),
-			),
-			'country_id' => array(
-				array('not_empty'),
-			)
 		);
 	}
         
@@ -67,11 +46,10 @@ class Model_Object extends ORM {
 	public function labels()
 	{
 		return array(
-			'nome_obj'  => 'Nome do Objeto',
-			'nome_arq' => 'Nome do arquivo',
+			'title'  => 'Nome do Objeto',
+			'taxonomia' => 'Nome do arquivo',
 			'typeobject_id' => 'Tipo do objeto',
-			'colecao' => 'Coleção',
-			'segmento_id'  => 'Segmento',
+			'collection_id' => 'Coleção',
 			'arq_aberto' => 'Arquivo aberto',
 			'extensao_arq' => 'Extensão do arquivo',
 			'interatividade'  => 'Interatividade',

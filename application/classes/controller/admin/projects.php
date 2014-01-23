@@ -105,18 +105,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 			
 			$projeto->save();
-			
-			/*
-			//$stepsList = json_decode($this->request->post("list_order"), true);
-			foreach ($this->request->post('passo') as $key => $value) {
-				$project_step = ORM::factory('projects_step', $this->request->post('id_step')[$key]);
-				$project_step->project_id = $projeto->id;
-				$project_step->step = $this->request->post('passo')[$key];
-				$project_step->time = $this->request->post('tempo')[$key];	
-				$project_step->save();		
-			}
-			*/
-			
+						
 			$db->commit();
 			Utils_Helper::mensagens('add','Projeto salvo com sucesso.');
 			Request::current()->redirect('admin/projects');

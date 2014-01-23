@@ -96,87 +96,28 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	} 
 	*/
 	public function action_create(){ 
-		$view = View::factory('admin/objects/create')
+		
+        $view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
-			
+		
 		$this->addValidateJs(Controller_Admin_Files::addJs());
 		$view->objVO = $this->setVO('object');
-        $view->typeObjects = ORM::factory('typeobject')->find_all();
-		$view->countries = ORM::factory('country')->find_all();
-		$view->suppliers = ORM::factory('supplier')->find_all();
-		$view->segmentos = ORM::factory('segmento')->find_all();
-		$view->softwares = ORM::factory('sfwprod')->order_by('name', 'ASC')->find_all();
-		$view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-		$view->materias = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
-		
-		$this->template->content = $view;
-                
-        /*        $tiposObj = $this->getTypeObjetcs(Arr::get($values, 'typeobject_id'));
-                $segmentos = $this->getSegmentos(Arr::get($values, 'segmento_id'));                
-                $countries = $this->getCountries(Arr::get($values, 'country_id'));   
-                $sfwprodsList = $this->getSfwprodsList();
-                $suppliersList = $this->getSupplierList();
-                $materiasList = $this->getMateriasList();
-                
-                $objectpai = ORM::factory('object',Arr::get($values, 'objectpai_id'));
-		*/		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-                    $objeto = $this->salvar();
-                    $filesList = $this->getFilesList($objeto->id);                    
-                    $objVet = array(
-                        'nome_obj' => ($objeto->nome_obj) ? ($objeto->nome_obj) : (Arr::get($values, 'nome_obj')),
-                        'nome_arq' => ($objeto->nome_arq) ? ($objeto->nome_arq) : (Arr::get($values, 'nome_arq')),
-                        'tipo_obj' => $tiposObj,
-                        'colecao' => ($objeto->colecao) ? ($objeto->colecao) : (Arr::get($values, 'colecao')),
-                        'segmento' => $segmentos,
-                        'sfwprodsList' => $sfwprodsList,
-                        'suppliersList' => $suppliersList,
-                        'arq_aberto' => ($objeto->arq_aberto) ? ($objeto->arq_aberto) : (Arr::get($values, 'arq_aberto')),
-                        'extensao_arq' => ($objeto->extensao_arq) ? ($objeto->extensao_arq) : (Arr::get($values, 'extensao_arq')),
-                        'interatividade' => ($objeto->interatividade) ? ($objeto->interatividade) : (Arr::get($values, 'interatividade')),
-                        'empresa' => ($objeto->empresa) ? ($objeto->empresa) : (Arr::get($values, 'empresa')),
-                        'data_lancamento' => ($objeto->data_lancamento) ? ($objeto->data_lancamento) : (Arr::get($values, 'data_lancamento')),
-                        'sinopse' => ($objeto->sinopse) ? ($objeto->sinopse) : (Arr::get($values, 'sinopse')),
-                        'obs' => ($objeto->obs) ? ($objeto->obs) : (Arr::get($values, 'obs')),
-                        'countries' => $countries,
-                        'materiasList' => $materiasList,
-                        'objectpai_id' => 0,
-                        'objectpai_txt' => '',
-                        'filesList' => $filesList
-                    );
-                    $view->objeto = $objeto;
-		}
-                else
-                {
-                    $objVet = array(
-                        'nome_obj' => '',
-                        'nome_arq' => '',
-                        'tipo_obj' => $tiposObj,
-                        'colecao' => '',
-                        'segmento' => $segmentos,
-                        'sfwprodsList' => $sfwprodsList,
-                        'suppliersList' => $suppliersList,
-                        'arq_aberto' => '',
-                        'extensao_arq' => '',
-                        'interatividade' => '',
-                        'empresa' => '',
-                        'data_lancamento' => '',
-                        'sinopse' => '',
-                        'obs' => '',
-                        'countries' => $countries,
-                        'materiasList' => $materiasList,
-                        'objectpai_id' => 0,
-                        'objectpai_txt' => '',
-                        'filesList' => ''
-                    );                    
-                }
-                $view->objVet = $objVet;
-                
-                $this->template->content = $view;
-	}
         
+        $view->typeObjects = ORM::factory('typeobject')->find_all();
+        $view->countries = ORM::factory('country')->find_all();
+        $view->suppliers = ORM::factory('supplier')->find_all();        
+        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
+		
+		       
+        if (HTTP_Request::POST == $this->request->method()) 
+		{           
+            $this->salvar();
+        }    
+        
+        $this->template->content = $view;                     
+	}
+      
 	public function action_delete($id)
 	{
 		$view = View::factory('admin/objects/list')
@@ -197,128 +138,70 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	}
 
 	public function action_edit($id)
-        {           
+    {           
 		$view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message)
 			->set('values', $this->request->post());
                 
-                $this->addPlupload();
+        //$this->addPlupload();
 		$this->addValidateJs();
 
 		$objeto = ORM::factory('object', $id);
-		$view->objeto = $objeto;
-		$view->isUpdate = true;                
+        $view->objVO = $this->setVO('object', $objeto);
+		$view->isUpdate = true;                             
                 
-                $this->template->content = $view;
-                
-		$tiposObj = $this->getTypeObjetcs($objeto->typeobject_id);
-                $segmentos = $this->getSegmentos($objeto->segmento_id);
-                $countries = $this->getCountries($objeto->country_id);
-		$sfwprodsList = $this->getSfwprodsList($objeto->id);
-                $suppliersList = $this->getSupplierList($objeto->id);
-                $materiasList = $this->getMateriasList($objeto->id);
-                $filesList = $this->getFilesList($objeto->id);
-                $objectpai = ORM::factory('object', $objeto->objectpai_id);    
+		$view->typeObjects = ORM::factory('typeobject')->find_all();
+        $view->countries = ORM::factory('country')->find_all();
+        $view->suppliers = ORM::factory('supplier')->find_all();        
+        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();   
                 
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
-                    $objeto = $this->salvar($id);
+            $this->salvar($id);
+        }
 
-                    $objVet = array(
-                        'nome_obj' => ($objeto->nome_obj) ? ($objeto->nome_obj) : (Arr::get($values, 'nome_obj')),
-                        'nome_arq' => ($objeto->nome_arq) ? ($objeto->nome_arq) : (Arr::get($values, 'nome_arq')),
-                        'tipo_obj' => $tiposObj,
-                        'colecao' => ($objeto->colecao) ? ($objeto->colecao) : (Arr::get($values, 'colecao')),
-                        'segmento' => ($objeto->segmento) ? ($objeto->segmento) : (Arr::get($values, 'segmento')),
-                        'sfwprodsList' => $sfwprodsList,
-                        'suppliersList' => $suppliersList,
-                        'arq_aberto' => ($objeto->arq_aberto) ? ($objeto->arq_aberto) : (Arr::get($values, 'arq_aberto')),
-                        'extensao_arq' => ($objeto->extensao_arq) ? ($objeto->extensao_arq) : (Arr::get($values, 'extensao_arq')),
-                        'interatividade' => ($objeto->interatividade) ? ($objeto->interatividade) : (Arr::get($values, 'interatividade')),
-                        'empresa' => ($objeto->empresa) ? ($objeto->empresa) : (Arr::get($values, 'empresa')),
-                        'data_lancamento' => ($objeto->data_lancamento) ? ($objeto->data_lancamento) : (Arr::get($values, 'data_lancamento')),
-                        'sinopse' => ($objeto->sinopse) ? ($objeto->sinopse) : (Arr::get($values, 'sinopse')),
-                        'obs' => ($objeto->obs) ? ($objeto->obs) : (Arr::get($values, 'obs')),
-                        'countries' => $countries,
-                        'materiasList' => $materiasList,
-                        'objectpai_id' => ($objectpai->id) ? ($objectpai->id) : (Arr::get($values, 'objectpai_id')),
-                        'objectpai_txt' => ($objectpai->nome_obj) ? ($objectpai->nome_obj) : '',
-                        'filesList' => $filesList
-                    );
-                    $view->objeto = $objeto;
-		}
-                else
-                {                    
-                    $objVet = array(
-                        'nome_obj' => ($objeto->nome_obj) ? ($objeto->nome_obj) : (Arr::get($values, 'nome_obj')),
-                        'nome_arq' => ($objeto->nome_arq) ? ($objeto->nome_arq) : (Arr::get($values, 'nome_arq')),
-                        'tipo_obj' => $tiposObj,
-                        'colecao' => ($objeto->colecao) ? ($objeto->colecao) : (Arr::get($values, 'colecao')),
-                        'segmento' => $segmentos,
-                        'sfwprodsList' => $sfwprodsList,
-                        'suppliersList' => $suppliersList,
-                        'arq_aberto' => ($objeto->arq_aberto!='') ? ($objeto->arq_aberto) : (Arr::get($values, 'arq_aberto')),
-                        'extensao_arq' => ($objeto->extensao_arq) ? ($objeto->extensao_arq) : (Arr::get($values, 'extensao_arq')),
-                        'interatividade' => ($objeto->interatividade!='') ? ($objeto->interatividade) : (Arr::get($values, 'interatividade')),
-                        'empresa' => ($objeto->empresa) ? ($objeto->empresa) : (Arr::get($values, 'empresa')),
-                        'data_lancamento' => ($objeto->data_lancamento) ? ($objeto->data_lancamento) : (Arr::get($values, 'data_lancamento')),
-                        'sinopse' => ($objeto->sinopse) ? ($objeto->sinopse) : (Arr::get($values, 'sinopse')),
-                        'obs' => ($objeto->obs) ? ($objeto->obs) : (Arr::get($values, 'obs')),
-                        'countries' => $countries,
-                        'materiasList' => $materiasList,
-                        'objectpai_id' => ($objectpai->id) ? ($objectpai->id) : (Arr::get($values, 'objectpai_id')),
-                        'objectpai_txt' => ($objectpai->nome_obj) ? ($objectpai->nome_obj) : '',
-                        'filesList' => $filesList
-                    );
-                    $view->objVet = $objVet;
-                }
-
-                $this->template->content = $view;
+        $this->template->content = $view;
 	}
         
-        public function action_view($id)
-        {           
-		$view = View::factory('admin/objects/view');
+    public function action_view($id)
+    {           
+        $view = View::factory('admin/tasks/assign')
+            ->bind('errors', $errors)
+            ->bind('message', $message);
 
 		$this->addValidateJs();
 
 		$objeto = ORM::factory('object', $id);
-                                
-		$tiposObj = $this->getTypeObjetcs($objeto->typeobject_id);
-                $segmentos = $this->getSegmentos($objeto->segmento_id);
-                $countries = $this->getCountries($objeto->country_id);
-		$sfwprodsList = $this->getSfwprodsList($objeto->id,true);
-                $suppliersList = $this->getSupplierList($objeto->id,true);
-                $materiasList = $this->getMateriasList($objeto->id,true);
-                $filesList = $this->getFilesList($objeto->id);
-                $objectpai = ORM::factory('object', $objeto->objectpai_id);                
-		                
-                $objVet = array(
-                    'nome_obj' => $objeto->nome_obj,
-                    'nome_arq' => $objeto->nome_arq,
-                    'tipo_obj' => $tiposObj,
-                    'colecao' => $objeto->colecao,
-                    'segmento' => $segmentos,
-                    'sfwprodsList' => $sfwprodsList,
-                    'suppliersList' => $suppliersList,
-                    'arq_aberto' => $objeto->arq_aberto,
-                    'extensao_arq' => $objeto->extensao_arq,
-                    'interatividade' => $objeto->interatividade,
-                    'empresa' => $objeto->empresa,
-                    'data_lancamento' => $objeto->data_lancamento,
-                    'sinopse' => $objeto->sinopse,
-                    'obs' => $objeto->obs,
-                    'countries' => $countries,
-                    'materiasList' => $materiasList,
-                    'objectpai_id' => $objectpai->id,
-                    'objectpai_txt' => $objectpai->nome_obj,
-                    'filesList' => $filesList
-                );
-                $view->objVet = $objVet;
+        $view->objVO = $this->setVO('object', $objeto);                                
+		        
+        $task = ORM::factory('task', $id);
+        $view->taskVO = $this->setVO('task', $task);
+        
+        $userId = $task->userInfos->find_all();
+        foreach($userId as $userInfo){
+            $view->taskVO['userInfo_id'] = $userInfo->id;
+            $view->taskVO['team_id'] = $userInfo->team_id;
+        }
+        
+        $view->taskVO['equipeUsers'] = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
+        $view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
+        
+        //$view->anexosView = View::factory('admin/files/anexos');
+        //$view->teamsList = ORM::factory('team')->find_all();
+        //$view->projectList = ORM::factory('project')->find_all();
+        $view->statusList = ORM::factory('statu')->find_all();
+        //$view->materiasList = ORM::factory('materia')->find_all();
+        $view->collectionList = ORM::factory('collection')->find_all();
+        //$view->typeObjList = ORM::factory('typeobject')->find_all();
+        $view->supplierList = ORM::factory('supplier')->find_all();
+        //$view->segmentoList = ORM::factory('segmento')->find_all();
+        //$view->projectStepsList = ORM::factory('projects_step')->where('project_id','=', $task->project_id)->find_all();
+        
+        $this->template->content = $view;
 
-                $this->template->content = $view;
 	}
+    
 
 	protected function salvar($id = null)
 	{
@@ -327,8 +210,22 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$objeto = ORM::factory('object', $id)->values($this->request->post(), array( 'nome_obj', 'nome_arq', 'typeobject_id', 'colecao', 'segmento_id', 'arq_aberto', 'extensao_arq', 'interatividade', 'empresa', 'data_lancamento', 'sinopse', 'obs', 'country_id', ));
-			                
+			$objeto = ORM::factory('object', $id)->values($this->request->post(), array( 
+                    'title', 
+                    'taxonomia', 
+                    'typeobject_id', 
+                    'collection_id', 
+                    'supplier_id', 
+                    'country_id',
+                    'parent_id', 
+                    'interatividade', 
+                    'data_lancamento', 
+                    'sinopse', 
+                    'uni', 
+                    'cap', 
+                    'status', ));
+			
+            /*                
 			if(!$id)
 			{
 				$objeto->data_ins = date('Y-m-d H:i:s');
@@ -418,8 +315,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					$objeto->add('materias', ORM::factory('materia', array('id' => $materia_id)));
 				}
 			}
-			
-			Utils_Helper::mensagens('add','Objeto '.$objeto->nome_obj.' salvo com sucesso.');
+            */
+			$objeto->save();
+			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
 			Request::current()->redirect('admin/objects');
 
@@ -441,6 +339,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         return false;
 	}
+    
     
 	/*    
         protected function getTypeObjetcs($id = null){
@@ -549,7 +448,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             }
             return $materias;
         }
-        */
+        
         protected function getFilesList($id){
             $filesList = ORM::factory('file')->where('model','=','object')->and_where('model_id','=',$id)->find_all(); 
             $files = '';
@@ -597,5 +496,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $arr = array('dados'=>$dados);
             print $callback.json_encode($arr);
             exit;
-        } 
+        }
+        */ 
 }

@@ -10,7 +10,7 @@ class Model_Task extends ORM {
 	);	
 
 	protected $_has_many = array(
-		'steps' => array('model'   => 'projects_step', 'through' => 'status_tasks'),
+		'steps' => array('model'   => 'step', 'through' => 'status_tasks'),
 	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
 	    'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
 	);
