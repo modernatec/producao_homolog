@@ -195,7 +195,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->collectionList = ORM::factory('collection')->find_all();
         //$view->typeObjList = ORM::factory('typeobject')->find_all();
         $view->supplierList = ORM::factory('supplier')->find_all();
-        //$view->segmentoList = ORM::factory('segmento')->find_all();
+        $view->stepList = ORM::factory('step')->find_all();
         //$view->projectStepsList = ORM::factory('projects_step')->where('project_id','=', $task->project_id)->find_all();
         
         $this->template->content = $view;

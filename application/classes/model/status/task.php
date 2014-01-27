@@ -5,7 +5,7 @@ class Model_Status_Task extends ORM {
     	'task' => array(),
     	'userInfo' => array(),
     	'statu' => array('model' => 'statu', 'foreign_key' => 'status_id'),
-    	'step' => array('model' => 'projects_step', 'foreign_key' => 'step_id'),
+    	'step' => array('model' => 'step', 'foreign_key' => 'step_id'),
     );  
 	
 	public function getFiles($id){

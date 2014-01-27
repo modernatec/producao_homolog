@@ -4,7 +4,7 @@
 
 	</div>
 	
-	<div class="boxwired round left">
+	<div class="box round left">
    		<b>título:</b> <?=@$objVO["title"]?><br/>
    		<b>taxonomia:</b> <?=@$objVO["taxonomia"]?><br/>
 		<b>obs:</b> <?=@$taskVO['sinopse']?><br/>
@@ -17,6 +17,37 @@
 			<dl>
 				<div class="left">
 					<dt>
+			            <label for="step">ação:</label>
+			        </dt>
+			        <dd>
+			            <select name="step" id="step" style="width:150px;">
+			                <option value="">selecione</option>
+			                <? foreach($stepList as $step){?>
+			                    <option value="<?=$step->id?>" ><?=$step->step?></option>
+			                <?}?>
+			            </select>
+			            <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
+			        </dd>	
+			    </div>
+				<div class="left">
+			        <dt>
+			        	<label for="task_to">usuário responsável</label>
+			        </dt>
+			        <dd>
+						<select name="task_to" id="task_to" style="width:150px;">
+							<option value="">Selecione</option>	  
+						<? 
+							if(isset($taskVO["equipeUsers"])){
+								foreach($taskVO["equipeUsers"] as $userInfo){?>
+								<option value="<?=$userInfo->id?>" ><?=$userInfo->nome?></option>
+							<? }}?>   	
+						</select>
+
+						<span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
+				    </dd>
+			    </div>
+			    <div>
+					<dt>
 			            <label for="statu_id">status:</label>
 			        </dt>
 			        <dd>
@@ -28,22 +59,8 @@
 			            </select>
 			            <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
 			        </dd>	
-			    </div>
-		        <dt>
-		        	<label for="task_to">usuário responsável</label>
-		        </dt>
-		        <dd>
-					<select name="task_to" id="task_to" style="width:150px;">
-						<option value="">Selecione</option>	  
-					<? 
-						if(isset($taskVO["equipeUsers"])){
-							foreach($taskVO["equipeUsers"] as $userInfo){?>
-							<option value="<?=$userInfo->id?>" ><?=$userInfo->nome?></option>
-						<? }}?>   	
-					</select>
-
-					<span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
-			    </dd>
+			        
+				</div>
 	            <dt>
 	            	<label for="description">observações</label>
 	            </dt>
