@@ -11,7 +11,7 @@
 		<tbody>
             <? foreach($typeObjectsjsList as $tipoObj){?>
             <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/typeobjects/edit/'.$tipoObj->id;?>" title="Editar"><?=$tipoObj->nome?></a></td>				
+				<td><a style='display:block' href="<?=URL::base().'admin/typeobjects/edit/'.$tipoObj->id;?>" title="Editar"><?=$tipoObj->name?></a></td>				
 				<td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/typeobjects/delete/'.$tipoObj->id;?>" title="Excluir">Excluir</a>
                 </td>

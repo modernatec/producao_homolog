@@ -99,7 +99,7 @@ if (strpos($_SERVER['HTTP_HOST'], '.com.br') !== FALSE){
 Kohana::init(array(
 	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://m-14759/producao/',
     'caching'    => Kohana::$environment === Kohana::PRODUCTION,
-    'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
+    'profile'    => TRUE,
 	'index_file' => FALSE,
 	'erros'		 => TRUE,
 ));
@@ -128,6 +128,7 @@ Kohana::modules(array(
 	'orm'			=> MODPATH.'orm',			// Object Relationship Mapping
 	'pagination'    => MODPATH.'pagination',    // Object Paginator
 	'phpexcel'	    => MODPATH.'phpexcel',    // Object Paginator
+	
 	//'amfphp'        => MODPATH.'amfphp',      	// AMFPHP integration
 	//'pagseguro'     => MODPATH.'pagseguro',     // Pague seguro
 	//'unittest'   	=> MODPATH.'unittest',   	// Unit testing

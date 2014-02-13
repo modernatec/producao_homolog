@@ -21,7 +21,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 		$view = View::factory('admin/typeobjects/list')
 			->bind('message', $message);
 		
-		$view->typeObjectsjsList = ORM::factory('typeobject')->order_by('nome','ASC')->find_all();
+		$view->typeObjectsjsList = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;             
 	} 
 
@@ -69,13 +69,13 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 		try 
 		{            
 			$objeto = ORM::factory('typeobject', $id)->values($this->request->post(), array(
-				'nome',
+				'name',
 			));
 			                
 			$objeto->save();
 			$db->commit();
 			
-			Utils_Helper::mensagens('add','Tipo de objeto '.$objeto->nome.' salvo com sucesso.');
+			Utils_Helper::mensagens('add','Tipo de objeto '.$objeto->name.' salvo com sucesso.');
 			Request::current()->redirect('admin/typeobjects');
 
 		} catch (ORM_Validation_Exception $e) {

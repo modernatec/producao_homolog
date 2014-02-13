@@ -71,7 +71,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		try 
 		{            
 			$contact = ORM::factory('supplier', $id)->values($this->request->post(), array(
-				'nome',
+				'name',
 				'email',
 				'telefone',
 				'site',

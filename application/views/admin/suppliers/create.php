@@ -12,11 +12,11 @@
 	      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
 	    </dd>
 	    <dt>
-	      <label for="nome">Contato</label>
+	      <label for="name">Contato</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=@$contactVO['nome'];?>"/>
-	      <span class='error'><?=Arr::get($errors, 'nome');?></span>
+	      <input type="text" class="text round" name="name" id="name" style="width:500px;" value="<?=@$contactVO['name'];?>"/>
+	      <span class='error'><?=Arr::get($errors, 'name');?></span>
 	    </dd>
 	    <dt>
 	      <label for="email">E-mail</label>

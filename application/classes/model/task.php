@@ -4,39 +4,28 @@ class Model_Task extends ORM {
 	//protected $load_with = array('statu');
 
 	protected $_belongs_to  = array(
-		'project' => array('foreign_key' => 'project_id'),
+		'object' => array('foreign_key' => 'object_id'),
 		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
 		'userInfo' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
+		'statu' => array('model' => 'statu', 'foreign_key' => 'status_id'),
+    	'step' => array('model' => 'step', 'foreign_key' => 'step_id'),
+    	'task' => array('model' => 'task', 'foreign_key' => 'task_id'),
 	);	
 
-	protected $_has_many = array(
-		'steps' => array('model'   => 'step', 'through' => 'status_tasks'),
-	    'status' => array('model'   => 'statu', 'through' => 'status_tasks'),
-	    'userInfos' => array('model'   => 'userInfo', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
+	protected $_has_one = array(
+	    'task_to' => array('model' => 'tasks_user', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
 	);
+
+	public function getReply($task_id){
+		return ORM::factory('task')->where('task_id', '=', $task_id)->find();
+	}
 
 
 	public function rules()
 	{
 	    return array(
-	        'title' => array(
-		        array('not_empty'),
-	        ),
-	        'crono_date' => array(
-	        	array('not_empty'),
-		    ),
-	        'priority_id' => array(
-	        	array('not_empty'),
-		    ),
-            'project_id' => array(
-                array('not_empty'),
-            ),
             'userInfo_id' => array(
                 array('not_empty'),
-            ),
-            'taxonomia' => array(
-                array('not_empty'),
-                array(array($this, 'name_available'), array(':validation', ':field')),
             ),
 	    );
 	}

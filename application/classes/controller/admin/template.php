@@ -84,10 +84,10 @@ class Controller_Admin_Template extends Controller_Template {
             {
                     $styles = array(
 						'public/css/common/reset.css' => 'screen',
-						'public/css/admin/masterpage.css' => 'screen',
 						'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
 						'public/css/common/jquery.jgrowl.css' => 'screen',
 						'public/css/admin/nested.css' => 'screen',
+						'public/css/admin/masterpage.css' => 'screen',
                     );
 
                     $scripts = array(
@@ -95,6 +95,7 @@ class Controller_Admin_Template extends Controller_Template {
 						'public/js/common/jquery/jquery-1.8.3.js',
 						'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
 						'public/js/common/jquery/jquery.validate.js',
+						'public/js/common/jquery/jquery.cookie.js',
 						'public/js/common/jgrowl/jquery.jgrowl.js',
 						'public/js/common/Nestable-master/jquery.nestable.js',						
 						'public/js/admin/admin.js',
@@ -136,6 +137,24 @@ class Controller_Admin_Template extends Controller_Template {
 
             $this->template->mensagens = Utils_Helper::mensagens('print');
             parent::after();
+    }
+
+    public function startProfilling(){
+    	if (Kohana::$profiling === TRUE)
+	    {
+	        $benchmark = Profiler::start('Your Category', __FUNCTION__);
+	        return $benchmark;
+	    }
+    }
+
+    public function endProfilling(){
+    	if (isset($benchmark))
+	    {
+	        // Stop the benchmark
+	        Profiler::stop($benchmark);
+	    }
+
+	    echo View::factory('profiler/stats');
     }
 	
 	protected function setVO($table, $obj = null){

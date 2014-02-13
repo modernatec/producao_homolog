@@ -20,16 +20,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		
 		$view = View::factory('admin/tasks/list');
 		
-		/* Tasks para o user ou geradas por ele */      
+		/* Tasks para o user*/      
 		$query = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-		
-                        ->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
-                        ->group_by('tasks_users.task_id')
-                        ->order_by('crono_date','ASC');
+				->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
+				->and_where('tasks_users.status', '=', '0')
+                ->group_by('tasks_users.task_id')
+                ->order_by('crono_date','ASC');
 						
 		$view->taskList	= $query->find_all();
 		
-		$arr_users = array();		
+		$arr_users = array();	
+			
 		/* Tasks encaminhadas para users da equipe coordenada */
 		if($this->current_auth == 'coordenador'){
 			$team = ORM::factory('team')->where('userInfo_id', '=', $this->current_user->userInfos->id)->find();
@@ -53,8 +54,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			foreach($otherUsers as $userInfo){
 				array_push($arr_users, $userInfo->id);	
 			}	
-			//echo '<pre>';
-			//var_dump($arr_users);
+			
 			$query_team = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
 							->where('tasks_users.userInfo_id', 'IN', $arr_users)
 							->group_by('tasks_users.task_id')
@@ -131,88 +131,65 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
 
-	public function action_assign($id){
-		$view = View::factory('admin/tasks/assign');
-
-		$view->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs();
-		$view->isUpdate = true;
-		
-		$task = ORM::factory('task', $id);
-		$view->taskVO = $this->setVO('task', $task);
-		
-		$userId = $task->userInfos->find_all();
-		foreach($userId as $userInfo){
-			$view->taskVO['userInfo_id'] = $userInfo->id;
-			$view->taskVO['team_id'] = $userInfo->team_id;
-		}
-		
-		$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
-		$view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
-		
-		$view->anexosView = View::factory('admin/files/anexos');
-		$view->teamsList = ORM::factory('team')->find_all();
-		$view->projectList = ORM::factory('project')->find_all();
-		$view->statusList = ORM::factory('statu')->find_all();
-		$view->materiasList = ORM::factory('materia')->find_all();
-		$view->collectionList = ORM::factory('collection')->find_all();
-		$view->typeObjList = ORM::factory('typeobject')->find_all();
-		$view->supplierList = ORM::factory('supplier')->find_all();
-		$view->segmentoList = ORM::factory('segmento')->find_all();
-		$view->projectStepsList = ORM::factory('step')->find_all();
-		
-		$this->template->content = $view;
-
+	public function action_assign($objId){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
-			$this->salvar($id);
+			$this->salvar($objId);
 		}
 	}
 
-	protected function salvar($id = null)
+	public function action_assign_reply($objId){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{     
+			/* remover task da lista do usuário e obj */
+			$taskUser = ORM::factory('tasks_user')
+						->where('userInfo_id', '=', $this->current_user->userInfos->id)
+						->and_where('task_id', '=', $this->request->post('task_id'))->find();	
+
+			$taskUser->status = 1;
+			$taskUser->save();
+
+			$this->salvar($objId, $this->request->post('task_id'), true);
+		}
+	}
+
+	protected function salvar($objId = null, $id = null, $replying = false)
 	{
         $db = Database::instance();
         $db->begin();
 		
 		try {  
-			$task = ORM::factory('task', $id);			
+			
+			$task = ($replying) ? ORM::factory('task') : ORM::factory('task', $id);
+			//$task = ORM::factory('task', $id);	
 			
 			$task->values($this->request->post(), array(
-				'project_id',
-				'title',
+				'status_id',
+				'topic',
 				'crono_date',
-				'taxonomia',
-				'obs',
-				'collection_id',
-				'supplier_id',
-				'typeobject_id',
-				'source',
-				'vol_ano',
-				'uni',
-				'cap',	
+				'description',
 			)); 
-            
+            $task->object_id = $objId;
+            ($replying) ? $task->task_id = $id : '';
 			
-			/* fluxo para criação de pastas no servidor *
-            $pastaProjeto = ORM::factory('project',$task->project_id)->pasta;
-            $rootdir = DOCROOT.'public/upload/'.$pastaProjeto.'/'.$task->pasta;
-            if(!file_exists($rootdir))
-            {
-                mkdir($rootdir,0777);
-            } 
-            */
-            if(!$id)	
-  	          $task->userInfo_id = $this->current_user->userInfos->id;
-            
+	        $task->userInfo_id = $this->current_user->userInfos->id;            
             $task->save();
 
+            $object = ORM::factory('object', $objId);
+            $object->status_id = $this->request->post('status_id');
+            $object->save();
 
-           
+            $taskUser = ORM::factory('tasks_user');
+            $taskUser->task_id = $task->id;
+            $taskUser->status = 0;
+            $taskUser->userInfo_id = $this->request->post('task_to');
+
+			$taskUser->save();
+
+            /*
             if($this->request->post('task_to')){
 				$task->remove('userInfos');
-				$taskUser = ORM::factory('userInfo', $this->request->post('task_to'));     	
+				$taskUser = ORM::factory('userInfo', ;     	
             	$task->add('userInfos', $taskUser);
 				
 				$envio = $taskUser->nome;
@@ -236,9 +213,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 						}
                 	}
             	}
-            	*/				
+            				
             }
-
+            */
+            /*
             if($this->request->post('statu_id')){
 				if($this->request->post('statu_id') == 7) // 7 = Concluído
 				{
@@ -254,11 +232,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
 						$email->enviaEmail();
 					}
-					*/
+					
 				}
 				
             	$status_tasks = ORM::factory('status_task');
-				$status_tasks->status_id = $this->request->post('statu_id');
+				$status_tasks->status_id = $this->request->post('');
 				$status_tasks->task_id = $task->id;
 				$status_tasks->userInfo_id = $this->current_user->userInfos->id;
 				$status_tasks->description = $this->request->post('description');
@@ -267,6 +245,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
             }	
+            */
 
             if(isset($envio)){
 				$message.= "<br/>Email enviado ".$envio; 	
@@ -278,7 +257,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $message = "Tarefa salva com sucesso."; 
 			
 			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/tasks/edit/'.$task->id);
+            Request::current()->redirect('admin/objects/view/'.$objId);
 
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');

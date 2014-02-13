@@ -22,7 +22,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view = View::factory('admin/collections/list')
 			->bind('message', $message);
 		
-		$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
+		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		
 		$this->template->content = $view;    
 	} 
 
@@ -121,11 +122,25 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 
 	/*******************************************/
 
-	public function action_getCollections()
-	{
-		$view = View::factory('admin/collections/list')
-			->bind('message', $message);
-		
-		return "OK";//$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
+	public function action_getList($ano){
+		$this->auto_render = false;
+		$view = View::factory('admin/collections/table');
+		$view->collectionsList = ORM::factory('collection')->where('ano', '=', $ano)->order_by('name','ASC')->find_all();
+		echo $view;
+	}
+	
+	public function action_getListProject($ano){
+		$this->auto_render = false;
+
+		$view = View::factory('admin/collections/select');
+
+		$collectionsArr = array();
+		$collections = ORM::factory('collections_project')->where('project_id', '=', $this->request->query('project_id'))->find_all();
+		foreach ($collections as $collection) {
+			array_push($collectionsArr, $collection->collection_id);
+		}
+		$view->collectionsArr = $collectionsArr;
+		$view->collectionsList = ORM::factory('collection')->where('ano', '=', $ano)->order_by('name','ASC')->find_all();
+		echo $view;
 	}
 }

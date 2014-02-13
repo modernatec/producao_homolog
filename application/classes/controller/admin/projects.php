@@ -30,10 +30,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->projectsList = ORM::factory('project')->order_by('name','ASC')->find_all();
-		$this->template->content = $view; 
-
-
-		
+		$this->template->content = $view; 		
 	} 
 
 	public function action_create()
@@ -47,6 +44,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		
 		$view->projectVO = $this->setVO('project');		
 		$view->segmentosList = ORM::factory('segmento')->find_all();
+		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -70,6 +68,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		$projeto = ORM::factory('project', $id);
 		$view->projectVO = $this->setVO('project', $projeto);
 		$view->segmentosList = ORM::factory('segmento')->find_all();
+		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		
 		$this->template->content = $view;	
 	   
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -105,6 +105,19 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 			
 			$projeto->save();
+
+			$collections = ORM::factory('collections_project')->where('project_id', '=', $projeto->id)->find_all();
+			foreach ($collections as $collection) {
+				$collection->delete();
+			}
+
+			foreach ($this->request->post('selected') as $collection) {
+				$new_collection = ORM::factory('collections_project');
+				$new_collection->project_id = $projeto->id;
+				$new_collection->collection_id = $collection;
+				$new_collection->save();
+			}
+
 						
 			$db->commit();
 			Utils_Helper::mensagens('add','Projeto salvo com sucesso.');
@@ -166,4 +179,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         print $callback.json_encode($arr);
         exit;
     } 
+
+    
 }

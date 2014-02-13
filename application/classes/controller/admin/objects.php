@@ -16,92 +16,37 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateObjects.js",
-		);
-		
-		if($arr){
-			foreach($arr as $item){
-				array_push($scripts, $item);	
-			}
-		}
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/objects/list')
 			->bind('message', $message);
 		
-		$query = ORM::factory('object');
-						
-		$count = $query->count_all();
-		$pag = new Pagination( array( 'total_items' => $count, 'items_per_page' => self::ITENS_POR_PAGINA, 'auto_hide' => true ) );
-		$view->page_links = $pag->render();
-                
-		$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
-		$view->tiposObj = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
-		$view->segmentos = ORM::factory('segmento')->order_by('name','ASC')->find_all();
-		//$view->colecaoList = DB::select('colecao')->from('objects')->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();
-		//$view->dataLancamentoList = DB::select('data_lancamento')->from('objects')->group_by('data_lancamento')->order_by('data_lancamento','ASC')->as_object()->execute();
-		//$view->titulo = '';
+		$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
+		$view->filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode(array());
+		$view->filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
+		$view->filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
+		
+		
+		//$query = ORM::factory('object');						
+		//$count = $query->count_all();
+		//$pag = new Pagination( array( 'total_items' => $count, 'items_per_page' => self::ITENS_POR_PAGINA, 'auto_hide' => true ) );
+		//$view->page_links = $pag->render();
+        $view->projectList = ORM::factory('project')->find_all(); 
+
+
+		//$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
 		//$view->linkPage = ($this->assistente)?('view'):('edit');
 		//$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
 		$this->template->content = $view;             
 	} 
-    /* 
-    public function action_filter()
-	{	
-		$view = View::factory('admin/objects/list')
-			->bind('message', $message);
-                
-		$typeobject_id = $this->request->post('typeobject_id');
-		$segmento_id = $this->request->post('segmento_id');
-		$colecao = $this->request->post('colecao');
-		$ano = $this->request->post('ano');
-		$titulo = $this->request->post('titulo');
-		
-		$query = ORM::factory('object');
-		if($typeobject_id!=''){
-			$query->and_where('typeobject_id','=',$typeobject_id);
-		}
-		if($segmento_id!=''){
-			$query->and_where('segmento_id','=',$segmento_id);
-		}
-		if($colecao!=''){
-			$query->and_where('colecao','=',$colecao);
-		}
-		if($ano!=''){
-			$query->and_where('data_lancamento','like',"$ano-%");
-		}
-		if($titulo!=''){
-			$query->and_where('nome_obj','like',"%$titulo%");
-		}
-		
-		$count = $query->count_all();                
-		$pag = new Pagination( array( 'total_items' => $count, 'items_per_page' => self::ITENS_POR_PAGINA, 'auto_hide' => true ) );
-		$view->page_links = $pag->render();
-		
-		$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
-		
-		$view->tiposObj = $this->getTypeObjetcs($typeobject_id);
-		$view->segmentos = $this->getSegmentos($segmento_id);
-		$view->colecaoList = $this->getColecoes($colecao);
-		$view->dataLancamentoList = $this->getDataLancamento($ano);
-		$view->titulo = $titulo;     
-		$view->linkPage = ($this->assistente)?('view'):('edit');
-		$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
-		$this->template->content = $view;             
-	} 
-	*/
+    
 	public function action_create(){ 
 		
         $view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 		
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs('public/js/admin/validateObjects.js');
 		$view->objVO = $this->setVO('object');
         
         $view->typeObjects = ORM::factory('typeobject')->find_all();
@@ -164,7 +109,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $this->template->content = $view;
 	}
         
-    public function action_view($id)
+    public function action_view($id, $task_id = null)
     {           
         $view = View::factory('admin/tasks/assign')
             ->bind('errors', $errors)
@@ -173,30 +118,25 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->addValidateJs();
 
 		$objeto = ORM::factory('object', $id);
-        $view->objVO = $this->setVO('object', $objeto);                                
+        $view->obj = $objeto;                             
 		        
-        $task = ORM::factory('task', $id);
-        $view->taskVO = $this->setVO('task', $task);
-        
-        $userId = $task->userInfos->find_all();
-        foreach($userId as $userInfo){
-            $view->taskVO['userInfo_id'] = $userInfo->id;
-            $view->taskVO['team_id'] = $userInfo->team_id;
+        $view->taskflows = ORM::factory('task')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+
+        if($this->current_auth != 'assistente'){
+            $view->assign_form = View::factory('admin/tasks/assign_form');
+            $view->assign_form->statusList = ORM::factory('statu')->find_all();
+            $view->assign_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
+            $view->assign_form->obj = $objeto;  
+        }else{
+            $view->reply_form = View::factory('admin/tasks/reply_form');
+            $view->reply_form->task = ORM::factory('task')
+                                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
+                                        ->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
+                                        ->find();
+
+            $view->reply_form->statusList = ORM::factory('statu')->find_all();
+            $view->reply_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
         }
-        
-        $view->taskVO['equipeUsers'] = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
-        $view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
-        
-        //$view->anexosView = View::factory('admin/files/anexos');
-        //$view->teamsList = ORM::factory('team')->find_all();
-        //$view->projectList = ORM::factory('project')->find_all();
-        $view->statusList = ORM::factory('statu')->find_all();
-        //$view->materiasList = ORM::factory('materia')->find_all();
-        $view->collectionList = ORM::factory('collection')->find_all();
-        //$view->typeObjList = ORM::factory('typeobject')->find_all();
-        $view->supplierList = ORM::factory('supplier')->find_all();
-        $view->stepList = ORM::factory('step')->find_all();
-        //$view->projectStepsList = ORM::factory('projects_step')->where('project_id','=', $task->project_id)->find_all();
         
         $this->template->content = $view;
 
@@ -210,7 +150,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$objeto = ORM::factory('object', $id)->values($this->request->post(), array( 
+			$object = ORM::factory('object', $id)->values($this->request->post(), array( 
                     'title', 
                     'taxonomia', 
                     'typeobject_id', 
@@ -218,105 +158,16 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'supplier_id', 
                     'country_id',
                     'parent_id', 
-                    'interatividade', 
+                    'interatividade',
+                    'fase', 
                     'data_lancamento', 
                     'sinopse', 
                     'uni', 
                     'cap', 
                     'status', ));
 			
-            /*                
-			if(!$id)
-			{
-				$objeto->data_ins = date('Y-m-d H:i:s');
-				$objeto->status = 1;
-			}
-                        
-			if($this->request->post('objectpai_id') != ''){
-				$objeto->objectpai_id = $this->request->post('objectpai_id');
-			}else{
-				$objeto->objectpai_id = 0;
-			}
-                        
-			$objeto->data_alt = date('Y-m-d H:i:s');
-			$objeto->save();
-                        
-			$basedir = 'public/upload/objetos';
-			$rootdir = DOCROOT.$basedir;
-			if($objeto->data_lancamento != ''){
-				$ano = Utils_Helper::data($objeto->data_lancamento,'Y');
-				$rootdir .= '/'.$ano;
-				if(!file_exists($rootdir))
-				{                                
-					mkdir($rootdir,0777);
-				}
-				
-				if($objeto->colecao != ''){
-					$colecao = Utils_Helper::limparStr($objeto->colecao);
-					$rootdir .= '/'.$colecao;
-					if(!file_exists($rootdir))
-					{   
-						mkdir($rootdir,0777);
-					}
-					
-					if($objeto->nome_arq != ''){
-						$nome_arq = Utils_Helper::limparStr($objeto->nome_arq);
-						$rootdir .= '/'.$nome_arq;
-						if(!file_exists($rootdir))
-						{                                        
-							mkdir($rootdir,0777);
-						}
-					}
-				}
-			}
-							   
-			$filesUploads = $this->request->post('filesUploads');
-			$mimeUploads = $this->request->post('mimeUploads');
-			if($filesUploads!='')
-			{
-				$arrFiles = explode(',',$filesUploads);
-				$arrMimes = explode(',',$mimeUploads);
-				$basedir = 'public/plupload/temporario/';
-				$newbasedir = str_replace(DOCROOT,'',$rootdir).'/';
-				foreach($arrFiles as $k=>$file){
-					if($file!='empty'){
-						$size = filesize($basedir.$file);
+			$object->save();
 
-						Controller_Admin_Files::salvar($newbasedir.$file,$arrMimes[$k],$size,$objeto->id,'object');
-
-						rename($basedir.$file, $newbasedir.$file);
-					}
-				}
-			}
-			
-			$software_producao = $this->request->post('software_producao');
-			if(count($software_producao)>0)
-			{
-				$objeto->remove('sfwprods');
-				foreach($software_producao as $sfwprod_id){
-					$objeto->add('sfwprods', ORM::factory('sfwprod', array('id' => $sfwprod_id)));
-				}
-			}
-			
-			$produtora = $this->request->post('produtora');
-			if(count($produtora)>0)
-			{
-				$objeto->remove('suppliers');
-				foreach($produtora as $supplier_id){
-					$objeto->add('suppliers', ORM::factory('supplier', array('id' => $supplier_id)));
-				}
-			}
-                        
-			$materia = $this->request->post('materia');
-			if(count($materia)>0)
-			{
-				$objeto->remove('materias');
-				foreach($materia as $materia_id){
-					$objeto->add('materias', ORM::factory('materia', array('id' => $materia_id)));
-				}
-			}
-            */
-			$objeto->save();
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
 			Request::current()->redirect('admin/objects');
@@ -352,150 +203,37 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             }
             return $tiposObj;
         }
-       
-        protected function getSegmentos($id = null){
-            $segmentos = '';                
-            $segmentosList = 
-            foreach($segmentosList as $tol){
-                $sld = '';
-                if($id == $tol->id) $sld = 'selected="selected"';
-                $segmentos .= '<option value="'.$tol->id.'" '.$sld.'>'.$tol->nome.'</option>';
-            }
-            return $segmentos;
-        }
-         
-        protected function getCountries($id = null){
-            $countries = '';                
-            $countriesList = ORM::factory('country')->order_by('nome','ASC')->find_all();
-            foreach($countriesList as $tol){
-                $sld = '';
-                if($id == $tol->id) $sld = 'selected="selected"';
-                $countries .= '<option value="'.$tol->id.'" '.$sld.'>'.$tol->nome.'</option>';
-            }
-            return $countries;
-        }
-        
-        protected function getSfwprodsList($id = null, $disabled = false){
-            $sfwprods = '';
-            $objectsSfwprods = array();
-            $results = DB::select('sfwprod_id')->from('objects_sfwprods')->where('object_id', '=',$id)->execute();
-            foreach($results->as_array('sfwprod_id') as $id => $o){
-                array_push($objectsSfwprods,$id);
-            }
-            $sfwprodsList = ORM::factory('sfwprod')->order_by('nome','ASC')->find_all();
-            foreach($sfwprodsList as $tol){
-                $ckd = $dsb = '';
-                if($disabled) $dsb = 'disabled="disabled';
-                if(in_array($tol->id, $objectsSfwprods)) $ckd = 'checked="checked"';
-                $sfwprods .= '<p><input type="checkbox" name="software_producao[]" '.$ckd.' '.$dsb.' value="'.$tol->id.'" />'.$tol->nome.'</p>';
-            }
-            return $sfwprods;
-        }
-        
-        protected function getSupplierList($id = null, $disabled = false){
-            $suppliers = '';
-            $objectsSuppliers = array();
-            $results = DB::select('supplier_id')->from('objects_suppliers')->where('object_id', '=',$id)->execute();
-            foreach($results->as_array('supplier_id') as $id => $o){
-                array_push($objectsSuppliers,$id);
-            }
-            $suppliersList = ORM::factory('supplier')->order_by('empresa','ASC')->find_all();
-            foreach($suppliersList as $tol){
-                $ckd = $dsb = '';
-                if($disabled) $dsb = 'disabled="disabled';
-                if(in_array($tol->id, $objectsSuppliers)) $ckd = 'checked="checked"';
-                $suppliers .= '<p><input type="checkbox" name="produtora[]" '.$ckd.' '.$dsb.' value="'.$tol->id.'" />'.$tol->empresa.'</p>';
-            }
-            return $suppliers;
-        }
-        
-        protected function getColecoes($txt = ''){
-            $colecoes = '';                
-            $colecoesList = '';
-            foreach($colecoesList as $cl){
-                $sld = '';
-                if($txt == $cl->colecao) $sld = 'selected="selected"';
-                $colecoes .= '<option value="'.$cl->colecao.'" '.$sld.'>'.$cl->colecao.'</option>';
-            }
-            return $colecoes;
-        }
-        
-        protected function getDataLancamento($txt = ''){
-            $dataLancamentos = '';                
-            $dataLancamentosList = '';
-            foreach($dataLancamentosList as $dl){
-                $sld = '';
-                $ano = Utils_Helper::data($dl->data_lancamento,'Y');
-                if($txt == $ano) $sld = 'selected="selected"';
-                $dataLancamentos .= '<option value="'.$ano.'" '.$sld.'>'.$ano.'</option>';
-            }
-            return $dataLancamentos;
-        }
-        
-        protected function getMateriasList($id = null, $disabled = false){
-            $materias = '';
-            $objectsMaterias = array();
-            $results = DB::select('materia_id')->from('objects_materias')->where('object_id', '=',$id)->execute();
-            foreach($results->as_array('materia_id') as $id => $o){
-                array_push($objectsMaterias,$id);
-            }
-            $materiasList = ORM::factory('materia')->order_by('nome','ASC')->find_all();
-            foreach($materiasList as $tol){
-                $ckd = $dsb = '';
-                if($disabled) $dsb = 'disabled="disabled';
-                if(in_array($tol->id, $objectsMaterias)) $ckd = 'checked="checked"';
-                $materias .= '<p><input type="checkbox" name="materia[]" '.$ckd.' '.$dsb.' value="'.$tol->id.'" />'.$tol->nome.'</p>';
-            }
-            return $materias;
-        }
-        
-        protected function getFilesList($id){
-            $filesList = ORM::factory('file')->where('model','=','object')->and_where('model_id','=',$id)->find_all(); 
-            $files = '';
-            foreach($filesList as $file){
-                $files .= '<li><a href="'.URL::base().'admin/files/download/'.$file->id.'" title="Download" target="_blank">'.basename($file->uri).'</a></li>';
-            }
-            return $files;
-        }
-        
-        public function action_popload()
-        {	
-            $callback = $this->request->query('callback');
-           
-            $country_id = $this->request->query('country_id');
-            $colecao = $this->request->query('colecao');
-            $ano = $this->request->query('ano');
-            
-            $dados = array();
-            if($country_id != '' && $colecao == '' && $ano == ''){
-                $list = DB::select('colecao')->from('objects')->where('country_id','=',$country_id)->group_by('colecao')->order_by('colecao','ASC')->as_object()->execute();                
-                foreach($list as $l){
-                    $dado = array('id'=>$l->colecao,'title'=>$l->colecao);
-                    array_push($dados,$dado);
-                }
-            }elseif($country_id != '' && $colecao != '' && $ano == ''){
-                $list = DB::select('data_lancamento')->from('objects')->where('country_id','=',$country_id)->where('colecao','=',$colecao)->group_by('data_lancamento')->order_by('data_lancamento','DESC')->as_object()->execute();                
-                foreach($list as $l){
-                    $ano = Utils_Helper::data($l->data_lancamento,'Y');
-                    $dado = array('id'=>$ano,'title'=>$ano);
-                    array_push($dados,$dado);
-                }
-            }elseif($country_id != '' && $colecao != '' && $ano != ''){
-                $list = DB::select('id','nome_obj')->from('objects')->where('country_id','=',$country_id)->where('colecao','=',$colecao)->where('data_lancamento','like',"$ano-%")->order_by('nome_obj','ASC')->as_object()->execute();                
-                foreach($list as $l){
-                    $dado = array('id'=>$l->id,'title'=>$l->nome_obj);
-                    array_push($dados,$dado);
-                }
-            }else{
-                $list = ORM::factory('country')->order_by('nome','ASC')->find_all();
-                foreach($list as $l){
-                    $dado = array('id'=>$l->id,'title'=>$l->nome);
-                    array_push($dados,$dado);
-                }
-            }
-            $arr = array('dados'=>$dados);
-            print $callback.json_encode($arr);
-            exit;
-        }
-        */ 
+    */ 
+
+    /********************************/
+    public function action_getCollections($project_id){
+		$this->auto_render = false;
+		$view = View::factory('admin/objects/table');
+		$view->project_id = $project_id;
+
+		//$this->startProfilling();
+
+		$view->filter_tipo = json_decode($this->request->query('tipo'));
+		$view->filter_status = json_decode($this->request->query('status'));
+		$view->filter_collection  = json_decode($this->request->query('collection'));
+		$view->filter_supplier  = json_decode($this->request->query('supplier'));		
+
+		$view->typeObjectsjsList = ORM::factory('object')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->find_all();
+		$view->statusList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->group_by('status_id')->find_all();
+		$view->collectionList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->order_by('data_lancamento','ASC')->group_by('collection_id')->find_all();
+		$view->suppliersList = ORM::factory('object')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->find_all();
+
+		$query = ORM::factory('object')->where('fase', '=', '1')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id));
+
+		/***Filtros***/
+		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
+		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('id') : '';
+		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
+		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
+
+		$view->objectsList = $query->order_by('data_lancamento','ASC')->find_all();
+		
+		//$this->endProfilling();
+		echo $view;
+	}    
 }

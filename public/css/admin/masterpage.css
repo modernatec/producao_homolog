@@ -100,7 +100,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	position:absolute;
 	border:3px #FFF solid;
 	border-radius:100px;
-	box-shadow: 0 0 10px 3px rgba(0,0,0, .5);
+	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);
 	top:-17px;
 	left:-17px;
 }
@@ -157,11 +157,14 @@ a.link:hover{color:#666; text-decoration: underline;}
 	background: #333;
 }
 
-
-
 #menu ul li:last-child{
 	box-shadow:none;
 }
+
+
+
+
+
 
 a{
 	color:#FFF;
@@ -289,13 +292,13 @@ table tbody td table tbody tr:hover {
 }
 
 
-.form input[type='text'], .form input[type='password'], .form input[type='submit'], .form textarea, .form select{
+.form input[type='text'], .form input[type='password'], .form input[type='submit'],input[type='button'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
     box-shadow:#ccc 1px 1px 3px;
 }
 
-.form input[type='submit']{
+.form input[type='submit'], input[type='button']{
 	margin-top: 10px;
 	box-shadow: none;
 }
@@ -542,5 +545,75 @@ input[type='text']:focus, input[type='password']:focus{
 
 .list_item a{
 	color: #000;
+}
+
+.ui-tabs, .ui-widget, .ui-widget-content, .ui-corner-all {
+	border: none;
+}
+
+.ui-widget-content{
+	background: #f6f6f6;
+}
+
+.ui-tabs .ui-tabs-panel {
+	padding: 5px;
+}
+
+.ui-widget-header{
+	background:#008fc7;
+}
+
+.select_holder{
+	width: 500px;
+}
+
+.select_holder li{
+	padding: 5px 0;
+	border-bottom: 1px #ccc solid;	
+}
+
+
+.filter{
+	color:#008fc7;
+	display: block;
+	cursor: pointer;
+}
+
+.filter span{
+	display: block;
+}
+
+.filter ul li{
+	width: 100px;
+	float:left;
+	position: relative;
+	padding: 5px;
+}
+
+.filter ul li:hover{
+	background: #ccc;
+}
+
+/*
+.filter ul li:hover ul{
+	display: block;
+	margin-top: 5px;
+}
+*/
+
+
+.filter ul li > ul{
+	position: absolute;
+	z-index: 10000;
+	background: #ccc;
+	display: none;
+	left: 0;
+	padding: 5px;
+}
+
+.filter ul li > ul li{
+	width: 150px;
+	display: block;
+	float: none;
 }
 

@@ -9,7 +9,7 @@ class Model_Supplier extends ORM {
 	public function rules()
 	{
             return array(
-                'nome' => array(
+                'name' => array(
                     array('not_empty'),
                 ),
                 'email' => array(

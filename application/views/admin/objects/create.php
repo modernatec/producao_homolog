@@ -38,10 +38,10 @@
                     <input type="text" class="text required round" name="cap" id="cap" style="width:50px;" value="<?=$objVO['cap'];?>"/>
                     <span class='error'><?=Arr::get($errors, 'cap');?></span>
                 </dd>
-            <div class="clear">
+            <div class="clear left">
                 <dt> <label for="typeobject_id">tipo do objeto</label> </dt>
                 <dd>
-                    <select class="required round" name="typeobject_id" id="typeobject_id">
+                    <select class="required round" name="typeobject_id" id="typeobject_id" style="width:200px;">
                         <option value=''>Selecione</option>
                         <? foreach($typeObjects as $type){?>
                             <option value="<?=$type->id?>" <?=((@$objVO["typeobject_id"] == $type->id)?('selected'):(''))?> ><?=$type->name?></option>
@@ -62,18 +62,65 @@
                     <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
                 </dd>       
             </div>
-            <dt> <label for="countries">país</label> </dt>
+            <div class="left">
+                <dt> <label for="countries">país</label> </dt>
+                <dd>
+                    <select class="required round" name="country_id" id="country_id">
+                        <option value=''>Selecione</option>
+                        <? foreach($countries as $country){?>
+                            <option value="<?=$country->id?>" <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'country_id');?></span>
+                </dd>
+            </div>   
+            <dt> <label for="fase">fase</label> </dt>
             <dd>
-                <select class="required round" name="country_id" id="country_id">
+                <select class="required round" name="fase" id="fase" style="width:100px;">
                     <option value=''>Selecione</option>
-                    <? foreach($countries as $country){?>
-                        <option value="<?=$country->id?>" <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
-                    <? }?>
+                    <option value='0' <?=(($objVO['fase']==0)?('selected="selected"'):(''))?>>Concept</option>
+                    <option value='1' <?=(($objVO['fase']==1)?('selected="selected"'):(''))?>>Produção</option>
+                    <option value='2' <?=(($objVO['fase']==2)?('selected="selected"'):(''))?>>Acervo</option>
                 </select>
-                <span class='error'><?=Arr::get($errors, 'country_id');?></span>
-            </dd>            
-            
-            <dt> 
+                <span class='error'><?=Arr::get($errors, 'fase');?></span>
+            </dd>  
+            <div class="clear left"> 
+                <dt><label for="arq_aberto">Arquivo aberto</label></dt>
+                <dd>
+                    <select class="required round" name="arq_aberto" id="arq_aberto" style="width:100px;">
+                        <option value=''>Selecione</option>
+                        <option value='0' <?=(($objVO['arq_aberto'] == 0)?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['arq_aberto'] == 1)?('selected="selected"'):(''))?>>Sim</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'arq_aberto');?></span>
+                </dd> 
+            </div>
+            <div class="left">
+                <dt> <label for="interatividade">Interatividade</label> </dt>
+                <dd>
+                    <select class="required round" name="interatividade" id="interatividade" style="width:100px;">
+                        <option value=''>Selecione</option>
+                        <option value='0' <?=(($objVO['interatividade']==0)?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['interatividade']==1)?('selected="selected"'):(''))?>>Sim</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'interatividade');?></span>
+                </dd>
+            </div>
+            <div class="left">
+                <dt> <label for="data_lancamento">Data do lançamento</label> </dt>
+                <dd>
+                    <input type="text" class="text round" name="data_lancamento" id="data_lancamento" style="width:100px;" value="<?=$objVO['data_lancamento'];?>"/>
+                    <span class='error'><?=Arr::get($errors, 'data_lancamento');?></span>
+                </dd>     
+            </div>
+            <div class="clear">
+                <dt> <label for="sinopse">Sinopse</label> </dt>
+                <dd>
+                    <textarea class="text round" name="sinopse" id="sinopse" style="width:500px; height:200px;"><?=$objVO['sinopse'];?></textarea>
+                    <span class='error'><?=Arr::get($errors, 'sinopse');?></span>
+                </dd>
+            </div>
+            <!--dt> 
                 <label for="ojectpai_id">Reaproveitamento</label> 
                 <a href="javascript:;" id="btSlctObjtPai" class="bar_button round">Add</a> 
                 <a href="javascript:;" id="btRmvObjtPai" class="bar_button round">Del</a>
@@ -83,7 +130,7 @@
                 <input type="hidden" name="objectpai_id" id="objectpai_id" value="<?=$objVet['ojectpai_id'];?>"/>
                 <span class='error'><?=Arr::get($errors, 'ojectpai_id');?></span>
                 
-            </dd>            
+            </dd -->            
             
             <? /* Fluxo como tags
             <dd>
@@ -99,39 +146,9 @@
                 <span class='error'><?=Arr::get($errors, 'software_producao');?></span>
             </dd>
              */?>                      
-            <dt> <label for="arq_aberto">Arquivo aberto</label></dt>
-            <dd>
-                <select class="required round" name="arq_aberto" id="arq_aberto" style="width:100px;">
-                    <option value=''>Selecione</option>
-                    <option value='0' <?=(($objVO['arq_aberto'] == 0)?('selected="selected"'):(''))?>>Não</option>
-                    <option value='1' <?=(($objVO['arq_aberto'] == 1)?('selected="selected"'):(''))?>>Sim</option>
-                </select>
-                <span class='error'><?=Arr::get($errors, 'arq_aberto');?></span>
-            </dd>
-            <dt> <label for="extensao_arq">Extensão do arquivo</label> </dt>
-            <dd>
-                <input type="text" class="text required round" name="extensao_arq" id="extensao_arq" style="width:250px;" value="<?=$objVO['extensao_arq'];?>"/>
-                <span class='error'><?=Arr::get($errors, 'extensao_arq');?></span>
-            </dd>
-            <dt> <label for="interatividade">Interatividade</label> </dt>
-            <dd>
-                <select class="required round" name="interatividade" id="interatividade" style="width:100px;">
-                    <option value=''>Selecione</option>
-                    <option value='0' <?=(($objVO['interatividade']==0)?('selected="selected"'):(''))?>>Não</option>
-                    <option value='1' <?=(($objVO['interatividade']==1)?('selected="selected"'):(''))?>>Sim</option>
-                </select>
-                <span class='error'><?=Arr::get($errors, 'interatividade');?></span>
-            </dd>
-            <dt> <label for="data_lancamento">Data do lançamento</label> </dt>
-            <dd>
-                <input type="text" class="text round" name="data_lancamento" id="data_lancamento" style="width:100px;" value="<?=$objVO['data_lancamento'];?>"/>
-                <span class='error'><?=Arr::get($errors, 'data_lancamento');?></span>
-            </dd>
-            <dt> <label for="sinopse">Sinopse</label> </dt>
-            <dd>
-                <textarea class="text round" name="sinopse" id="sinopse" style="width:500px; height:200px;"><?=$objVO['sinopse'];?></textarea>
-                <span class='error'><?=Arr::get($errors, 'sinopse');?></span>
-            </dd>
+            
+            
+
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
 	    </dd>

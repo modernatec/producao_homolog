@@ -15,6 +15,7 @@
     	<?=$menu;?>
     	<?=$content;?>
     </div>
+    
 	<?php foreach ($scripts as $file) echo HTML::script($file), PHP_EOL ?>
 	<script>var msgs = <?=($mensagens)?($mensagens):('[]')?>;</script>   
 	</body>

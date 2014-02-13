@@ -297,10 +297,18 @@ function serializeTag(iptHidden)
 }
 */
 
+function closeFilterPanel(){
+    $('.filter ul li').css({'background': ''});
+    $('.filter ul li ul').css({'display': 'none'});
+}
+
 var m_x = 0;
 var m_y = 0;
 
 $(function () {
+
+    
+
     $("a:contains('Excluir')").click(function() {        
         var NewDialog = $('<div id="MenuDialog">\
             <p>Deseja realmente excluir este conteúdo?</p>\
@@ -321,6 +329,94 @@ $(function () {
         });
         return false;
     });
+
+
+    $('a.popup').click(function() {
+        var url = this.href;
+        // show a spinner or something via css
+        var dialog = $('<div style="display:none" class="loading"></div>').appendTo('body');
+        // open the dialog
+        dialog.dialog({
+            // add a close listener to prevent adding multiple divs to the document
+            close: function(event, ui) {
+                // remove div with all data and events
+                dialog.remove();
+            },
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 'auto',
+
+            maxWidth: 600,
+            maxHeight: 600,
+            //width: $(window).width()-180,
+            //height: $(window).height()-180,
+        });
+
+        // load remote content
+        dialog.load(
+            url, 
+            {}, // omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
+            function (responseText, textStatus, XMLHttpRequest) {
+                // remove the loading class
+                dialog.removeClass('loading');
+            }
+        );
+        
+        setTimeout(function(){ dialog.dialog('open') }, 150);
+        //prevent the browser to follow the link
+        return false;
+    });
+
+    $('.select-popup').change(function() {
+        var url = this.value;
+        // show a spinner or something via css
+        var dialog = $('<div style="display:none" class="loading"></div>').appendTo('body');
+        // open the dialog
+        dialog.dialog({
+            // add a close listener to prevent adding multiple divs to the document
+            close: function(event, ui) {
+                // remove div with all data and events
+                dialog.remove();
+            },
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            width: 'auto',
+
+            maxWidth: 600,
+            maxHeight: 600,
+            //width: $(window).width()-180,
+            //height: $(window).height()-180,
+            buttons: [
+                {text: "OK", click: function() {
+                    $('input:checkbox:checked.select').each(function () {
+                        $('.select_holder').append(
+                            '<li><input type="hidden" name="selected[]" id="'+$(this).attr('value')+'" value="'+$(this).attr('value')+'" />' + $(this).attr('name') + '<a href="#" class="bar_button round">remover</a></li>'
+                        );
+                                                  
+                    });
+                     $(this).dialog("close")       
+                }},
+                {text: "Cancelar", click: function() {$(this).dialog("close")}}
+            ]
+
+        });
+
+        // load remote content
+        dialog.load(
+            url, 
+            {}, // omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
+            function (responseText, textStatus, XMLHttpRequest) {
+                // remove the loading class
+                dialog.removeClass('loading');
+            }
+        );
+        
+        setTimeout(function(){ dialog.dialog('open') }, 200);
+        //prevent the browser to follow the link
+        return false;
+    });
 });
 
 $(document).ready(function()
@@ -334,10 +430,34 @@ $(document).ready(function()
     }
 	
     temMensagens();
-    $("#tabs").tabs();
+    $("#tabs").tabs({
+        load: function( event, ui ) {
+            $(".filter span").click(function(e) {
+                closeFilterPanel();
+                $(this).parent().children('ul').fadeToggle();
+                $(this).parent().parent().children('li').css({'background': '#cccccc'})
+            });
+
+            $(".cancelar").click(function() { 
+                closeFilterPanel();
+            });
+        }, 
+
+        activate: function( event, ui ) { 
+            //$.removeCookie("producao");
+            $.cookie("producao", ui.newTab[0].id, { expires : 5 });  
+        },
+    });
+
+    var tab = $.cookie("producao");
+    $("#tabs").tabs("option", "active", $("#" + tab).index());
+
+
+    $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();;
 
     //aniversariantes();
-    rightClick(window);        
+    //rightClick(window);        
+    /*
     $('[rightClick="true"]').each(function()
     {
         if($(this).attr('class') == 'tags')
@@ -361,10 +481,10 @@ $(document).ready(function()
          m_x = e.pageX;
          m_y = e.pageY;
     });
+    */
 
-
-    
-     var updateOutput = function(e)
+    /*
+    var updateOutput = function(e)
     {
         var list   = e.length ? e : $(e.target),
             output = list.data('output');
@@ -377,12 +497,12 @@ $(document).ready(function()
             output.val('JSON browser support required for this demo.');
         }
     };
+    */
 
+    //$('#nestable3').nestable()
+    //.on('change', updateOutput);
 
-    $('#nestable3').nestable()
-    .on('change', updateOutput);
-
-    updateOutput($('#nestable3').data('output', $('#nestable-output')));
+    //updateOutput($('#nestable3').data('output', $('#nestable-output')));
     
     
     /*
