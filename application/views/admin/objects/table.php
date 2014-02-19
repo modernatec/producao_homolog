@@ -48,7 +48,7 @@
 				            <ul class="round" >
 				            	<form action="<?=URL::base();?>admin/objects" method="post" class="form">
 					                <? foreach ($statusList as $status) {?>
-					                <li><input type="checkbox" name="status[]" value="<?=$status->statu->id?>" id="s_<?=$status->statu->id?>" <?=(in_array($status->statu->id, $filter_status)) ? "checked" : ""?>><label for="s_<?=$status->statu->id?>" ><?=$status->statu->status?></label></li>
+					                <li><input type="checkbox" name="status[]" value="<?=$status->statu->id?>" id="s_<?=$status->statu->id?>" <?=(in_array($status->statu->id, $filter_status)) ? "checked" : ""?>><label for="s_<?=$status->statu->id?>" ><?=$status['status']?></label></li>
 					                <?}?>
 					                <input type="submit" class="round bar_button" value="OK"> 
 					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
@@ -86,7 +86,7 @@
                 </td>
                 <td><?=$objeto->typeobject->name?></td>
                 <td><?=$objeto->supplier->empresa?></td>
-                <td><?=$objeto->statu->status?></td>
+                <td><?=$objeto->statu->type?></td>
                 <td><?=$objeto->collection->name?></td>
                 <td><?=Utils_Helper::data($objeto->updated_at,'d/m/Y \à\s H:i')?></td>
 			</tr>

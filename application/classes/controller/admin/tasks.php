@@ -141,27 +141,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_assign_reply($objId){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{     
-			/* remover task da lista do usuário e obj */
-			$taskUser = ORM::factory('tasks_user')
-						->where('userInfo_id', '=', $this->current_user->userInfos->id)
-						->and_where('task_id', '=', $this->request->post('task_id'))->find();	
-
-			$taskUser->status = 1;
-			$taskUser->save();
-
-			$this->salvar($objId, $this->request->post('task_id'), true);
+			$this->salvar($objId);
 		}
 	}
 
-	protected function salvar($objId = null, $id = null, $replying = false)
+	protected function salvar($objId = null, $id = null)
 	{
         $db = Database::instance();
         $db->begin();
 		
 		try {  
 			
-			$task = ($replying) ? ORM::factory('task') : ORM::factory('task', $id);
-			//$task = ORM::factory('task', $id);	
+			$task = ORM::factory('task', $id);
 			
 			$task->values($this->request->post(), array(
 				'status_id',
@@ -170,7 +161,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'description',
 			)); 
             $task->object_id = $objId;
-            ($replying) ? $task->task_id = $id : '';
 			
 	        $task->userInfo_id = $this->current_user->userInfos->id;            
             $task->save();
@@ -179,13 +169,23 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $object->status_id = $this->request->post('status_id');
             $object->save();
 
-            $taskUser = ORM::factory('tasks_user');
-            $taskUser->task_id = $task->id;
-            $taskUser->status = 0;
-            $taskUser->userInfo_id = $this->request->post('task_to');
+            $taskUser = ORM::factory('tasks_user')
+						->where('userInfo_id', '=', $this->current_user->userInfos->id)
+						->and_where('task_id', '=', $id);
 
-			$taskUser->save();
-
+            if($taskUser->count_all() > 0){
+				//$taskUser->find();
+				$taskUser->status = 1;
+				$taskUser->save();
+				$task->task_id = ($id) ? $id : $task->id;
+			}
+			/*
+            $assignTask = ORM::factory('tasks_user');
+            $assignTask->task_id = ($id) ? $id : $task->id;
+            $assignTask->status = 0;
+            $assignTask->userInfo_id = $this->request->post('task_to');
+			$assignTask->save();
+*/
             /*
             if($this->request->post('task_to')){
 				$task->remove('userInfos');

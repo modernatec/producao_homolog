@@ -16,10 +16,6 @@ class Model_Task extends ORM {
 	    'task_to' => array('model' => 'tasks_user', 'foreign_key' =>'task_id', 'through' => 'tasks_users'),
 	);
 
-	public function getReply($task_id){
-		return ORM::factory('task')->where('task_id', '=', $task_id)->find();
-	}
-
 
 	public function rules()
 	{

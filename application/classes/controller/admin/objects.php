@@ -40,8 +40,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->template->content = $view;             
 	} 
     
-	public function action_create(){ 
-		
+	public function action_create(){ 		
         $view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
@@ -124,7 +123,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         if($this->current_auth != 'assistente'){
             $view->assign_form = View::factory('admin/tasks/assign_form');
-            $view->assign_form->statusList = ORM::factory('statu')->find_all();
+            $view->assign_form->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
             $view->assign_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
             $view->assign_form->obj = $objeto;  
         }else{
@@ -168,6 +167,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 			$object->save();
 
+			if(is_null($id)){
+				$statusType = ORM::factory('status_type');
+				$statusType->item_id = $object->id;
+				$statusType->userInfo_id = $this->current_user->userInfos->id;
+				$statusType->status_id = 1;
+				$statusType->type = 'object';
+				$statusType->save();
+			}
+
+
+
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
 			Request::current()->redirect('admin/objects');
@@ -190,20 +200,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         return false;
 	}
-    
-    
-	/*    
-        protected function getTypeObjetcs($id = null){
-            $tiposObj = '';
-            
-            foreach($typeObjectsjsList as $tol){
-                $sld = '';
-                if($id == $tol->id) $sld = 'selected="selected"';
-                $tiposObj .= '<option value="'.$tol->id.'" '.$sld.'>'.$tol->nome.'</option>';
-            }
-            return $tiposObj;
-        }
-    */ 
 
     /********************************/
     public function action_getCollections($project_id){
@@ -218,22 +214,24 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_collection  = json_decode($this->request->query('collection'));
 		$view->filter_supplier  = json_decode($this->request->query('supplier'));		
 
-		$view->typeObjectsjsList = ORM::factory('object')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->find_all();
-		$view->statusList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->group_by('status_id')->find_all();
-		$view->collectionList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->order_by('data_lancamento','ASC')->group_by('collection_id')->find_all();
-		$view->suppliersList = ORM::factory('object')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->find_all();
+		$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->find_all();
+		$view->statusList = ORM::factory('objectStatu')->where('status_id', 'IN', DB::Select('id')->from('status'))->where('project_id', '=', $project_id)->find_all();
+		
+		//$view->statusList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->join('status_types')->on('objects.id', '=', 'status_types.item_id')->where('type', '=', 'object')->group_by('item_id')->execute();
+		$view->collectionList = ORM::factory('objectStatu')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects'))->where('project_id', '=', $project_id)->find_all();
+		$view->suppliersList = ORM::factory('objectStatu')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('project_id', '=', $project_id)->find_all();
 
-		$query = ORM::factory('object')->where('fase', '=', '1')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id));
+		$query = ORM::factory('objectStatu')->where('fase', '=', '1')->where('project_id', '=', $project_id);
 
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('id') : '';
+		//(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('id') : '';
 		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
 		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
 
 		$view->objectsList = $query->order_by('data_lancamento','ASC')->find_all();
 		
-		//$this->endProfilling();
+		// $this->endProfilling();
 		echo $view;
 	}    
 }

@@ -2,23 +2,6 @@
 		<form name="frmTask" id="frmTask" action="<?=URL::base();?>admin/tasks/assign/<?=$obj->id?>" method="post" class="form" enctype="multipart/form-data">
 			
 			<dl>
-				<div class="left">
-			        <dt>
-			        	<label for="task_to">responsável</label>
-			        </dt>
-			        <dd>
-						<select name="task_to" id="task_to" style="width:150px;">
-							<option value="">Selecione</option>	  
-						<? 
-							if(isset($equipeUsers)){
-								foreach($equipeUsers as $userInfo){?>
-								<option value="<?=$userInfo->id?>" ><?=$userInfo->nome?></option>
-							<? }}?>   	
-						</select>
-
-						<span class='error'><?=($errors) ? $errors['task_to'] : '';?></span>
-				    </dd>
-			    </div>
 			    <div class="left">
 					<dt>
 			            <label for="status_id">status:</label>
@@ -31,8 +14,7 @@
 			                <?}?>
 			            </select>
 			            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
-			        </dd>	
-			        
+			        </dd>				        
 				</div>
 				<div>
 					<dt>
