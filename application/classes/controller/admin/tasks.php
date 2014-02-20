@@ -138,6 +138,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
 
+	public function action_start($task_id){
+		$statusType = ORM::factory('status_type');
+		$statusType->item_id = $task_id;
+		$statusType->userInfo_id = $this->current_user->userInfos->id;
+		$statusType->status_id = '6';
+		$statusType->type = 'task';
+		$statusType->save();
+
+		Request::current()->redirect('admin/objects/view/'.$statusType->object->id);
+	}
+
 	public function action_assign_reply($objId){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{     
@@ -155,30 +166,21 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$task = ORM::factory('task', $id);
 			
 			$task->values($this->request->post(), array(
-				'status_id',
 				'topic',
 				'crono_date',
 				'description',
 			)); 
-            $task->object_id = $objId;
-			
+            $task->object_id = $objId;			
 	        $task->userInfo_id = $this->current_user->userInfos->id;            
             $task->save();
+            
+            $status_task = ORM::factory('status_type');
+            $status_task->item_id = $task->id;
+            $status_task->userInfo_id = $this->current_user->userInfos->id;
+            $status_task->status_id = '5'; //em aberto
+            $status_task->type = 'task';
+            $status_task->save();
 
-            $object = ORM::factory('object', $objId);
-            $object->status_id = $this->request->post('status_id');
-            $object->save();
-
-            $taskUser = ORM::factory('tasks_user')
-						->where('userInfo_id', '=', $this->current_user->userInfos->id)
-						->and_where('task_id', '=', $id);
-
-            if($taskUser->count_all() > 0){
-				//$taskUser->find();
-				$taskUser->status = 1;
-				$taskUser->save();
-				$task->task_id = ($id) ? $id : $task->id;
-			}
 			/*
             $assignTask = ORM::factory('tasks_user');
             $assignTask->task_id = ($id) ? $id : $task->id;

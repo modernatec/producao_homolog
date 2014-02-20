@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/objects" class="bar_button round">Voltar</a>
+		<a href="<?=$_SERVER["HTTP_REFERER"]?>" class="bar_button round">Voltar</a>
 	</div>
     <form name="frmCreateObject" id="frmCreateObject" method="post" class="form" enctype="multipart/form-data">
 	  <dl>
@@ -107,10 +107,10 @@
                 </dd>
             </div>
             <div class="left">
-                <dt> <label for="data_lancamento">Data do lançamento</label> </dt>
+                <dt> <label for="crono_date">Data do lançamento</label> </dt>
                 <dd>
-                    <input type="text" class="text round" name="data_lancamento" id="data_lancamento" style="width:100px;" value="<?=$objVO['data_lancamento'];?>"/>
-                    <span class='error'><?=Arr::get($errors, 'data_lancamento');?></span>
+                    <input type="text" class="text round" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
+                    <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
                 </dd>     
             </div>
             <div class="clear">

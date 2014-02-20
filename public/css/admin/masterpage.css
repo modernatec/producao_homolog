@@ -55,11 +55,16 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 .floatNone{ float: none !important; display: inline-block;}
 
-.separator{
+.line_bottom{
 	display:block;
-	border-bottom:1px #CCC solid;
-	padding-bottom:10px;
-	margin-bottom:10px;
+	border-bottom:1px #CCC dotted;
+	padding-bottom: 5px;
+}
+
+.line_up{
+	display:block;
+	border-top:1px #CCC dotted;
+	padding-top: 10px;
 }
 
 .round{
@@ -193,13 +198,13 @@ a{
 }
 
 
-
 .bar_button{
 	background:#008fc7;
 	padding:5px;
 	margin-right:5px;
 	color:#FFF;
-    /*box-shadow:#999 2px 2px 2px;*/
+	position: relative;
+	/*box-shadow:#999 2px 2px 2px;*/
 }
 
 table{
@@ -617,3 +622,26 @@ input[type='text']:focus, input[type='password']:focus{
 	float: none;
 }
 
+.status{
+	position: relative;
+	float: right;
+}
+
+.task_open{
+	background:#ff0000;
+	padding:5px;
+	margin-right:5px;
+	color:#FFF;
+}
+
+.task_started{
+	background:#fff799;
+	padding:5px;
+	margin-right:5px;
+	color:#000;
+}
+
+.description{
+	padding: 10px 0;
+	display: block;
+}

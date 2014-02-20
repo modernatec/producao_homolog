@@ -45,6 +45,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 		
+		$view->isUpdate = false; 
 		$this->addValidateJs('public/js/admin/validateObjects.js');
 		$view->objVO = $this->setVO('object');
         
@@ -64,6 +65,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
       
 	public function action_delete($id)
 	{
+		/*
 		$view = View::factory('admin/objects/list')
 			->bind('errors', $errors)
 			->bind('message', $message);
@@ -79,6 +81,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}
 		
 		Request::current()->redirect('admin/objects');
+		*/
 	}
 
 	public function action_edit($id)
@@ -121,6 +124,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		        
         $view->taskflows = ORM::factory('task')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 
+        /*
         if($this->current_auth != 'assistente'){
             $view->assign_form = View::factory('admin/tasks/assign_form');
             $view->assign_form->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
@@ -136,6 +140,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $view->reply_form->statusList = ORM::factory('statu')->find_all();
             $view->reply_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
         }
+        */
         
         $this->template->content = $view;
 
@@ -159,7 +164,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'parent_id', 
                     'interatividade',
                     'fase', 
-                    'data_lancamento', 
+                    'crono_date', 
                     'sinopse', 
                     'uni', 
                     'cap', 
@@ -215,21 +220,20 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_supplier  = json_decode($this->request->query('supplier'));		
 
 		$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->find_all();
-		$view->statusList = ORM::factory('objectStatu')->where('status_id', 'IN', DB::Select('id')->from('status'))->where('project_id', '=', $project_id)->find_all();
+		$view->statusList = ORM::factory('objectStatu')->where('status_id', 'IN', DB::Select('id')->from('status'))->where('project_id', '=', $project_id)->group_by('status_id')->find_all();
 		
-		//$view->statusList = ORM::factory('object')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->join('status_types')->on('objects.id', '=', 'status_types.item_id')->where('type', '=', 'object')->group_by('item_id')->execute();
-		$view->collectionList = ORM::factory('objectStatu')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects'))->where('project_id', '=', $project_id)->find_all();
-		$view->suppliersList = ORM::factory('objectStatu')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('project_id', '=', $project_id)->find_all();
+		$view->collectionList = ORM::factory('objectStatu')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects'))->where('project_id', '=', $project_id)->group_by('collection_id')->find_all();
+		$view->suppliersList = ORM::factory('objectStatu')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('project_id', '=', $project_id)->group_by('supplier_id')->find_all();
 
 		$query = ORM::factory('objectStatu')->where('fase', '=', '1')->where('project_id', '=', $project_id);
 
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		//(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('id') : '';
+		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('status_id') : '';
 		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
 		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
 
-		$view->objectsList = $query->order_by('data_lancamento','ASC')->find_all();
+		$view->objectsList = $query->order_by('crono_date','ASC')->find_all();
 		
 		// $this->endProfilling();
 		echo $view;
