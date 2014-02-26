@@ -14,24 +14,22 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	public function action_index()
 	{	
+		
 		if(Auth::instance()->logged_in()== 0){	
 			Request::current()->redirect('login');
 		}
 		
 		$view = View::factory('admin/tasks/list');
 		
-		/* Tasks para o user*/      
-		$query = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-				->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
-				->and_where('tasks_users.status', '=', '0')
-                ->group_by('tasks_users.task_id')
+		/* Tasks para o user */
+		$query = ORM::factory('task')->where('task_id', '=', '0')
                 ->order_by('crono_date','ASC');
 						
 		$view->taskList	= $query->find_all();
 		
 		$arr_users = array();	
 			
-		/* Tasks encaminhadas para users da equipe coordenada */
+		/* Tasks encaminhadas para users da equipe coordenada *
 		if($this->current_auth == 'coordenador'){
 			$team = ORM::factory('team')->where('userInfo_id', '=', $this->current_user->userInfos->id)->find();
 			$team_users = ORM::factory('userInfo')->where('team_id', '=', $team->id)->find_all();
@@ -48,7 +46,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$view->taskTeam = $query_team->find_all();			
 			}
 		}	
-		/* Todas as tasks abertas no sistema */
+		/* Todas as tasks abertas no sistema *
 		if($this->current_auth == 'admin'){
 			$otherUsers = ORM::factory('userInfo')->where('id', '!=', $this->current_user->userInfos->id)->find_all();
 			foreach($otherUsers as $userInfo){
@@ -61,10 +59,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 							->order_by('crono_date','ASC');	
 			$view->taskTeam = $query_team->find_all();	
 		}
-				
+		*/
+
 	  	$this->template->content = $view;		
+	  	
 	} 
-        
+    
+    /*
 	public function action_create(){
 		$view = View::factory('admin/tasks/create')
                     ->bind('errors', $errors)
@@ -72,17 +73,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
                 
         $this->addValidateJs();
 		$view->isUpdate = false;                		
-        $view->teamsList = ORM::factory('team')->find_all();
-		$view->projectList = ORM::factory('project')->find_all();
-		//$view->statusList = ORM::factory('statu')->find_all();
-		$view->materiasList = ORM::factory('materia')->find_all();
-		$view->collectionList = ORM::factory('collection')->find_all();
-		$view->typeObjList = ORM::factory('typeobject')->find_all();
-		$view->supplierList = ORM::factory('supplier')->find_all();
-		$view->segmentoList = ORM::factory('segmento')->find_all();
-		
-
-		//$view->anexosView = View::factory('admin/files/anexos');
+        
 	  	$this->template->content = $view;	
                 
 	  	if (HTTP_Request::POST == $this->request->method()) 
@@ -110,13 +101,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$view->taskVO['team_id'] = $userInfo->team_id;
 		}
 		
-		//$view->taskVO['equipeUsers'] = ORM::factory('userInfo')->where('team_id', '=', $view->taskVO['team_id'])->find_all();
-		//$view->taskflows = ORM::factory('status_task')->where('task_id', '=', $id)->order_by('date', 'DESC')->find_all();
-		
-		//$view->anexosView = View::factory('admin/files/anexos');
-		$view->teamsList = ORM::factory('team')->find_all();
-		$view->projectList = ORM::factory('project')->find_all();
-		//$view->statusList = ORM::factory('statu')->find_all();
 		$view->materiasList = ORM::factory('materia')->find_all();
 		$view->collectionList = ORM::factory('collection')->find_all();
 		$view->typeObjList = ORM::factory('typeobject')->find_all();
@@ -130,33 +114,32 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$this->salvar($id);
 		}
 	}
-
-	public function action_assign($objId){
+	*/
+	
+	public function action_start(){
 		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($objId);
+		{
+			/***TRAVAR PARA 2 USUÁRIOS N INICIAREM A MESMA TAREFA***/
+			$this->salvar();
 		}
 	}
 
-	public function action_start($task_id){
-		$statusType = ORM::factory('status_type');
-		$statusType->item_id = $task_id;
-		$statusType->userInfo_id = $this->current_user->userInfos->id;
-		$statusType->status_id = '6';
-		$statusType->type = 'task';
-		$statusType->save();
-
-		Request::current()->redirect('admin/objects/view/'.$statusType->object->id);
+	public function action_end(){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$this->salvar();
+		}
 	}
 
-	public function action_assign_reply($objId){
+
+	public function action_assign(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{     
-			$this->salvar($objId);
+			$this->salvar();
 		}
 	}
 
-	protected function salvar($objId = null, $id = null)
+	protected function salvar($id = null)
 	{
         $db = Database::instance();
         $db->begin();
@@ -169,25 +152,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'topic',
 				'crono_date',
 				'description',
+				'status_id',
+				'task_id',
+				'object_id',
 			)); 
-            $task->object_id = $objId;			
 	        $task->userInfo_id = $this->current_user->userInfos->id;            
             $task->save();
             
-            $status_task = ORM::factory('status_type');
-            $status_task->item_id = $task->id;
-            $status_task->userInfo_id = $this->current_user->userInfos->id;
-            $status_task->status_id = '5'; //em aberto
-            $status_task->type = 'task';
-            $status_task->save();
-
-			/*
-            $assignTask = ORM::factory('tasks_user');
-            $assignTask->task_id = ($id) ? $id : $task->id;
-            $assignTask->status = 0;
-            $assignTask->userInfo_id = $this->request->post('task_to');
-			$assignTask->save();
-*/
+            
             /*
             if($this->request->post('task_to')){
 				$task->remove('userInfos');
@@ -259,7 +231,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $message = "Tarefa salva com sucesso."; 
 			
 			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/objects/view/'.$objId);
+            Request::current()->redirect('admin/objects/view/'.$task->object_id);
 
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -404,6 +376,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	public function action_filter()
 	{	
+		/*
 		$view = View::factory('admin/tasks/list');
 		$view->task_to = $this->request->query('task_to');
 		$view->status = $this->request->query('status');
@@ -469,13 +442,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->usersList = ORM::factory('user')->find_all();  
 		$view->statusList = ORM::factory('statu')->find_all();    
 	  	$this->template->content = $view;
+	  	*/
 	}
     
 	
 	/*--------------*/
     public function action_searchnew()
     {	
-        
+        /*
 		$callback = $this->request->query('callback');
         $rls = $this->current_user->roles->find_all()->as_array('id','name');       
         $dados = array();
@@ -501,6 +475,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         $arr = array('role_user'=>$rls->role_id,'dados'=>$dados);
         print $callback.json_encode($arr);
         exit;
-		
+		*/
     } 
 }

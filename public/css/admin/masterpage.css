@@ -26,9 +26,14 @@ h1.logo{
     word-wrap: break-word; /* Internet Explorer 5.5+ */ 
 }
 
-hr{
-	padding:0;
-	margin:0;
+hr { 
+	display: block; 
+	height: 1px;
+    border: 0; 
+    border-top: 1px dotted #008fc7;
+    margin: 0; 
+    padding: 0; 
+    font-style: bold;
 }
 
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; margin:0 5px; display: block;}
@@ -297,13 +302,13 @@ table tbody td table tbody tr:hover {
 }
 
 
-.form input[type='text'], .form input[type='password'], .form input[type='submit'],input[type='button'], .form textarea, .form select{
+.form input[type='text'], .form input[type='password'], input[type='submit'],input[type='button'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
     box-shadow:#ccc 1px 1px 3px;
 }
 
-.form input[type='submit'], input[type='button']{
+input[type='submit'], input[type='button']{
 	margin-top: 10px;
 	box-shadow: none;
 }
@@ -386,13 +391,23 @@ label
     /*box-shadow:#999 2px 2px 2px;*/
 }
 
-.hist_task:hover{
-    background:#e5e5e5;
-}
-
-.hist_task img{
+.hist_task img, .hist_task_reply img{
     margin-right:5px;
     border:1px solid #999;
+}
+
+.hist_task_reply{
+    padding:10px;
+    margin:-5px 5px 5px 5px;
+    min-width: 600px;
+    max-width: 600px;
+    border-bottom: 1px dotted #ccc;
+    background: #eee;
+    /*box-shadow:#999 2px 2px 2px;*/
+}
+
+.hide{
+	display: none;
 }
 
 .anexos{
@@ -530,7 +545,7 @@ input[type='text']:focus, input[type='password']:focus{
     -webkit-border-radius: 25px;
     -khtml-border-radius: 25px;
     border-radius: 25px;
-
+    border: 1px solid #ccc;
 }
 
 .stepList{
@@ -641,7 +656,32 @@ input[type='text']:focus, input[type='password']:focus{
 	color:#000;
 }
 
+.task_finished{
+	background:#bbd152;
+	padding:5px;
+	margin-right:5px;
+	color:#000;
+}
+
 .description{
 	padding: 10px 0;
 	display: block;
+}
+
+.step{
+	background: #dfe9f3;
+}
+
+.down_button{
+	border-top: 1px dotted #CCC;
+	text-align: center;
+	display: block;
+}
+
+.down_button img{
+	border:none;
+}
+
+.ui-state-default .ui-state-highlight{
+	background: #dfe9f3;
 }

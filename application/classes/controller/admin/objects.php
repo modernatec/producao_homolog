@@ -113,37 +113,72 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         
     public function action_view($id, $task_id = null)
     {           
-        $view = View::factory('admin/tasks/assign')
+        $view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
 
 		$this->addValidateJs();
 
 		$objeto = ORM::factory('object', $id);
-        $view->obj = $objeto;                             
+        $view->obj = $objeto;   
+        $view->user = $this->current_user->userInfos;                          
 		        
-        $view->taskflows = ORM::factory('task')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 
-        /*
-        if($this->current_auth != 'assistente'){
-            $view->assign_form = View::factory('admin/tasks/assign_form');
-            $view->assign_form->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
-            $view->assign_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
-            $view->assign_form->obj = $objeto;  
-        }else{
-            $view->reply_form = View::factory('admin/tasks/reply_form');
-            $view->reply_form->task = ORM::factory('task')
-                                        ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-                                        ->where('tasks_users.userInfo_id', '=', $this->current_user->userInfos->id)
-                                        ->find();
+        $obj_history = ORM::factory('objects_statu')->where('object_id', '=', $id)->find_all();
 
-            $view->reply_form->statusList = ORM::factory('statu')->find_all();
-            $view->reply_form->equipeUsers = ORM::factory('userInfo')->order_by('nome', 'asc')->find_all();
-        }
-        */
+        $view->assign_form = View::factory('admin/tasks/assign_form');
+        $view->assign_form->obj = $objeto;  
+
+        $view->form_status = View::factory('admin/objects/form_status');
+        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
+        $view->form_status->obj = $objeto; 
+ 		$view->current_auth = $this->current_auth;
         
         $this->template->content = $view;
 
+	}
+
+	public function action_updateStatus(){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{ 
+
+			$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{ 
+				$object = ORM::factory('objects_statu')->values($this->request->post(), array( 
+		                    'object_id', 
+		                    'status_id',
+		                    'description',
+		                    'crono_date',
+							));
+				$object->userInfo_id = $this->current_user->userInfos->id;	
+				$object->save();
+
+				Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
+				$db->commit();
+				Request::current()->redirect('admin/objects/view/'.$object->object_id);
+
+			} catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+			    Utils_Helper::mensagens('add',$message);    
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            Utils_Helper::mensagens('add',$message);
+	            $db->rollback();
+	        }
+
+	        return false;	
+	    }
 	}
     
 
@@ -161,11 +196,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'collection_id', 
                     'supplier_id', 
                     'country_id',
-                    'parent_id', 
+                    'reaproveitamento', 
                     'interatividade',
                     'fase', 
                     'crono_date', 
-                    'sinopse', 
+                    'obs', 
                     'uni', 
                     'cap', 
                     'status', ));
@@ -173,15 +208,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$object->save();
 
 			if(is_null($id)){
-				$statusType = ORM::factory('status_type');
-				$statusType->item_id = $object->id;
-				$statusType->userInfo_id = $this->current_user->userInfos->id;
-				$statusType->status_id = 1;
-				$statusType->type = 'object';
-				$statusType->save();
+				$objectStatus = ORM::factory('objects_statu');
+		        $objectStatus->object_id = $object->id;
+		        $objectStatus->status_id = '1';
+		        $objectStatus->crono_date = date("Y-m-d"); 
+				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
+				$objectStatus->save();
 			}
-
-
 
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();

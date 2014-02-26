@@ -40,7 +40,7 @@ class Model_Object extends ORM {
     public function filters()
 	{
 		return array(
-			'data_lancamento' => array(
+			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			)
 		);

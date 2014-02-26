@@ -306,13 +306,9 @@ var m_x = 0;
 var m_y = 0;
 
 $(function () {
-
-    
-
     $("a:contains('Excluir')").click(function() {        
         var NewDialog = $('<div id="MenuDialog">\
-            <p>Deseja realmente excluir este conteúdo?</p>\
-        </div>'),
+            <p>Deseja realmente excluir este conteúdo?</p></div>'),
             btExcluir = this;
             NewDialog.dialog({
             modal: true,
@@ -329,6 +325,24 @@ $(function () {
         });
         return false;
     });
+
+    $('.show').click(function() {
+        $('.hide').slideUp();
+
+        var element = $(this).data("show");
+        $('#' + element).slideToggle();
+    });
+
+    $('.fade').click(function() {
+        var element = $(this).data("show");
+        $('#' + element).fadeToggle();
+    });
+
+    $('.cancel').click(function() {
+        var element = $(this).data("show");
+        $('#' + element).slideUp();
+    });
+
 
 
     $('a.popup').click(function() {

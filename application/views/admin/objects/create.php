@@ -85,6 +85,17 @@
                 <span class='error'><?=Arr::get($errors, 'fase');?></span>
             </dd>  
             <div class="clear left"> 
+                <dt><label for="reaproveitamento">reaproveitamento</label></dt>
+                <dd>
+                    <select class="required round" name="reaproveitamento" id="reaproveitamento" style="width:100px;">
+                        <option value=''>Selecione</option>
+                        <option value='0' <?=(($objVO['reaproveitamento'] == 0)?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['reaproveitamento'] == 1)?('selected="selected"'):(''))?>>Sim</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'arq_aberto');?></span>
+                </dd> 
+            </div>
+            <div class="left"> 
                 <dt><label for="arq_aberto">Arquivo aberto</label></dt>
                 <dd>
                     <select class="required round" name="arq_aberto" id="arq_aberto" style="width:100px;">
@@ -109,15 +120,15 @@
             <div class="left">
                 <dt> <label for="crono_date">Data do lançamento</label> </dt>
                 <dd>
-                    <input type="text" class="text round" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
+                    <input type="text" class="text round date" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
                     <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
                 </dd>     
             </div>
             <div class="clear">
-                <dt> <label for="sinopse">Sinopse</label> </dt>
+                <dt> <label for="sinopse">Obsevações</label> </dt>
                 <dd>
-                    <textarea class="text round" name="sinopse" id="sinopse" style="width:500px; height:200px;"><?=$objVO['sinopse'];?></textarea>
-                    <span class='error'><?=Arr::get($errors, 'sinopse');?></span>
+                    <textarea class="text round" name="obs" id="obs" style="width:500px; height:200px;"><?=$objVO['obs'];?></textarea>
+                    <span class='error'><?=Arr::get($errors, 'obs');?></span>
                 </dd>
             </div>
             <!--dt> 

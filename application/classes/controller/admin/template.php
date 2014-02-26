@@ -69,6 +69,8 @@ class Controller_Admin_Template extends Controller_Template {
 					$this->menus = $role->menus->order_by('ordem', 'ASC')->find_all()->as_array();
 				}
 			}
+
+			
       	}
  
       /**
