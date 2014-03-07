@@ -22,7 +22,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view = View::factory('admin/tasks/list');
 		
 		/* Tasks para o user */
-		$query = ORM::factory('task')->where('task_id', '=', '0')
+		$query = ORM::factory('task')->where('status_id', '=', '5')->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'))
                 ->order_by('crono_date','ASC');
 						
 		$view->taskList	= $query->find_all();
@@ -119,8 +119,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_start(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
-			/***TRAVAR PARA 2 USUÁRIOS N INICIAREM A MESMA TAREFA***/
-			$this->salvar();
+			$task_ini = ORM::factory('task')->where('task_id', '=',$this->request->post('task_id'))->find_all();
+			if(count($task_ini) > 0){
+				$message = "Tarefa já foi iniciada"; 
+			
+				Utils_Helper::mensagens('add',$message);
+            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
+			}else{
+				$this->salvar();
+			}
 		}
 	}
 

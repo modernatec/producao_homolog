@@ -25,6 +25,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode(array());
 		$view->filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
 		$view->filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
+
+		$view->filter_taxonomia = ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : "";
+		
 		
 		
 		//$query = ORM::factory('object');						
@@ -250,7 +253,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_tipo = json_decode($this->request->query('tipo'));
 		$view->filter_status = json_decode($this->request->query('status'));
 		$view->filter_collection  = json_decode($this->request->query('collection'));
-		$view->filter_supplier  = json_decode($this->request->query('supplier'));		
+		$view->filter_supplier  = json_decode($this->request->query('supplier'));	
+		$view->filter_taxonomia = $this->request->query('taxonomia');	
 
 		$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->find_all();
 		$view->statusList = ORM::factory('objectStatu')->where('status_id', 'IN', DB::Select('id')->from('status'))->where('project_id', '=', $project_id)->group_by('status_id')->find_all();
@@ -265,6 +269,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status)->group_by('status_id') : '';
 		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
 		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
+		(!empty($view->filter_taxonomia)) ? $query->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%') : '';
 
 		$view->objectsList = $query->order_by('crono_date','ASC')->find_all();
 		

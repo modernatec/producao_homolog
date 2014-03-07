@@ -3,8 +3,9 @@
         <a href="<?=URL::base();?>admin/objects" class="bar_button round">voltar</a>
         <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>
-        <a href="#" data-show="form_assign" class="bar_button round show">criar tarefa</a>
+        
         <a href="#" data-show="form_status" class="bar_button round show">alterar status</a>
+        <a href="#" data-show="form_assign" class="bar_button round show">criar tarefa</a>
         <?}?>
     </div>
     

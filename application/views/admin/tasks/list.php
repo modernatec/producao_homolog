@@ -5,7 +5,7 @@
             <tr valign="bottom">
                 <th width="50">solicitação</th>
                 <th width="50">OED</th>
-                <th width="20">status</th> 
+                <th width="20">criada por:</th> 
                 <th width="100">data de entrega</th>
             </tr>
         </thead>

@@ -2,7 +2,22 @@
 <table class="list">
 		<thead>
 			<form action="<?=URL::base();?>admin/objects" method="post" class="form">
-			<th width="200">nome</th>	
+			<th width="250" colspan="2">
+				<div class="filter" >
+				    <ul>
+				        <li class="round" >
+				            <span id="tipo">taxonomia <?=(!empty($filter_taxonomia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+				            <ul class="round" >
+				            		<li><input type="text" class="round" style="width:135px" name="taxonomia" value="<?=$filter_taxonomia?>" ></li>
+					                
+					                <input type="submit" class="round bar_button" value="OK"> 
+					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
+				            </ul>
+				        </li>
+				    </ul>
+
+				</div>
+			</th>
             <th width="50">
             	<div class="filter" >
 				    <ul>
@@ -76,8 +91,20 @@
 		<tbody>
             <? foreach($objectsList as $objeto){?>
             <tr>
+            	<? if($objeto->task_open > 0 or $objeto->statu->id == 1){
+            			$class="task_open";
+            			$value = $objeto->task_open;
+            		}elseif($objeto->task_init > 0){
+        				$class="task_started";
+        				$value = $objeto->task_init;            			
+            		}elseif($objeto->task_init == 0 && $objeto->task_open == 0 && $objeto->statu->id == 2){
+            			$class="task_finished";
+        				$value = "0";   
+            		}
+            	?>
+            	<td style="width:5px" class="<?=$class?>"><?=$value?></td>
                 <td>
-                    <a href="<?=URL::base().'admin/objects/view/'.$objeto->id;?>" title="Editar"><?=$objeto->taxonomia?><br/><?=$objeto->title?></a>
+                    <a href="<?=URL::base().'admin/objects/view/'.$objeto->id;?>" title="Editar"><?=$objeto->taxonomia?> <br/><?=$objeto->title?></a>
                 </td>
                 <td><?=$objeto->typeobject->name?></td>
                 <td><?=$objeto->supplier->empresa?></td>
