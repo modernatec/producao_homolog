@@ -149,11 +149,6 @@ a.link:hover{color:#666; text-decoration: underline;}
 	position: relative;
 }
 
-#menu ul li:hover{
-	background: transparent url(../../image/admin/bg_menu.jpg);
-}
-
-
 #menu ul li:hover ul{
 	display: block;
 	margin-top: 5px;
@@ -175,6 +170,12 @@ a.link:hover{color:#666; text-decoration: underline;}
 #menu ul li > ul li:hover{
 	background: #333;
 }
+
+#menu ul li a:hover{
+	color: #008fc7;
+	display: block;
+}
+
 
 #menu ul li:last-child{
 	box-shadow:none;
@@ -613,7 +614,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .filter ul li{
-	width: 100px;
+	width: 80px;
 	float:left;
 	position: relative;
 	padding: 5px;

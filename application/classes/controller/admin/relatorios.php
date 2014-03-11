@@ -2,12 +2,8 @@
  
 class Controller_Admin_Relatorios extends Controller_Admin_Template {
  
-	public $auth_required		= array('login','admin', 'coordenador'); //Auth is required to access this controller
+	public $auth_required		= array('login'); //Auth is required to access this controller
  
-	public $secure_actions     	= array('post' => array('login','admin','coordenador', 'assistente'),
-								   'edit' => array('login','admin'),
-								   'delete' => array('login','admin'),
-								 );
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -16,14 +12,65 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	
 	public function action_index()
 	{	
-		echo "ok";
-		//$user = ORM::factory('user', 1);
-		//$view = View::factory('admin/tasks/list');
-	  	//$this->template->content = $view;
+		$view = View::factory('admin/relatorios/view')
+			->bind('message', $message);
+		
+		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+		$this->template->content = $view;  
+
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$this->generate($this->request->post());
+		}           
 	} 
 
-	public function action_edit(){
-		$teste = "TESTE";
+	public function generate($post){
+		$view = View::factory('admin/relatorios/relatorio')
+			->bind('message', $message);
+
+		switch ($post['organizar']) {
+			case 'collection_id':
+				$view->collectionList = ORM::factory('Collections_Project')->join('objectstatus', 'INNER')
+									->on('Collections_Projects.collection_id', '=', 'objectstatus.collection_id')
+									->where('Collections_Projects.project_id', '=', $post['project_id'])
+									->group_by('Collections_Projects.collection_id')
+									->find_all();
+				break;
+			case 'status_id':
+				$view->statusList = ORM::factory('statu')->join('objectstatus', 'INNER')
+									->on('status.id', '=', 'objectstatus.status_id')
+									->where('objectstatus.project_id', '=', $post['project_id'])
+									->group_by('objectstatus.status_id')
+									->find_all();
+
+				break;			
+
+			case 'supplier_id':
+				$view->supplierList = ORM::factory('supplier')->join('objectstatus', 'INNER')
+									->on('suppliers.id', '=', 'objectstatus.supplier_id')
+									->where('objectstatus.project_id', '=', $post['project_id'])
+									->group_by('objectstatus.supplier_id')
+									->find_all();
+
+				break;		
+			default:
+				# code...
+				break;
+		}
+		
+		
+		$view->objecList = ORM::factory('objectStatu')->where('fase', '=', '1')
+					->where('project_id', '=', $post['project_id'])
+					->where('reaproveitamento', '=', $post['origem'])
+					->order_by('crono_date', 'ASC')
+					->find_all();
+
+		$view->organizar = $post['organizar'];
+
+
+		$this->template->content = $view; 
+
 	}
-	
+
+		
 }

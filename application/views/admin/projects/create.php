@@ -12,17 +12,31 @@
 		      <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$projectVO['name'];?>"/>
 		      <span class='error'><?=Arr::get($errors, 'name');?></span>
 		    </dd>
+		    <div class="left">
+			    <dt>
+			      <label for="target">seguimento</label>
+			    </dt>
+			    <dd>
+			      <select name="segmento_id" id="segmento_id" style="width:150px;">
+		                <option value="">selecione</option>
+		                <? foreach($segmentosList as $segmento){?>
+		                <option value="<?=$segmento->id?>" <?=((@$projectVO["segmento_id"] == $segmento->id)?('selected'):(''))?> ><?=$segmento->name?></option>
+		                <? }?>
+		            </select>
+		            <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
+			    </dd>
+			</div>
 		    <dt>
-		      <label for="target">seguimento</label>
+		      <label for="status">status</label>
 		    </dt>
 		    <dd>
-		      <select name="segmento_id" id="segmento_id" style="width:150px;">
-	                <option value="">selecione</option>
-	                <? foreach($segmentosList as $segmento){?>
-	                <option value="<?=$segmento->id?>" <?=((@$projectVO["segmento_id"] == $segmento->id)?('selected'):(''))?> ><?=$segmento->name?></option>
-	                <? }?>
-	            </select>
-	            <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
+		      <select class="required round" name="status" id="status" style="width:150px;">
+                    <option value=''>Selecione</option>
+                    <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
+                    <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>em produção</option>
+               
+                </select>
+	            <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
 		    </dd>
 		    <dt>
 		      <label for="description">descrição</label>

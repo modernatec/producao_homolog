@@ -1,5 +1,5 @@
 <div class="content">
-	<span class="header">minhas tarefas (<?=count($taskList);?>)</span>
+	<span class="header">tarefas (<?=count($taskList);?>)</span>
     <table class="list">
         <thead>
             <tr valign="bottom">

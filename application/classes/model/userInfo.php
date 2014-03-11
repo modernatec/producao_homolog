@@ -11,11 +11,9 @@ class Model_UserInfo extends ORM {
 
     protected $_belongs_to  = array(
         'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+        'team'       => array('model' => 'team', 'foreign_key' => 'team_id'),
     );
     
-    protected $_has_one = array(
-         'team'       => array('model' => 'team', 'foreign_key' => 'team_id'),
-    );
 
     public function labels()
     {

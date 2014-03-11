@@ -7,7 +7,7 @@ $(document).ready(function() {
             monthNamesShort: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
             nextText:'&raquo;',
             prevText:'&laquo;',
-            dateFormat: "dd/mm/yy"
+            dateFormat: "dd/mm/YY"
         });
         $('#btSlctObjtPai').click(function(){
             var NewDialog = $('<div id="MenuDialog">'+

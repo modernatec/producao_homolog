@@ -12,9 +12,16 @@
     <div class="box round left">
         <b>título:</b> <?=@$obj->title;?><br/>
         <b>taxonomia:</b> <?=@$obj->taxonomia;?><br/>
+        <hr style="margin:8px 0;" />
         <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
+        <b>contato:</b> <?=@$obj->supplier->name?><br/>
+        <b>email:</b> <?=@$obj->supplier->email?><br/>
+        <b>tels:</b> <?=@$obj->supplier->telefone?><br/>
+        <hr style="margin:8px 0;" />
         <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
         <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
+        <b>fechamento:</b> <?=Utils_Helper::data($objeto->crono_date,'d/m/Y')?><br/>
+        <br/>
         <b>obs:</b> <?=@$obj->obs?><br/>
     </div>
     <div class="left">

@@ -36,6 +36,22 @@
 
 				</div>
             </th>
+            <th >
+            	<div class="filter" >
+				    <ul>
+				        <li class="round" >
+				            <span id="reaproveitamento">origem <?=(!empty($filter_origem) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+				            <ul class="round" >
+				                <li><input type="checkbox" name="origem[]" value="0" id="o_0" <?=(in_array("0", $filter_origem)) ? "checked" : ""?>><label for="o_0">novo</label></li>
+				                <li><input type="checkbox" name="origem[]" value="1" id="o_1" <?=(in_array("1", $filter_origem)) ? "checked" : ""?>><label for="o_1">reap.</label></li>
+				                
+				                <input type="submit" class="round bar_button" value="OK"> 
+				                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
+				            </ul>
+				        </li>
+				    </ul>
+				</div>
+			</th>
             <th width="100">
             	<div class="filter" >
 				    <ul>
@@ -51,6 +67,38 @@
 				        </li>
 				    </ul>
 
+				</div>
+            </th>
+            <th>
+            	<div class="filter" >
+				    <ul>
+				        <li class="round" >
+				            <span class="round" id="colecao">matéria <?=(!empty($filter_materia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+				            <ul class="round" >
+					                <? foreach ($materiasList as $materia) {?>
+					                <li ><input type="checkbox" name="materia[]" value="<?=$materia->materia_id?>" id="=m_<?=$materia->id?>" <?=(in_array($materia->materia_id, $filter_materia)) ? "checked" : ""?>><label for="m_<?=$materia->id?>"><?=$materia->collection->materia->name?></label></li>
+					                <?}?>
+					                <input type="submit" class="round bar_button" value="OK"> 
+					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
+				            </ul>
+				        </li>
+				    </ul>
+				</div>
+            </th>
+            <th width="300">
+            	<div class="filter" >
+				    <ul>
+				        <li class="round" >
+				            <span class="round" id="colecao">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+				            <ul class="round" >
+					                <? foreach ($collectionList as $collection) {?>
+					                <li style="width:400px"><input type="checkbox" name="collection[]" value="<?=$collection->id?>" id="c_<?=$collection->id?>" <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?>><label for="c_<?=$collection->id?>"><?=$collection->collection->name?></label></li>
+					                <?}?>
+					                <input type="submit" class="round bar_button" value="OK"> 
+					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
+				            </ul>
+				        </li>
+				    </ul>
 				</div>
             </th>
             <th width="50">
@@ -69,23 +117,10 @@
 				    </ul>
 				</div>
 			</th>
-            <th width="300">
-            	<div class="filter" >
-				    <ul>
-				        <li class="round" >
-				            <span class="round" id="colecao">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-					                <? foreach ($collectionList as $collection) {?>
-					                <li style="width:400px"><input type="checkbox" name="collection[]" value="<?=$collection->id?>" id="c_<?=$collection->id?>" <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?>><label for="c_<?=$collection->id?>"><?=$collection->collection->name?></label></li>
-					                <?}?>
-					                <input type="submit" class="round bar_button" value="OK"> 
-					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
-				            </ul>
-				        </li>
-				    </ul>
-				</div>
-            </th>
-            <th>data prevista</th>
+			<th>retorno</th>
+            
+            
+            <th>fechamento</th>
             </form>
 		</thead>
 		<tbody>
@@ -107,9 +142,13 @@
                     <a href="<?=URL::base().'admin/objects/view/'.$objeto->id;?>" title="Editar"><?=$objeto->taxonomia?> <br/><?=$objeto->title?></a>
                 </td>
                 <td><?=$objeto->typeobject->name?></td>
+                <td><?=($objeto->reaproveitamento == '1') ? "reap." : "novo"?></td>
                 <td><?=$objeto->supplier->empresa?></td>
-                <td><?=$objeto->statu->status?></td>
+                <td><?=$objeto->collection->materia->name?></td>
                 <td><?=$objeto->collection->name?></td>
+                <td><?=$objeto->statu->status?></td>                
+                <td><?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></td>
+                
                 <td><?=Utils_Helper::data($objeto->crono_date,'d/m/Y')?></td>
 			</tr>
             <?}?>

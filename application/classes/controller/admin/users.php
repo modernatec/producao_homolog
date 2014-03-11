@@ -8,7 +8,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 									'index' => array('login'),
 									'edit' => array('login','coordenador'),
 									'delete' => array('login','admin'),
-									'create' => array('login','admin'),											
+									'create' => array('login','admin'),	
+                                    'inativate'	=> array('login','admin'),  									
 								  );	
 	
 	public function __construct(Request $request, Response $response)
@@ -20,8 +21,11 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	{	
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
+        
+        //$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
+        $view->filter_nome = ($this->request->post('nome') != "") ? $this->request->post('nome') : "";
+        $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
 			
-        $view->userinfosList = ORM::factory('userInfo')->order_by('nome','ASC')->find_all();
         $this->template->content = $view;		
 	} 
         
@@ -193,9 +197,27 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 
         return false;
     }
+
+    public function action_inativate($inId)
+    {
+        try 
+        {            
+            $userinfo = ORM::factory('userInfo', $inId);
+            $userinfo->status = "0";
+            $userinfo->save();
+
+            Utils_Helper::mensagens('add','Usuário inativado com sucesso.');
+            Request::current()->redirect('admin/users');
+        } catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+            Utils_Helper::mensagens('add','Houveram alguns erros na validação dos dados.'); 
+        }
+    }
 	
 	public function action_delete($inId)
     {
+
+        /*
         try 
         {            
             $userinfo = ORM::factory('userInfo', $inId);
@@ -208,6 +230,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $errors = $e->errors('models');
             Utils_Helper::mensagens('add','Houveram alguns erros na validação dos dados.'); 
         }
+        */
     }
 
     
@@ -287,5 +310,30 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         print $callback.json_encode($arr);
         exit;
     } 
+
+    /********************************/
+    public function action_getUsers(){
+        $this->auto_render = false;
+        $view = View::factory('admin/users/table');
+
+        //$this->startProfilling();
+
+        //$view->filter_tipo = json_decode($this->request->query('tipo'));
+        $view->filter_nome = $this->request->query('nome');  
+        $view->filter_email = $this->request->query('email');   
+
+
+        $query = ORM::factory('userInfo');
+
+        /***Filtros***/
+        //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
+        (!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
+        (!empty($view->filter_email)) ? $query->where('email', 'LIKE', '%'.$view->filter_email.'%') : '';
+
+        $view->userinfosList = $query->order_by('nome','ASC')->find_all();
+        
+        // $this->endProfilling();
+        echo $view;
+    }    
  
 }

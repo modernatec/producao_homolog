@@ -27,17 +27,19 @@
                 </dd>
             </div>
             <div class="left">
-                <dt><label for="uni">unidade</label></dt>
+                <dt><label for="cap">cap./vol.</label></dt>
                 <dd>
-                    <input type="text" class="text required round" name="uni" id="uni" style="width:50px;" value="<?=$objVO['uni'];?>"/>
-                    <span class='error'><?=Arr::get($errors, 'uni');?></span>
-                </dd>
-            </div>
-                <dt><label for="cap">capítulo</label></dt>
-                <dd>
-                    <input type="text" class="text required round" name="cap" id="cap" style="width:50px;" value="<?=$objVO['cap'];?>"/>
+                    <input type="text" class="text round" name="cap" id="cap" style="width:50px;" value="<?=$objVO['cap'];?>"/>
                     <span class='error'><?=Arr::get($errors, 'cap');?></span>
                 </dd>
+                
+            </div>
+            <dt><label for="uni">unidade</label></dt>
+            <dd>
+                <input type="text" class="text round" name="uni" id="uni" style="width:50px;" value="<?=$objVO['uni'];?>"/>
+                <span class='error'><?=Arr::get($errors, 'uni');?></span>
+            </dd>
+                
             <div class="clear left">
                 <dt> <label for="typeobject_id">tipo do objeto</label> </dt>
                 <dd>
@@ -118,12 +120,21 @@
                 </dd>
             </div>
             <div class="left">
-                <dt> <label for="crono_date">Data do lançamento</label> </dt>
+                <dt> <label for="crono_date">Data de fechamento</label> </dt>
                 <dd>
                     <input type="text" class="text round date" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
                     <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
                 </dd>     
             </div>
+            <? if(empty($objVO["id"])){ //criando objeto novo?>
+                <div class="left">
+                    <dt> <label for="ini_date">Data de início</label> </dt>
+                    <dd>
+                        <input type="text" class="text round date" name="ini_date" id="ini_date" style="width:100px;" />
+                        <span class='error'><?=Arr::get($errors, 'ini_date');?></span>
+                    </dd>     
+                </div>
+            <?}?>
             <div class="clear">
                 <dt> <label for="sinopse">Obsevações</label> </dt>
                 <dd>

@@ -22,10 +22,14 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
         
 	public function action_index()
 	{	
-            $view = View::factory('admin/suppliers/list')
+		$view = View::factory('admin/suppliers/list')
                 ->bind('message', $message);
-            $view->suppliersList = ORM::factory('supplier')->order_by('empresa','ASC')->find_all();
-            $this->template->content = $view;             
+		
+		//$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
+		$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
+		$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
+		          
+        $this->template->content = $view;             
 	} 
 
 	public function action_create()
@@ -119,5 +123,33 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 	
 		Utils_Helper::mensagens('add',$message); 
 		Request::current()->redirect('admin/suppliers');
-	}	
+	}
+
+
+    /********************************/
+    public function action_getSuppliers(){
+		$this->auto_render = false;
+		$view = View::factory('admin/suppliers/table');
+
+		//$this->startProfilling();
+
+		//$view->filter_origem  = json_decode($this->request->query('origem'));			
+		$view->filter_empresa = $this->request->query('empresa');
+		$view->filter_contato = $this->request->query('contato');	
+
+
+		//$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();
+
+		$query = ORM::factory('supplier');
+
+		/***Filtros***/
+		//(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
+		(!empty($view->filter_empresa)) ? $query->where('empresa', 'LIKE', '%'.$view->filter_empresa.'%') : '';
+		(!empty($view->filter_contato)) ? $query->where('name', 'LIKE', '%'.$view->filter_contato.'%') : '';
+
+		$view->suppliersList = $query->order_by('empresa','ASC')->find_all();
+		
+		// $this->endProfilling();
+		echo $view;
+	}  		
 }

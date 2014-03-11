@@ -88,7 +88,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
 				'name',
 				'segmento_id',
-				'description'
+				'description',
+				'status',
 			));
 			                
 			if(!$id)
