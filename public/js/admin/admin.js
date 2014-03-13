@@ -1,24 +1,31 @@
 function temMensagens()
 {
+    /* é realmente necessário? *
     setInterval(function()
     {    
-        $.get(base_url + 'tasks/searchnew/',function(data)
+        var current_data = $.format.date($.now(), "yyyy-MM-dd H:m:s");
+        $.get(base_url + 'tasks/searchnew/?data=' + JSON.stringify(current_data),function(data)
         {  
-            /*$(".jGrowl").remove(); é realmente necessário? */
-            data = JSON.parse(data);    
-            $.each(data.dados,function(i)
-            {
-                var dado = data.dados[i];
-                var msg = 'Existem tarefas para você:<br/><br/><a href="/admin/tasks/edit/'+dado.id+'">Tarefa <b>"'+dado.title+'"</b> &raquo;</a>';
+            /*$(".jGrowl").remove(); 
+            data = JSON.parse(data);
+
+            //$.each(data.dados,function(i)
+            //{
+            
+            console.log(data.total);
+            if(data.total > 0){
+                var msg = 'Existem '+ data.total + ' novas tarefas!';
                 $.jGrowl(msg,
                     {
                         position:'bottom-right',
                         sticky: true                       
                     }
                 );
-            });
+            }
+            //});
         });
     },300000); //5 min = 300000
+    */
 }
 
 function aniversariantes()
@@ -465,8 +472,6 @@ $(document).ready(function()
 
     var tab = $.cookie("producao");
     $("#tabs").tabs("option", "active", $("#" + tab).index());
-
-
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();;
 
     //aniversariantes();
@@ -561,52 +566,3 @@ function pop_load_pais(){
         });
     })
 }
-
-function pop_load_colecao(){
-    var pop_pais = $('#pop_pais').val();
-    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais,function(data){
-        data = JSON.parse(data); 
-        $('#pop_colecao').html('<option value="">Selecione</option>');
-        $.each(data.dados,function(i)
-        {
-            var dado = data.dados[i];
-            $('#pop_colecao').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
-        });
-    });
-}
-
-function pop_load_ano(){
-    var pop_pais = $('#pop_pais').val(),
-        pop_colecao = $('#pop_colecao').val();
-    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais+'&colecao='+pop_colecao,function(data){
-        data = JSON.parse(data); 
-        $('#pop_ano').html('<option value="">Selecione</option>');
-        $.each(data.dados,function(i)
-        {
-            var dado = data.dados[i];
-            $('#pop_ano').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
-        });
-    })
-}
-
-function pop_load_objeto(){
-    var pop_pais = $('#pop_pais').val(),
-        pop_colecao = $('#pop_colecao').val(),
-        pop_ano = $('#pop_ano').val();
-    $.get(base_url + '/producao/admin/objects/popload/?country_id='+pop_pais+'&colecao='+pop_colecao+'&ano='+pop_ano,function(data){
-        data = JSON.parse(data); 
-        $('#pop_objeto').html('<option value="">Selecione</option>');
-        $.each(data.dados,function(i)
-        {
-            var dado = data.dados[i];
-            $('#pop_objeto').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
-        });
-    })
-}
-
-var n = 0
-function add_ProjectSteps(item_number){
-    $("#nestable3 >ol").append("<li class='steps' >Passo <input class='round' type='text' name='passo[]' /> Tempo <input class='round' style='width:20px;' type='text' name='tempo[]' /> dia(s)<input type='hidden' name='id_step[]' value='0'/></li>");
-    n = n + 1;
-}
-

@@ -14,52 +14,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	public function action_index()
 	{	
-		
 		if(Auth::instance()->logged_in()== 0){	
 			Request::current()->redirect('login');
 		}
 		
 		$view = View::factory('admin/tasks/list');
 		
-		/* Tasks para o user */
 		$query = ORM::factory('task')->where('status_id', '=', '5')->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'))
                 ->order_by('crono_date','ASC');
 						
 		$view->taskList	= $query->find_all();
 		
-		$arr_users = array();	
-			
-		/* Tasks encaminhadas para users da equipe coordenada *
-		if($this->current_auth == 'coordenador'){
-			$team = ORM::factory('team')->where('userInfo_id', '=', $this->current_user->userInfos->id)->find();
-			$team_users = ORM::factory('userInfo')->where('team_id', '=', $team->id)->find_all();
-			foreach($team_users as $team_user){
-				array_push($arr_users, $team_user->id);	
-			}
-			
-			if(count($arr_users) > 0){			
-				$query_team = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-							->where('tasks_users.userInfo_id', 'IN', $arr_users)
-							->group_by('tasks_users.task_id')
-							->order_by('crono_date','ASC');
-							
-				$view->taskTeam = $query_team->find_all();			
-			}
-		}	
-		/* Todas as tasks abertas no sistema *
-		if($this->current_auth == 'admin'){
-			$otherUsers = ORM::factory('userInfo')->where('id', '!=', $this->current_user->userInfos->id)->find_all();
-			foreach($otherUsers as $userInfo){
-				array_push($arr_users, $userInfo->id);	
-			}	
-			
-			$query_team = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-							->where('tasks_users.userInfo_id', 'IN', $arr_users)
-							->group_by('tasks_users.task_id')
-							->order_by('crono_date','ASC');	
-			$view->taskTeam = $query_team->find_all();	
-		}
-		*/
 
 	  	$this->template->content = $view;		
 	  	
@@ -226,11 +191,12 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
             }	
-            */
+
 
             if(isset($envio)){
 				$message.= "<br/>Email enviado ".$envio; 	
 			}
+            */
             	
 			            
 			$db->commit();
@@ -260,16 +226,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     }
 	
 	public function action_delete($inId){            
+		/*
 		try {            
 			$projeto = ORM::factory('task', $inId);
 			$projeto->delete();
-			$message = "Projeto excluído com sucesso.";
+			$message = "Tarefa excluída com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
 			$message = 'Houveram alguns erros. Veja à seguir:';
 			$errors = $e->errors('models');
 		}
 		
 		Utils_Helper::mensagens('add',$message); 
+		*/
 		Request::current()->redirect('admin/tasks');
 	}
 	
@@ -379,109 +347,19 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 		*/
 	}
-	
-	
-	public function action_filter()
-	{	
-		/*
-		$view = View::factory('admin/tasks/list');
-		$view->task_to = $this->request->query('task_to');
-		$view->status = $this->request->query('status');
-		
-		if(in_array('coordenador', $this->current_user->roles->find_all()->as_array('id','name'))){
-			$view->showFiltro = true;
-		}else{
-			$view->showFiltro = false;
-		}
-		
-		if($view->task_to!='' && $view->status!='')
-		{  
-			$view->taskList = ORM::factory('task')
-				->join('tasks_users','INNER')
-				->on('tasks.id','=','tasks_users.task_id')
-				->where('tasks_users.user_id', '=', $view->task_to)
-				->and_where(DB::Expr('(SELECT status_id FROM moderna_status_tasks WHERE task_id = `moderna_tasks`.`id` ORDER BY id DESC LIMIT 1)'),'=',(int)$view->status)
-				->group_by('tasks_users.task_id')
-				->order_by('crono_date','ASC')
-				->order_by('priority_id','ASC')
-				->find_all();
-		}elseif($view->task_to!='')
-		{  
-			$view->taskList = ORM::factory('task')
-				->join('tasks_users','INNER')
-				->on('tasks.id','=','tasks_users.task_id')
-				->where('tasks_users.user_id', '=', $view->task_to)
-				->group_by('tasks_users.task_id')
-				->order_by('crono_date','ASC')
-				->order_by('priority_id','ASC')
-				->find_all();
-		}
-		elseif($view->status!='')
-		{  
-			$view->taskList = ORM::factory('task')
-				->join('tasks_users','INNER')
-				->on('tasks.id','=','tasks_users.task_id')
-				->where_open()
-				->where('tasks_users.user_id','=',Auth::instance()->get_user()->id)
-				->or_where('tasks.user_id','=',Auth::instance()->get_user()->id)
-				->where_close()
-				->where(DB::Expr('(SELECT status_id FROM moderna_status_tasks WHERE task_id = `moderna_tasks`.`id` ORDER BY id DESC LIMIT 1)'),'=',(int)$view->status)
-				->group_by('tasks_users.task_id')
-				->order_by('crono_date','ASC')
-				->order_by('priority_id','ASC')
-				->find_all();
-		}
-		else
-		{
-			$view->taskList = ORM::factory('task')
-				->join('tasks_users','INNER')
-				->on('tasks.id','=','tasks_users.task_id')
-				->where_open()
-				->where('tasks_users.user_id','=',Auth::instance()->get_user()->id)
-				->or_where('tasks.user_id','=',Auth::instance()->get_user()->id)
-				->where_close()
-				->group_by('tasks_users.task_id')
-				->order_by('crono_date','ASC')
-				->order_by('priority_id','ASC')
-				->find_all();
-		}
-		//Utils_Helper::debug($view->taskList);
-		$view->usersList = ORM::factory('user')->find_all();  
-		$view->statusList = ORM::factory('statu')->find_all();    
-	  	$this->template->content = $view;
-	  	*/
-	}
     
 	
 	/*--------------*/
     public function action_searchnew()
     {	
-        /*
-		$callback = $this->request->query('callback');
-        $rls = $this->current_user->roles->find_all()->as_array('id','name');       
-        $dados = array();
+    	$this->auto_render = false;
+		$data = json_decode($this->request->query('data'));
+
         $taskList = ORM::factory('task')
-                ->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')
-                ->where('tasks_users.userInfo_id', '=', Auth::instance()->get_user()->id)
-                ->or_where('tasks.userInfo_id', '=', Auth::instance()->get_user()->id)
-                ->group_by('tasks_users.task_id')
-                ->order_by('crono_date','ASC')->order_by('priority_id','ASC')
+                ->where('created_at', '>', $data)
                 ->find_all();
-				
-        foreach($taskList as $task){
-            $status = $task->status->order_by('status_tasks.id', 'DESC')->limit('1')->find_all();
-            if($status[0]->id == 5 && in_array('assistente', $rls)){
-                $dado = array('id'=>$task->id,'title'=>$task->title,'status'=>$status[0]->id);
-                array_push($dados,$dado);
-            }
-            if($status[0]->id == 7 && in_array('coordenador', $rls)){
-                $dado = array('id'=>$task->id,'title'=>$task->title,'status'=>$status[0]->id);
-                array_push($dados,$dado);
-            }
-        }
-        $arr = array('role_user'=>$rls->role_id,'dados'=>$dados);
-        print $callback.json_encode($arr);
-        exit;
-		*/
+
+        $arr = array('total'=>$taskList->count());
+        print $callback.json_encode($arr);        
     } 
 }

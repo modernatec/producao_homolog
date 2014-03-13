@@ -1,15 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_Software extends ORM {
-        
-        protected $_has_many = array(
-		'objects'       => array('model' => 'object', 'through' => 'objects_sfwprods'),
-	);
+class Model_Format extends ORM {
 
 	public function rules()
 	{
             return array(
-                'nome' => array(
+                'name' => array(
                     array('not_empty'),
                 )
             );
@@ -18,7 +14,7 @@ class Model_Software extends ORM {
 	public function labels()
 	{
             return array(
-                'nome'  => 'Nome',
+                'name'  => 'Nome',
             );
 	}
 }

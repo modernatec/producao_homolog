@@ -5,8 +5,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	public $auth_required = array('login'); //Auth is required to access this controller
  
 	public $secure_actions = array(
-                                    'create' => array('login'),
-                                    'edit' => array('login', 'coordenador'),
+                                    'create' => array('login', 'assistente 2'),
+                                    'edit' => array('login', 'assistente 2'),
                                     'delete' => array('login', 'coordenador'),
                                  );
     const ITENS_POR_PAGINA = 20;
@@ -64,6 +64,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->countries = ORM::factory('country')->find_all();
         $view->suppliers = ORM::factory('supplier')->find_all();        
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
+        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
 		
 		       
         if (HTTP_Request::POST == $this->request->method()) 
@@ -112,7 +113,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->typeObjects = ORM::factory('typeobject')->find_all();
         $view->countries = ORM::factory('country')->find_all();
         $view->suppliers = ORM::factory('supplier')->find_all();        
-        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();   
+        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();  
+        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
                 
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
@@ -207,6 +209,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'collection_id', 
                     'supplier_id', 
                     'country_id',
+                    'format_id',
                     'reaproveitamento', 
                     'interatividade',
                     'fase', 
@@ -214,8 +217,26 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'obs', 
                     'uni', 
                     'cap', 
-                    'status', ));
+                    'pagina',
+                    'status',
+                    'tamanho',
+                    'duracao',
+                    'cessao',
+                    'sinopse',
+                    'taxonomia_reap',
+
+                     ));
+
 			
+			if($this->request->post('taxonomia_reap') != ""){
+				$object_source = ORM::factory('object')->where('taxonomia', '=', $this->request->post('taxonomia_reap'))->find();
+				
+				$object->object_id = $object_source->id;	
+			}else{
+				$object->object_id = null;
+			}
+			
+
 			$object->save();
 
 			if(is_null($id)){
@@ -226,6 +247,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
+
+
+
 
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
@@ -285,7 +309,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(!empty($view->filter_taxonomia)) ? $query->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%') : '';
 
-		$view->objectsList = $query->order_by('crono_date','ASC')->order_by('taxonomia', 'ASC')->find_all();
+		$view->objectsList = $query->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
 		// $this->endProfilling();
 		echo $view;

@@ -676,6 +676,27 @@ input[type='text']:focus, input[type='password']:focus{
 	text-align: center;
 }
 
+.object_finished{
+	background:#dcea96;
+	color:#000;
+}
+
+.object_review{
+	background:#fffcd9;
+	color:#000;
+}
+
+.object_late{
+	background:#fad7d7;
+	color:#000;
+}
+
+.object_review{
+	background:#fff79f;
+	color:#000;
+}
+
+
 .description{
 	padding: 10px 0;
 	display: block;

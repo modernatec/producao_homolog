@@ -136,20 +136,34 @@
             			$class="task_finished";
         				$value = "0";   
             		}
+
+            		if($objeto->statu->id == 8){
+            			$class_obj = $objeto->statu->class;
+            			$class= $objeto->statu->class;;
+        				$value = ""; 
+            		}elseif($objeto->statu->id == 3){
+            			$class_obj = $objeto->statu->class;
+            			$class= $objeto->statu->class;;
+        				$value = ""; 
+            		}elseif(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
+            			$class_obj = "object_late";
+            		}else{
+            			$class_obj = "";
+            		}
             	?>
             	<td style="width:5px" class="<?=$class?>"><?=$value?></td>
-                <td>
+                <td class="<?=$class_obj?>">
                     <a href="<?=URL::base().'admin/objects/view/'.$objeto->id;?>" title="Editar"><?=$objeto->taxonomia?> <br/><?=$objeto->title?></a>
                 </td>
-                <td><?=$objeto->typeobject->name?></td>
-                <td><?=($objeto->reaproveitamento == '1') ? "reap." : "novo"?></td>
-                <td><?=$objeto->supplier->empresa?></td>
-                <td><?=$objeto->collection->materia->name?></td>
-                <td><?=$objeto->collection->name?></td>
-                <td><?=$objeto->statu->status?></td>                
-                <td><?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></td>
+                <td class="<?=$class_obj?>"><?=$objeto->typeobject->name?></td>
+                <td class="<?=$class_obj?>"><?=($objeto->reaproveitamento == '1') ? "reap." : "novo"?></td>
+                <td class="<?=$class_obj?>"><?=$objeto->supplier->empresa?></td>
+                <td class="<?=$class_obj?>"><?=$objeto->collection->materia->name?></td>
+                <td class="<?=$class_obj?>"><?=$objeto->collection->name?></td>
+                <td class="<?=$class_obj?>"><?=$objeto->statu->status?></td>                
+                <td class="<?=$class_obj?>"><?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></td>
                 
-                <td><?=Utils_Helper::data($objeto->crono_date,'d/m/Y')?></td>
+                <td class="<?=$class_obj?>"><?=Utils_Helper::data($objeto->crono_date,'d/m/Y')?></td>
 			</tr>
             <?}?>
 		</tbody>
