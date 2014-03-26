@@ -142,9 +142,15 @@
             			$class= $objeto->statu->class;;
         				$value = ""; 
             		}elseif($objeto->statu->id == 3){
-            			$class_obj = $objeto->statu->class;
-            			$class= $objeto->statu->class;;
-        				$value = ""; 
+            			if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
+	            			$class_obj = "object_late";
+	            			$class = "object_late";
+	            		}else{
+	            			$class_obj = $objeto->statu->class;
+	            			$class= $objeto->statu->class;
+	        				$value = ""; 
+	            		}
+
             		}elseif(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
             			$class_obj = "object_late";
             		}else{

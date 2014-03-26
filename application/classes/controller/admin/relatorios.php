@@ -52,7 +52,15 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 									->group_by('objectstatus.supplier_id')
 									->find_all();
 
-				break;		
+				break;	
+			case 'typeobject_id':
+				$view->typeList = ORM::factory('typeobject')->join('objectstatus', 'INNER')
+									->on('typeobjects.id', '=', 'objectstatus.typeobject_id')
+									
+									->group_by('objectstatus.typeobject_id')
+									->find_all();
+
+				break;			
 			default:
 				# code...
 				break;

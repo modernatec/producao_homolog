@@ -1,7 +1,6 @@
-<div class="boxwired round hide" id="form_status" style="overflow:auto">
-	<label><b>alterar status</b></label><hr/>
-	<form name="frmStatus" id="frmStatus" action="<?=URL::base();?>admin/objects/updateStatus" method="post" class="form" enctype="multipart/form-data">
-		<input type="hidden" name="object_id" value="<?=$obj->id?>">
+<label><b>editar status</b></label><hr/>
+	<form name="frmStatus2" id="frmStatus2" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
+		<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
 		<dl>
 			<div class="left">
 				<dt>
@@ -11,7 +10,7 @@
 		            <select name="status_id" id="status_id" class="required round" style="width:150px;">
 		                <option value="">selecione</option>
 		                <? foreach($statusList as $status){?>
-		                    <option value="<?=$status->id?>" ><?=$status->status?></option>
+		                    <option value="<?=$status->id?>" <?=($objVO['status_id'] == $status->id) ? "selected" : ""?> ><?=$status->status?></option>
 		                <?}?>
 		            </select>
 		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
@@ -24,12 +23,12 @@
 		        <dd>
 		            <select name="prova" id="prova" class="required round" style="width:150px;">
 		                <option value="">selecione</option>
-		                <? for($i = 1; $i < 11; $i++){
+			                <? for($i = 1; $i < 11; $i++){
 		                		if($i < 10){
 		                			$i = '0'.$i;
 		                		}
-		                ?>
-		                    <option value="prova<?=$i?>" >prova <?=$i?></option>
+			                ?>
+		                    <option value="prova<?=$i?>" <?=($objVO['prova'] == "prova".$i) ? "selected" : ""?> >prova <?=$i?></option>
 		                <?}?>
 		            </select>
 		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
@@ -39,21 +38,18 @@
 	            <label for="crono_date">retorno para:</label>
 	        </dt>
 	        <dd>
-	            <input type="text" name="crono_date" id="crono_date_status" class="round required date" style="width:100px;" />
+	            <input type="text" name="crono_date" id="crono_date_status3" class="round required date" style="width:100px;" value="<?=$objVO['crono_date']?>" />
 	            <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
 	        </dd>			
             <dt>
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text round" name="description" id="description" style="width:600px; height:70px;"></textarea>
+                  <textarea class="text round" name="description" id="description" style="width:600px; height:70px;"><?=$objVO['description']?></textarea>
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
             <dd>
-              <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmStatus" value="criar" />
-              <input type="button" class="round cancel" name="btnCancel" id="btnCancel" data-show="form_status"  value="cancelar" />
-              
+              <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmStatus" value="salvar" />             
             </dd>	    
 		</dl>
 	</form>
-</div>

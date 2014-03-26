@@ -19,67 +19,31 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 		
 		$view = View::factory('admin/tasks/list');
+		$view->userInfo_id = $this->current_user->userInfos->id;
 		
-		$query = ORM::factory('task')->where('status_id', '=', '5')->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'))
-                ->order_by('crono_date','ASC');
+		//$query = ORM::factory('task')->where('status_id', '=', '5')->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'))
+        //        ->order_by('crono_date','ASC');
 						
-		$view->taskList	= $query->find_all();
+		//$view->taskList	= $query->find_all();
 		
 
 	  	$this->template->content = $view;		
 	  	
 	} 
     
-    /*
-	public function action_create(){
-		$view = View::factory('admin/tasks/create')
-                    ->bind('errors', $errors)
-                    ->bind('message', $message);
-                
-        $this->addValidateJs();
-		$view->isUpdate = false;                		
-        
-	  	$this->template->content = $view;	
-                
-	  	if (HTTP_Request::POST == $this->request->method()) 
-		{                                             
-			$this->salvar();
-		}
-                
-	}
-	
-	public function action_edit($id){
-		$view = View::factory('admin/tasks/create');
+   	public function action_update($id){
+		$this->auto_render = false;
+		$view = View::factory('admin/tasks/edit');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
-
-		$this->addValidateJs();
-		$view->isUpdate = true;
 		
 		$task = ORM::factory('task', $id);
 		$view->taskVO = $this->setVO('task', $task);
-		
-		$userId = $task->userInfos->find_all();
-		foreach($userId as $userInfo){
-			$view->taskVO['userInfo_id'] = $userInfo->id;
-			$view->taskVO['team_id'] = $userInfo->team_id;
-		}
-		
-		$view->materiasList = ORM::factory('materia')->find_all();
-		$view->collectionList = ORM::factory('collection')->find_all();
-		$view->typeObjList = ORM::factory('typeobject')->find_all();
-		$view->supplierList = ORM::factory('supplier')->find_all();
-		$view->segmentoList = ORM::factory('segmento')->find_all();
-		
-		$this->template->content = $view;
+		$view->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all(); 
 
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id);
-		}
+		echo $view;
 	}
-	*/
 	
 	public function action_start(){
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -93,6 +57,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			}else{
 				$this->salvar();
 			}
+		}
+	}
+
+	public function action_edit($id){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$this->salvar($id);
 		}
 	}
 
@@ -127,79 +98,31 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'status_id',
 				'task_id',
 				'object_id',
+				'task_to',
 			)); 
 	        $task->userInfo_id = $this->current_user->userInfos->id;            
             $task->save();
-            
-            
-            /*
-            if($this->request->post('task_to')){
-				$task->remove('userInfos');
-				$taskUser = ORM::factory('userInfo', ;     	
-            	$task->add('userInfos', $taskUser);
-				
-				$envio = $taskUser->nome;
-				
-				/*
-				if($taskUser->mailer == '1'){
-					$linkTask = URL::base().'admin/tasks/edit/'.$task->id;
-					if($this->request->post('statu_id') == 5)// 5 = Solicitada
-					{
-						$email = new Email_Helper();
-						$email->userInfo = $taskUser;
-						if($taskUser->email != ''){
-							$email->assunto = 'Olá, '.$taskUser->nome.' você possuí uma tarefa!';
-							$email->mensagem = '<font face="arial">Olá, '.$task->userInfo->nome.' lhe enviou uma tarefa.<br/><br/>
-							<b>Projeto:</b> '.$task->project->name.'<br/>
-							<b>Título:</b> '.$task->title.'<br/>
-							<b>Data de entrega:</b> '.Utils_Helper::data($task->crono_date).'<br/>
-							<b>Descrição:</b> '.$this->request->post('description').'<br/>
-							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-							$envio.= $email->enviaEmail();
-						}
-                	}
-            	}
-            				
+
+            /**atualiza tarefas de status relacionadas --- TRIGGER??**
+            DB::update('tasks')->set(array(
+            							'topic' => $this->request->post('topic'), 
+            							'crono_date' => $this->request->post('crono_date'),
+            							'description' => $this->request->post('description'),
+            							))->where('task_id', '=', $id)->execute();
+            //DB::update('tasks', array('topic', 'crono_date', 'description'))->values($this->request->post(), array('topic', 'crono_date', 'description'))->where('task_id', '=', $id)->execute();
+			*/
+
+            $task_replies = ORM::factory('task')->where('task_id', '=', $id)->find_all();
+            	foreach ($task_replies as $task_r) {
+            	$task_r->values($this->request->post(), array(
+				'topic',
+				'crono_date',
+				'description',
+				));
+				$task_r->save(); 
             }
-            */
-            /*
-            if($this->request->post('statu_id')){
-				if($this->request->post('statu_id') == 7) // 7 = Concluído
-				{
-					$email = new Email_Helper();
-					$email->userInfo = $task->userInfo;
-					
-					/*
-					if($task->userInfo->email!=''){
-						$email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-						$email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
-						<b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-						<b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
-						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-						$email->enviaEmail();
-					}
-					
-				}
-				
-            	$status_tasks = ORM::factory('status_task');
-				$status_tasks->status_id = $this->request->post('');
-				$status_tasks->task_id = $task->id;
-				$status_tasks->userInfo_id = $this->current_user->userInfos->id;
-				$status_tasks->description = $this->request->post('description');
-				$status_tasks->step_id = $this->request->post('step_id');
-				$status_tasks->save();
-	
-	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
-            }	
-
-
-            if(isset($envio)){
-				$message.= "<br/>Email enviado ".$envio; 	
-			}
-            */
-            	
-			            
-			$db->commit();
+            
+            $db->commit();
 			
             $message = "Tarefa salva com sucesso."; 
 			
@@ -242,7 +165,43 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	}
 	
 
-	/*******************************************/
+	
+
+    /********************************/
+    public function action_getTasks(){
+        $this->auto_render = false;
+        $view = View::factory('admin/tasks/table');
+
+        //$this->startProfilling();
+
+        //$view->filter_tipo = json_decode($this->request->query('tipo'));
+        $view->filter_status = $this->request->query('status');  
+		$view->filter_userInfo_id = $this->request->query('userInfo_id');  
+                
+
+        $query = ORM::factory('task')->where('status_id', '=', $view->filter_status)        
+        ->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'));
+
+        /***Filtros***/
+        //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
+        //(!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
+        (isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id) : '';
+
+        $view->taskList = $query->order_by('crono_date','ASC')->find_all();
+
+        
+        // $this->endProfilling();
+        echo $view;
+    }   
+
+
+
+
+
+
+
+
+    /*******************ANALIZAR************************/
 
 	public function action_load()
 	{
@@ -363,3 +322,89 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         print $callback.json_encode($arr);        
     } 
 }
+
+
+/*
+
+            /*
+            if($this->request->post('task_to')){
+				$task->remove('userInfos');
+				$taskUser = ORM::factory('userInfo', ;     	
+            	$task->add('userInfos', $taskUser);
+				
+				$envio = $taskUser->nome;
+				
+				/*
+				if($taskUser->mailer == '1'){
+					$linkTask = URL::base().'admin/tasks/edit/'.$task->id;
+					if($this->request->post('statu_id') == 5)// 5 = Solicitada
+					{
+						$email = new Email_Helper();
+						$email->userInfo = $taskUser;
+						if($taskUser->email != ''){
+							$email->assunto = 'Olá, '.$taskUser->nome.' você possuí uma tarefa!';
+							$email->mensagem = '<font face="arial">Olá, '.$task->userInfo->nome.' lhe enviou uma tarefa.<br/><br/>
+							<b>Projeto:</b> '.$task->project->name.'<br/>
+							<b>Título:</b> '.$task->title.'<br/>
+							<b>Data de entrega:</b> '.Utils_Helper::data($task->crono_date).'<br/>
+							<b>Descrição:</b> '.$this->request->post('description').'<br/>
+							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+							$envio.= $email->enviaEmail();
+						}
+                	}
+            	}
+            				
+            }
+            */
+            /*
+            if($this->request->post('statu_id')){
+				if($this->request->post('statu_id') == 7) // 7 = Concluído
+				{
+					$email = new Email_Helper();
+					$email->userInfo = $task->userInfo;
+					
+					/*
+					if($task->userInfo->email!=''){
+						$email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
+						$email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
+						<b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
+						<b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
+						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+						$email->enviaEmail();
+					}					
+				}
+				
+            	$status_tasks = ORM::factory('status_task');
+				$status_tasks->status_id = $this->request->post('');
+				$status_tasks->task_id = $task->id;
+				$status_tasks->userInfo_id = $this->current_user->userInfos->id;
+				$status_tasks->description = $this->request->post('description');
+				$status_tasks->step_id = $this->request->post('step_id');
+				$status_tasks->save();
+	
+	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
+            }	
+
+
+            if(isset($envio)){
+				$message.= "<br/>Email enviado ".$envio; 	
+			}
+
+			 /*
+	public function action_create(){
+		$view = View::factory('admin/tasks/create')
+                    ->bind('errors', $errors)
+                    ->bind('message', $message);
+                
+        $this->addValidateJs();
+		$view->isUpdate = false;                		
+        
+	  	$this->template->content = $view;	
+                
+	  	if (HTTP_Request::POST == $this->request->method()) 
+		{                                             
+			$this->salvar();
+		}
+                
+	}	
+*/

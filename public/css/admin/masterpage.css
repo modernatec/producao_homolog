@@ -191,6 +191,16 @@ a{
 	text-decoration:none;
 }
 
+.black{
+	color: #000;
+}
+
+.edit{
+	background: url('../../image/admin/edit.png') no-repeat;	
+	padding-left: 20px;
+	cursor: pointer;
+}
+
 
 .content{
 	margin-top: 100px;
@@ -447,6 +457,10 @@ label
 .ui-datepicker table tr th{ background-color: #fefefe; }
 .ui-datepicker table tr td:hover{ background-color: #008fc7;}
 .ui-datepicker table a{ color: #666; }
+.ui-datepicker .ui-state-highlight{
+	background: #fed22f;
+	background-image: none;
+}
 .ui-datepicker-header{ padding: 5px; height: 20px;}
 .ui-datepicker-prev{ float:left; margin-right: 10px; cursor: pointer;}
 .ui-datepicker-next{ float:right; cursor: pointer;}
@@ -652,6 +666,12 @@ input[type='text']:focus, input[type='password']:focus{
 	float: right;
 }
 
+.label_name{
+	padding: 4px;
+	color: #fff;
+	background: #048b11;
+}
+
 .task_open{
 	background:#ff0000;
 	padding:5px;
@@ -716,6 +736,9 @@ input[type='text']:focus, input[type='password']:focus{
 	border:none;
 }
 
-.ui-state-default .ui-state-highlight{
-	background: #dfe9f3;
+
+
+.anotacoes{
+	background: #fdfdc3;
 }
+

@@ -1,5 +1,44 @@
 $(document).ready(function() {
-        $( "#data_lancamento" ).datepicker({ 
+        
+        $("#frmCreateObject").validate({
+            rules: {
+                title: {required:true},
+                taxonomia: {required:true},
+                collection_id: {required:true},
+                country_id: {required:true},
+                fase: {required:true},
+                typeobject_id: {required:true},
+                supplier_id: {required:true},
+                crono_date: {required:true},
+                ini_date: {required:true},
+                arq_aberto: {required:true},
+                interatividade: {required:true},
+                format_id:{required:true},
+                reaproveitamento:{required:true},
+            },
+            messages: {
+                title: { required:'Campo não pode ser vazio'},
+                taxonomia: { required:'Campo não pode ser vazio'},
+                collection_id: { required:'Selecione uma opção'},
+                country_id: { required:'Selecione uma opção'},
+                fase: { required:'Selecione uma opção'},
+                typeobject_id: { required:'Selecione uma opção'},
+                supplier_id: { required:'Selecione uma opção'},
+                crono_date: { required:'Campo não pode ser vazio'},
+                ini_date: { required:'Campo não pode ser vazio'},
+                arq_aberto: { required:'Selecione uma opção'},
+                interatividade: { required:'Selecione uma opção'},
+                format_id:{ required:'Selecione uma opção'},
+                reaproveitamento:{ required:'Selecione uma opção'},
+            },
+            submitHandler: function(form) {
+              $(form).submit();
+            }
+        })
+});
+
+/*
+$( "#data_lancamento" ).datepicker({ 
             dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
             dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qi", "Sx", "Sa"],
             dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
@@ -7,7 +46,7 @@ $(document).ready(function() {
             monthNamesShort: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
             nextText:'&raquo;',
             prevText:'&laquo;',
-            dateFormat: "dd/mm/YY"
+            dateFormat: "dd/mm/YY"  
         });
         $('#btSlctObjtPai').click(function(){
             var NewDialog = $('<div id="MenuDialog">'+
@@ -47,34 +86,4 @@ $(document).ready(function() {
             $('#objectpai_txt').html('');
             return false;
         });
-        $("#frmCreateObject").validate({
-            rules: {
-                nome_obj: {required:true},
-                nome_arq: {required:true},
-                typeobject_id: {required:true},
-                colecao: {required:true},
-                segmento_id: {required:true},
-                arq_aberto: {required:true},
-                extensao_arq: {required:true},
-                interatividade: {required:true},
-                empresa: {required:true},
-                country_id: {required:true}
-            },
-            messages: {
-                nome_obj: { required:'Campo não pode ser vazio'},
-                nome_arq: { required:'Campo não pode ser vazio'},
-                typeobject_id: { required:'Campo não pode ser vazio'},
-                colecao: { required:'Campo não pode ser vazio'},
-                segmento_id: { required:'Campo não pode ser vazio'},
-                arq_aberto: { required:'Campo não pode ser vazio'},
-                extensao_arq: { required:'Campo não pode ser vazio'},
-                interatividade: { required:'Campo não pode ser vazio'},
-                empresa: { required:'Campo não pode ser vazio'},
-                country_id: { required:'Campo não pode ser vazio'}
-            },
-            submitHandler: function(form) {
-              $(form).submit();
-            }
-        })
-});
-
+*/

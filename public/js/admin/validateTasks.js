@@ -1,36 +1,90 @@
-$(document).ready(function() {
-        $( "#crono_date" ).datepicker({ 
-            dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-            dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qi", "Sx", "Sa"],
-            dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-            monthNames: ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
-            monthNamesShort: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"],
-            nextText:'&raquo;',
-            prevText:'&laquo;',
-            dateFormat: "dd/mm/yy"
-        });
-        $("#frmTask").validate({
-            //debug: true,
-            rules: {
-                project_id: {required:true},
-                title: {required:true},
-                pasta: {required:true},
-                task_to: {required:true},
-                priority_id: {required:true},
-                statu_id: {required:true},
-                description: {required:true}
-            },
-            messages: {
-                project_id: { required:"Escolha o projeto da tarefa."},
-                title: { required: "Digite o título da tarefa." },
-                pasta: {required:"Digite ocaminho da pasta da tarefa."},
-                task_to: {required:"Escolha o usuário responsável da tarefa."},
-                priority_id: {required:"Escolha a prioridade da tarefa."},
-                statu_id: {required:"Escolha o status da tarefa."},
-                description: {required:"Digite uma descrição para a tarefa."}
-            },
-            submitHandler: function(form) {
-				checkUpload(form);
-            }
-        })
+$(document).ready(function() {        
+    $("#frmCreateTask").validate({
+        rules: {
+            topic: {required:true},
+            crono_date: {required:true},
+            description: {required:true},
+        },
+        messages: {
+            topic: { required:'Campo não pode ser vazio'},
+            crono_date: { required:'Campo não pode ser vazio'},
+            description: { required:'Campo não pode ser vazio'},
+        },
+        submitHandler: function(form) {
+          $(form).submit();
+        }
+    })
+
+    $("#frmStatus").validate({
+        rules: {
+            status_id: {required:true},
+            prova: {required:true},
+            crono_date: {required:true},
+        },
+        messages: {
+            status_id: { required:'Selecione uma opção'},
+            prova: { required:'Selecione uma opção'},
+            crono_date: { required:'Campo não pode ser vazio'},
+        },
+        submitHandler: function(form) {
+          $(form).submit();
+        }
+    })
 });
+
+function validaTasks(){
+     $("#frmCreateTask2").validate({
+        rules: {
+            topic: {required:true},
+            crono_date: {required:true},
+            description: {required:true},
+        },
+        messages: {
+            topic: { required:'Campo não pode ser vazio'},
+            crono_date: { required:'Campo não pode ser vazio'},
+            description: { required:'Campo não pode ser vazio'},
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                type: "POST",
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                timeout: 3000,
+                success: function() {
+                    location.reload();
+                },
+                error: function() {alert('ocorreu um erro durante o processamento');}
+            });
+            return false;          
+          //$(form).submit();
+        }
+    })
+
+
+    $("#frmStatus2").validate({
+        rules: {
+            status_id: {required:true},
+            prova: {required:true},
+            crono_date: {required:true},
+        },
+        messages: {
+            status_id: { required:'Selecione uma opção'},
+            prova: { required:'Selecione uma opção'},
+            crono_date: { required:'Campo não pode ser vazio'},
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                type: "POST",
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                timeout: 3000,
+                success: function() {
+                    location.reload();
+                },
+                error: function() {alert('ocorreu um erro durante o processamento');}
+            });
+            return false;          
+          //$(form).submit();
+        }
+    })
+}

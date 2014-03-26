@@ -31,7 +31,8 @@
                     <option value=''>Selecione</option>
                     <option value="collection_id" >coleção</option>
                     <option value="status_id" >status</option>
-                    <option value="supplier_id" >produtora</option>                   
+                    <option value="supplier_id" >produtora</option> 
+                    <option value="typeobject_id" >tipo de objeto</option>                   
                 </select>
                 <span class='error'><?=Arr::get($errors, 'organizar');?></span>
             </dd>

@@ -12,7 +12,7 @@
 			<td><?=$collection->name?></td>
 			<td><?=$collection->ano?></td>			
 			<td class="acao">
-                <a class="excluir" href="<?=URL::base().'admin/collections/delete/'.$projeto->id;?>" title="Excluir">Excluir</a>
+                <a class="excluir" href="<?=URL::base().'admin/collections/delete/'.$collection->id;?>" title="Excluir">Excluir</a>
             </td>
 		</tr>
         <?}?>

@@ -57,12 +57,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->isUpdate = false; 
-		//$this->addValidateJs('public/js/admin/validateObjects.js');
+		$this->addValidateJs('public/js/admin/validateObjects.js');
 		$view->objVO = $this->setVO('object');
         
         $view->typeObjects = ORM::factory('typeobject')->find_all();
         $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->find_all();        
+        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
 		
@@ -104,15 +104,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->set('values', $this->request->post());
                 
         //$this->addPlupload();
-		$this->addValidateJs();
+		$this->addValidateJs('public/js/admin/validateObjects.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->objVO = $this->setVO('object', $objeto);
 		$view->isUpdate = true;                             
                 
-		$view->typeObjects = ORM::factory('typeobject')->find_all();
+		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->find_all();        
+        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
                 
@@ -130,7 +130,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs('public/js/admin/validateTasks.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
@@ -139,20 +139,36 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 
         $obj_history = ORM::factory('objects_statu')->where('object_id', '=', $id)->find_all();
-
-        $view->assign_form = View::factory('admin/tasks/assign_form');
-        $view->assign_form->obj = $objeto;  
-
+        
         $view->form_status = View::factory('admin/objects/form_status');
-        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
+        $view->assign_form = View::factory('admin/tasks/form_assign');
+        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
+        $view->assign_form->obj = $objeto; 
+
+
+        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
         
         $this->template->content = $view;
-
 	}
 
-	public function action_updateStatus(){
+	public function action_update($id){
+		$this->auto_render = false;
+		$view = View::factory('admin/objects/edit');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
+		
+		$objStatus = ORM::factory('objects_statu', $id);
+		$view->objVO = $this->setVO('objects_statu', $objStatus);
+
+		echo $view;
+	}
+
+	public function action_updateStatus($id = null){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{ 
 
@@ -161,12 +177,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 			try 
 			{ 
-				$object = ORM::factory('objects_statu')->values($this->request->post(), array( 
+				$object = ORM::factory('objects_statu', $id)->values($this->request->post(), array( 
 		                    'object_id', 
 		                    'status_id',
+		                    'prova',
 		                    'description',
 		                    'crono_date',
 							));
+
 				$object->userInfo_id = $this->current_user->userInfos->id;	
 				$object->save();
 
@@ -194,6 +212,45 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	    }
 	}
     
+	public function action_anotacoes(){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{ 
+
+			$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{ 
+
+				$object = ORM::factory('object', $this->request->post('object_id'))->values($this->request->post(), array( 
+		                    'anotacoes', 
+							));
+				$object->save();
+
+				Utils_Helper::mensagens('add','Anotação salva com sucesso.');
+				$db->commit();
+				Request::current()->redirect('admin/objects/view/'.$object->id);
+
+			} catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+			    Utils_Helper::mensagens('add',$message);    
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            Utils_Helper::mensagens('add',$message);
+	            $db->rollback();
+	        }
+
+	        return false;	
+	    }
+	}
+
 
 	protected function salvar($id = null)
 	{
@@ -224,6 +281,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'cessao',
                     'sinopse',
                     'taxonomia_reap',
+                    'arq_aberto',
 
                      ));
 
@@ -236,7 +294,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object->object_id = null;
 			}
 			
-
 			$object->save();
 
 			if(is_null($id)){
@@ -247,9 +304,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
-
-
-
 
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();

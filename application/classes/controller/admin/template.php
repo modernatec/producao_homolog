@@ -19,6 +19,10 @@ class Controller_Admin_Template extends Controller_Template {
       public $current_user;
 	  
 	  public $current_auth;
+
+	  public $styles;
+
+	  public $scripts;
 	  
 	  protected $menus;
 	  
@@ -70,6 +74,27 @@ class Controller_Admin_Template extends Controller_Template {
 				}
 			}
 
+			//****Para abrir popup******/
+			$this->styles = array(
+				'public/css/common/reset.css' => 'screen',
+				'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
+				'public/css/common/jquery.jgrowl.css' => 'screen',
+				'public/css/admin/nested.css' => 'screen',
+				'public/css/admin/masterpage.css' => 'screen',
+            );
+
+            $this->scripts = array(
+				'public/js/common/jquery/jquery-1.8.3.js',
+				'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
+				'public/js/common/jquery/jquery.validate.js',
+				'public/js/common/jquery/jquery.cookie.js',
+				'public/js/common/jquery/jquery-dateFormat.min.js',
+				'public/js/common/jgrowl/jquery.jgrowl.js',
+				'public/js/common/Nestable-master/jquery.nestable.js',												
+				'public/js/admin/admin.js',
+				'public/js/common/Popup.js',
+            );
+
 			
       	}
  
@@ -81,34 +106,12 @@ class Controller_Admin_Template extends Controller_Template {
        */
       public function after()
       {
-
             if ($this->auto_render)
             {
-                    $styles = array(
-						'public/css/common/reset.css' => 'screen',
-						'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
-						'public/css/common/jquery.jgrowl.css' => 'screen',
-						'public/css/admin/nested.css' => 'screen',
-						'public/css/admin/masterpage.css' => 'screen',
-                    );
-
-                    $scripts = array(
-						//'public/js/common/jquery/jquery-1.5.2.min.js',
-						'public/js/common/jquery/jquery-1.8.3.js',
-						'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
-						'public/js/common/jquery/jquery.validate.js',
-						'public/js/common/jquery/jquery.cookie.js',
-						'public/js/common/jquery/jquery-dateFormat.min.js',
-						'public/js/common/jgrowl/jquery.jgrowl.js',
-						'public/js/common/Nestable-master/jquery.nestable.js',												
-						'public/js/admin/admin.js',
-						'public/js/common/Popup.js',
-                    );
-
-                    $this->template->styles 	= array_merge( $styles, $this->template->styles );
-                    $this->template->scripts 	= array_merge( $scripts, $this->template->scripts );
-
+                $this->template->styles 	= array_merge( $this->styles, $this->template->styles );
+                $this->template->scripts 	= array_merge( $this->scripts, $this->template->scripts );
             }
+
             $this->template->title = " - ".ucfirst($this->request->controller());
             $this->template->menu = ($this->current_user) ? View::factory('admin/menu') : '';
 
@@ -194,5 +197,6 @@ class Controller_Admin_Template extends Controller_Template {
 		array_push($validateArr, $js);	
 		
 		$this->template->scripts = array_merge($validateArr, $this->template->scripts);
+		$this->scripts = array_merge($this->scripts, $validateArr);
 	}
 }

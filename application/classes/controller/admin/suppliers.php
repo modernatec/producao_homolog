@@ -2,9 +2,11 @@
  
 class Controller_Admin_Suppliers extends Controller_Admin_Template {
  
-	public $auth_required		= array('login', 'coordenador'); //Auth is required to access this controller
+	public $auth_required		= array('login'); //Auth is required to access this controller
  
 	public $secure_actions     	= array(
+									'create' => array('login', 'coordenador'),
+									'edit' => array('login', 'coordenador'),
 								   	'delete' => array('login', 'admin'),
 								 );
 					 
@@ -140,7 +142,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		//$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();
 
-		$query = ORM::factory('supplier');
+		$query = ORM::factory('supplier')->where('order', '=', '1');
 
 		/***Filtros***/
 		//(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';

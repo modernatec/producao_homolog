@@ -43,9 +43,10 @@
                 <dd>
                     <select class="required round" name="fase" id="fase" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['fase']==0)?('selected="selected"'):(''))?>>Concept</option>
-                        <option value='1' <?=(($objVO['fase']==1)?('selected="selected"'):(''))?>>Produção</option>
-                        <option value='2' <?=(($objVO['fase']==2)?('selected="selected"'):(''))?>>Acervo</option>
+                        <option value='0' <?=(($objVO['fase']== '0')?('selected="selected"'):(''))?>>Concept</option>
+                        <option value='1' <?=(($objVO['fase']== '1')?('selected="selected"'):(''))?>>Produção</option>
+                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>Acervo</option>
+                        <option value='2' <?=(($objVO['fase']== '3')?('selected="selected"'):(''))?>>Caiu</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'fase');?></span>
                 </dd>  
@@ -78,7 +79,7 @@
             <div class="left">
                 <dt> <label for="crono_date">Data de fechamento</label> </dt>
                 <dd>
-                    <input type="text" class="text round date" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
+                    <input type="text" class="text required round date" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
                     <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
                 </dd>     
             </div>
@@ -86,7 +87,7 @@
                 <div class="left">
                     <dt> <label for="ini_date">Data de início</label> </dt>
                     <dd>
-                        <input type="text" class="text round date" name="ini_date" id="ini_date" style="width:100px;" />
+                        <input type="text" class="text required round date" name="ini_date" id="ini_date" style="width:100px;" />
                         <span class='error'><?=Arr::get($errors, 'ini_date');?></span>
                     </dd>     
                 </div>
@@ -131,10 +132,10 @@
             <div class="left"> 
                 <dt><label for="cessao">cessão txt/img</label></dt>
                 <dd>
-                    <select class="required round" name="cessao" id="cessao" style="width:100px;">
+                    <select class="round" name="cessao" id="cessao" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['cessao'] == 0)?('selected="selected"'):(''))?>>Não</option>
-                        <option value='1' <?=(($objVO['cessao'] == 1)?('selected="selected"'):(''))?>>Sim</option>
+                        <option value='0' <?=(($objVO['cessao'] == '0')?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['cessao'] == '1')?('selected="selected"'):(''))?>>Sim</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'cessao');?></span>
                 </dd> 
@@ -145,8 +146,8 @@
                 <dd>
                     <select class="required round" name="arq_aberto" id="arq_aberto" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['arq_aberto'] == 0)?('selected="selected"'):(''))?>>Não</option>
-                        <option value='1' <?=(($objVO['arq_aberto'] == 1)?('selected="selected"'):(''))?>>Sim</option>
+                        <option value='0' <?=(($objVO['arq_aberto'] == '0')?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['arq_aberto'] == '1')?('selected="selected"'):(''))?>>Sim</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'arq_aberto');?></span>
                 </dd> 
@@ -156,8 +157,8 @@
                 <dd>
                     <select class="required round" name="interatividade" id="interatividade" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['interatividade']==0)?('selected="selected"'):(''))?>>Não</option>
-                        <option value='1' <?=(($objVO['interatividade']==1)?('selected="selected"'):(''))?>>Sim</option>
+                        <option value='0' <?=(($objVO['interatividade']== '0')?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['interatividade']== '1')?('selected="selected"'):(''))?>>Sim</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'interatividade');?></span>
                 </dd>
@@ -180,10 +181,10 @@
                 <dd>
                     <select class="required round" name="reaproveitamento" id="reaproveitamento" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['reaproveitamento'] == 0)?('selected="selected"'):(''))?>>Não</option>
-                        <option value='1' <?=(($objVO['reaproveitamento'] == 1)?('selected="selected"'):(''))?>>Sim</option>
+                        <option value='0' <?=(($objVO['reaproveitamento'] == '0')?('selected="selected"'):(''))?>>Não</option>
+                        <option value='1' <?=(($objVO['reaproveitamento'] == '1')?('selected="selected"'):(''))?>>Sim</option>
                     </select>
-                    <span class='error'><?=Arr::get($errors, 'arq_aberto');?></span>
+                    <span class='error'><?=Arr::get($errors, 'reaproveitamento');?></span>
                 </dd> 
             </div>
             <div class="left">
