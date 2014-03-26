@@ -185,7 +185,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         /***Filtros***/
         //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
         //(!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
-        (isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id) : '';
+        (isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id)->and_where('task_id', 'NOT IN', DB::Select('task_id')->from('tasks')->where('status_id', '=', '7')) : '';
 
         $view->taskList = $query->order_by('crono_date','ASC')->find_all();
 
