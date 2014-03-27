@@ -14,14 +14,14 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
 	
-	public static function addJs(){
-		/*
+	public static function addJs(){		
 		return array(
 			"public/plupload/js/plupload.js",
 			"public/plupload/js/plupload.html5.js",
+			
 			"public/plupload/init.js",
-		);
-		*/
+		);		
+		//"public/plupload/Upload.js",	
 	}
         
 	public static function salvar($request, $pasta, $model_id, $model, $user, $width = null)

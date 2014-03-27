@@ -60,7 +60,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->addValidateJs('public/js/admin/validateObjects.js');
 		$view->objVO = $this->setVO('object');
         
-        $view->typeObjects = ORM::factory('typeobject')->find_all();
+        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->countries = ORM::factory('country')->find_all();
         $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
@@ -352,7 +352,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->materiasList = ORM::factory('objectStatu')->where('materia_id', 'IN', DB::Select('id')->from('materias'))->group_by('materia_id')->find_all();
 
-		$query = ORM::factory('objectStatu')->where('fase', '=', $this->request->query('fase'))->where('project_id', '=', $project_id);
+		$query = ORM::factory('objectStatu')->where('fase', '=', $this->request->query('fase'));
 
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -361,9 +361,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
 		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
 		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
-		(!empty($view->filter_taxonomia)) ? $query->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%') : '';
+		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 
-		$view->objectsList = $query->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
+		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
 		// $this->endProfilling();
 		echo $view;

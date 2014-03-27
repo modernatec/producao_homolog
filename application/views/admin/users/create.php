@@ -1,27 +1,39 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/users" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/users" class="bar_button round">voltar</a>
 	</div>
     <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
-	    <dt>
-	      <label for="nome">Nome</label>
-	    </dt>
+	  	<div class="left">	    
+		    <div class="foto_form" style="background: url('<?=URL::base();?><?=@$userInfoVO["foto"]?>') no-repeat;"></div> 	
+		</div>
+		<div class="left">
+	        <dt>
+				<label for="arquivo">Anexar Foto</label>
+		    </dt>
+		    <?=$anexosView?> 
+		</div>
+		<div class="clear">
+		    <dt>
+		      <label for="nome">nome</label>
+		    </dt>
+	    </div>
 	    <dd>
 	      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=@$userInfoVO["nome"];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'nome');?></span>
 	    </dd>
+	    <div class="left">
+		    <dt>
+		      <label for="email">e-mail</label>
+		    </dt>
+		    <dd>
+		      <input type="text" class="text round" name="email" id="email" style="width:250px;" value="<?=@$userInfoVO["email"];?>"/>
+		      <span class='error'><?=Arr::get($errors, 'email');?></span>
+		    </dd>       	    
+		</div>                	    
 	    <dt>
-	      <label for="email">Email</label>
-	    </dt>
-	    <dd>
-	      <input type="text" class="text round" name="email" id="email" style="width:250px;" value="<?=@$userInfoVO["email"];?>"/>
-	      <span class='error'><?=Arr::get($errors, 'email');?></span>
-	    </dd>       	    
-                	    
-	    <dt>
-	      <label for="team">Equipe</label>
+	      <label for="team">equipe</label>
 	    </dt>
 	    <dd>
 			<select name="team_id" id="team_id">
@@ -31,50 +43,44 @@
 			</select>
 			<span class='error'><?=Arr::get($errors, 'role');?></span>
 	    </dd>
-	    <dt>
-	      <label for="role">Permissão</label>
-	    </dt>
-	    <dd>
-			<select name="role_id" id="role_id" >
-				<option value="">Selecione</option>
-                <?
-				foreach($rolesList as $roleObj){
-					?><option value="<?=$roleObj->id?>" <?=((@$userInfoVO["role_id"] == $roleObj->id)?('selected'):(''))?>><?=ucfirst($roleObj->name)?></option>
-				<? }?>
-			</select>
-			<span class='error'><?=Arr::get($errors, 'role_id');?></span>
-	    </dd>
-		<dt>
-			<label for="telefone">Telefone</label>
-	    </dt>
-	    <dd>
-			<input type="text" class="text round" name="telefone" id="telefone" style="width:100px;" value="<?=@$userInfoVO["telefone"];?>" maxlength="12"/>
-			<span class='error'><?=Arr::get($errors, 'telefone');?></span>
-	    </dd>
+	    
+	    <div class="left">
+			<dt>
+				<label for="telefone">telefone</label>
+		    </dt>
+		    <dd>
+				<input type="text" class="text round" name="telefone" id="telefone" style="width:100px;" value="<?=@$userInfoVO["telefone"];?>" maxlength="12"/>
+				<span class='error'><?=Arr::get($errors, 'telefone');?></span>
+		    </dd>
+	    </div>
+	    <div class="left">
+		    <dt>
+				<label for="ramal">ramal</label>
+		    </dt>
+		    <dd>
+				<input type="text" class="text round" name="ramal" id="ramal" style="width:50px;" value="<?=@$userInfoVO["ramal"];?>" maxlength="5"/>
+				<span class='error'><?=Arr::get($errors, 'ramal');?></span>
+		    </dd>
+		</div>
         <dt>
-			<label for="data_aniversario">Data do Aniversário (dd/mm)</label>
-	    </dt>
+			<label for="data_aniversario">data do Aniversário (dd/mm)</label>
+	    </dt>	
 	    <dd>
             <input type="text" class="text round" name="data_aniversario" id="data_aniversario" style="width:50px;" value="<?=@$userInfo["data_aniversario"];?>" maxlength="5" />
 			<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
 	    </dd>
-        <dt>
-			<label for="ramal">Ramal</label>
-	    </dt>
-	    <dd>
-			<input type="text" class="text round" name="ramal" id="ramal" style="width:50px;" value="<?=@$userInfoVO["ramal"];?>" maxlength="5"/>
-			<span class='error'><?=Arr::get($errors, 'ramal');?></span>
-	    </dd>
-        <dt>
-			<label for="arquivo">Anexar Foto</label>
-	    </dt>
-	    <?=$anexosView?> 	    
-	    <dd>
-        	<? if(@$userInfoVO["foto"]){ ?>
-        	<img src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" width="150" alt="<?=@$userInfoVO["nome"];?>" />
-           	<? }?>
-	    </dd>
-        <br/>
+        
+	    <div class="clear">	    
+			<dt>
+		      <label for="role">permissão</label>
+		    </dt>
+		    <dd>
+				<?foreach($rolesList as $roleObj){?>
+					<input type="checkbox" name="role_id[]" id="role_<?=$roleObj->id?>" value="<?=$roleObj->id?>" <?=(in_array($roleObj->id, $userInfoVO["role_id"])) ? 'checked' :''?> /><label for="role_<?=$roleObj->id?>"><?=ucfirst($roleObj->name)?></label>
+				<? }?>
+				<span class='error'><?=Arr::get($errors, 'role_id');?></span>
+		    </dd>
+		</div>
         <dt>
 	      <label for="username">Username</label>
 	    </dt>
@@ -99,7 +105,7 @@
 	    </dd>
                 
 	    <dd>
-			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<?=(@$isUpdate) ? "Salvar" : "Criar"?>" />
+			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
 	    </dd>	
 	  </dl>
 	</form>

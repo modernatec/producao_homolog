@@ -19,11 +19,7 @@ class Controller_Admin_Template extends Controller_Template {
       public $current_user;
 	  
 	  public $current_auth;
-
-	  public $styles;
-
-	  public $scripts;
-	  
+  
 	  protected $menus;
 	  
       /**
@@ -49,7 +45,8 @@ class Controller_Admin_Template extends Controller_Template {
 					Utils_Helper::mensagens('add',"você não tem acesso a este conteúdo");
 					Request::current()->redirect('admin');
 				}else{
-					Request::current()->redirect('/login');
+					/*redirect loop?*/
+					//Request::current()->redirect('/login');
 				}
 			}
 			
@@ -73,28 +70,6 @@ class Controller_Admin_Template extends Controller_Template {
 					$this->menus = $role->menus->order_by('ordem', 'ASC')->find_all()->as_array();
 				}
 			}
-
-			//****Para abrir popup******/
-			$this->styles = array(
-				'public/css/common/reset.css' => 'screen',
-				'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
-				'public/css/common/jquery.jgrowl.css' => 'screen',
-				'public/css/admin/nested.css' => 'screen',
-				'public/css/admin/masterpage.css' => 'screen',
-            );
-
-            $this->scripts = array(
-				'public/js/common/jquery/jquery-1.8.3.js',
-				'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
-				'public/js/common/jquery/jquery.validate.js',
-				'public/js/common/jquery/jquery.cookie.js',
-				'public/js/common/jquery/jquery-dateFormat.min.js',
-				'public/js/common/jgrowl/jquery.jgrowl.js',
-				'public/js/common/Nestable-master/jquery.nestable.js',												
-				'public/js/admin/admin.js',
-				'public/js/common/Popup.js',
-            );
-
 			
       	}
  
@@ -108,8 +83,28 @@ class Controller_Admin_Template extends Controller_Template {
       {
             if ($this->auto_render)
             {
-                $this->template->styles 	= array_merge( $this->styles, $this->template->styles );
-                $this->template->scripts 	= array_merge( $this->scripts, $this->template->scripts );
+            	$styles = array(
+					'public/css/common/reset.css' => 'screen',
+					'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
+					'public/css/common/jquery.jgrowl.css' => 'screen',
+					'public/css/admin/nested.css' => 'screen',
+					'public/css/admin/masterpage.css' => 'screen',
+	            );
+
+	            $scripts = array(
+					'public/js/common/jquery/jquery-1.8.3.js',
+					'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
+					'public/js/common/jquery/jquery.validate.js',
+					'public/js/common/jquery/jquery.cookie.js',
+					'public/js/common/jquery/jquery-dateFormat.min.js',
+					'public/js/common/jgrowl/jquery.jgrowl.js',
+					'public/js/common/Nestable-master/jquery.nestable.js',												
+					'public/js/admin/admin.js',
+					'public/js/common/Popup.js',
+	            );
+
+                $this->template->styles 	= array_merge( $styles, $this->template->styles );
+                $this->template->scripts 	= array_merge( $scripts, $this->template->scripts );
             }
 
             $this->template->title = " - ".ucfirst($this->request->controller());
@@ -119,7 +114,7 @@ class Controller_Admin_Template extends Controller_Template {
 				$this->template->user = $this->current_user;
 				$this->template->menu->user = $this->current_user;
 				
-				$menuList = array();
+				$menuList = array();	
 				foreach($this->menus as $key=>$menu_item){
 					if($menu_item->sub == 0){
 						$menuList[$key]['display'] = $menu_item->display;
@@ -136,8 +131,7 @@ class Controller_Admin_Template extends Controller_Template {
 						}
 					}
 				}
-				//echo '<pre>';
-				//var_dump($menuList);
+
 				$this->template->menu->menuList = $menuList;
             }
 
@@ -197,6 +191,6 @@ class Controller_Admin_Template extends Controller_Template {
 		array_push($validateArr, $js);	
 		
 		$this->template->scripts = array_merge($validateArr, $this->template->scripts);
-		$this->scripts = array_merge($this->scripts, $validateArr);
+		
 	}
 }

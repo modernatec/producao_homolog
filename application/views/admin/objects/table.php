@@ -59,10 +59,13 @@
 				            <span id="supplier">produtora <?=(!empty($filter_supplier) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
 					                <? foreach ($suppliersList as $supplier) {?>
-					                <li><input type="checkbox" name="supplier[]" value="<?=$supplier->supplier->id?>" id="s_<?=$supplier->supplier->id?>" <?=(in_array($supplier->supplier->id, $filter_supplier)) ? "checked" : ""?>><label for="s_<?=$supplier->supplier->id?>"><?=$supplier->supplier->empresa?></label></li>
+					                <li>
+					                	<input type="checkbox" name="supplier[]" value="<?=$supplier->supplier->id?>" id="s_<?=$supplier->supplier->id?>" <?=(in_array($supplier->supplier->id, $filter_supplier)) ? "checked" : ""?> />
+					                	<label for="s_<?=$supplier->supplier->id?>"><?=$supplier->supplier->empresa?></label>
+					                </li>
 					                <?}?>
-					                <input type="submit" class="round bar_button" value="OK"> 
-					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
+					                <input type="submit" class="round bar_button" value="OK" /> 
+					                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
 				            </ul>
 				        </li>
 				    </ul>
@@ -75,8 +78,11 @@
 				        <li class="round" >
 				            <span class="round" id="colecao">matéria <?=(!empty($filter_materia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
-					                <? foreach ($materiasList as $materia) {?>
-					                <li ><input type="checkbox" name="materia[]" value="<?=$materia->materia_id?>" id="=m_<?=$materia->id?>" <?=(in_array($materia->materia_id, $filter_materia)) ? "checked" : ""?>><label for="m_<?=$materia->id?>"><?=$materia->collection->materia->name?></label></li>
+					                <?foreach ($materiasList as $materia) {?>
+					                	<li>
+					                		<input type="checkbox" name="materia[]" value="<?=$materia->materia_id?>" id="mat_<?=$materia->id?>" <?=(in_array($materia->materia_id, $filter_materia)) ? "checked" : ""?> />
+					                		<label for="mat_<?=$materia->id?>"><?=$materia->collection->materia->name?></label>
+					                	</li>
 					                <?}?>
 					                <input type="submit" class="round bar_button" value="OK"> 
 					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
@@ -92,7 +98,10 @@
 				            <span class="round" id="colecao">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
 					                <? foreach ($collectionList as $collection) {?>
-					                <li style="width:400px"><input type="checkbox" name="collection[]" value="<?=$collection->id?>" id="c_<?=$collection->id?>" <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?>><label for="c_<?=$collection->id?>"><?=$collection->collection->name?></label></li>
+					                	<li style="width:300px">
+					                		<input type="checkbox" name="collection[]" value="<?=$collection->collection->id?>" id="col_<?=$collection->collection->id?>" <?=(in_array($collection->collection->id, $filter_collection)) ? "checked" : ""?> />
+					                		<label for="col_<?=$collection->collection->id?>"><?=$collection->collection->name?></label>
+					                	</li>
 					                <?}?>
 					                <input type="submit" class="round bar_button" value="OK"> 
 					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
@@ -108,7 +117,10 @@
 				            <span class="round" id="status">status <?=(!empty($filter_status) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
 					                <? foreach ($statusList as $status) {?>
-					                <li><input type="checkbox" name="status[]" value="<?=$status->statu->id?>" id="s_<?=$status->statu->id?>" <?=(in_array($status->statu->id, $filter_status)) ? "checked" : ""?>><label for="s_<?=$status->statu->id?>" ><?=$status->statu->status?></label></li>
+					                	<li>
+					                		<input type="checkbox" name="status[]" value="<?=$status->statu->id?>" id="sta_<?=$status->statu->id?>" <?=(in_array($status->statu->id, $filter_status)) ? "checked" : ""?> />
+					                		<label for="sta_<?=$status->statu->id?>" ><?=$status->statu->status?></label>
+					                	</li>
 					                <?}?>
 					                <input type="submit" class="round bar_button" value="OK"> 
 					                <input type="button" class="round bar_button cancelar" value="Cancelar"> 

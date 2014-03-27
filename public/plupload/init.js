@@ -74,3 +74,15 @@ $('#excluirTodos').click(function() {
 });
 
 uploader.init();
+
+
+/***melhorar***
+var uploader_url = new Upload({idModulo:'url',
+ callback:function(nameFile){
+  //$('#tmb_url').attr('src','../application/upload/'+nameFile);
+  $('#filesUploads_url').val(nameFile);  
+  $("#filelist_url span").remove();
+  $("#frmCreateUsers").submit();
+ }})
+uploader_url.init();
+**/

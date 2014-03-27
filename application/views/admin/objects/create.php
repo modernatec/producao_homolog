@@ -133,7 +133,6 @@
                 <dt><label for="cessao">cessão txt/img</label></dt>
                 <dd>
                     <select class="round" name="cessao" id="cessao" style="width:100px;">
-                        <option value=''>Selecione</option>
                         <option value='0' <?=(($objVO['cessao'] == '0')?('selected="selected"'):(''))?>>Não</option>
                         <option value='1' <?=(($objVO['cessao'] == '1')?('selected="selected"'):(''))?>>Sim</option>
                     </select>

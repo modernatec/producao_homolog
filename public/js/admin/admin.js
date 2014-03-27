@@ -186,6 +186,11 @@ $(function () {
 
 });
 
+function closeFilterPanel(){
+    $('.filter ul li').css({'background': ''});
+    $('.filter ul li ul').css({'display': 'none'});
+}
+
 $(document).ready(function()
 {	
     if(msgs.length>0)
@@ -216,7 +221,7 @@ $(document).ready(function()
     });
 
     var tab = $.cookie("producao");
-    $("#tabs").tabs("option", "active", $("#" + tab).index());
+    $("#tabs").tabs();
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
 
 

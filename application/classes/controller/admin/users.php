@@ -2,14 +2,13 @@
  
 class Controller_Admin_Users extends Controller_Admin_Template {
  
- 	//public $auth_required		= array('login'); //Auth is required to access this controller
+ 	public $auth_required		= array('login'); //Auth is required to access this controller
  	
 	public $secure_actions     	= array(
-									'index' => array('login'),
-									'edit' => array('login','coordenador'),
-									'delete' => array('login','admin'),
-									'create' => array('login','admin'),	
-                                    'inativate'	=> array('login','admin'),  									
+									'edit' => array('coordenador'),
+									'delete' => array('admin'),
+									'create' => array('admin'),	
+                                    'inativate'	=> array('admin'),  									
 								  );	
 	
 	public function __construct(Request $request, Response $response)
@@ -29,7 +28,9 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $this->template->content = $view;		
 	} 
         
-	
+	/*
+    * Editar usuarios *
+    */
 	public function action_edit($userInfo_id, $view = NULL)
     {
 		if(!$view)
@@ -41,25 +42,49 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $this->addValidateJs("public/js/admin/validateUsersEdit.js");
 		$userInfo = ORM::factory('userInfo', $userInfo_id);
 		$view->teamsList = ORM::factory('team')->find_all();
-		$view->rolesList = ORM::factory('role')->where('id', ">", "2")->order_by('name')->find_all();
-		$view->isUpdate = true;
+		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
+		
         $view->anexosView = View::factory('admin/files/anexos');
 		$this->template->content = $view;			
 		
 		$roles = $userInfo->user->roles->find_all();
+        $roles_arr = array();
 		foreach($roles as $roleObj){
-			$roleId = $roleObj->id;	
+            if($roleObj->id != '1'){
+    			array_push($roles_arr, $roleObj->id);
+            }
 		}	
 		
 		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
 		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
-        $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roleId;
+        $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
 		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
 		
 		if (HTTP_Request::POST == $this->request->method())
 		{                                              
             $this->salvar($userInfo_id);
         }
+    }
+
+    /*
+    * Criar usuarios *
+    */   
+    public function action_create()
+    {
+        $view = View::factory('admin/users/create')
+            ->bind('errors', $errors)
+            ->bind('message', $message);
+
+        $this->addValidateJs("public/js/admin/validateUsers.js");
+        $view->teamsList    = ORM::factory('team')->find_all();
+        $view->rolesList    = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
+        $view->userInfoVO   = $this->setVO('userInfo');
+        $this->template->content = $view;
+
+        if (HTTP_Request::POST == $this->request->method()) 
+        {                                              
+            $this->salvar(); 
+        }             
     }
 	
 	/*
@@ -99,26 +124,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 		
 	}
       
-	/*
-	* Criar usuarios *
-	*/   
-    public function action_create()
-    {
-        $view = View::factory('admin/users/create')
-            ->bind('errors', $errors)
-            ->bind('message', $message);
-
-        $this->addValidateJs("public/js/admin/validateUsers.js");
-        $view->teamsList 	= ORM::factory('team')->find_all();
-		$view->rolesList 	= ORM::factory('role')->where('id', ">", "2")->find_all();
-		$view->userInfoVO 	= $this->setVO('userInfo');
-        $this->template->content = $view;
-
-        if (HTTP_Request::POST == $this->request->method()) 
-        {                                              
-            $this->salvar(); 
-        }             
-    }
 
     protected function salvar($userInfo_id = null)
     {
@@ -162,11 +167,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             {
                 $user->remove('roles');
                 $user->add('roles', ORM::factory('role', array('name' => 'login')));
-                $user->add('roles', ORM::factory('role', array('id' => $this->request->post('role_id'))));            
+                foreach ($this->request->post('role_id') as $role_id) {
+                    //echo $role_id . "<br/>";
+                    $user->add('roles', ORM::factory('role', array('id' => $role_id)));                                
+                }
             }
             
 			$db->commit();
-            Utils_Helper::mensagens('add',"Contato {$userinfo->nome} salvo com sucesso.");       
+            Utils_Helper::mensagens('add',"Usuário salvo com sucesso.");       
             
             if($this->current_auth == "assistente"){
 	            Request::current()->redirect('admin');
