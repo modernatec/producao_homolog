@@ -27,7 +27,7 @@
 		            <label for="task_to">para:</label>
 		        </dt>
 		        <dd>
-		            <select name="task_to" id="task_to" class="required round" style="width:150px;">
+		            <select name="task_to" id="task_to" class="round" style="width:150px;">
 		                <option value="">selecione</option>
 		                <? foreach($teamList as $userInfo){?>
 		                    <option value="<?=$userInfo->id?>" ><?=$userInfo->nome?></option>

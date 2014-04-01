@@ -150,6 +150,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	padding-left:100px;
 	color:#FFF;
 	height: 25px;
+	z-index: 11000;
     /*box-shadow:0 2px 6px 2px rgba(0,0,0, .4);*/
 }
 

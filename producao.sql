@@ -1,97 +1,90 @@
--- phpMyAdmin SQL Dump
--- version 3.5.7
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Mar 08, 2013 at 02:03 AM
--- Server version: 5.5.17
--- PHP Version: 5.3.8
+/*
+SQLyog Community v10.51 
+MySQL - 5.5.29 : Database - producao
+*********************************************************************
+*/
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `producao`
---
+/*!40101 SET SQL_MODE=''*/;
 
--- --------------------------------------------------------
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`producao` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
---
--- Table structure for table `moderna_collections`
---
+USE `producao`;
 
-CREATE TABLE IF NOT EXISTS `moderna_collections` (
+/*Table structure for table `moderna_collections` */
+
+DROP TABLE IF EXISTS `moderna_collections`;
+
+CREATE TABLE `moderna_collections` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `year` varchar(9) NOT NULL,
-  `segmento_id` int(11) NOT NULL,
+  `op` varchar(250) NOT NULL,
+  `materia_id` int(11) NOT NULL,
+  `ano` int(4) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `segmento_id` (`segmento_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  KEY `materia_fk` (`materia_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `moderna_collections`
---
+/*Data for the table `moderna_collections` */
 
-INSERT INTO `moderna_collections` (`id`, `name`, `year`, `segmento_id`) VALUES
-(1, 'Araribá', '2010', 3);
+insert  into `moderna_collections`(`id`,`name`,`op`,`materia_id`,`ano`) values (1,'Projeto Buriti - Matemática - 1º ano - 3ª edição - PNLD 2016','13889',1,2014),(2,'Projeto Buriti - Matemática - 2º ano - 3ª edição - PNLD 2016','13890',1,2014),(3,'Projeto Buriti - Matemática - 3º ano - 3ª edição - PNLD 2016','13891',1,2014),(4,'Projeto Buriti - Matemática - 4º ano - 3ª edição - PNLD 2016','13892',1,2014),(5,'Projeto Buriti - Matemática - 5º ano - 3ª edição - PNLD 2016','13893',1,2014),(6,'Projeto Araribá - Ciências - 6º ano','11602',3,2014),(7,'Projeto Araribá - Matemática - 6º ano','11626',1,2014),(8,'Projeto Araribá - Ciências - 7º ano','11603',3,2014),(9,'Projeto Araribá - Ciências - 8º ano','11604',3,2014),(10,'Projeto Araribá - Ciências - 9º ano','11605',3,2014),(11,'Projeto Araribá - Matemática - 7º ano','11628',1,2014),(12,'Projeto Araribá - Matemática - 8º ano','11630',1,2014),(13,'Projeto Araribá - Matemática - 9º ano','11632',1,2014),(14,'Projeto Araribá - Geografia - 6º ano','11606',5,2014),(15,'Projeto Araribá - Geografia - 7º ano','11607',5,2014),(16,'Projeto Araribá - Geografia - 8º ano','11608',5,2014),(17,'Projeto Araribá - Geografia - 9º ano','11609',5,2014),(18,'Projeto Araribá - História - 6º ano','11610',4,2014),(19,'Projeto Araribá - História - 7º ano','11611',4,2014),(20,'Projeto Araribá - História - 8º ano','11612',4,2014),(21,'Projeto Araribá - História - 9º ano','11613',4,2014),(22,'Projeto Araribá - Português - 6º ano','11634',2,2014),(23,'Projeto Araribá - Português - 7º ano','11636',2,2014),(24,'Projeto Araribá - Português - 8º ano','11638',2,2014),(25,'Projeto Araribá - Português - 9º ano','11640',2,2014),(26,'Sociologia em movimento - 6º ano','13951',6,2014),(27,'Sociologia em movimento - 7º ano','13952',6,2014),(28,'Sociologia em movimento - 8º ano','13953',6,2014),(29,'Sociologia em movimento - 9º ano','13954',6,2014),(30,'Vereda Digital - (vol. único)','0000',7,2014),(31,'Descobrindo a Filosofia - 6º','0000',10,2014);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_collections_projects` */
 
---
--- Table structure for table `moderna_countries`
---
+DROP TABLE IF EXISTS `moderna_collections_projects`;
 
-CREATE TABLE IF NOT EXISTS `moderna_countries` (
+CREATE TABLE `moderna_collections_projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
+  `collection_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `moderna_countries`
---
+/*Data for the table `moderna_collections_projects` */
 
-INSERT INTO `moderna_countries` (`id`, `nome`) VALUES
-(1, 'Brasil'),
-(2, 'Espanha'),
-(3, 'Argentina');
+insert  into `moderna_collections_projects`(`id`,`collection_id`,`project_id`) values (42,1,4),(43,2,4),(44,3,4),(45,4,4),(46,5,4),(121,30,6),(122,31,5),(123,6,5),(124,8,5),(125,9,5),(126,10,5),(127,14,5),(128,15,5),(129,16,5),(130,17,5),(131,18,5),(132,19,5),(133,20,5),(134,21,5),(135,7,5),(136,11,5),(137,12,5),(138,13,5),(139,22,5),(140,23,5),(141,24,5),(142,25,5),(143,26,5),(144,27,5),(145,28,5),(146,29,5);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_countries` */
 
---
--- Table structure for table `moderna_curriculums`
---
+DROP TABLE IF EXISTS `moderna_countries`;
 
-CREATE TABLE IF NOT EXISTS `moderna_curriculums` (
+CREATE TABLE `moderna_countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `moderna_countries` */
+
+insert  into `moderna_countries`(`id`,`name`) values (1,'Brasil'),(2,'Espanha'),(3,'Argentina');
+
+/*Table structure for table `moderna_curriculums` */
+
+DROP TABLE IF EXISTS `moderna_curriculums`;
+
+CREATE TABLE `moderna_curriculums` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `objective` varchar(45) DEFAULT NULL,
   `description` text,
   `formado` enum('1','0') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_curriculums`
---
+/*Data for the table `moderna_curriculums` */
 
-INSERT INTO `moderna_curriculums` (`id`, `name`, `objective`, `description`, `formado`) VALUES
-(32, 'Roberto', 'Programador', 'Teste 2333', '1');
+insert  into `moderna_curriculums`(`id`,`name`,`objective`,`description`,`formado`) values (1,'Roberto Andrade Ono','Programador PHP','teste','1');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_files` */
 
---
--- Table structure for table `moderna_files`
---
+DROP TABLE IF EXISTS `moderna_files`;
 
-CREATE TABLE IF NOT EXISTS `moderna_files` (
+CREATE TABLE `moderna_files` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uri` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -102,546 +95,345 @@ CREATE TABLE IF NOT EXISTS `moderna_files` (
   `model` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `model` (`model`),
-  KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  KEY `userInfo_id` (`userInfo_id`),
+  CONSTRAINT `moderna_files_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_files`
---
+/*Data for the table `moderna_files` */
 
-INSERT INTO `moderna_files` (`id`, `uri`, `created_at`, `model_id`, `mime_type`, `size`, `userInfo_id`, `model`) VALUES
-(4, 'public/upload/curriculum/Chrysanthemum.jpg', '2013-02-05 19:52:25', 32, 'application/octet-stream', '879394', 4, 'curriculum'),
-(5, 'public/upload/curriculum/form_1360095520.txt', '2013-02-05 20:18:45', 32, 'text/plain', '1317', 4, 'curriculum'),
-(6, 'public/upload/curriculumDesert.jpg', '2013-02-07 16:44:17', 7, 'application/octet-stream', '845941', 4, 'task'),
-(7, 'public/upload/curriculumKoala.jpg', '2013-02-07 17:50:30', 8, 'application/octet-stream', '780831', 4, 'task'),
-(8, 'public/upload/curriculumPenguins.jpg', '2013-02-07 18:20:07', 9, 'application/octet-stream', '777835', 4, 'task'),
-(9, 'public/upload/curriculumTulips.jpg', '2013-02-07 19:19:13', 14, 'application/octet-stream', '620888', 11, 'task'),
-(10, 'public/upload/curriculummapa_brasil.eps', '2013-02-07 19:54:38', 16, 'application/octet-stream', '881870', 11, 'task'),
-(11, 'public/upload/curriculumDesert.jpg', '2013-02-08 11:28:34', 19, 'application/octet-stream', '845941', 4, 'task'),
-(12, 'public/upload/medias/liberacao_tablet_1360936416.txt', '2013-02-15 13:54:05', 1, 'text/plain', '1842', 4, 'media'),
-(13, 'public/upload/medias/contatos_tec_1361191600.xls', '2013-02-18 12:46:40', 1, 'application/vnd.ms-excel', '39424', 4, 'media'),
-(14, 'public/upload/medias/coder__1361191764.xml', '2013-02-18 12:49:25', 1, 'text/xml', '3722', 4, 'media'),
-(15, 'public/upload/medias/autoriza_o_de_desconto_efetivo_clt_forma_o_em_adobe_e_cs5_v_deo._1361191791.pdf', '2013-02-18 12:49:51', 1, 'application/pdf', '55534', 4, 'media'),
-(16, 'public/upload/medias/declara_o_prestador_forma_o_em_adobe_e_cs5_v_deo._1361191791.pdf', '2013-02-18 12:49:51', 1, 'application/pdf', '54508', 4, 'media'),
-(17, 'public/upload/curriculumform_1361293534.txt', '2013-02-19 17:05:41', 2, 'text/plain', '1317', 4, 'task');
+insert  into `moderna_files`(`id`,`uri`,`created_at`,`model_id`,`mime_type`,`size`,`userInfo_id`,`model`) values (37,'public/upload/medias/Padrao_para_destaques.docx','2013-07-23 18:19:42',1,'application/octet-stream','2738821',4,'media'),(38,'public/upload/medias/tipologia_portugues.jpg','2013-07-23 18:19:42',1,'application/octet-stream','750242',4,'media'),(39,'public/upload/userinfos/1526498837_458c00522b_1374615455.jpg','2013-07-23 18:37:36',18,'image/jpeg','191099',18,'userinfos'),(40,'public/upload/userinfos/baby_seal_picture_1374615584.png','2013-07-23 18:39:45',18,'image/png','314980',18,'userinfos'),(41,'public/upload/userinfos/Chrysanthemum.jpg','2014-03-11 15:14:46',16,'application/octet-stream','879394',17,'userinfos'),(42,'public/upload/userinfos/Hydrangeas.jpg','2014-03-11 18:05:47',21,'application/octet-stream','595284',20,'userinfos'),(43,'public/upload/userinfos/40037_119467904771134_7575856_n_1395684371.jpg','2014-03-24 15:06:11',18,'image/jpeg','29153',18,'userinfos'),(44,'public/upload/userinfos/40037_119467904771134_7575856_n_1395684463.jpg','2014-03-24 15:07:43',18,'image/jpeg','43810',18,'userinfos'),(45,'public/upload/userinfos/40037_119467904771134_7575856_n_1395684502.jpg','2014-03-24 15:08:22',18,'image/jpeg','25749',18,'userinfos'),(46,'public/upload/userinfos/03_1395684576.png','2014-03-24 15:09:36',18,'image/png','197363',18,'userinfos'),(47,'public/upload/userinfos/smiley_listen_music_normal_1395932088.jpg','2014-03-27 11:54:48',24,'image/jpeg','423802',4,'userinfos'),(48,'public/upload/userinfos/dark_flame_hd_wide_1395932405.jpg','2014-03-27 12:00:05',24,'image/jpeg','208934',4,'userinfos'),(49,'public/upload/userinfos/dark_flame_hd_wide_1395933210.jpg','2014-03-27 12:13:31',3,'image/jpeg','208934',4,'userinfos'),(50,'public/upload/userinfos/Koala.jpg','2014-03-27 14:37:44',25,'application/octet-stream','780831',24,'userinfos'),(51,'public/upload/userinfos/grey_c4d_wallpaper_by_dan4archangel_1395951552.jpg','2014-03-27 17:19:12',3,'image/jpeg','159405',4,'userinfos'),(52,'public/upload/userinfos/dark_flame_hd_wide_1395955319.jpg','2014-03-27 18:21:59',3,'image/jpeg','208934',4,'userinfos');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_formats` */
 
---
--- Table structure for table `moderna_materias`
---
+DROP TABLE IF EXISTS `moderna_formats`;
 
-CREATE TABLE IF NOT EXISTS `moderna_materias` (
+CREATE TABLE `moderna_formats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_materias`
---
+/*Data for the table `moderna_formats` */
 
-INSERT INTO `moderna_materias` (`id`, `nome`) VALUES
-(1, 'Matemática'),
-(2, 'Português');
+insert  into `moderna_formats`(`id`,`name`) values (1,'Vídeo'),(2,'Flash'),(3,'HTML5'),(4,'ppt');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_materias` */
 
---
--- Table structure for table `moderna_media`
---
+DROP TABLE IF EXISTS `moderna_materias`;
 
-CREATE TABLE IF NOT EXISTS `moderna_media` (
+CREATE TABLE `moderna_materias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `moderna_materias` */
+
+insert  into `moderna_materias`(`id`,`name`) values (1,'Matemática'),(2,'Português'),(3,'Ciências'),(4,'História'),(5,'Geografia'),(6,'Sociologia'),(7,'Física'),(8,'Química'),(9,'Biologia'),(10,'Filosofia');
+
+/*Table structure for table `moderna_media` */
+
+DROP TABLE IF EXISTS `moderna_media`;
+
+CREATE TABLE `moderna_media` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userInfo_id` int(11) NOT NULL,
   `tag` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  KEY `userInfo_id` (`userInfo_id`),
+  CONSTRAINT `moderna_media_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_media`
---
+/*Data for the table `moderna_media` */
 
-INSERT INTO `moderna_media` (`id`, `userInfo_id`, `tag`, `created_at`) VALUES
-(1, 4, 'PNLD 2015', '2013-02-15 13:54:05');
+insert  into `moderna_media`(`id`,`userInfo_id`,`tag`,`created_at`) values (1,4,'PNLD 2015','2013-02-15 11:54:05');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_menus` */
 
---
--- Table structure for table `moderna_menus`
---
+DROP TABLE IF EXISTS `moderna_menus`;
 
-CREATE TABLE IF NOT EXISTS `moderna_menus` (
+CREATE TABLE `moderna_menus` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `display` varchar(45) DEFAULT NULL,
   `link` varchar(45) DEFAULT NULL,
   `ordem` tinyint(4) NOT NULL,
   `sub` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_menus`
---
+/*Data for the table `moderna_menus` */
 
-INSERT INTO `moderna_menus` (`id`, `display`, `link`, `ordem`, `sub`) VALUES
-(1, 'Projetos', 'admin/projects', 0, 0),
-(2, 'Tarefas', 'admin/tasks', 1, 0),
-(3, 'Relatórios', 'admin/relatorios', 6, 0),
-(4, 'Usuários', 'admin/users', 5, 0),
-(5, 'Fornecedores', 'admin/suppliers', 4, 0),
-(6, 'Equipes', 'admin/teams', 0, 4),
-(7, 'Arquivos comuns', 'admin/medias', 7, 0),
-(8, 'Curriculums', 'admin/curriculums', 3, 0),
-(9, 'Acervo', 'admin/objects', 2, 0),
-(10, 'Tipos de Objetos', 'admin/typeobjects', 0, 9),
-(11, 'Segmentos', 'admin/segmentos', 0, 9),
-(12, 'Software de Produção', 'admin/softwares', 0, 9),
-(13, 'Países', 'admin/countries', 0, 9),
-(14, 'Matérias', 'admin/materias', 0, 9),
-(15, 'Coleção', 'admin/collections', 0, 9);
+insert  into `moderna_menus`(`id`,`display`,`link`,`ordem`,`sub`) values (1,'Projetos','admin/projects',0,0),(2,'Tarefas','admin/tasks',2,0),(3,'Relatórios','admin/relatorios',2,0),(4,'Usuários','admin/users',4,0),(5,'Fornecedores','admin/suppliers',3,0),(6,'Equipes','admin/teams',0,4),(7,'Arquivos comuns','admin/medias',7,0),(8,'Curriculums','admin/curriculums',5,0),(9,'OED\'s','admin/objects',1,0),(10,'Tipos','admin/typeobjects',2,9),(11,'Segmentos','admin/segmentos',1,1),(12,'Formatos','admin/format',3,9),(13,'Países','admin/countries',4,1),(14,'Matérias','admin/materias',3,1),(15,'Coleções','admin/collections',2,1),(16,'Acervo','admin/objects/acervo',1,9);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_menus_roles` */
 
---
--- Table structure for table `moderna_menus_roles`
---
+DROP TABLE IF EXISTS `moderna_menus_roles`;
 
-CREATE TABLE IF NOT EXISTS `moderna_menus_roles` (
+CREATE TABLE `moderna_menus_roles` (
   `menu_id` int(11) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`menu_id`,`role_id`),
-  KEY `role_id` (`role_id`)
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `moderna_menus_roles_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `moderna_roles` (`id`),
+  CONSTRAINT `moderna_menus_roles_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `moderna_menus` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_menus_roles`
---
+/*Data for the table `moderna_menus_roles` */
 
-INSERT INTO `moderna_menus_roles` (`menu_id`, `role_id`) VALUES
-(1, 2),
-(2, 2),
-(3, 2),
-(4, 2),
-(5, 2),
-(6, 2),
-(7, 2),
-(8, 2),
-(9, 2),
-(10, 2),
-(11, 2),
-(12, 2),
-(13, 2),
-(14, 2),
-(15, 2),
-(2, 3),
-(4, 3),
-(5, 3),
-(7, 3),
-(8, 3),
-(9, 3),
-(2, 4),
-(7, 4),
-(9, 4);
+insert  into `moderna_menus_roles`(`menu_id`,`role_id`) values (1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,2),(10,2),(11,2),(12,2),(13,2),(14,2),(15,2),(16,2),(2,3),(4,3),(5,3),(7,3),(8,3),(9,3),(16,3),(2,4),(4,4),(7,4),(2,5),(3,5),(4,5),(5,5),(7,5),(9,5);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_objects` */
 
---
--- Table structure for table `moderna_objects`
---
+DROP TABLE IF EXISTS `moderna_objects`;
 
-CREATE TABLE IF NOT EXISTS `moderna_objects` (
+CREATE TABLE `moderna_objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(200) NOT NULL,
+  `title` varchar(200) NOT NULL,
   `taxonomia` varchar(100) NOT NULL,
   `typeobject_id` int(11) NOT NULL,
   `collection_id` int(11) NOT NULL,
-  `arq_aberto` enum('0','1') NOT NULL DEFAULT '0',
-  `extensao_arq` varchar(45) NOT NULL,
-  `interatividade` enum('0','1') NOT NULL DEFAULT '0',
-  `supplier_id` int(11) NOT NULL,
-  `data_lancamento` date DEFAULT NULL,
-  `sinopse` text,
+  `supplier_id` int(11) DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `format_id` int(11) DEFAULT NULL,
+  `object_id` int(11) DEFAULT NULL,
+  `taxonomia_reap` varchar(250) DEFAULT NULL,
+  `reaproveitamento` enum('0','1') DEFAULT '0',
+  `interatividade` enum('0','1') DEFAULT '0',
+  `fase` enum('0','1','2','3') DEFAULT '0',
+  `arq_aberto` enum('0','1') DEFAULT NULL,
+  `cessao` enum('0','1') DEFAULT '0',
+  `crono_date` date DEFAULT NULL,
   `obs` text,
-  `parent_id` int(11) DEFAULT '0',
-  `country_id` int(11) NOT NULL,
-  `data_alt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
-  `thumb` varchar(200) DEFAULT NULL,
+  `uni` varchar(10) DEFAULT NULL,
+  `cap` varchar(10) DEFAULT NULL,
+  `pagina` varchar(5) DEFAULT NULL,
+  `tamanho` varchar(100) DEFAULT NULL,
+  `duracao` varchar(100) DEFAULT NULL,
+  `sinopse` text,
+  `anotacoes` text,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `tipo_obj_fk_idx` (`typeobject_id`),
   KEY `cmp_pais_fk_idx` (`country_id`),
-  KEY `collection_id` (`collection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `collection_id` (`collection_id`),
+  CONSTRAINT `cmp_pais_fk` FOREIGN KEY (`country_id`) REFERENCES `moderna_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tipo_obj_fk` FOREIGN KEY (`typeobject_id`) REFERENCES `moderna_typeobjects` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+/*Data for the table `moderna_objects` */
 
---
--- Table structure for table `moderna_objects_materias`
---
+insert  into `moderna_objects`(`id`,`title`,`taxonomia`,`typeobject_id`,`collection_id`,`supplier_id`,`country_id`,`format_id`,`object_id`,`taxonomia_reap`,`reaproveitamento`,`interatividade`,`fase`,`arq_aberto`,`cessao`,`crono_date`,`obs`,`uni`,`cap`,`pagina`,`tamanho`,`duracao`,`sinopse`,`anotacoes`,`updated_at`) values (1,'Serra da Capivara','ARhis6_un03vt_capivara',8,18,10,1,1,NULL,'','0','0','1',NULL,'0','2014-02-27','','03','','','','','',NULL,'2014-03-14 14:20:01'),(2,'Parques nacionais','ARcie6_un02mi_parques_nacionais',3,6,10,1,3,NULL,'','0','1','1','1','0','2014-04-04','','2','6','','','','',NULL,'2014-03-18 14:10:31'),(3,'Roubo da joia','ARmat6_un01jg_joia',6,7,7,1,3,NULL,'','0','1','1',NULL,'0','2014-03-20','','1','0','','','','','','2014-03-20 15:29:45'),(4,'Home - Nosso planeta, nossa casa','ARgeo6_un01vt_home',8,14,10,1,1,NULL,'','0','0','1','1','0','2014-03-21','','01','','','','','',NULL,'2014-03-20 16:41:42'),(5,'Calculadora quebrada 1','ARmat6_un03jg_calc_quebrada1',6,7,8,1,3,NULL,'','0','1','1',NULL,'0','2014-03-12','','3','0','','','','',NULL,'2014-03-14 16:15:14'),(6,'Calculadora quebrada 2','ARmat6_un06jg_calc_quebrada2',6,7,8,1,3,NULL,'','0','1','1',NULL,'0','2014-03-21','','6','0','','','','',NULL,'2014-03-14 16:16:18'),(7,'A última hora','ARgeo6_un06vt_hora',8,14,10,1,1,NULL,'','0','0','1','1','0','2014-03-21','','06','','','','','',NULL,'2014-03-20 17:18:01'),(8,'Calculadora quebrada 3','ARmat6_un12jg_calc_quebrada3',6,7,8,1,3,NULL,'','0','1','1',NULL,'0','2014-03-31','','12','0','','','','',NULL,'2014-03-14 16:18:56'),(9,'Na natureza selvagem','ARgeo6_un04vt_natureza',8,14,10,1,1,NULL,'','0','0','1','1','0','2014-03-18','','04','','','','','',NULL,'2014-03-21 11:25:55'),(10,'Construindo um Império: Os Persas','ARhis6_un06vt_persas',8,18,10,1,1,NULL,'','0','0','1','1','0','2014-03-17','','06','','','','','',NULL,'2014-03-21 17:12:43'),(11,'Introdução à Física','VDfis_cap01p_introducao_fisica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','01','','','','','','2014-03-27 11:39:43'),(12,'Movimento uniforme','VDfis_cap03p_movimento_uniforme',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','03','','','','',NULL,'2014-03-27 14:32:13'),(13,'Movimento uniformemente variado','VDfis_cap04p_movimento_uniformemente_variado',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','04','','','','',NULL,'2014-03-28 16:00:39'),(14,'Movimento circular','VDfis_cap08_movimento_circular',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','08','','','','',NULL,'2014-03-28 16:05:23'),(15,'Leis de Newton','VDfis_cap09p_leis_newton',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','09','','','','',NULL,'2014-03-27 11:39:58'),(16,'Trabalho e potência','VDfis_cap11p_trabalho_potencia',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','11','','','','',NULL,'2014-03-28 16:05:49'),(17,'Energia mecânica ','VDfis_cap12p_energia_mecanica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','12','','','','',NULL,'2014-03-28 16:06:14'),(18,'Estática do ponto material e do corpo extenso','VDfis_cap15p_estatica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','15','','','','',NULL,'2014-03-28 15:17:46'),(19,'Dilatação dos sóçidos e dos líquidos','VDfis_cap18p_dilatometria',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','18','','','','',NULL,'2014-03-28 15:19:10'),(20,'Calorimetria','VDfis_cap19p_calorimetria',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','19','','','','',NULL,'2014-03-27 11:40:13'),(21,'Mudanças de estado','VDfis_cap20p_mudancas_de_estado',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','20','','','','',NULL,'2014-03-28 15:20:06'),(22,'Xeque-mate','ARmat6_un08si_xeque',7,7,7,1,3,NULL,'','0','1','1','1','0','2014-04-08','','08','','','','','',NULL,'2014-03-24 14:03:49'),(23,'Planta baixa','ARmat6_un13si_planta',7,7,11,1,3,NULL,'','0','1','1','1','0','2014-04-10','','13','','','','','',NULL,'2014-03-24 14:08:17'),(24,'Estágios do lançamento de um foguete','ARcie6_un06in_foguete',17,6,8,1,3,NULL,'','0','1','1','1','0','2014-04-07','','06','','','','','',NULL,'2014-03-24 15:20:02'),(25,'A astronomia dos índios brasileiros','ARcie6_un07in_astronomia_indios',17,6,11,1,3,NULL,'','0','1','1','1','0','2014-04-17','','07','','','','','',NULL,'2014-03-24 17:10:59'),(26,'Gravitação universal','VDfis_cap14p_gravitacao_universal',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','14','','','','',NULL,'2014-03-28 16:06:46'),(27,'Hidrostática','VDfis_cap16p_hidrostatica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','16','','','','',NULL,'2014-03-28 15:18:07'),(28,'Estudos das ondas','VDfis_cap28p_estudo_das_ondas',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','28','','','','',NULL,'2014-03-28 15:20:40'),(29,'Acústica','VDfis_cap29p_acustica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','29','','','','',NULL,'2014-03-28 15:21:07'),(30,'Ondas eletromagnéticas','VDfis_cap39p_ondas_eletromagneticas',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','39','','','','',NULL,'2014-03-28 15:21:42'),(31,'Por dentro de um formigueiro','ARcie7_un08in_formigueiro',17,8,11,1,3,NULL,'','0','1','1','1','0','2014-05-05','','08','','','','','',NULL,'2014-03-27 11:04:54'),(32,' Evolução dos vertebrados','ARcie7_un07jg_vertebrados',6,8,11,1,3,NULL,'','0','1','1','1','0','2014-05-15','','07','','','','','',NULL,'2014-03-27 11:05:59'),(33,'Unidades de conservação','ARgeo6_un01mi_conservacao',3,14,10,1,3,NULL,'','0','1','1','1','0','2014-04-07','','01','','','','','',NULL,'2014-03-27 12:27:40'),(34,'O Sistema Solar','ARgeo6_un03in_sistema_solar',17,14,8,1,3,NULL,'','0','1','1','1','0','2014-04-08','','03','','','','','',NULL,'2014-03-27 12:22:41'),(35,'A produção de um produto digital educacional até a sala de aula','ARgeo6_un07in_producao',17,14,7,1,3,NULL,'','0','1','1','1','0','2014-04-08','','07','','','','','',NULL,'2014-03-27 12:26:30'),(36,'Alguns dos alimentos mais consumidos no Brasil','ARgeo6_un09in_alimentos_brasil',17,14,8,1,3,NULL,'','0','1','1','1','0','2014-04-14','','09','','','','','',NULL,'2014-03-27 12:24:04'),(37,'Ásia: aglomerações urbanas','ARgeo9_un05in_asia_urbana',17,17,11,1,3,NULL,'','0','1','1','1','0','2014-04-30','','05','','','','','',NULL,'2014-03-27 11:24:43'),(38,'Japão: indústria, tecnologia e o lixo eletrônico','ARgeo9_un06in_japao',17,17,11,1,3,NULL,'','0','1','1','1','0','2014-05-05','','','','','','','',NULL,'2014-03-27 12:12:08'),(39,'Oceania: aspectos físicos e Geopolítica','ARgeo9_un09mi_oceania_fisico',3,17,11,1,3,NULL,'','0','1','1','1','0','2014-04-25','','09','','','','','',NULL,'2014-03-27 12:12:27'),(40,'Mudanças na China','ARgeo9_un07in_mudancas_china',17,17,11,1,3,NULL,'','0','1','1','1','0','2014-05-09','','07','','','','','',NULL,'2014-03-27 11:31:58'),(41,'Efeitos da globalização','ARgeo9_un04in_globalizacao',17,17,11,1,3,NULL,'','0','1','1','1','0','2014-05-14','','04','','','','','',NULL,'2014-03-27 11:40:18'),(42,'Sangue Negro','ARgeo6_un07vt_sangue_negro ',8,14,10,1,1,NULL,'','0','0','1','1','0','2014-03-17','','07','','','','','',NULL,'2014-03-27 11:46:38'),(43,'Brasil Orgânico','ARgeo6_un09vt_organico',8,14,10,1,1,NULL,'','0','0','1','1','0','2014-03-18','','09','','','','','',NULL,'2014-03-27 11:51:34'),(44,'Syriana','ARgeo9_un02vt_syriana',8,17,10,1,1,NULL,'','0','0','1','1','0','2014-02-28','','02','','','','','',NULL,'2014-03-27 11:54:50'),(45,'Quem quer ser um milionário?','ARgeo9_un08vt_milionario',8,17,10,1,1,NULL,'','0','0','1','1','0','2014-02-28','','08','','','','','',NULL,'2014-03-27 11:56:45'),(46,'Contos Maravilhosos em mínimos detalhes','ARpor6_un01in_contos',17,22,7,1,1,NULL,'','0','0','1','1','0','2014-04-14','','01','','','','','',NULL,'2014-04-01 11:11:27'),(47,'Como fazer um podcast	','ARpor6_un05tu_podcast',19,22,11,1,3,NULL,'','0','1','1','1','0','2014-04-23','','05','','','','','',NULL,'2014-03-27 12:10:25'),(48,'O banquete romano	','ARhis6_un08in_banquete',17,18,11,1,3,NULL,'','0','1','1','1','0','2014-04-14','','08','','','','','',NULL,'2014-03-28 15:29:58'),(49,'O tempo cíclico','ARhis6_un01in_tempo',17,18,11,1,3,NULL,'','0','1','1','1','0','2014-04-23','','01','','','','','',NULL,'2014-03-27 12:11:34'),(50,'Afinal, o que é cidadania?','Soc6_un08in_cidadania',17,26,11,1,3,NULL,'','0','1','1','1','0','2014-04-30','','08','','','','','',NULL,'2014-03-31 13:23:47'),(51,'Normas sociais	','Soc6_un04jg_sociais',6,26,11,1,3,NULL,'','0','1','1','1','0','2014-04-23','','04','','','','','',NULL,'2014-03-27 12:14:50'),(52,'Desigualdades na educação','Soc6_un09mi_educacao',3,26,11,1,3,NULL,'','0','1','1','1','0','2014-04-24','','09','','','','','',NULL,'2014-03-27 12:17:56'),(53,'A balada de Narayama','ARgeo9_un06vt_narayama',8,17,10,1,1,NULL,'','0','0','1','1','0','2014-03-18','','06','','','','','',NULL,'2014-03-27 13:34:36'),(54,'A guerra do fogo','ARhis6_un02vt_fogo',8,18,10,1,1,NULL,'','0','0','1','1','0','2014-02-19','','02','','','','','',NULL,'2014-03-27 14:06:19'),(55,'Pedro Leopoldo: O berço de Luiza','ARhis6_un03vt_luzia',8,18,10,1,1,NULL,'','0','0','1','1','0','2014-03-17','','03','','','','','',NULL,'2014-03-27 14:20:39'),(56,'A história de Núbia','ARhis6_un05vt_nubia',8,18,10,1,1,NULL,'','0','0','1','1','0','2014-03-17','','05','','','','','',NULL,'2014-03-27 14:22:09'),(57,'Tsunami','ARcie6_un03vt_tsunami',8,6,10,1,1,NULL,'','0','0','1','1','0','2014-03-21','','03','','','','','',NULL,'2014-03-27 14:25:15'),(58,'Eclipse lunar','ARcie6_un07vt_eclipse_lunar',8,6,10,1,1,NULL,'','0','0','1','1','0','2014-03-21','','07','','','','','',NULL,'2014-03-27 14:26:47'),(59,'Pro dia nascer feliz','Soc6_un05vt_feliz',8,26,10,1,1,NULL,'','0','0','1','1','0','2014-03-19','','05','','','','','',NULL,'2014-03-27 14:48:15'),(60,'O mundo de Sofia','Soc6_un01vt_sofia',8,26,10,1,1,NULL,'','0','0','1','1','0','2014-03-19','','01','','','','','',NULL,'2014-03-27 14:37:02'),(61,'Como toda estrela no céu toda criança é especial','Soc6_un02vt_estrela',8,26,10,1,1,NULL,'','0','0','1','1','0','2014-03-19','','02','','','','','',NULL,'2014-03-27 14:44:08'),(62,'Desertificação','ARcie6_un04an_desertificacao',1,6,11,1,1,NULL,'p_ARcie6_un7_desertificacao','1','0','1','1','1','2014-02-07','','04','','','','','',NULL,'2014-03-27 15:02:43'),(63,'Cadeia alimentar','ARcie6_un01an_alimentar',1,6,11,1,1,NULL,'CNcie6_c04a_cadeia','1','0','1','1','1','2014-02-04','','01','','','','','',NULL,'2014-03-27 15:03:13'),(64,'Tempos Modernos','Soc6_un06vt_tempos',8,26,10,1,1,NULL,'','0','0','1','1','0','2014-02-28','','06','','','','','',NULL,'2014-03-27 15:00:36'),(65,'O ciclo da água','ARcie6_un05an_ciclo_agua',1,6,11,1,1,NULL,'p_Rgeo1_un02_hidrologico','1','0','1','1','1','2014-02-06','','5','','','','','',NULL,'2014-03-27 15:02:25'),(66,'Atenas: berço da democracia','Soc6_un07vt_democracia',8,26,10,1,1,NULL,'','0','0','1','1','0','2014-03-27','','07','','','','','',NULL,'2014-03-27 15:18:19'),(67,'Conversa Griô','ARpor6_un02vt_grio',8,22,10,1,1,NULL,'','0','0','1','1','0','2014-03-25','','02','','','','','',NULL,'2014-03-27 16:04:25'),(68,'Meu tio I','ARpor6_un04vt_tio_I',8,22,10,1,1,NULL,'','0','0','1','1','0','2014-03-11','','04','','','','','',NULL,'2014-03-27 16:08:52'),(69,'Meu tio II','ARpor6_un04vt_tio_II',8,22,10,1,1,NULL,'','0','0','1','1','0','2014-03-11','','04','','','','','',NULL,'2014-03-27 16:14:09'),(70,'As liberdades têm limites','ARpor9_un01vt_liberdade',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-03-26','','01','','','','','',NULL,'2014-04-01 11:22:05'),(71,'Eu, robô','ARpor9_un02vt_robo',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-03-26','','02','','','','','','Aguardando DA','2014-04-01 10:56:40'),(72,'Eu, robô - making of','ARpor9_un02vt_robo_making_of',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-03-26','','02','','','','','','Aguardando DA','2014-04-01 10:56:53'),(73,'Pedro Markun - Desenvolvimento humano em debate','ARpor9_un04vt_markun',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-03-26','','04','','','','','','Aguardando DA','2014-04-01 10:57:19'),(74,'A sombra de Ai Weiwei','ARpor9_un04vt_aiweiwei',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-03-26','','04','','','','','','Aguardando DA','2014-04-01 10:57:44'),(75,'Kirikou 2: os animais selvagens','Fil6_un01vt_kirikou',8,31,10,1,1,NULL,'','0','0','1','1','0','2014-04-17','','01','','','','','',NULL,'2014-03-27 16:32:05'),(76,'Alma','Fil6_un02vt_alma',8,31,10,1,1,NULL,'','0','0','1','1','0','2014-04-25','','02','','','','','',NULL,'2014-03-27 16:48:13'),(77,'O discurso do rei','Fil6_un03vt_discurso_rei',8,31,10,1,1,NULL,'','0','0','1','1','0','2014-04-17','','03','','','','','',NULL,'2014-03-27 16:50:59'),(78,'Os Croods','Fil6_un04vt_croods',8,31,10,1,1,NULL,'','0','0','1','1','0','2014-04-17','','04','','','','','',NULL,'2014-03-27 16:52:55'),(79,'Efeito estufa','ARcie6_un06an_efeito_estufa',1,6,11,1,1,NULL,'p_Cgeo2_c05_efeito_estufa','1','0','1','1','1','2014-02-06','','6','','','','','',NULL,'2014-03-27 17:37:02'),(80,'A Terra no universo','ARcie6_un07an_terra',1,6,11,1,1,NULL,'CNcie9_c03a_terra','1','0','1','1','1','2014-02-06','','7','','','','','',NULL,'2014-03-27 17:39:35'),(81,'Da fabricação à reciclagem','ARcie6_un08an_reciclagem',1,6,11,1,1,NULL,'CNcie6_c11a_reciclagem','1','0','1','1','1','2014-02-07','','8','','','','','',NULL,'2014-03-27 17:42:33'),(82,'Agricultura tradicional','ARcie6_un04an_agricultura',1,6,11,1,1,NULL,'CNcie6_c05a_agricultura','1','0','1','1','1','2014-02-07','','4','','','','','',NULL,'2014-03-27 17:44:34'),(83,'Água doce no Brasil','ARcie6_un05vr_agua_doce',11,6,11,1,1,NULL,'MASTER FINAL AGUA','1','0','1','1','0','2014-02-18','','5','','','','','',NULL,'2014-03-27 17:49:58'),(84,'O problema do lixo','ARcie6_un08vr_lixo',11,6,11,1,1,NULL,'AR_VR_CIE_PROBLEMA_DO_LIXO_MASTER FINAL','1','0','1','1','0','2014-02-18','','8','','','','','',NULL,'2014-03-27 17:51:33'),(85,'Sambaquis','ARcie6_un03an_sambaquis',1,6,11,1,1,NULL,'p_ARhis6_un2_sambaquis','1','0','1','1','1','2014-03-14','','3','','','','','',NULL,'2014-03-28 08:28:02'),(86,'Origem da vida','ARcie7_un01an_origem_vida',1,8,11,1,1,NULL,'p_Cbio1_un02_origem_vida_ICO','1','0','1','1','1','2014-04-22','','1','','','','','',NULL,'2014-03-28 08:30:24'),(87,'Dengue','ARcie7_un03vr_dengue',11,8,11,1,1,NULL,'ARcie7_un7vr_dengue','1','0','1','1','0','2014-04-22','','3','','','','','',NULL,'2014-03-28 08:32:05'),(88,'Nutrição das plantas','ARcie7_un04an_nutricao_plantas',1,8,11,1,1,NULL,'ARcie7_un5a_nutricao_plantas','1','0','1','1','1','2014-04-23','','4','','','','','',NULL,'2014-03-28 08:36:05'),(89,'Fotossíntese e produção de amido','ARcie7_un04vde_fotossintese',9,8,11,1,1,NULL,'ARcie7_un5vde_fotossintese','1','0','1','1','1','2014-04-23','','4','','','','','',NULL,'2014-03-28 08:39:09'),(90,'Das flores aos frutos','ARcie7_un05an_flores_frutos',1,8,11,1,1,NULL,'p_Bbio3_c06_flores_frutos','1','0','1','1','1','2014-04-23','','5','','','','','',NULL,'2014-03-28 08:40:58'),(91,'O pensamento evolucionista','ARcie7_un02an_evolucionista',1,8,11,1,1,NULL,'ARcie8_un1a_pensamento_evolucionista','1','0','1','1','1','2014-04-29','','2','','','','','',NULL,'2014-03-28 08:43:22'),(92,'Características dos fungos','ARcie7_un03an_fungos',1,8,11,1,1,NULL,'ARcie7_un4a_caracteristicas_fungos','1','0','1','1','1','2014-04-29','','3','','','','','',NULL,'2014-03-28 08:49:10'),(93,'Verminoses','ARcie7_un06in_verminoses',17,8,11,1,3,NULL,'p_Cbio02_un04_verminoses','1','1','1','1','1','2014-04-30','','6','','','','','',NULL,'2014-03-28 08:50:58'),(94,'Jogo da memória','ARcie7_un05jg_memoria',6,8,11,1,3,NULL,'ARcie7_un05jg_memoria','1','1','1','1','0','2014-04-30','','5','','','','','',NULL,'2014-03-28 08:52:57'),(95,'Xerófitas','ARcie6_un02ai_xerofitas',18,6,11,1,1,NULL,'p_ARcie6_un8_xerofitas','1','0','1','1','1','2014-03-28','','2','','','','','',NULL,'2014-03-28 08:55:07'),(96,'Motion capture','ARmat6_un09an_motion_capture',1,7,11,1,1,NULL,'?','1','0','1','1','0','2014-01-24','','9','','','','','',NULL,'2014-03-28 09:02:15'),(97,'Possibilidades','ARmat6_un03an_possibilidades',1,7,11,1,1,NULL,'CPmat6_c02a_possibilidade','1','0','1','1','1','2014-01-27','','3','','','','','',NULL,'2014-03-28 09:05:02'),(98,'Divisibilidade: múltiplos e divisores','ARmat6_un05ve_divisibilidade',10,7,11,1,1,NULL,'?','1','0','1','1','1','2014-01-24','','5','','','','','',NULL,'2014-03-28 09:07:44'),(99,'Composição de polígonos','ARmat6_un10vde_poligonos',9,7,11,1,1,NULL,'?','1','0','1','1','1','2014-01-24','','10','','','','','',NULL,'2014-03-28 09:09:38'),(100,' Números racionais na forma decimal e operações','ARmat6_un11ve_numeros_racionais',10,7,11,1,1,NULL,'?','1','0','1','1','1','2014-01-24','','11','','','','','',NULL,'2014-03-28 09:17:00'),(101,'Quais são os animais mais barulhentos?','ARmat6_un03in_barulhentos',17,7,11,1,3,NULL,'?','1','1','1','1','0','2014-02-19','','3','','','','','',NULL,'2014-03-31 15:05:12'),(102,'Cálculo da probabilidade de um evento','ARmat6_un08an_probabilidade',1,7,11,1,3,NULL,'?','1','1','1','1','1','2014-02-21','','8','','','','','',NULL,'2014-03-28 09:27:24'),(103,'Consumo de água em uma casa','ARmat6_un14an_consumo_agua',1,7,11,1,1,NULL,'?','1','0','1','1','0','2014-02-03','','14','','','','','',NULL,'2014-03-28 09:29:31'),(104,'Geometria em documentos históricos','ARmat6_un09an_documentos',1,7,11,1,1,NULL,'CPmat6_c03a_geometria','1','0','1','1','1','2014-02-04','','9','','','','','',NULL,'2014-03-28 15:12:05'),(105,'Sistemas de numeração','ARmat6_un02an_numeracao',1,7,11,1,1,NULL,'ARmat6_un1a_sistemas_numeracao','1','0','1','1','0','2014-02-04','','2','','','','','',NULL,'2014-03-28 09:34:56'),(106,'Tangram	','ARmat6_un10si_tangram',7,7,11,1,3,NULL,'BUmat1_un05at_tangram','1','1','1','1','0','2014-03-13','','10','','','','','',NULL,'2014-03-28 09:38:02'),(107,'Jogo da memória 1','ARmat6_un02jg_memoria1',6,7,11,1,3,NULL,'JogoDaMemoria','1','1','1','1','1','2014-03-17','','2','','','','','',NULL,'2014-03-28 09:40:19'),(108,'Jogo da memória 2','ARmat6_un06jg_memoria2',6,7,11,1,3,NULL,'JogoDaMemoria','1','1','1','1','1','2014-03-17','','6','','','','','',NULL,'2014-03-28 09:42:42'),(109,'Jogo da memória 3','ARmat6_un07jg_memoria3',6,7,11,1,3,NULL,'JogoDaMemoria','1','1','1','1','1','2014-03-17','','7','','','','','',NULL,'2014-03-28 09:44:19'),(110,'Equipamento de mergulho','ARmat7_un01an_mergulho',1,11,11,1,1,NULL,'ARmat7_un1a_equipamentos_mergulho','1','0','1','1','0','2014-03-20','','1','','','','','',NULL,'2014-03-28 09:45:50'),(111,'O pinguim imperador','ARmat7_un03an_pinguim',1,11,11,1,1,NULL,'CPmat7_c01a_pinguim','1','0','1','1','1','2014-03-21','','3','','','','','',NULL,'2014-03-28 09:48:13'),(112,'Postura para sentar-se em frente ao computador','ARmat7_un05an_postura',1,11,11,1,1,NULL,'ARmat7_un5a_postura_sentar','1','0','1','1','0','2014-03-27','','5','','','','','',NULL,'2014-03-28 09:49:42'),(113,'O skate','ARmat7_un05an_skate',1,11,11,1,1,NULL,'ARmat7_un5a_skate','1','0','1','1','1','2014-03-27','','5','','','','','',NULL,'2014-03-28 09:54:47'),(114,'Automóvel biocombustível','ARmat7_un07an_automovel',1,11,11,1,1,NULL,'5_automovel_bicombustivel','1','0','1','1','1','2014-04-02','','7','','','','','',NULL,'2014-03-28 09:56:41'),(115,'Linha do tempo Álgebra','ARmat7_un07an_algebra',1,11,11,1,1,NULL,'ARmat7_un7a_linha_tempo_algebra','1','0','1','1','0','2014-04-02','','7','','','','','',NULL,'2014-03-28 09:58:23'),(116,'Razão','ARmat7_un10vde_razao',9,11,11,1,1,NULL,'CPmat7_c08vde_razao','1','0','1','1','1','2014-03-19','','10','','','','','',NULL,'2014-03-28 10:00:05'),(117,'Elementos do mapa','ARgeo6_un02an_mapa',1,14,11,1,1,NULL,'p_Rgeo1_un01_mapa','1','0','1','1','0','2014-02-26','','02','','','','','',NULL,'2014-03-28 10:06:48'),(118,'Contaminação dos mares','ARgeo6_un04an_mares',1,14,11,1,1,NULL,'p_Cgeo2_c08_contaminacao_mares','1','0','1','1','1','2014-02-24','','4','','','','','',NULL,'2014-03-28 10:08:38'),(119,'O ciclo da água','ARgeo6_un05an_ciclo_agua',1,14,11,1,1,NULL,'CNcie6_c16a_ciclo_agua','1','0','1','1','1','2014-02-21','','5','','','','','',NULL,'2014-03-28 10:10:19'),(120,'Mundo: clima e vegetação','ARgeo6_un06mi_mundo_clima',3,14,11,1,3,NULL,'p_Rgeo1_un02_mundo_clima','1','1','1','1','1','2014-03-06','','6','','','','','',NULL,'2014-03-28 10:12:03'),(121,'Formação dos solos','ARgeo6_un05an_solos',1,14,11,1,1,NULL,'p_Cgeo2_c04_solos','1','0','1','1','0','2014-02-24','','5','','','','','',NULL,'2014-03-28 10:13:35'),(122,'Representações do espaço geográfico','ARgeo6_un02an_geografico',1,14,11,1,1,NULL,'1_Representacoes_espaco_geografico','1','0','1','1','1','2014-03-06','','2','','','','','',NULL,'2014-03-28 10:20:28'),(123,'Como se formam os terremotos','ARgeo6_un03in_terremotos',17,14,11,1,3,NULL,'p_OBgeo6_un2_terremotos_v1','1','1','1','1','1','2014-03-21','','3','','','','','',NULL,'2014-03-31 15:03:52'),(124,'A poluição urbana e industrial','ARgeo6_un08an_poluicao',1,14,11,1,1,NULL,'_ARgeo7_un3_poluicao_urbana','1','0','1','1','0','2014-03-13','','8','','','','','',NULL,'2014-03-28 10:26:48'),(125,'Áreas urbanas','ARgeo6_un08an_areas_urbanas',1,14,11,1,1,NULL,'ARgeo7_un3_as_areas_urbanas_LD','1','0','1','1','0','2014-03-06','','8','','','','','',NULL,'2014-03-28 10:29:59'),(126,'Organização das Nações Unidas','ARgeo9_un01an_onu',1,17,11,1,1,NULL,'ARgeo9_un2ta_onu','1','0','1','1','1','2014-04-01','','1','','','','','',NULL,'2014-03-28 10:33:39'),(127,'O desenvolvimento sustentável e a Agenda 21','ARgeo9_un02an_agenda_21',1,17,11,1,1,NULL,'p_Rgeo1_un02_agenda_21','1','0','1','1','1','2014-04-02','','2','','','','','',NULL,'2014-03-28 10:35:07'),(128,'Europa: aspectos físicos','ARgeo9_un03mi_europa_fisicos',3,17,11,1,3,NULL,'ARgeo9_un3mi_europa_fisico','1','1','1','1','1','2014-04-03','','3','','','','','',NULL,'2014-03-28 10:37:09'),(129,'União Européia','ARgeo9_un04an_uniao_europeia',1,17,11,1,1,NULL,'ARgeo9_un1ta_uniao_europeia','1','0','1','1','1','2014-04-07','','4','','','','','',NULL,'2014-03-28 10:39:04'),(130,'Europa: organização do espaço e agropecuária','ARgeo9_un03mi_europa_organizacao',3,17,11,1,3,NULL,'ARgeo9_un3mi_europa_economico','1','1','1','1','1','2014-04-04','','3','','','','','',NULL,'2014-03-28 10:41:02'),(131,'Ásia: aspectos físicos','ARgeo9_un05mi_asia_fisicos',3,17,11,1,3,NULL,'ARgeo9_un5mi_asia_fisico','1','1','1','1','1','2014-04-08','','5','','','','','',NULL,'2014-03-28 10:42:48'),(132,'China: população e dinamismo econômico','ARgeo9_un07mi_china_populacao',3,17,11,1,3,NULL,'ARgeo9_un6mi_china_populacao','1','1','1','1','1','2014-04-09','','7','','','','','',NULL,'2014-03-28 10:45:08'),(133,'A questão da palestina','ARgeo9_un08ma_palestina',2,17,11,1,1,NULL,'p_Cgeo3_c08_questao_palestina','1','0','1','1','1','2014-04-04','','8','','','','','',NULL,'2014-03-28 10:47:41'),(134,'Oceania e regiões polares','ARgeo9_un09ve_oceania',10,17,11,1,1,NULL,'ARgeo9_un8ve_oceania','1','0','1','1','1','2014-04-07','','9','','','','','',NULL,'2014-03-28 10:49:21'),(135,' Linguagem e língua','ARpor6_un01an_linguagem',1,22,11,1,1,NULL,'ARpor6_un1a_linguagem_lingua','1','0','1','1','1','2014-03-14','','1','','','','','',NULL,'2014-03-28 10:52:25'),(136,'Adjetivo','ARpor6_un03an_adjetivo',1,22,11,1,1,NULL,'ARpor6_un3a_definicao_classificacao_adjetivo','1','0','1','1','1','2014-02-27','','3','','','','','',NULL,'2014-03-28 10:55:35'),(137,'Pronomes pessoais e de tratamento','ARpor6_un06an_pronomes_pessoais',1,22,11,1,1,NULL,'ARpor6_un6a_pronomes_pessoais','1','0','1','1','1','2014-02-27','','6','','','','','',NULL,'2014-03-28 10:57:12'),(138,'Pronomes possessivos, demonstrativos, indefinidos e interrogativos','ARpor6_un06an_pronomes_possessivos',1,22,11,1,1,NULL,'ARpor6_un6a_pronomes_possessivos','1','0','1','1','1','2014-02-27','','6','','','','','',NULL,'2014-03-28 10:58:50'),(139,'Verbo I: conceito e flexão','ARpor6_un07an_verbo_I',1,22,11,1,1,NULL,'ARpor6_un7a_flexoes_verbo','1','0','1','1','1','2014-02-27','','7','','','','','',NULL,'2014-03-28 11:00:27'),(140,'Verbo II: conjugações verbais e tempos do indicativo','ARpor6_un07an_verbo_II',1,22,11,1,1,NULL,'ARpor6_un07an_verbo_II','1','0','1','1','1','2014-02-27','','7','','','','','',NULL,'2014-03-28 11:01:59'),(141,'Substantivo','ARpor6_un02an_substantivo',1,22,11,1,1,NULL,'?','1','0','1','1','1','2014-02-27','','2','','','','','',NULL,'2014-03-28 11:04:02'),(142,'Sinais de pontuação I','ARpor6_un04an_pontucao_I',1,22,11,1,1,NULL,'ARpor6_un4_portuacaoI','1','0','1','1','1','2014-02-24','','4','','','','','',NULL,'2014-03-28 11:06:24'),(143,'Sinais de pontuação II','ARpor6_un04an_pontucao_II',1,22,11,1,1,NULL,'ARpor6_un4_portuacaoII','1','0','1','1','1','2014-02-24','','4','','','','','',NULL,'2014-03-28 11:07:57'),(144,'Artigo','ARpor6_un05an_artigo',1,22,11,1,1,NULL,'ARpor6_un5a_artigo','1','0','1','1','1','2014-02-24','','5','','','','','',NULL,'2014-03-28 11:10:15'),(145,'Numeral','ARpor6_un05an_numeral',1,22,11,1,1,NULL,'ARpor6_un5a_numeral','1','0','1','1','1','2014-02-24','','5','','','','','',NULL,'2014-03-28 11:22:56'),(146,'Advérbio','ARpor6_un08an_adverbio',1,22,11,1,1,NULL,'ARpor6_un08an_adverbio','1','0','1','1','1','2014-03-17','','8','','','','','',NULL,'2014-03-28 11:24:47'),(147,'Histórias em quadrinhos','ARpor6_un08an_quadrinhos',1,22,11,1,1,NULL,'ARpor6_un8ta_quadrinhos','1','0','1','1','1','2014-03-14','','8','','','','','',NULL,'2014-03-28 11:26:45'),(148,'Interjeição','ARpor6_un08an_interjeicao',1,22,11,1,1,NULL,'ARpor6_un8a_interjeicao','1','0','1','1','1','2014-03-17','','8','','','','','',NULL,'2014-03-28 11:28:23'),(149,'Orações coordenadas','ARpor9_un02an_oracoes_coordenadas',1,25,11,1,1,NULL,'ARpor9_un02an_oracoes_coordenadas','1','0','1','1','1','2014-03-17','','2','','','','','',NULL,'2014-03-28 11:32:39'),(150,'Conjunções coordenativas','ARpor9_un02an_conjuncoes',1,25,11,1,1,150,'ARpor9_un02an_conjuncoes','1','0','1','1','1','2014-03-28','','2','','','','','',NULL,'2014-03-28 14:01:27'),(151,'Colocação pronominal','ARpor9_un03an_colocacao_pronominal',1,25,11,1,1,NULL,'ARpor9_un3a_colocacao_pronominal','1','0','1','1','1','2014-03-28','','3','','','','','',NULL,'2014-03-28 12:53:00'),(152,'Concordância nominal','ARpor9_un04an_concordancia_nominal',1,25,11,1,1,NULL,'ARpor9_un4a_concordancia_nominal','1','0','1','1','1','2014-03-17','','4','','','','','',NULL,'2014-03-28 12:55:02'),(153,'Concordância verbal','ARpor9_un04an_concordancia_verbal',1,25,11,1,1,NULL,'ARpor9_un4a_concordancia_verbal','1','0','1','1','1','2014-03-17','','4','','','','','',NULL,'2014-03-28 12:56:23'),(154,'Regência verbal','ARpor9_un05an_regencia_verbal',1,25,11,1,1,NULL,'ARpor9_un5a_regencia_verbal','1','0','1','1','1','2014-03-17','','5','','','','','',NULL,'2014-03-28 13:41:11'),(155,'Regência nominal','ARpor9_un05an_regencia_nominal',1,25,11,1,1,NULL,'ARpor9_un5a_regencia_nominal','1','0','1','1','1','2014-03-17','','5','','','','','',NULL,'2014-03-28 13:43:00'),(156,'Rotas comerciais fenícias','ARhis6_un06ma_rotas_fenicias',2,18,11,1,1,NULL,'ARhis6_un5_fenicia','1','0','1','1','1','2014-02-19','','6','','','','','',NULL,'2014-03-28 14:17:00'),(157,'Povos da Mesopotâmia','ARhis6_un04ma_mesopotamia',2,18,11,1,1,NULL,'ARhis6_un3ma_mesopotamia','1','0','1','1','1','2014-03-06','','4','','','','','',NULL,'2014-03-28 14:18:46'),(158,'China Antiga','ARhis6_un04ma_china',2,18,11,1,1,NULL,'ARhis6_un4ma_china_antiga','1','0','1','1','1','2014-03-06','','4','','','','','',NULL,'2014-03-28 14:20:18'),(159,'Teatro grego','ARhis6_un07pc_teatro_grego',20,18,11,1,1,NULL,'VD_PAINEL_TEATRO GREGO_FINAL','1','0','1','1','1','2014-03-21','','7','','','','','',NULL,'2014-03-28 14:26:12'),(160,'As moradias na Roma antiga','ARhis6_un09an_roma',1,18,11,1,1,NULL,'ARhis6_un7a_moradias_roma_antiga','1','0','1','1','0','2014-03-24','','9','','','','','',NULL,'2014-03-28 14:29:34'),(161,'Egito: dádiva do Nilo','ARhis6_un05an_egito',1,18,11,1,1,NULL,'p_Chis1_c02_egito','1','0','1','1','1','2014-04-02','','5','','','','','',NULL,'2014-03-28 14:31:02'),(162,'Pompeia e o Vesúvio','ARhis6_un09an_pompeia',1,18,11,1,1,NULL,'p_Chis1_c06_pompeia_vesuvio','1','0','1','1','1','2014-03-14','','9','','','','','',NULL,'2014-03-28 14:32:18'),(163,'História da internet','Soc6_un03an_internet',1,26,11,1,1,NULL,'p_Csoc_c26_historia_internet','1','0','1','1','1','2014-03-19','','3','','','','','',NULL,'2014-03-28 14:34:39'),(164,'Movimentos bidimensionais','VDfis_cap07p_movimentos_bidimensionais',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','07','','','','',NULL,'2014-03-28 15:12:06'),(165,'Estudo dos gases perfeitos','VDfis_cap22p_gases_perfeitos',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','22','','','','',NULL,'2014-03-28 15:13:27'),(166,'Termodinâmica','VDfis_cap23p_termodinamica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','23','','','','',NULL,'2014-03-28 15:15:33'),(167,'Introdução à Óptica Geométrica','VDfis_cap24p_optica_geometrica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','alteração de arte','','24','','','','',NULL,'2014-03-31 09:22:33'),(168,'Reflexão da luz','VDfis_cap25p_reflexao_da_luz',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','25','','','','',NULL,'2014-03-28 15:28:03'),(169,'Refração da luz','VDfis_cap26p_refracao_da_luz',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','26','','','','',NULL,'2014-03-28 15:29:34'),(170,'Introdução à Eletricidade','VDfis_cap30p_introcucao_eletricidade',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','alteração de arte','','30','','','','',NULL,'2014-03-31 09:26:48'),(171,'Campo elétrico','VDfis_cap31p_campo_eletrico',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','31','','','','',NULL,'2014-03-28 15:32:24'),(172,'Potencial elétrico e energia potencial elétrica','VDfis_cap32p_potencial_eletrico',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','32','','','','',NULL,'2014-03-28 15:33:53'),(173,'Corrente elétrica, potência, resistores e leis de Ohm','VDfis_cap33p_corrente_eletrica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','33','','','','',NULL,'2014-03-28 15:35:11'),(174,'Associação de resistores','VDfis_cap34p_resistores',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','34','','','','',NULL,'2014-03-28 15:36:14'),(175,'Geradores, receptores e capacitores','VDfis_cap35p_geradores_receptores',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','35','','','','',NULL,'2014-03-28 15:42:08'),(176,'Força magnética ','VDfis_cap37p_forca_magnetica',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','37','','','','',NULL,'2014-03-28 15:44:51'),(177,'Física moderna e contemporânea','VDfis_cap40p_nocoes_fisica_moderna',16,30,10,1,4,NULL,'','0','0','1','1','0','2014-04-04','','','40','','','','',NULL,'2014-03-28 15:46:09'),(178,'Romeu e Julieta no Neolítico','ARhis6_un02va_romeu',21,18,11,1,1,NULL,'ARhis6_un1va_romeu_julieta','1','0','1','1','0','2014-02-17','','2','','','','','',NULL,'2014-03-28 15:46:48'),(179,'Alexandre, o Grande','ARhis6_un07va_alexandre',21,18,11,1,1,NULL,'ARhis6_un6va_alexandre_grande','1','0','1','1','0','2014-02-19','','7','','','','','',NULL,'2014-03-28 15:48:33'),(180,'Panmela Castro','ARpor9_un05vt_panmela',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-04-30','','05','','','','','','Aguardando DA','2014-04-01 11:01:34'),(181,'O Hobbit: a desolação de Smaug','ARpor9_un06vt_hobbit',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-04-30','','06','','','','','','Aguardando DA','2014-04-01 11:01:57'),(182,'Poema Concreto','ARpor9_un07vt_poema_concreto',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-04-30','','07','','','','','','Aguardando DA','2014-04-01 11:02:28'),(183,'O palhaço (making of)','ARpor9_un08vt_palhaco_making_of',8,25,10,1,1,NULL,'','0','0','1','1','0','2014-04-30','','08','','','','','',NULL,'2014-03-28 17:24:26');
 
-CREATE TABLE IF NOT EXISTS `moderna_objects_materias` (
-  `object_id` int(11) NOT NULL,
-  `materia_id` int(11) NOT NULL,
-  KEY `object_id` (`object_id`),
-  KEY `materia_id` (`materia_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*Table structure for table `moderna_objects_status` */
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS `moderna_objects_status`;
 
---
--- Table structure for table `moderna_objects_softwares`
---
+CREATE TABLE `moderna_objects_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) unsigned NOT NULL,
+  `userInfo_id` int(11) NOT NULL,
+  `status_id` int(11) DEFAULT NULL,
+  `prova` varchar(10) DEFAULT NULL,
+  `description` text,
+  `crono_date` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`,`object_id`,`userInfo_id`),
+  KEY `task_id` (`object_id`),
+  KEY `userInfo_id` (`userInfo_id`),
+  CONSTRAINT `moderna_objects_status_ibfk_4` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=846 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `moderna_objects_softwares` (
-  `object_id` int(11) NOT NULL,
-  `sfwprod_id` int(11) NOT NULL,
-  KEY `object_id` (`object_id`),
-  KEY `sfwprod_id` (`sfwprod_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*Data for the table `moderna_objects_status` */
 
--- --------------------------------------------------------
+insert  into `moderna_objects_status`(`id`,`object_id`,`userInfo_id`,`status_id`,`prova`,`description`,`crono_date`,`created_at`) values (1,1,17,1,NULL,NULL,'2014-02-19','2014-03-14 14:20:01'),(3,2,18,1,NULL,NULL,'2014-03-13','2014-03-14 16:11:24'),(4,3,18,1,NULL,NULL,'2014-01-09','2014-03-14 16:13:58'),(5,4,17,1,NULL,NULL,'2014-03-11','2014-03-14 16:15:01'),(6,5,18,1,NULL,NULL,'2014-01-21','2014-03-14 16:15:14'),(7,6,18,1,NULL,NULL,'2014-01-23','2014-03-14 16:16:18'),(8,7,17,1,NULL,NULL,'2014-03-13','2014-03-14 16:17:36'),(9,8,18,1,NULL,NULL,'2014-02-04','2014-03-14 16:18:57'),(13,7,17,2,'prova01','','2014-03-13','2014-03-20 17:19:28'),(14,7,17,4,'prova01','','2014-03-13','2014-03-20 17:20:00'),(15,7,17,3,'prova01','','2014-03-13','2014-03-20 17:20:40'),(16,7,17,2,'prova02','','2014-03-19','2014-03-20 17:21:11'),(17,7,17,4,'prova02','','2014-03-19','2014-03-20 17:21:24'),(18,7,17,3,'prova02','','2014-03-19','2014-03-20 17:21:42'),(19,7,17,8,'prova02','','2014-03-20','2014-03-20 17:21:53'),(20,4,17,2,'prova01','','2014-03-17','2014-03-21 10:33:01'),(21,4,17,4,'prova01','','2014-03-18','2014-03-21 10:33:42'),(22,4,17,3,'prova01','','2014-03-18','2014-03-21 10:33:52'),(23,4,17,8,'prova01','','2014-03-18','2014-03-21 10:34:14'),(24,1,17,2,'prova01','','2014-02-19','2014-03-21 10:53:35'),(25,1,17,4,'prova01','','2014-02-19','2014-03-21 10:54:01'),(26,1,17,3,'prova01','','2014-02-19','2014-03-21 10:54:25'),(27,1,17,2,'prova02','','2014-02-26','2014-03-21 10:54:55'),(28,1,17,4,'prova02','','2014-02-27','2014-03-21 10:55:26'),(29,1,17,3,'prova02','','2014-02-27','2014-03-21 10:56:23'),(30,1,17,8,'prova02','','2014-02-27','2014-03-21 10:56:51'),(31,9,17,1,NULL,NULL,'2014-03-06','2014-03-21 11:25:55'),(32,10,17,1,NULL,NULL,'2014-03-21','2014-03-21 17:12:43'),(33,10,17,2,'prova01','','2014-03-21','2014-03-21 17:13:10'),(34,10,17,4,'prova01','','2014-03-21','2014-03-21 17:13:28'),(35,10,17,3,'prova01','','2014-03-21','2014-03-21 17:13:37'),(36,11,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:35:20'),(37,12,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:39:58'),(38,13,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:43:19'),(39,14,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:47:19'),(40,15,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:48:50'),(41,16,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:50:48'),(42,17,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:53:09'),(43,18,17,1,NULL,NULL,'2014-03-24','2014-03-21 17:54:49'),(44,19,17,1,NULL,NULL,'2014-03-24','2014-03-21 18:09:55'),(45,20,17,1,NULL,NULL,'2014-03-24','2014-03-21 18:11:11'),(46,21,17,1,NULL,NULL,'2014-03-24','2014-03-21 18:12:18'),(47,11,17,2,'prova01','','2014-03-25','2014-03-24 13:29:34'),(48,12,17,2,'prova01','','2014-03-27','2014-03-24 13:36:03'),(49,13,17,2,'prova01','','2014-03-27','2014-03-24 13:39:24'),(50,14,17,2,'prova01','','2014-03-27','2014-03-24 13:42:13'),(51,15,17,2,'prova01','','2014-03-25','2014-03-24 13:43:30'),(52,16,17,2,'prova01','','2014-03-27','2014-03-24 13:44:29'),(53,17,17,2,'prova01','','2014-03-27','2014-03-24 13:46:09'),(54,18,17,2,'prova01','','2014-03-27','2014-03-24 13:46:51'),(55,20,17,2,'prova01','','2014-03-25','2014-03-24 13:48:00'),(56,21,17,2,'prova01','','2014-03-27','2014-03-24 13:48:50'),(57,22,18,1,NULL,NULL,'2014-03-13','2014-03-24 14:03:49'),(58,22,18,2,'prova01','','2014-03-28','2014-03-24 14:05:08'),(59,23,18,1,NULL,NULL,'2014-03-14','2014-03-24 14:08:17'),(60,3,18,2,'prova01','','2014-02-12','2014-03-24 14:10:24'),(61,3,18,4,'prova01','Valdeí checou','2014-02-20','2014-03-24 14:11:01'),(62,3,18,3,'prova01','enviado em 20/02','2014-02-28','2014-03-24 14:11:37'),(63,3,18,2,'prova02','','2014-03-10','2014-03-24 14:12:41'),(64,3,18,4,'prova02','Bruna checou','2014-03-10','2014-03-24 14:15:33'),(65,3,18,3,'prova02','','2014-03-17','2014-03-24 14:16:16'),(66,3,18,2,'prova03','','2014-03-21','2014-03-24 14:16:39'),(67,3,18,4,'prova03','Renata checou','2014-03-21','2014-03-24 14:17:02'),(68,3,18,3,'prova03','','2014-03-26','2014-03-24 14:17:58'),(69,5,18,2,'prova01','enviado em 04/02','2014-02-12','2014-03-24 14:35:06'),(70,5,18,4,'prova01','Renata checou','2014-02-12','2014-03-24 14:35:40'),(71,5,18,2,'prova02','Não houve checagem da RT','2014-02-20','2014-03-24 14:38:41'),(72,5,18,4,'prova02','Ana checou','2014-02-20','2014-03-24 14:51:56'),(73,5,18,3,'prova02','','2014-03-06','2014-03-24 14:52:18'),(74,5,18,2,'prova03','','2014-03-12','2014-03-24 14:52:34'),(75,5,18,4,'prova03','Valdeí checou','2014-03-13','2014-03-24 14:53:05'),(76,5,18,3,'prova03','','2014-03-18','2014-03-24 14:53:31'),(77,6,18,2,'prova01','','2014-03-17','2014-03-24 14:57:30'),(78,6,18,4,'prova01','Ana checou','2014-03-17','2014-03-24 14:57:48'),(79,6,18,3,'prova01','','2014-03-21','2014-03-24 14:57:58'),(80,8,18,2,'prova01','','2014-03-17','2014-03-24 14:58:19'),(81,8,18,4,'prova01','Ana checou','2014-03-17','2014-03-24 14:58:30'),(82,8,18,3,'prova01','','2014-03-21','2014-03-24 14:58:39'),(83,2,18,2,'prova01','','2014-03-24','2014-03-24 15:00:30'),(84,24,18,1,NULL,NULL,'2014-03-14','2014-03-24 15:20:02'),(85,24,18,2,'prova01','','2014-03-28','2014-03-24 15:21:11'),(86,25,18,1,NULL,NULL,'2014-03-21','2014-03-24 17:10:59'),(87,25,18,10,'prova01','','2014-03-25','2014-03-24 17:11:51'),(88,19,17,2,'prova01','','2014-03-28','2014-03-25 10:04:24'),(89,26,17,1,NULL,NULL,'2014-03-25','2014-03-25 16:34:02'),(90,27,17,1,NULL,NULL,'2014-03-25','2014-03-25 16:35:14'),(91,28,17,1,NULL,NULL,'2014-03-25','2014-03-25 16:36:25'),(92,29,17,1,NULL,NULL,'2014-03-25','2014-03-25 16:40:15'),(93,30,17,1,NULL,NULL,'2014-03-25','2014-03-25 16:41:16'),(94,26,17,2,'prova01','','2014-04-01','2014-03-26 08:31:05'),(95,27,17,2,'prova01','','2014-04-01','2014-03-26 08:33:22'),(96,28,17,2,'prova01','','2014-04-01','2014-03-26 08:34:42'),(97,29,17,2,'prova01','','2014-04-01','2014-03-26 08:35:40'),(98,30,17,2,'prova01','','2014-04-01','2014-03-26 08:36:47'),(99,9,17,2,'prova01','','2014-03-11','2014-03-26 09:27:40'),(100,9,17,4,'prova01','','2014-03-11','2014-03-26 09:27:56'),(101,9,17,3,'prova01','','2014-03-11','2014-03-26 09:28:16'),(102,9,17,2,'prova02','','2014-03-18','2014-03-26 09:28:49'),(103,9,17,4,'prova02','','2014-03-18','2014-03-26 09:29:00'),(104,9,17,3,'prova02','','2014-03-18','2014-03-26 09:29:09'),(105,9,17,8,'prova02','','2014-03-19','2014-03-26 09:29:20'),(106,11,17,4,'prova01','','2014-03-27','2014-03-26 11:22:19'),(107,15,17,4,'prova01','','2014-03-27','2014-03-26 11:25:31'),(108,20,17,4,'prova01','','2014-03-27','2014-03-26 11:29:19'),(109,31,18,1,NULL,NULL,'2014-04-02','2014-03-27 11:04:54'),(110,32,18,1,NULL,NULL,'2014-04-14','2014-03-27 11:05:59'),(111,12,17,4,'prova01','','2014-03-28','2014-03-27 11:06:55'),(112,33,18,1,NULL,NULL,'2014-03-20','2014-03-27 11:07:34'),(113,13,17,4,'prova01','','2014-03-28','2014-03-27 11:10:00'),(114,34,18,1,NULL,NULL,'2014-02-27','2014-03-27 11:11:07'),(115,14,17,4,'prova01','','2014-03-28','2014-03-27 11:11:27'),(116,16,17,4,'prova01','','2014-03-28','2014-03-27 11:12:47'),(117,17,17,4,'prova01','','2014-03-28','2014-03-27 11:14:30'),(118,18,17,4,'prova01','','2014-04-01','2014-03-27 11:17:59'),(119,21,17,4,'prova01','','2014-03-28','2014-03-27 11:19:38'),(120,35,18,1,NULL,NULL,'2014-03-17','2014-03-27 11:19:42'),(121,19,17,4,'prova01','','2014-04-01','2014-03-27 11:21:21'),(122,36,18,1,NULL,NULL,'2014-03-13','2014-03-27 11:22:00'),(123,26,17,4,'prova01','','2014-03-28','2014-03-27 11:23:30'),(124,37,18,1,NULL,NULL,'2014-03-21','2014-03-27 11:24:43'),(125,38,18,1,NULL,NULL,'2014-03-25','2014-03-27 11:26:49'),(126,39,18,1,NULL,NULL,'2014-03-27','2014-03-27 11:28:00'),(127,11,17,3,'prova01','','2014-04-01','2014-03-27 11:30:03'),(128,15,17,3,'prova01','','2014-04-01','2014-03-27 11:31:35'),(129,40,18,1,NULL,NULL,'2014-03-28','2014-03-27 11:31:58'),(130,20,17,3,'prova01','','2014-04-01','2014-03-27 11:32:12'),(131,41,18,1,NULL,NULL,'2014-04-02','2014-03-27 11:40:18'),(132,42,17,1,NULL,NULL,'2014-03-06','2014-03-27 11:46:38'),(133,42,17,2,'prova01','','2014-03-06','2014-03-27 11:47:23'),(134,42,17,4,'prova01','','2014-03-06','2014-03-27 11:47:35'),(135,42,17,3,'prova01','','2014-03-06','2014-03-27 11:47:43'),(136,42,17,2,'prova02','','2014-03-14','2014-03-27 11:48:05'),(137,42,17,4,'prova02','','2014-03-14','2014-03-27 11:48:23'),(138,42,17,3,'prova02','','2014-03-14','2014-03-27 11:48:31'),(139,42,17,8,'prova02','','2014-03-17','2014-03-27 11:48:41'),(140,43,17,1,NULL,NULL,'2014-03-11','2014-03-27 11:51:34'),(141,43,17,2,'prova01','','2014-03-13','2014-03-27 11:52:12'),(142,43,17,4,'prova01','','2014-03-13','2014-03-27 11:52:22'),(143,43,17,3,'prova01','','2014-03-13','2014-03-27 11:52:33'),(144,43,17,8,'prova01','','2014-03-18','2014-03-27 11:52:44'),(145,44,17,1,NULL,NULL,'2014-02-24','2014-03-27 11:54:50'),(146,44,17,8,'prova01','','2014-02-28','2014-03-27 11:55:13'),(147,45,17,1,NULL,NULL,'2014-02-24','2014-03-27 11:56:45'),(148,45,17,8,'prova01','','2014-02-28','2014-03-27 11:56:58'),(149,46,18,1,NULL,NULL,'2014-03-13','2014-03-27 11:57:06'),(150,47,18,1,NULL,NULL,'2014-03-25','2014-03-27 12:03:37'),(151,48,18,1,NULL,NULL,'2014-03-25','2014-03-27 12:08:47'),(152,49,18,1,NULL,NULL,'2014-03-14','2014-03-27 12:11:34'),(153,50,18,1,NULL,NULL,'2014-03-21','2014-03-27 12:13:40'),(154,51,18,1,NULL,NULL,'2014-03-25','2014-03-27 12:14:50'),(155,52,18,1,NULL,NULL,'2014-03-26','2014-03-27 12:17:56'),(156,34,18,2,'prova01','','2014-04-04','2014-03-27 12:22:29'),(157,36,18,2,'prova01','','2014-04-11','2014-03-27 12:24:28'),(158,46,18,2,'prova01','','2014-03-28','2014-03-27 12:25:29'),(159,33,18,2,'prova01','','2014-03-28','2014-03-27 12:28:19'),(160,47,18,10,'prova01','Locução gravada pelo Felipe em 24/03 foi liberada na terça.','2014-03-25','2014-03-27 12:33:41'),(161,53,17,1,NULL,NULL,'2014-03-11','2014-03-27 13:34:36'),(162,53,17,2,'prova01','','2014-03-13','2014-03-27 13:35:12'),(163,53,17,4,'prova01','','2014-03-13','2014-03-27 13:35:31'),(164,53,17,3,'prova01','','2014-03-13','2014-03-27 13:35:40'),(165,53,17,2,'prova02','','2014-03-18','2014-03-27 13:37:24'),(166,53,17,4,'prova02','','2014-03-18','2014-03-27 13:37:33'),(167,53,17,3,'prova02','','2014-03-18','2014-03-27 13:37:44'),(168,53,17,8,'prova02','','2014-03-18','2014-03-27 13:37:54'),(169,27,17,4,'prova01','','2014-04-01','2014-03-27 13:40:59'),(170,54,17,1,NULL,NULL,'2014-02-19','2014-03-27 14:06:19'),(171,54,17,8,'prova01','','2014-02-19','2014-03-27 14:06:34'),(172,55,17,1,NULL,NULL,'2014-02-27','2014-03-27 14:20:39'),(173,56,17,1,NULL,NULL,'2014-02-27','2014-03-27 14:22:09'),(174,57,17,1,NULL,NULL,'2014-03-10','2014-03-27 14:25:15'),(175,58,17,1,NULL,NULL,'2014-03-10','2014-03-27 14:26:47'),(176,12,17,3,'prova01','','2014-04-01','2014-03-27 14:31:20'),(177,59,17,1,'prova01','','2014-03-13','2014-03-27 14:34:10'),(178,60,17,1,NULL,NULL,'2014-03-10','2014-03-27 14:37:02'),(179,61,17,1,NULL,NULL,'2014-03-10','2014-03-27 14:44:08'),(180,59,17,2,'prova01','','2014-03-18','2014-03-27 14:49:44'),(181,59,17,4,'prova01','','2014-03-18','2014-03-27 14:49:55'),(182,59,17,3,'prova01','','2014-03-19','2014-03-27 14:50:28'),(183,59,17,8,'prova01','','2014-03-19','2014-03-27 14:50:37'),(184,61,17,2,'prova01','','2014-03-17','2014-03-27 14:53:13'),(185,61,17,4,'prova01','','2014-03-18','2014-03-27 14:53:23'),(186,61,17,3,'prova01','','2014-03-18','2014-03-27 14:53:44'),(187,61,17,3,'prova01','','2014-03-18','2014-03-27 14:53:44'),(188,61,17,8,'prova01','','2014-03-19','2014-03-27 14:53:58'),(189,62,24,1,'prova01','','2014-02-05','2014-03-27 14:53:58'),(190,63,24,1,NULL,NULL,'2014-02-04','2014-03-27 14:54:01'),(191,60,17,2,'prova01','','2014-03-13','2014-03-27 14:54:33'),(192,60,17,4,'prova01','','2014-03-13','2014-03-27 14:54:43'),(193,60,17,3,'prova01','','2014-03-13','2014-03-27 14:54:51'),(194,60,17,8,'prova01','','2014-03-13','2014-03-27 14:55:05'),(195,64,17,1,NULL,NULL,'2014-02-28','2014-03-27 15:00:36'),(196,64,17,8,'prova01','','2014-02-28','2014-03-27 15:01:41'),(197,13,17,3,'prova01','','2014-04-01','2014-03-27 15:02:14'),(198,65,24,1,NULL,NULL,'2014-02-05','2014-03-27 15:02:25'),(199,28,17,4,'prova01','','2014-04-01','2014-03-27 15:09:17'),(200,29,17,4,'prova01','','2014-04-01','2014-03-27 15:10:07'),(201,30,17,4,'prova01','','2014-04-01','2014-03-27 15:10:53'),(202,66,17,1,NULL,NULL,'2014-03-24','2014-03-27 15:18:19'),(203,66,17,2,'prova01','','2014-03-25','2014-03-27 15:20:41'),(204,66,17,4,'prova01','','2014-03-25','2014-03-27 15:20:49'),(205,66,17,3,'prova01','','2014-03-25','2014-03-27 15:20:59'),(206,66,17,8,'prova01','','2014-03-27','2014-03-27 15:21:09'),(207,14,17,3,'prova01','','2014-04-01','2014-03-27 16:01:35'),(208,67,17,1,NULL,NULL,'2014-03-14','2014-03-27 16:04:25'),(209,67,17,2,'prova01','','2014-03-18','2014-03-27 16:04:58'),(210,67,17,4,'prova01','','2014-03-18','2014-03-27 16:05:07'),(211,67,17,3,'prova01','','2014-03-18','2014-03-27 16:05:16'),(212,67,17,2,'prova02','','2014-03-25','2014-03-27 16:05:37'),(213,67,17,4,'prova02','','2014-03-25','2014-03-27 16:05:52'),(214,67,17,3,'prova02','','2014-03-25','2014-03-27 16:06:04'),(215,68,17,1,NULL,NULL,'2014-02-25','2014-03-27 16:08:52'),(216,68,17,2,'prova01','','2014-02-25','2014-03-27 16:09:30'),(217,68,17,4,'prova01','','2014-02-26','2014-03-27 16:09:39'),(218,68,17,3,'prova01','','2014-02-26','2014-03-27 16:09:50'),(219,68,17,2,'prova02','','2014-03-13','2014-03-27 16:10:11'),(220,68,17,4,'prova02','','2014-03-13','2014-03-27 16:10:19'),(221,68,17,3,'prova02','','2014-03-13','2014-03-27 16:10:27'),(222,69,17,1,NULL,NULL,'2014-02-25','2014-03-27 16:14:09'),(223,69,17,2,'prova01','','2014-02-25','2014-03-27 16:15:44'),(224,69,17,4,'prova01','','2014-02-26','2014-03-27 16:15:52'),(225,69,17,3,'prova01','','2014-02-26','2014-03-27 16:16:06'),(226,70,17,1,NULL,NULL,'2014-03-13','2014-03-27 16:18:11'),(227,71,17,1,NULL,NULL,'2014-03-13','2014-03-27 16:19:42'),(228,72,17,1,NULL,NULL,'2014-03-13','2014-03-27 16:22:00'),(229,73,17,1,NULL,NULL,'2014-03-13','2014-03-27 16:23:29'),(230,74,17,1,NULL,NULL,'2014-03-18','2014-03-27 16:25:12'),(231,75,17,1,NULL,NULL,'2014-04-04','2014-03-27 16:32:05'),(232,16,17,3,'prova01','','2014-04-01','2014-03-27 16:45:36'),(233,76,17,1,NULL,NULL,'2014-04-10','2014-03-27 16:48:13'),(234,77,17,1,NULL,NULL,'2014-04-04','2014-03-27 16:50:59'),(235,78,17,1,NULL,NULL,'2014-04-04','2014-03-27 16:52:55'),(236,79,24,1,NULL,NULL,'2014-02-04','2014-03-27 17:37:02'),(237,80,24,1,NULL,NULL,'2014-02-05','2014-03-27 17:39:35'),(238,81,24,1,NULL,NULL,'2014-02-05','2014-03-27 17:42:33'),(239,82,24,1,NULL,NULL,'2014-02-06','2014-03-27 17:44:34'),(240,83,24,1,NULL,NULL,'2014-02-11','2014-03-27 17:49:58'),(241,84,24,1,NULL,NULL,'2014-02-11','2014-03-27 17:51:33'),(242,26,17,3,'prova01','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap14p_gravitacao_universal\\provas\\01','2014-04-01','2014-03-27 18:02:11'),(243,17,17,3,'prova01','','2014-04-01','2014-03-27 18:08:28'),(244,85,24,1,NULL,NULL,'2014-03-12','2014-03-28 08:28:02'),(245,86,24,1,NULL,NULL,'2014-03-27','2014-03-28 08:30:24'),(246,87,24,1,NULL,NULL,'2014-04-01','2014-03-28 08:32:05'),(247,88,24,1,NULL,NULL,'2014-04-02','2014-03-28 08:36:05'),(248,89,24,1,NULL,NULL,'2014-04-02','2014-03-28 08:39:09'),(249,90,24,1,NULL,NULL,'2014-04-02','2014-03-28 08:40:58'),(250,91,24,1,NULL,NULL,'2014-04-04','2014-03-28 08:43:22'),(251,92,24,1,NULL,NULL,'2014-04-04','2014-03-28 08:49:10'),(252,93,24,1,NULL,NULL,'2014-04-07','2014-03-28 08:50:58'),(253,94,24,1,NULL,NULL,'2014-04-07','2014-03-28 08:52:57'),(254,95,24,1,NULL,NULL,'2014-03-13','2014-03-28 08:55:07'),(255,96,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:02:15'),(256,97,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:05:02'),(257,98,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:07:44'),(258,99,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:09:38'),(259,100,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:17:00'),(260,101,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:25:12'),(261,102,24,1,NULL,NULL,'2014-01-17','2014-03-28 09:27:24'),(262,103,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:29:31'),(263,104,24,1,NULL,NULL,'2014-01-24','2014-03-28 09:31:18'),(264,105,24,1,NULL,NULL,'2014-01-20','2014-03-28 09:34:56'),(265,106,24,1,NULL,NULL,'2014-02-11','2014-03-28 09:38:02'),(266,107,24,1,NULL,NULL,'2014-02-14','2014-03-28 09:40:19'),(267,108,24,1,NULL,NULL,'2014-02-19','2014-03-28 09:42:42'),(268,109,24,1,NULL,NULL,'2014-02-19','2014-03-28 09:44:19'),(269,110,24,1,NULL,NULL,'2014-03-14','2014-03-28 09:45:50'),(270,111,24,1,NULL,NULL,'2014-03-21','2014-03-28 09:48:13'),(271,112,24,1,NULL,NULL,'2014-03-14','2014-03-28 09:49:42'),(272,113,24,1,NULL,NULL,'2014-03-14','2014-03-28 09:54:47'),(273,114,24,1,NULL,NULL,'2014-03-21','2014-03-28 09:56:41'),(274,115,24,1,NULL,NULL,'2014-03-24','2014-03-28 09:58:23'),(275,116,24,1,NULL,NULL,'2014-03-19','2014-03-28 10:00:05'),(276,117,24,1,NULL,NULL,'2014-02-10','2014-03-28 10:06:48'),(277,118,24,1,NULL,NULL,'2014-02-10','2014-03-28 10:08:38'),(278,119,24,1,NULL,NULL,'2014-02-10','2014-03-28 10:10:19'),(279,120,24,1,NULL,NULL,'2014-02-10','2014-03-28 10:12:03'),(280,121,24,1,NULL,NULL,'2014-02-10','2014-03-28 10:13:35'),(281,122,24,1,NULL,NULL,'2014-02-12','2014-03-28 10:20:28'),(282,123,24,1,NULL,NULL,'2014-03-07','2014-03-28 10:25:04'),(283,124,24,1,NULL,NULL,'2014-02-24','2014-03-28 10:26:48'),(284,125,24,1,NULL,NULL,'2014-02-12','2014-03-28 10:29:59'),(285,126,24,1,NULL,NULL,'2014-03-13','2014-03-28 10:33:39'),(286,127,24,1,NULL,NULL,'2014-03-17','2014-03-28 10:35:07'),(287,128,24,1,NULL,NULL,'2014-03-17','2014-03-28 10:37:09'),(288,129,24,1,NULL,NULL,'2014-03-17','2014-03-28 10:39:04'),(289,130,24,1,NULL,NULL,'2014-03-17','2014-03-28 10:41:02'),(290,131,24,1,NULL,NULL,'2014-03-19','2014-03-28 10:42:48'),(291,132,24,1,NULL,NULL,'2014-03-19','2014-03-28 10:45:08'),(292,133,24,1,NULL,NULL,'2014-03-19','2014-03-28 10:47:41'),(293,134,24,1,NULL,NULL,'2014-03-26','2014-03-28 10:49:21'),(294,135,24,1,NULL,NULL,'2014-02-27','2014-03-28 10:52:25'),(295,136,24,1,NULL,NULL,'2014-02-24','2014-03-28 10:55:35'),(296,137,24,1,NULL,NULL,'2014-02-24','2014-03-28 10:57:12'),(297,138,24,1,NULL,NULL,'2014-02-24','2014-03-28 10:58:50'),(298,139,24,1,NULL,NULL,'2014-02-24','2014-03-28 11:00:27'),(299,140,24,1,NULL,NULL,'2014-02-24','2014-03-28 11:01:59'),(300,141,24,1,NULL,NULL,'2014-02-24','2014-03-28 11:04:02'),(301,142,24,1,NULL,NULL,'2014-02-20','2014-03-28 11:06:24'),(302,143,24,1,NULL,NULL,'2014-02-20','2014-03-28 11:07:57'),(303,144,24,1,NULL,NULL,'2014-02-20','2014-03-28 11:10:15'),(304,145,24,1,NULL,NULL,'2014-02-20','2014-03-28 11:22:56'),(305,146,24,1,NULL,NULL,'2014-03-06','2014-03-28 11:24:47'),(306,147,24,1,NULL,NULL,'2014-03-06','2014-03-28 11:26:45'),(307,148,24,1,NULL,NULL,'2014-03-06','2014-03-28 11:28:23'),(308,149,24,1,NULL,NULL,'2014-03-06','2014-03-28 11:32:39'),(309,150,24,1,NULL,NULL,'2014-03-06','2014-03-28 11:35:51'),(310,10,17,2,'prova02','','2014-03-25','2014-03-28 12:05:45'),(311,10,17,4,'prova02','','2014-03-25','2014-03-28 12:06:04'),(312,10,17,3,'prova02','','2014-03-25','2014-03-28 12:06:16'),(313,10,17,8,'prova02','','2014-03-25','2014-03-28 12:06:25'),(314,151,24,1,NULL,NULL,'2014-03-28','2014-03-28 12:53:00'),(315,152,24,1,NULL,NULL,'2014-03-07','2014-03-28 12:55:02'),(316,153,24,1,NULL,NULL,'2014-03-07','2014-03-28 12:56:23'),(317,154,24,1,NULL,NULL,'2014-03-07','2014-03-28 13:41:11'),(318,155,24,1,NULL,NULL,'2014-03-07','2014-03-28 13:43:00'),(319,156,24,1,NULL,NULL,'2014-02-10','2014-03-28 14:17:00'),(320,157,24,1,NULL,NULL,'2014-02-13','2014-03-28 14:18:46'),(321,158,24,1,NULL,NULL,'2014-02-14','2014-03-28 14:20:18'),(322,159,24,1,NULL,NULL,'2014-03-25','2014-03-28 14:26:12'),(323,160,24,1,NULL,NULL,'2014-03-06','2014-03-28 14:29:34'),(324,161,24,1,NULL,NULL,'2014-03-12','2014-03-28 14:31:02'),(325,162,24,1,NULL,NULL,'2014-03-12','2014-03-28 14:32:18'),(326,163,24,1,NULL,NULL,'2014-03-12','2014-03-28 14:34:39'),(327,164,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:12:06'),(328,165,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:13:27'),(329,166,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:15:33'),(330,21,17,3,'prova01','','2014-04-01','2014-03-28 15:19:40'),(331,167,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:25:17'),(332,168,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:28:03'),(333,169,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:29:34'),(334,170,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:31:01'),(335,171,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:32:24'),(336,172,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:33:53'),(337,173,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:35:11'),(338,174,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:36:14'),(339,175,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:42:08'),(340,176,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:44:51'),(341,177,17,1,NULL,NULL,'2014-03-31','2014-03-28 15:46:09'),(342,178,24,1,NULL,NULL,'2014-02-06','2014-03-28 15:46:48'),(343,179,24,1,NULL,NULL,'2014-02-12','2014-03-28 15:48:33'),(344,67,17,2,'prova03','','2014-03-28','2014-03-28 16:36:17'),(345,180,17,1,NULL,NULL,'2014-04-15','2014-03-28 17:12:25'),(346,181,17,1,NULL,NULL,'2014-04-15','2014-03-28 17:19:23'),(347,182,17,1,NULL,NULL,'2014-04-15','2014-03-28 17:22:07'),(348,183,17,1,NULL,NULL,'2014-04-15','2014-03-28 17:24:26'),(349,3,18,9,'prova03','renata consolidou','2014-03-28','2014-03-28 19:28:44'),(350,3,18,2,'prova04','','2014-04-03','2014-03-28 19:29:00'),(351,5,18,9,'prova03','Nathália consolidou','2014-03-28','2014-03-28 19:29:26'),(352,5,18,2,'prova04','','2014-04-03','2014-03-28 19:29:48'),(353,6,18,9,'prova01','Ana consolidou','2014-03-28','2014-03-28 19:30:16'),(354,6,18,2,'prova02','','2014-04-03','2014-03-28 19:30:25'),(355,8,18,9,'prova01','Ana consolidou','2014-03-28','2014-03-28 19:30:47'),(356,8,18,2,'prova02','','2014-04-03','2014-03-28 19:30:59'),(357,164,17,2,'prova01','','2014-04-02','2014-03-31 09:04:36'),(358,11,17,3,'prova01','','2014-03-31','2014-03-31 09:08:37'),(359,13,17,3,'prova01','','2014-03-31','2014-03-31 09:09:45'),(360,15,17,3,'prova01','','2014-03-31','2014-03-31 09:10:12'),(361,17,17,3,'prova01','','2014-03-31','2014-03-31 09:10:37'),(362,20,17,3,'prova01','','2014-03-31','2014-03-31 09:11:07'),(363,26,17,3,'prova01','','2014-03-31','2014-03-31 09:12:10'),(364,165,17,2,'prova01','','2014-04-02','2014-03-31 09:17:26'),(365,166,17,2,'prova01','','2014-04-02','2014-03-31 09:20:17'),(366,167,17,2,'prova01','','2014-04-02','2014-03-31 09:21:04'),(367,168,17,2,'prova01','','2014-04-02','2014-03-31 09:23:06'),(368,169,17,2,'prova01','','2014-04-02','2014-03-31 09:24:08'),(369,170,17,2,'prova01','','2014-04-03','2014-03-31 09:25:55'),(370,171,17,2,'prova01','','2014-04-03','2014-03-31 09:27:11'),(371,172,17,2,'prova01','','2014-04-03','2014-03-31 09:27:55'),(372,173,17,2,'prova01','','2014-04-03','2014-03-31 09:28:42'),(373,174,17,2,'prova01','','2014-04-03','2014-03-31 09:29:45'),(374,175,17,2,'prova01','','2014-04-03','2014-03-31 09:30:43'),(375,176,17,2,'prova01','','2014-04-03','2014-03-31 09:31:29'),(376,177,17,2,'prova01','','2014-04-03','2014-03-31 09:32:15'),(377,12,17,2,'prova02','','2014-04-01','2014-03-31 09:33:50'),(378,14,17,2,'prova02','','2014-04-01','2014-03-31 09:35:59'),(379,16,17,2,'prova02','','2014-04-01','2014-03-31 09:37:17'),(380,63,24,2,'prova01','','2014-02-04','2014-03-31 14:21:09'),(381,63,24,4,'prova01','Checado pela Ana.','2014-02-04','2014-03-31 14:22:14'),(382,63,24,3,'prova01','','2014-02-04','2014-03-31 14:22:47'),(383,63,24,8,'prova01','','2014-02-04','2014-03-31 14:24:49'),(384,117,24,2,'prova01','','2014-02-10','2014-03-31 14:26:36'),(385,117,24,4,'prova01','Checado pela Ana.','2014-02-10','2014-03-31 14:27:02'),(386,117,24,3,'prova01','','2014-02-11','2014-03-31 14:27:27'),(387,117,24,9,'prova01','','2014-02-24','2014-03-31 14:28:05'),(388,117,24,2,'prova02','','2014-02-24','2014-03-31 14:28:39'),(389,117,24,4,'prova02','Checado pelo Valdeí.','2014-02-24','2014-03-31 14:30:37'),(390,117,24,3,'prova02','','2014-02-24','2014-03-31 14:31:17'),(391,117,24,8,'prova02','','2014-02-26','2014-03-31 14:31:28'),(392,96,24,8,'prova01','Não houve alteração.','2014-01-24','2014-03-31 14:34:58'),(393,98,24,8,'prova01','Não houve alteração.','2014-01-24','2014-03-31 14:37:09'),(394,100,24,8,'prova01','Não houve alteração.','2014-01-24','2014-03-31 14:38:17'),(395,99,24,8,'prova01','Não houve alteração.','2014-01-24','2014-03-31 14:39:21'),(396,111,24,8,'prova01','Não houve alteração.','2014-03-21','2014-03-31 14:41:39'),(397,116,24,8,'prova01','Não houve alteração.','2014-03-19','2014-03-31 14:43:39'),(398,62,24,2,'prova01','','2014-02-06','2014-03-31 14:47:06'),(399,62,24,4,'prova01','Checado pela Ana.','2014-02-06','2014-03-31 14:47:51'),(400,62,24,3,'prova01','','2014-02-06','2014-03-31 14:49:00'),(401,62,24,8,'prova01','','2014-02-07','2014-03-31 14:49:17'),(402,65,24,2,'prova01','','2014-02-06','2014-03-31 14:51:29'),(403,65,24,4,'prova01','Checado pela Ana.','2014-02-06','2014-03-31 14:51:56'),(404,65,24,3,'prova01','','2014-02-06','2014-03-31 14:52:22'),(405,65,24,8,'prova01','','2014-02-06','2014-03-31 14:52:32'),(406,79,24,2,'prova01','','2014-01-06','2014-03-31 14:53:56'),(407,12,17,4,'prova02','','2014-04-01','2014-03-31 14:54:51'),(408,79,24,4,'prova01','Checado pelo Valdeí.','2014-01-06','2014-03-31 14:54:51'),(409,79,24,3,'prova01','','2014-01-06','2014-03-31 14:55:19'),(410,79,24,8,'prova01','','2014-02-06','2014-03-31 14:55:47'),(411,14,17,4,'prova02','','2014-04-01','2014-03-31 14:56:15'),(412,80,24,2,'prova01','','2014-01-06','2014-03-31 14:56:56'),(413,16,17,4,'prova02','','2014-04-01','2014-03-31 14:57:08'),(414,80,24,4,'prova01','Checado pelo Valdeí.','2014-01-06','2014-03-31 14:57:46'),(415,80,24,3,'prova01','','2014-01-06','2014-03-31 14:58:15'),(416,80,24,8,'prova01','','2014-02-06','2014-03-31 14:58:36'),(417,81,24,2,'prova01','','2014-02-06','2014-03-31 14:59:55'),(418,81,24,4,'prova01','Checado pela Ana.','2014-02-06','2014-03-31 15:00:21'),(419,81,24,3,'prova01','','2014-02-06','2014-03-31 15:00:46'),(420,81,24,8,'prova01','','2014-02-07','2014-03-31 15:01:00'),(421,85,24,2,'prova01','','2014-03-13','2014-03-31 15:06:05'),(422,85,24,4,'prova01','Checado pelo Valdeí.','2014-03-13','2014-03-31 15:06:31'),(423,85,24,3,'prova01','','2014-03-13','2014-03-31 15:06:47'),(424,85,24,8,'prova01','','2014-03-14','2014-03-31 15:06:57'),(425,83,24,2,'prova01','','2014-02-12','2014-03-31 15:08:19'),(426,83,24,4,'prova01','Checado pela Ana.','2014-02-12','2014-03-31 15:09:08'),(427,83,24,3,'prova01','','2014-02-12','2014-03-31 15:09:31'),(428,83,24,8,'prova01','','2014-02-12','2014-03-31 15:09:46'),(429,84,24,2,'prova01','','2014-02-12','2014-03-31 15:11:35'),(430,84,24,4,'prova01','Checado pela Ana.','2014-02-12','2014-03-31 15:13:00'),(431,84,24,2,'prova01','','2014-02-12','2014-03-31 15:14:49'),(432,84,24,4,'prova01','Checado pelo Valdeí.','2014-02-12','2014-03-31 15:15:09'),(433,84,24,3,'prova01','','2014-02-12','2014-03-31 15:15:25'),(434,84,24,8,'prova01','','2014-02-12','2014-03-31 15:15:52'),(435,82,24,2,'prova01','','2014-02-07','2014-03-31 15:17:47'),(436,82,24,4,'prova01','Checado pela Ciça.','2014-02-07','2014-03-31 15:25:12'),(437,82,24,3,'prova01','','2014-02-07','2014-03-31 15:25:32'),(438,82,24,8,'prova01','','2014-02-07','2014-03-31 15:26:12'),(439,118,24,2,'prova01','','2014-02-11','2014-03-31 15:27:42'),(440,118,24,4,'prova01','Checado pelo Valdeí.','2014-02-11','2014-03-31 15:28:29'),(441,118,24,3,'prova01','','2014-02-12','2014-03-31 15:29:03'),(442,118,24,9,'prova01','','2014-02-21','2014-03-31 15:29:53'),(443,118,24,2,'prova02','','2014-02-24','2014-03-31 15:32:18'),(444,118,24,4,'prova02','Checado pelo Valdeí.','2014-02-24','2014-03-31 15:32:46'),(445,118,24,3,'prova02','','2014-02-24','2014-03-31 15:33:20'),(446,118,24,8,'prova02','','2014-02-24','2014-03-31 15:33:35'),(447,119,24,2,'prova01','','2014-02-11','2014-03-31 15:36:49'),(448,119,24,4,'prova01','Checado pela Ana.','2014-02-11','2014-03-31 15:37:20'),(449,119,24,3,'prova01','','2014-02-11','2014-03-31 15:37:32'),(450,119,24,8,'prova01','','2014-02-11','2014-03-31 15:37:42'),(451,120,24,2,'prova01','','2014-02-13','2014-03-31 15:39:45'),(452,120,24,4,'prova01','Checado pelo Valdeí.','2014-02-13','2014-03-31 15:40:18'),(453,120,24,3,'prova01','','2014-02-13','2014-03-31 15:40:46'),(454,120,24,9,'prova01','','2014-02-21','2014-03-31 15:41:17'),(455,120,24,2,'prova02','','2014-02-24','2014-03-31 15:41:42'),(456,120,24,4,'prova02','Checado pela Renata.','2014-02-24','2014-03-31 15:42:19'),(457,120,24,3,'prova02','','2014-02-25','2014-03-31 15:42:55'),(458,120,24,9,'prova02','','2014-02-27','2014-03-31 15:43:18'),(459,120,24,2,'prova03','','2014-02-27','2014-03-31 15:43:43'),(460,120,24,4,'prova03','Checado pela Ana.','2014-02-27','2014-03-31 15:44:09'),(461,120,24,3,'prova03','','2014-02-27','2014-03-31 15:44:45'),(462,120,24,8,'prova03','','2014-03-06','2014-03-31 15:45:03'),(463,121,24,2,'prova01','','2014-02-11','2014-03-31 15:47:11'),(464,121,24,4,'prova01','Checado pela Ana.','2014-02-11','2014-03-31 15:47:33'),(465,121,24,3,'prova01','','2014-02-11','2014-03-31 15:47:54'),(466,121,24,8,'prova01','','2014-02-21','2014-03-31 15:48:10'),(467,122,24,2,'prova01','','2014-02-13','2014-03-31 15:49:22'),(468,122,24,4,'prova01','Checado pela Ana.','2014-02-13','2014-03-31 15:49:48'),(469,122,24,3,'prova01','','2014-02-13','2014-03-31 15:50:54'),(470,122,24,9,'prova01','','2014-02-26','2014-03-31 15:51:17'),(471,122,24,2,'prova02','','2014-02-26','2014-03-31 15:51:34'),(472,122,24,4,'prova02','Checado pela Ciça.','2014-02-26','2014-03-31 15:51:56'),(473,122,24,3,'prova02','','2014-02-26','2014-03-31 15:52:27'),(474,122,24,8,'prova02','','2014-03-06','2014-03-31 15:52:43'),(475,124,24,2,'prova01','','2014-02-26','2014-03-31 15:54:07'),(476,124,24,4,'prova01','Checado pela Ana.','2014-02-26','2014-03-31 15:54:29'),(477,124,24,3,'prova01','','2014-02-26','2014-03-31 15:54:46'),(478,124,24,9,'prova01','','2014-03-07','2014-03-31 15:55:18'),(479,124,24,2,'prova02','','2014-03-10','2014-03-31 15:55:35'),(480,124,24,4,'prova02','Checado pela Ciça.','2014-03-10','2014-03-31 15:55:59'),(481,124,24,3,'prova02','','2014-03-10','2014-03-31 15:56:30'),(482,124,24,9,'prova02','','2014-03-12','2014-03-31 15:56:53'),(483,124,24,2,'prova03','','2014-03-13','2014-03-31 15:57:19'),(484,124,24,4,'prova03','Checado pelo Valdeí.','2014-03-13','2014-03-31 15:57:50'),(485,124,24,3,'prova03','','2014-03-13','2014-03-31 15:58:10'),(486,124,24,8,'prova03','','2014-03-13','2014-03-31 15:58:22'),(487,125,24,2,'prova01','','2014-02-13','2014-03-31 16:01:36'),(488,125,24,4,'prova01','Checado pelo Valdeí.','2014-02-13','2014-03-31 16:07:14'),(489,125,24,3,'prova01','','2014-02-21','2014-03-31 16:07:56'),(490,125,24,9,'prova01','','2014-02-24','2014-03-31 16:08:28'),(491,125,24,2,'prova02','','2014-02-25','2014-03-31 16:08:57'),(492,125,24,4,'prova02','Checado pela Renata.','2014-02-25','2014-03-31 16:09:24'),(493,125,24,3,'prova02','','2014-02-25','2014-03-31 16:09:46'),(494,125,24,8,'prova02','','2014-03-06','2014-03-31 16:10:03'),(495,164,17,4,'prova01','','2014-04-02','2014-03-31 16:11:33'),(496,165,17,4,'prova01','','2014-04-02','2014-03-31 16:14:10'),(497,166,17,4,'prova01','','2014-04-02','2014-03-31 16:16:43'),(498,178,24,2,'prova01','','2014-02-13','2014-03-31 16:16:49'),(499,178,24,4,'prova01','Checado pelo Valdeí.','2014-02-13','2014-03-31 16:17:16'),(500,178,24,3,'prova01','','2014-02-13','2014-03-31 16:17:33'),(501,167,17,4,'prova01','','2014-04-02','2014-03-31 16:18:13'),(502,178,24,8,'prova01','','2014-02-17','2014-03-31 16:18:43'),(503,168,17,4,'prova01','','2014-04-02','2014-03-31 16:20:03'),(504,156,24,2,'prova01','','2014-02-17','2014-03-31 16:20:04'),(505,156,24,4,'prova01','Checado pela Ana.','2014-02-17','2014-03-31 16:20:37'),(506,156,24,3,'prova01','','2014-02-28','2014-03-31 16:20:55'),(507,169,17,4,'prova01','','2014-04-02','2014-03-31 16:21:09'),(508,156,24,9,'prova01','','2014-03-06','2014-03-31 16:21:14'),(509,156,24,2,'prova02','','2014-03-10','2014-03-31 16:21:33'),(510,156,24,4,'prova02','Checado pela Renata.','2014-03-10','2014-03-31 16:22:04'),(511,156,24,3,'prova02','','2014-03-10','2014-03-31 16:24:56'),(512,156,24,8,'prova02','','2014-03-07','2014-03-31 16:25:33'),(513,157,24,2,'prova01','','2014-02-20','2014-03-31 16:32:18'),(514,157,24,4,'prova01','Checado pela Ana.','2014-02-20','2014-03-31 16:32:46'),(515,170,17,4,'prova01','','2014-04-03','2014-03-31 16:32:48'),(516,157,24,3,'prova01','','2014-02-20','2014-03-31 16:33:41'),(517,171,17,4,'prova01','','2014-04-03','2014-03-31 16:39:41'),(518,157,24,9,'prova01','','2014-02-27','2014-03-31 16:49:45'),(519,157,24,2,'prova02','','2014-02-28','2014-03-31 16:50:00'),(520,157,24,4,'prova02','Checado pela Ana.','2014-02-28','2014-03-31 16:50:33'),(521,157,24,3,'prova02','','2014-02-28','2014-03-31 16:51:03'),(522,157,24,8,'prova02','','2014-03-06','2014-03-31 16:51:23'),(523,158,24,2,'prova01','','2014-02-19','2014-03-31 16:54:46'),(524,158,24,4,'prova01','Checado pela Ciça.','2014-02-19','2014-03-31 16:55:31'),(525,172,17,4,'prova01','','2014-04-03','2014-03-31 16:55:39'),(526,158,24,3,'prova01','','2014-02-19','2014-03-31 16:55:51'),(527,158,24,9,'prova01','','2014-02-27','2014-03-31 16:56:17'),(528,158,24,2,'prova02','','2014-02-28','2014-03-31 16:56:36'),(529,158,24,4,'prova02','Checado pela Ana.','2014-02-28','2014-03-31 16:56:57'),(530,158,24,3,'prova02','','2014-02-28','2014-03-31 16:57:32'),(531,158,24,8,'prova02','','2014-03-06','2014-03-31 16:57:51'),(532,162,24,2,'prova01','','2014-03-13','2014-03-31 17:00:37'),(533,162,24,4,'prova01','Checado pela Ana.','2014-03-13','2014-03-31 17:01:00'),(534,162,24,3,'prova01','','2014-03-13','2014-03-31 17:01:19'),(535,162,24,8,'prova01','','2014-03-14','2014-03-31 17:01:39'),(536,105,24,2,'prova01','','2014-01-20','2014-03-31 17:04:10'),(537,105,24,4,'prova01','Checado pelo Valdeí.','2014-01-20','2014-03-31 17:04:32'),(538,105,24,3,'prova01','','2014-01-21','2014-03-31 17:04:47'),(539,105,24,9,'prova01','','2014-03-04','2014-03-31 17:05:13'),(540,105,24,2,'prova02','','2014-03-04','2014-03-31 17:05:23'),(541,105,24,4,'prova02','Checado pela Ciça.','2014-03-04','2014-03-31 17:05:41'),(542,105,24,3,'prova02','','2014-03-04','2014-03-31 17:06:06'),(543,105,24,8,'prova02','','2014-03-13','2014-03-31 17:06:27'),(544,173,17,4,'prova01','','2014-04-03','2014-03-31 17:07:29'),(545,104,24,2,'prova01','','2014-01-28','2014-03-31 17:07:44'),(546,104,24,4,'prova01','Checado pela Ciça.','2014-01-28','2014-03-31 17:08:05'),(547,104,24,3,'prova01','','2014-01-28','2014-03-31 17:08:21'),(548,104,24,8,'prova01','','2014-02-07','2014-03-31 17:08:33'),(549,101,24,2,'prova01','','2014-02-05','2014-03-31 17:10:04'),(550,101,24,4,'prova01','Checado pelo Valdeí.','2014-02-05','2014-03-31 17:10:30'),(551,101,24,3,'prova01','','2014-02-06','2014-03-31 17:10:47'),(552,101,24,9,'prova01','','2014-02-10','2014-03-31 17:11:04'),(553,101,24,2,'prova02','','2014-02-11','2014-03-31 17:11:23'),(554,101,24,4,'prova02','Checado pelo Valdeí.','2014-02-11','2014-03-31 17:11:44'),(555,101,24,3,'prova02','','2014-02-11','2014-03-31 17:12:05'),(556,101,24,9,'prova02','','2014-02-17','2014-03-31 17:12:25'),(557,101,24,2,'prova03','','2014-02-17','2014-03-31 17:12:41'),(558,101,24,4,'prova03','Checado pelo Valdeí.','2014-02-17','2014-03-31 17:13:03'),(559,101,24,3,'prova03','','2014-02-17','2014-03-31 17:13:22'),(560,101,24,8,'prova03','','2014-02-17','2014-03-31 17:13:33'),(561,103,24,2,'prova01','','2014-01-20','2014-03-31 17:18:54'),(562,103,24,4,'prova01','Checado pelo Valdeí.','2014-01-20','2014-03-31 17:19:14'),(563,103,24,3,'prova01','','2014-01-20','2014-03-31 17:19:31'),(564,103,24,9,'prova01','','2014-01-31','2014-03-31 17:19:53'),(565,103,24,2,'prova02','','2014-02-03','2014-03-31 17:20:10'),(566,103,24,4,'prova02','Checado pela Ciça.','2014-02-03','2014-03-31 17:20:29'),(567,103,24,3,'prova02','','2014-02-03','2014-03-31 17:20:55'),(568,103,24,8,'prova02','','2014-02-07','2014-03-31 17:21:11'),(569,174,17,4,'prova01','','2014-04-03','2014-03-31 17:23:09'),(570,102,24,2,'prova01','','2014-02-06','2014-03-31 17:23:52'),(571,102,24,4,'prova01','Checado pelo Valdeí.','2014-02-06','2014-03-31 17:24:24'),(572,102,24,3,'prova01','','2014-02-06','2014-03-31 17:24:37'),(573,175,17,4,'prova01','','2014-04-03','2014-03-31 17:24:53'),(574,102,24,9,'prova01','','2014-02-10','2014-03-31 17:24:54'),(575,102,24,2,'prova02','','2014-02-12','2014-03-31 17:25:15'),(576,102,24,4,'prova02','Checado pelo Valdeí.','2014-02-12','2014-03-31 17:25:35'),(577,102,24,3,'prova02','','2014-02-12','2014-03-31 17:25:51'),(578,102,24,8,'prova02','','2014-02-21','2014-03-31 17:26:09'),(579,176,17,4,'prova01','','2014-04-03','2014-03-31 17:26:17'),(580,177,17,4,'prova01','','2014-04-03','2014-03-31 17:27:41'),(581,97,24,2,'prova01','','2014-01-27','2014-03-31 17:29:13'),(582,97,24,4,'prova01','Checado pela Ciça.','2014-01-27','2014-03-31 17:29:40'),(583,97,24,3,'prova01','','2014-01-27','2014-03-31 17:29:54'),(584,97,24,8,'prova01','','2014-01-27','2014-03-31 17:30:08'),(585,110,24,2,'prova01','','2014-03-17','2014-03-31 17:31:16'),(586,110,24,4,'prova01','Checado pelo Valdeí.','2014-03-17','2014-03-31 17:31:34'),(587,110,24,3,'prova01','','2014-03-17','2014-03-31 17:31:46'),(588,110,24,8,'prova01','','2014-03-20','2014-03-31 17:32:02'),(589,112,24,2,'prova01','','2014-03-14','2014-03-31 17:33:06'),(590,112,24,4,'prova01','Checado pelo Valdeí.','2014-03-14','2014-03-31 17:33:54'),(591,112,24,3,'prova01','','2014-03-14','2014-03-31 17:34:10'),(592,112,24,8,'prova01','','2014-03-27','2014-03-31 17:34:24'),(593,135,24,2,'prova01','','2014-02-28','2014-03-31 17:35:46'),(594,135,24,4,'prova01','Checado pelo Valdeí.','2014-02-28','2014-03-31 17:36:05'),(595,135,24,3,'prova01','','2014-02-28','2014-03-31 17:36:18'),(596,135,24,8,'prova01','','2014-03-14','2014-03-31 17:36:36'),(597,141,24,2,'prova01','','2014-02-26','2014-03-31 17:37:38'),(598,141,24,4,'prova01','Checado pela Ana.','2014-02-26','2014-03-31 17:37:55'),(599,141,24,3,'prova01','','2014-02-27','2014-03-31 17:38:11'),(600,141,24,9,'prova01','','2014-03-25','2014-03-31 17:38:30'),(601,141,24,2,'prova02','','2014-03-25','2014-03-31 17:38:46'),(602,141,24,4,'prova02','Checado pela Bruna.','2014-03-25','2014-03-31 17:39:02'),(603,141,24,3,'prova02','','2014-03-25','2014-03-31 17:39:22'),(604,141,24,8,'prova02','','2014-03-25','2014-03-31 17:39:34'),(605,136,24,2,'prova01','','2014-02-25','2014-03-31 17:40:55'),(606,136,24,4,'prova01','Checado pela Ciça.','2014-02-25','2014-03-31 17:41:17'),(607,136,24,3,'prova01','','2014-02-25','2014-03-31 17:42:08'),(608,136,24,8,'prova01','','2014-02-27','2014-03-31 17:42:29'),(609,142,24,2,'prova01','','2014-02-21','2014-03-31 17:43:48'),(610,142,24,4,'prova01','Checado pela Ciça.','2014-02-21','2014-03-31 17:44:12'),(611,142,24,3,'prova01','','2014-02-21','2014-03-31 17:44:28'),(612,142,24,8,'prova01','','2014-02-24','2014-03-31 17:44:42'),(613,143,24,2,'prova01','','2014-02-20','2014-03-31 17:47:06'),(614,143,24,4,'prova01','Checado pela Ana.','2014-02-20','2014-03-31 17:47:24'),(615,143,24,3,'prova01','','2014-02-20','2014-03-31 17:47:37'),(616,143,24,8,'prova01','','2014-02-24','2014-03-31 17:47:52'),(617,144,24,2,'prova01','','2014-02-20','2014-03-31 17:48:58'),(618,144,24,4,'prova01','Checado pela Ana.','2014-02-20','2014-03-31 17:49:19'),(619,144,24,3,'prova01','','2014-02-20','2014-03-31 17:49:32'),(620,144,24,8,'prova01','','2014-02-24','2014-03-31 17:49:45'),(621,145,24,2,'prova01','','2014-02-20','2014-03-31 17:50:45'),(622,145,24,4,'prova01','Checado pelo Valdeí.','2014-02-20','2014-03-31 17:51:04'),(623,145,24,3,'prova01','','2014-02-20','2014-03-31 17:51:19'),(624,145,24,8,'prova01','','2014-02-24','2014-03-31 17:51:34'),(625,137,24,2,'prova01','','2014-02-25','2014-03-31 17:53:13'),(626,137,24,4,'prova01','Checado pela Ciça.','2014-02-25','2014-03-31 17:53:31'),(627,137,24,3,'prova01','','2014-02-25','2014-03-31 17:53:49'),(628,137,24,8,'prova01','','2014-02-27','2014-03-31 17:54:02'),(629,138,24,2,'prova01','','2014-02-25','2014-03-31 17:58:06'),(630,138,24,4,'prova01','Checado pela Ciça.','2014-02-25','2014-03-31 17:58:28'),(631,138,24,3,'prova01','','2014-02-25','2014-03-31 17:58:39'),(632,138,24,8,'prova01','','2014-02-27','2014-03-31 17:58:54'),(633,139,24,2,'prova01','','2014-02-26','2014-03-31 17:59:52'),(634,139,24,4,'prova01','Checado pela Renata.','2014-02-26','2014-03-31 18:00:13'),(635,139,24,3,'prova01','','2014-02-26','2014-03-31 18:00:26'),(636,139,24,8,'prova01','','2014-02-27','2014-03-31 18:00:39'),(637,140,24,2,'prova01','','2014-02-26','2014-03-31 18:01:43'),(638,140,24,4,'prova01','Checado pela Renata.','2014-02-26','2014-03-31 18:02:11'),(639,140,24,3,'prova01','','2014-02-26','2014-03-31 18:02:21'),(640,140,24,8,'prova01','','2014-02-27','2014-03-31 18:02:34'),(641,29,17,3,'prova01','','2014-04-03','2014-03-31 18:03:35'),(642,30,17,3,'prova01','','2014-04-03','2014-03-31 18:04:57'),(643,18,17,3,'prova01','','2014-04-03','2014-03-31 18:08:12'),(644,27,17,3,'prova01','','2014-04-03','2014-03-31 18:08:55'),(645,28,17,2,'prova01','','2014-04-01','2014-03-31 18:16:33'),(646,19,17,2,'prova01','','2014-04-01','2014-03-31 18:22:24'),(647,147,24,2,'prova01','','2014-03-07','2014-04-01 10:45:30'),(648,147,24,4,'prova01','Checado pela Ciça.','2014-03-07','2014-04-01 10:45:56'),(649,147,24,3,'prova01','','2014-02-10','2014-04-01 10:46:17'),(650,147,24,9,'prova01','','2014-03-14','2014-04-01 10:46:58'),(651,147,24,2,'prova02','','2014-03-14','2014-04-01 10:47:12'),(652,147,24,4,'prova02','Checado pela Renata.','2014-03-14','2014-04-01 10:47:46'),(653,147,24,3,'prova02','','2014-03-14','2014-04-01 10:48:03'),(654,147,24,8,'prova02','','2014-03-14','2014-04-01 10:48:30'),(655,146,24,2,'prova01','','2014-03-06','2014-04-01 10:49:18'),(656,146,24,4,'prova01','Checado pela Renata.','2014-03-06','2014-04-01 10:49:47'),(657,146,24,2,'prova01','','2014-03-06','2014-04-01 10:50:05'),(658,146,24,4,'prova01','Checado pela Ciça.','2014-03-06','2014-04-01 10:50:29'),(659,146,24,3,'prova01','','2014-03-07','2014-04-01 10:50:55'),(660,146,24,9,'prova01','','2014-03-17','2014-04-01 10:51:13'),(661,146,24,2,'prova02','','2014-03-18','2014-04-01 10:51:29'),(662,146,24,4,'prova02','Checado pela Ciça.','2014-03-18','2014-04-01 10:51:59'),(663,146,24,3,'prova02','','2014-03-18','2014-04-01 10:52:21'),(664,146,24,8,'prova02','','2014-03-20','2014-04-01 10:52:35'),(665,148,24,2,'prova01','','2014-03-07','2014-04-01 10:55:07'),(666,148,24,4,'prova01','Checado pela Ciça.','2014-03-07','2014-04-01 10:55:25'),(667,148,24,3,'prova01','','2014-03-07','2014-04-01 10:55:43'),(668,148,24,8,'prova01','','2014-03-18','2014-04-01 10:55:56'),(669,149,24,2,'prova01','','2014-03-07','2014-04-01 10:56:37'),(670,149,24,4,'prova01','Checado pela Ciça.','2014-03-07','2014-04-01 10:57:03'),(671,149,24,3,'prova01','','2014-03-07','2014-04-01 10:57:19'),(672,149,24,8,'prova01','','2014-03-18','2014-04-01 10:57:32'),(673,150,24,2,'prova01','','2014-03-07','2014-04-01 10:58:40'),(674,150,24,4,'prova01','Checado pela Ciça.','2014-03-07','2014-04-01 10:59:00'),(675,150,24,3,'prova01','','2014-03-07','2014-04-01 10:59:14'),(676,150,24,9,'prova01','','2014-03-14','2014-04-01 10:59:39'),(677,150,24,2,'prova02','','2014-03-19','2014-04-01 11:00:03'),(678,150,24,4,'prova02','Checado pelo Valdeí.','2014-03-19','2014-04-01 11:00:26'),(679,150,24,3,'prova02','','2014-03-19','2014-04-01 11:00:46'),(680,150,24,9,'prova02','','2014-03-27','2014-04-01 11:01:03'),(681,150,24,2,'prova03','','2014-03-27','2014-04-01 11:01:29'),(682,150,24,4,'prova03','Checado pela Renata.','2014-03-27','2014-04-01 11:01:51'),(683,150,24,3,'prova03','','2014-03-27','2014-04-01 11:02:10'),(684,150,24,8,'prova03','','2014-03-28','2014-04-01 11:02:24'),(685,152,24,2,'prova01','','2014-03-10','2014-04-01 11:03:31'),(686,152,24,4,'prova01','Checado pelo Valdeí.','2014-03-10','2014-04-01 11:04:01'),(687,152,24,3,'prova01','','2014-03-10','2014-04-01 11:04:16'),(688,152,24,8,'prova01','','2014-03-18','2014-04-01 11:04:30'),(689,153,24,2,'prova01','','2014-03-11','2014-04-01 11:05:27'),(690,153,24,4,'prova01','Checado pela Ciça.','2014-03-11','2014-04-01 11:05:50'),(691,153,24,2,'prova01','','2014-03-11','2014-04-01 11:06:01'),(692,153,24,4,'prova01','Checado pela Bruna.','2014-03-11','2014-04-01 11:06:38'),(693,153,24,3,'prova01','','2014-03-11','2014-04-01 11:06:56'),(694,153,24,8,'prova01','','2014-03-18','2014-04-01 11:07:34'),(695,154,24,2,'prova01','','2014-03-10','2014-04-01 11:09:11'),(696,154,24,4,'prova01','Checado pelo Valdeí.','2014-03-10','2014-04-01 11:09:34'),(697,154,24,3,'prova01','','2014-03-10','2014-04-01 11:10:09'),(698,154,24,8,'prova01','','2014-03-18','2014-04-01 11:10:30'),(699,155,24,2,'prova01','','2014-03-10','2014-04-01 11:11:38'),(700,155,24,4,'prova01','Checado pelo Valdeí.','2014-03-10','2014-04-01 11:12:14'),(701,155,24,3,'prova01','','2014-03-10','2014-04-01 11:12:26'),(702,155,24,8,'prova01','','2014-03-18','2014-04-01 11:12:49'),(703,163,24,2,'prova01','','2014-03-12','2014-04-01 11:13:35'),(704,163,24,4,'prova01','Checado pelo Valdeí.','2014-03-12','2014-04-01 11:13:56'),(705,163,24,3,'prova01','','2014-03-12','2014-04-01 11:14:12'),(706,163,24,8,'prova01','','2014-03-19','2014-04-01 11:14:34'),(707,21,17,3,'prova01','','2014-04-01','2014-04-01 11:31:44'),(708,29,17,3,'prova01','','2014-04-01','2014-04-01 11:33:13'),(709,173,17,3,'prova01','','2014-04-03','2014-04-01 11:35:40'),(710,175,17,3,'prova01','','2014-04-03','2014-04-01 11:38:47'),(711,177,17,3,'prova01','','2014-04-03','2014-04-01 11:39:57'),(712,28,17,4,'prova01','','2014-04-02','2014-04-01 11:41:44'),(713,171,17,3,'prova01','','2014-04-03','2014-04-01 11:45:45'),(714,168,17,3,'prova01','','2014-04-03','2014-04-01 11:48:20'),(715,167,17,3,'prova01','','2014-04-03','2014-04-01 11:48:45'),(716,164,17,3,'prova01','','2014-04-03','2014-04-01 11:50:04'),(717,14,17,3,'prova02','','2014-04-03','2014-04-01 11:51:09'),(718,18,17,2,'prova02','','2014-04-02','2014-04-01 11:58:45'),(719,27,17,2,'prova02','','2014-04-02','2014-04-01 11:59:55'),(720,30,17,2,'prova02','','2014-04-02','2014-04-01 12:01:07'),(721,179,24,2,'prova01','','2014-02-19','2014-04-01 13:46:28'),(722,179,24,4,'prova01','Checado pela Ana.','2014-02-19','2014-04-01 13:46:50'),(723,179,24,3,'prova01','','2014-02-19','2014-04-01 13:47:04'),(724,179,24,8,'prova01','','2014-02-19','2014-04-01 13:47:17'),(725,164,17,2,'prova02','','2014-04-02','2014-04-01 14:43:44'),(726,171,17,2,'prova02','','2014-04-02','2014-04-01 14:45:06'),(727,173,17,2,'prova02','','2014-04-02','2014-04-01 14:46:07'),(728,177,17,2,'prova02','','2014-04-02','2014-04-01 14:47:17'),(729,19,17,4,'prova01','','2014-04-02','2014-04-01 14:54:31'),(730,95,24,2,'prova01','','2014-03-14','2014-04-01 15:00:06'),(731,95,24,4,'prova01','Checado pela Bruna.','2014-03-14','2014-04-01 15:00:26'),(732,95,24,3,'prova01','','2014-03-14','2014-04-01 15:00:41'),(733,95,24,9,'prova01','','2014-03-14','2014-04-01 15:00:55'),(734,95,24,2,'prova02','','2014-03-17','2014-04-01 15:01:13'),(735,95,24,4,'prova02','Checado pela Ana.','2014-03-17','2014-04-01 15:01:48'),(736,95,24,3,'prova02','','2014-03-20','2014-04-01 15:02:17'),(737,95,24,9,'prova02','','2014-03-21','2014-04-01 15:11:14'),(738,95,24,2,'prova03','','2014-03-26','2014-04-01 15:11:31'),(739,95,24,4,'prova03','Checado pela Renata.','2014-03-26','2014-04-01 15:12:29'),(740,95,24,3,'prova03','','2014-03-26','2014-04-01 15:12:44'),(741,95,24,8,'prova03','','2014-03-26','2014-04-01 15:12:55'),(742,127,24,2,'prova01','','2014-03-18','2014-04-01 15:15:10'),(743,127,24,4,'prova01','Checado pela Ana.','2014-03-18','2014-04-01 15:15:32'),(744,127,24,3,'prova01','','2014-03-18','2014-04-01 15:15:48'),(745,127,24,9,'prova01','','2014-03-26','2014-04-01 15:16:08'),(746,127,24,2,'prova02','','2014-03-26','2014-04-01 15:16:24'),(747,127,24,4,'prova02','Checado pelo Valdeí.','2014-03-26','2014-04-01 15:16:47'),(748,127,24,3,'prova02','','2014-03-26','2014-04-01 15:17:05'),(749,127,24,8,'prova02','','2014-03-28','2014-04-01 15:17:25'),(750,134,24,2,'prova01','','2014-03-27','2014-04-01 15:18:47'),(751,134,24,4,'prova01','Checado pela Renata.','2014-03-27','2014-04-01 15:19:12'),(752,134,24,3,'prova01','','2014-03-27','2014-04-01 15:19:25'),(753,134,24,8,'prova01','','2014-03-28','2014-04-01 15:19:40'),(754,24,24,4,'prova01','Checado pela Renata.','2014-03-28','2014-04-01 15:26:42'),(755,87,24,2,'prova01','','2014-03-28','2014-04-01 15:28:04'),(756,87,24,4,'prova01','Checado pela Ana.','2014-03-28','2014-04-01 15:28:30'),(757,123,24,2,'prova01','','2014-03-12','2014-04-01 15:29:34'),(758,123,24,4,'prova01','Checado pelo Valdeí.','2014-03-12','2014-04-01 15:30:01'),(759,123,24,2,'prova01','','2014-03-12','2014-04-01 15:30:10'),(760,123,24,4,'prova01','Checado pela Ana.','2014-03-12','2014-04-01 15:30:30'),(761,123,24,3,'prova01','','2014-03-13','2014-04-01 15:30:48'),(762,123,24,9,'prova01','','2014-03-18','2014-04-01 15:31:03'),(763,129,24,2,'prova01','','2014-03-28','2014-04-01 15:32:04'),(764,129,24,4,'prova01','Checado pela Ana.','2014-03-28','2014-04-01 15:32:26'),(765,129,24,2,'prova01','','2014-03-28','2014-04-01 15:32:39'),(767,129,24,4,'prova01','Checado pela Renata.','2014-03-28','2014-04-01 15:32:57'),(768,131,24,2,'prova01','','2014-03-01','2014-04-01 15:34:05'),(769,131,24,4,'prova01','Checado pelo Valdeí. ','2014-03-01','2014-04-01 15:34:25'),(770,132,24,2,'prova01','','2014-03-27','2014-04-01 15:35:22'),(771,132,24,4,'prova01','Checado pelo Valdeí.','2014-03-27','2014-04-01 15:35:49'),(772,132,24,2,'prova01','','2014-03-27','2014-04-01 15:36:09'),(773,132,24,4,'prova01','Checado pela Bruna.','2014-03-27','2014-04-01 15:36:24'),(774,133,24,2,'prova01','','2014-03-20','2014-04-01 15:37:21'),(775,133,24,4,'prova01','Checado pela Ciça.','2014-03-20','2014-04-01 15:37:41'),(776,161,24,2,'prova01','','2014-03-12','2014-04-01 15:39:37'),(777,161,24,4,'prova01','Checado pela Ana.','2014-03-12','2014-04-01 15:39:55'),(779,67,17,4,'prova03','','2014-04-02','2014-04-01 15:47:15'),(780,106,24,2,'prova01','','2014-02-20','2014-04-01 15:47:15'),(781,106,24,4,'prova01','Checado pela Ana.','2014-02-20','2014-04-01 15:47:37'),(782,106,24,3,'prova01','','2014-02-20','2014-04-01 15:48:08'),(783,106,24,9,'prova01','','2014-02-28','2014-04-01 15:48:27'),(784,106,24,2,'prova02','','2014-03-07','2014-04-01 15:48:48'),(785,106,24,4,'prova02','Checado pelo Valdeí.','2014-03-07','2014-04-01 15:49:08'),(786,107,24,2,'prova01','','2014-02-20','2014-04-01 15:50:27'),(787,107,24,4,'prova01','Checado pela Renata.','2014-02-20','2014-04-01 15:50:48'),(788,107,24,2,'prova01','','2014-02-20','2014-04-01 15:51:03'),(789,107,24,4,'prova01','Checado pela Ana.','2014-02-20','2014-04-01 15:51:22'),(790,107,24,3,'prova01','','2014-02-21','2014-04-01 15:51:50'),(791,107,24,9,'prova01','','2014-03-07','2014-04-01 15:52:10'),(792,107,24,2,'prova02','','2014-03-14','2014-04-01 15:52:28'),(793,107,24,4,'prova02','Checado pela Ana.','2014-03-14','2014-04-01 15:52:53'),(794,107,24,3,'prova02','','2014-03-14','2014-04-01 15:53:13'),(795,107,24,9,'prova02','','2014-03-21','2014-04-01 15:53:33'),(796,107,24,2,'prova03','','2014-03-25','2014-04-01 15:53:48'),(797,107,24,4,'prova03','Checado pela Ana.','2014-03-25','2014-04-01 15:54:19'),(798,107,24,2,'prova03','','2014-03-25','2014-04-01 15:54:50'),(799,107,24,4,'prova03','Checado pelo Valdeí.','2014-03-25','2014-04-01 15:55:14'),(800,183,17,2,'prova01','','2014-04-03','2014-04-01 15:56:16'),(801,108,24,2,'prova01','','2014-02-21','2014-04-01 15:59:23'),(802,108,24,4,'prova01','Checado pelo Valdeí.','2014-02-21','2014-04-01 15:59:50'),(803,108,24,3,'prova01','','2014-02-24','2014-04-01 16:00:10'),(804,108,24,9,'prova01','','2014-03-07','2014-04-01 16:00:27'),(805,108,24,2,'prova02','','2014-03-14','2014-04-01 16:00:41'),(806,70,17,2,'prova01','','2014-04-03','2014-04-01 16:00:47'),(807,108,24,4,'prova02','Checado pela Ana.','2014-03-14','2014-04-01 16:00:59'),(808,108,24,3,'prova02','','2014-03-14','2014-04-01 16:01:19'),(809,108,24,9,'prova02','','2014-03-21','2014-04-01 16:01:35'),(810,108,24,2,'prova03','','2014-03-25','2014-04-01 16:01:51'),(811,108,24,4,'prova03','Checado pelo Valdeí.','2014-03-25','2014-04-01 16:02:19'),(812,108,24,2,'prova03','','2014-03-25','2014-04-01 16:02:35'),(813,108,24,4,'prova03','Checado pela Ana.','2014-03-25','2014-04-01 16:02:52'),(814,109,24,2,'prova01','','2014-02-21','2014-04-01 16:03:53'),(815,109,24,4,'prova01','Checado pela Ana.','2014-02-21','2014-04-01 16:04:16'),(816,109,24,3,'prova01','','2014-02-24','2014-04-01 16:05:07'),(817,109,24,9,'prova01','','2014-03-07','2014-04-01 16:05:21'),(818,109,24,2,'prova02','','2014-03-14','2014-04-01 16:05:39'),(819,109,24,4,'prova02','Checado pela Ana.','2014-03-14','2014-04-01 16:06:19'),(820,109,24,3,'prova02','','2014-03-14','2014-04-01 16:07:15'),(821,109,24,9,'prova02','','2014-03-21','2014-04-01 16:07:56'),(822,109,24,2,'prova03','','2014-03-25','2014-04-01 16:08:16'),(823,109,24,4,'prova03','Checado pela Ana.','2014-03-25','2014-04-01 16:08:38'),(824,109,24,2,'prova03','','2014-03-25','2014-04-01 16:08:49'),(825,109,24,4,'prova03','Checado pelo Valdeí.','2014-03-25','2014-04-01 16:09:08'),(826,28,17,2,'prova01','','2014-04-02','2014-04-01 16:09:22'),(827,113,24,2,'prova01','','2014-03-24','2014-04-01 16:09:56'),(828,113,24,4,'prova01','Checado pela Renata.','2014-03-24','2014-04-01 16:10:20'),(829,113,24,2,'prova01','','2014-03-24','2014-04-01 16:10:30'),(830,113,24,4,'prova01','Checado pela Bruna.','2014-03-24','2014-04-01 16:11:07'),(831,113,24,2,'prova01','','2014-03-24','2014-04-01 16:11:16'),(832,113,24,4,'prova01','Checado pela Ana.','2014-03-24','2014-04-01 16:11:33'),(833,114,24,2,'prova01','','2014-03-25','2014-04-01 16:12:25'),(834,114,24,4,'prova01','Checado pela Ana.','2014-03-25','2014-04-01 16:12:47'),(835,115,24,2,'prova01','','2014-03-25','2014-04-01 16:13:36'),(836,115,24,4,'prova01','Checado pelo Valdeí.','2014-03-25','2014-04-01 16:24:56'),(837,115,24,3,'prova01','','2014-03-25','2014-04-01 16:25:09'),(838,115,24,9,'prova01','','2014-03-27','2014-04-01 16:25:28'),(839,115,24,2,'prova02','','2014-03-31','2014-04-01 16:25:56'),(840,115,24,4,'prova02','Checado pela Ana.','2014-03-31','2014-04-01 16:26:20'),(841,164,17,4,'prova02','','2014-04-02','2014-04-01 17:01:45'),(842,18,17,4,'prova02','','2014-04-02','2014-04-01 17:02:42'),(843,27,17,4,'prova02','','2014-04-02','2014-04-01 17:03:24'),(844,28,17,4,'prova02','','2014-04-02','2014-04-01 17:06:33'),(845,30,17,4,'prova02','','2014-04-02','2014-04-01 17:08:09');
 
---
--- Table structure for table `moderna_objects_suppliers`
---
+/*Table structure for table `moderna_priorities` */
 
-CREATE TABLE IF NOT EXISTS `moderna_objects_suppliers` (
-  `object_id` int(11) NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  KEY `object_id` (`object_id`),
-  KEY `supplier_id` (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `moderna_priorities`;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `moderna_priorities`
---
-
-CREATE TABLE IF NOT EXISTS `moderna_priorities` (
+CREATE TABLE `moderna_priorities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `priority` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_priorities`
---
+/*Data for the table `moderna_priorities` */
 
-INSERT INTO `moderna_priorities` (`id`, `priority`) VALUES
-(1, 'Alta'),
-(2, 'Média'),
-(3, 'Baixa');
+insert  into `moderna_priorities`(`id`,`priority`) values (1,'Alta'),(2,'Média'),(3,'Baixa');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_projects` */
 
---
--- Table structure for table `moderna_projects`
---
+DROP TABLE IF EXISTS `moderna_projects`;
 
-CREATE TABLE IF NOT EXISTS `moderna_projects` (
+CREATE TABLE `moderna_projects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `segmento_id` int(11) DEFAULT NULL,
   `description` text,
   `pasta` varchar(50) DEFAULT NULL,
+  `status` enum('0','1') DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `segmento_id` (`segmento_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  KEY `segmento_id` (`segmento_id`),
+  CONSTRAINT `moderna_projects_ibfk_1` FOREIGN KEY (`segmento_id`) REFERENCES `moderna_segmentos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_projects`
---
+/*Data for the table `moderna_projects` */
 
-INSERT INTO `moderna_projects` (`id`, `name`, `segmento_id`, `description`, `pasta`) VALUES
-(2, 'PNLD 2015', 1, 'OED''s em HTML5', 'pnld_2015'),
-(3, 'Araribá', 1, 'dfadfa', 'arariba');
+insert  into `moderna_projects`(`id`,`name`,`segmento_id`,`description`,`pasta`,`status`) values (4,'PNLD 2016',2,'Buriti Digital','buriti','0'),(5,'Araribá',3,'Reformulação do Araribá','arariba','1'),(6,'Vereda Digital',1,'Correções nos ppts','vereda_digital','1');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_roles` */
 
---
--- Table structure for table `moderna_roles`
---
+DROP TABLE IF EXISTS `moderna_roles`;
 
-CREATE TABLE IF NOT EXISTS `moderna_roles` (
+CREATE TABLE `moderna_roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `moderna_roles`
---
+/*Data for the table `moderna_roles` */
 
-INSERT INTO `moderna_roles` (`id`, `name`, `description`) VALUES
-(1, 'login', NULL),
-(2, 'admin', NULL),
-(3, 'coordenador', NULL),
-(4, 'assistente', NULL);
+insert  into `moderna_roles`(`id`,`name`,`description`) values (1,'login',NULL),(2,'admin',NULL),(3,'coordenador',NULL),(4,'assistente',NULL),(5,'assistente 2',NULL);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_roles_users` */
 
---
--- Table structure for table `moderna_roles_users`
---
+DROP TABLE IF EXISTS `moderna_roles_users`;
 
-CREATE TABLE IF NOT EXISTS `moderna_roles_users` (
+CREATE TABLE `moderna_roles_users` (
   `role_id` int(10) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`role_id`,`user_id`),
   KEY `fk_moderna_roles_has_moderna_users_moderna_users1` (`user_id`),
-  KEY `fk_moderna_roles_has_moderna_users_moderna_roles1` (`role_id`)
+  KEY `fk_moderna_roles_has_moderna_users_moderna_roles1` (`role_id`),
+  CONSTRAINT `fk_moderna_roles_has_moderna_users_moderna_roles1` FOREIGN KEY (`role_id`) REFERENCES `moderna_roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `moderna_roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `moderna_users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `moderna_roles_users`
---
+/*Data for the table `moderna_roles_users` */
 
-INSERT INTO `moderna_roles_users` (`role_id`, `user_id`) VALUES
-(1, 3),
-(2, 3),
-(1, 7),
-(4, 7),
-(1, 8),
-(4, 8),
-(1, 9),
-(3, 9),
-(1, 10),
-(3, 10),
-(1, 11),
-(3, 11),
-(1, 12),
-(4, 12),
-(1, 16),
-(4, 16);
+insert  into `moderna_roles_users`(`role_id`,`user_id`) values (1,3),(2,3),(3,3),(4,3),(5,3),(1,7),(4,7),(1,8),(4,8),(1,10),(3,10),(1,11),(3,11),(1,12),(3,12),(4,12),(5,12),(1,16),(5,16),(1,18),(5,18),(1,19),(4,19),(1,20),(3,20),(1,21),(2,21),(3,21),(4,21),(5,21),(1,22),(4,22),(1,23),(4,23),(1,24),(4,24),(1,25),(5,25),(1,26),(4,26),(1,27),(4,27),(1,28),(4,28),(1,29),(4,29),(1,30),(4,30),(1,31),(4,31),(1,32),(4,32),(1,33),(4,33),(1,34),(4,34);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_segmentos` */
 
---
--- Table structure for table `moderna_segmentos`
---
+DROP TABLE IF EXISTS `moderna_segmentos`;
 
-CREATE TABLE IF NOT EXISTS `moderna_segmentos` (
+CREATE TABLE `moderna_segmentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_segmentos`
---
+/*Data for the table `moderna_segmentos` */
 
-INSERT INTO `moderna_segmentos` (`id`, `nome`) VALUES
-(1, 'Ensino médio'),
-(2, 'Fundamental 1'),
-(3, 'Fundamental 2');
+insert  into `moderna_segmentos`(`id`,`name`) values (1,'Ensino médio'),(2,'Fundamental 1'),(3,'Fundamental 2');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_status` */
 
---
--- Table structure for table `moderna_softwares`
---
+DROP TABLE IF EXISTS `moderna_status`;
 
-CREATE TABLE IF NOT EXISTS `moderna_softwares` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `moderna_softwares`
---
-
-INSERT INTO `moderna_softwares` (`id`, `nome`) VALUES
-(1, 'Flash CS5'),
-(2, 'After Effects CS5');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `moderna_status`
---
-
-CREATE TABLE IF NOT EXISTS `moderna_status` (
+CREATE TABLE `moderna_status` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `status` varchar(45) DEFAULT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `class` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_status`
---
+/*Data for the table `moderna_status` */
 
-INSERT INTO `moderna_status` (`id`, `status`) VALUES
-(5, 'Aguardando'),
-(6, 'Encaminhada'),
-(7, 'Concluída');
+insert  into `moderna_status`(`id`,`status`,`type`,`class`) values (1,'não iniciado','object',NULL),(2,'em produção','object',NULL),(3,'com RT/conteúdo','object','object_review'),(4,'em checagem','object',NULL),(5,'em aberto','task','task_open'),(6,'iniciada','task','task_started'),(7,'entregue','task','task_finished'),(8,'finalizado','object','object_finished'),(9,'em consolidação','object',NULL),(10,'gravação de áudio','object',NULL);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_suppliers` */
 
---
--- Table structure for table `moderna_status_tasks`
---
+DROP TABLE IF EXISTS `moderna_suppliers`;
 
-CREATE TABLE IF NOT EXISTS `moderna_status_tasks` (
+CREATE TABLE `moderna_suppliers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status_id` int(11) unsigned NOT NULL,
-  `task_id` int(11) unsigned NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `description` text,
-  `userInfo_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`status_id`,`task_id`,`userInfo_id`),
-  KEY `task_id` (`task_id`),
-  KEY `status_id` (`status_id`),
-  KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `moderna_status_tasks`
---
-
-INSERT INTO `moderna_status_tasks` (`id`, `status_id`, `task_id`, `date`, `description`, `userInfo_id`) VALUES
-(1, 5, 1, '2013-02-18 13:22:00', 'Gravar locução', 4),
-(2, 5, 1, '2013-02-19 17:05:41', 'teste', 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `moderna_suppliers`
---
-
-CREATE TABLE IF NOT EXISTS `moderna_suppliers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `telefone` varchar(10) NOT NULL,
+  `telefone` varchar(100) NOT NULL,
   `empresa` varchar(100) NOT NULL,
   `site` varchar(100) DEFAULT NULL,
   `trabalho` varchar(150) NOT NULL,
   `observacoes` text NOT NULL,
+  `aprovado` enum('0','1','2') DEFAULT '1',
+  `team_id` int(11) DEFAULT NULL,
+  `order` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_suppliers`
---
+/*Data for the table `moderna_suppliers` */
 
-INSERT INTO `moderna_suppliers` (`id`, `nome`, `email`, `telefone`, `empresa`, `site`, `trabalho`, `observacoes`) VALUES
-(1, 'Talles', 'talles@cpc.com.br', '3058-2244', 'CPC', 'www.cpc.com.br', 'Flash / Vídeo', ''),
-(2, 'Zé Ricardo', 'zericardo@vexprodutora.com.br', '2659-5905', 'Vex produtora', 'www.vexprodutora.com.br', 'Vídeo', 'Produziu os vídeos de autor - Araribá 2011');
+insert  into `moderna_suppliers`(`id`,`name`,`email`,`telefone`,`empresa`,`site`,`trabalho`,`observacoes`,`aprovado`,`team_id`,`order`) values (1,'Talles','talles@cpc.com.br','3058-2244','CPC','www.cpc.com.br','Flash / Vídeo','','2',NULL,1),(2,'Zé Ricardo','zericardo@vexprodutora.com.br','2659-5905','Vex produtora','www.vexprodutora.com.br','Vídeo','Produziu os vídeos de autor - Araribá 2011','2',NULL,1),(3,'Pablo Bourdiel','pablo@estudiob3.com.br','2463-3404','Estúdio B3','www.estudiob3.com.br','HTML5 / Vídeo / Ilustrações','','2',NULL,1),(5,'Ana','ana@estudiomol.com.br','3815-7564','Estúdio Mol','www.estudiomol.com.br','HTML5 / Vídeo / Ilustrações','Converteu objetos de Buriti Mat.','2',NULL,1),(6,'Eder','eder@perugluglu.com.br','3368-7544','Peru Gluglu','','HTML5 / Vídeo / Ilustrações','','2',NULL,1),(7,'Marcelo Monteiro','marcelo@maejoanahouse.com.br','2389-6108 ','Casa da mãe joana (MJH)','www.maejoanahouse.com.br','HTML5 / Vídeo / Ilustrações','Fornecedor na produção do PNLD 2015 para a FTD. Mostrou prints interessantes.','1',NULL,1),(8,'Beto Uechi','beto@pingado.com','3255-3240','Pingado','','HTML5 / Vídeo / Ilustrações','','1',NULL,1),(9,'Romenig Ribeiro','romenigribeiro@aprendee.com.br','0000000','Aprendee (Romenig)','','HTML5','','1',NULL,1),(10,'roberto','roberto.ono@moderna.com.br','27901330','Moderna (interno)','','','','1',NULL,0),(11,'roberto','roberto.ono@moderna.com.br','2790-1330','(em aberto)','','','','1',NULL,0);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_tasks` */
 
---
--- Table structure for table `moderna_tasks`
---
+DROP TABLE IF EXISTS `moderna_tasks`;
 
-CREATE TABLE IF NOT EXISTS `moderna_tasks` (
+CREATE TABLE `moderna_tasks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `priority_id` int(11) unsigned NOT NULL,
-  `project_id` int(11) unsigned NOT NULL,
+  `object_id` int(11) unsigned NOT NULL,
+  `userInfo_id` int(11) NOT NULL,
+  `status_id` int(11) DEFAULT NULL,
   `crono_date` datetime DEFAULT NULL,
-  `userInfo_id` int(11) NOT NULL,
-  `title` varchar(45) DEFAULT NULL,
-  `pasta` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`id`,`priority_id`,`project_id`,`userInfo_id`),
+  `topic` varchar(255) NOT NULL,
+  `description` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `task_id` int(11) DEFAULT '0',
+  `task_to` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`,`object_id`,`userInfo_id`),
   KEY `fk_moderna_tasks_moderna_users1` (`userInfo_id`),
-  KEY `priority_id` (`priority_id`),
-  KEY `project_id` (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  CONSTRAINT `moderna_tasks_ibfk_3` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_tasks`
---
+/*Data for the table `moderna_tasks` */
 
-INSERT INTO `moderna_tasks` (`id`, `created_at`, `priority_id`, `project_id`, `crono_date`, `userInfo_id`, `title`, `pasta`) VALUES
-(1, '2013-02-18 13:21:54', 2, 2, '2013-02-19 00:00:00', 4, 'Gravar locução', 'locucao');
+insert  into `moderna_tasks`(`id`,`object_id`,`userInfo_id`,`status_id`,`crono_date`,`topic`,`description`,`created_at`,`task_id`,`task_to`) values (1,11,17,5,'2014-03-25 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap01p_introducao_fisica ','2014-03-24 13:34:17',0,0),(2,12,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap03p_movimento_uniforme','2014-03-24 13:36:39',0,0),(3,13,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap04p_movimento_uniformemente_variado','2014-03-24 13:39:59',0,0),(4,14,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap08_movimento_circular','2014-03-24 13:42:40',0,0),(5,15,17,5,'2014-03-25 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap09p_leis_newton','2014-03-24 13:43:52',0,0),(6,16,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap11p_trabalho_potencia','2014-03-24 13:45:35',0,0),(7,17,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap12p_energia_mecanica','2014-03-24 13:46:27',0,0),(8,18,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap15p_estatica','2014-03-24 13:47:09',0,21),(9,20,17,5,'2014-03-25 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap19p_calorimetria','2014-03-24 13:48:26',0,0),(10,21,17,5,'2014-03-27 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap20p_mudancas_de_estado','2014-03-24 13:49:11',0,0),(11,2,18,5,'2014-03-24 00:00:00','Produção','A Ana já fez toda a parte que não dependia de programação. \nO objeto está na rede, na pasta abaixo: \n\nG:\\Depto\\01_PRODUCAO\\02_arariba\\02_novos\\ciências\\ARcie6_un02mi_parques_nacionais\\provas\\01\\ARcie6_un2mi_parques_nacionais_V1\n','2014-03-24 15:03:33',0,0),(17,19,17,5,'2014-03-28 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap18p_dilatometria\n\nAs imagens novas estão na pasta:\nG:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap18p_dilatometria\\imagens\\altas','2014-03-25 10:05:45',0,0),(18,13,8,6,'2014-03-25 00:00:00','correção',NULL,'2014-03-25 14:15:43',3,0),(19,26,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap14p_gravitacao_universal','2014-03-26 08:32:17',0,0),(20,27,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap16p_hidrostatica','2014-03-26 08:33:48',0,0),(21,28,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas','2014-03-26 08:35:01',0,0),(22,29,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap29p_acustica','2014-03-26 08:36:03',0,0),(23,30,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap39p_ondas_eletromagneticas','2014-03-26 08:37:05',0,0),(24,11,17,6,'2014-03-25 00:00:00','produção (PPT)',NULL,'2014-03-26 11:20:32',1,0),(25,11,17,7,'2014-03-25 00:00:00','produção (PPT)','Tarefa feita pelo Valdei','2014-03-26 11:21:40',1,0),(26,11,17,5,'2014-03-27 00:00:00','checagem ','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap01p_introducao_fisica\\provas\\01','2014-03-26 11:23:36',0,0),(27,15,17,6,'2014-03-24 00:00:00','correção',NULL,'2014-03-26 11:24:32',5,0),(28,15,17,7,'2014-03-24 00:00:00','correção','Feita pelo Valdei','2014-03-26 11:24:44',5,0),(29,15,17,5,'2014-03-27 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap09p_leis_newton\\provas\\01','2014-03-26 11:27:17',0,0),(30,20,17,6,'2014-03-25 00:00:00','produção (PPT)',NULL,'2014-03-26 11:28:52',9,0),(31,20,17,7,'2014-03-25 00:00:00','produção (PPT)','Feita pelo Valdei','2014-03-26 11:29:01',9,0),(32,20,17,5,'2014-03-27 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap19p_calorimetria\\provas\\01','2014-03-26 11:30:18',0,0),(33,13,8,7,'2014-03-27 00:00:00','produção (PPT)','Não consigo fazer pois no meu computador está trocando fonte. Repassei para o Valdeí.','2014-03-26 12:05:43',3,0),(37,12,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 15:11:51',2,0),(38,12,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 15:12:00',2,0),(39,14,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 15:13:16',4,0),(40,14,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 15:13:22',4,0),(41,16,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 15:13:54',6,0),(42,16,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 15:13:59',6,0),(43,17,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 15:14:14',7,0),(44,17,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 15:14:17',7,0),(45,19,21,6,'2014-03-28 00:00:00','produção (PPT)',NULL,'2014-03-26 15:14:34',17,0),(46,19,21,7,'2014-03-28 00:00:00','produção (PPT)','','2014-03-26 15:14:38',17,0),(47,21,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 15:14:55',10,0),(48,21,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 15:14:59',10,0),(58,18,21,6,'2014-03-27 00:00:00','produção (PPT)',NULL,'2014-03-26 19:12:20',8,0),(59,18,21,7,'2014-03-27 00:00:00','produção (PPT)','','2014-03-26 19:12:26',8,0),(60,11,8,6,'2014-03-27 00:00:00','checagem ',NULL,'2014-03-27 09:37:47',26,0),(61,11,8,7,'2014-03-27 00:00:00','checagem ','Está ok','2014-03-27 09:58:22',26,0),(62,15,8,6,'2014-03-27 00:00:00','checagem',NULL,'2014-03-27 10:00:45',29,0),(63,2,9,6,'2014-03-24 00:00:00','Produção',NULL,'2014-03-27 10:32:30',11,0),(64,15,8,7,'2014-03-27 00:00:00','checagem','Está ok','2014-03-27 10:32:34',29,0),(65,20,8,6,'2014-03-27 00:00:00','checagem',NULL,'2014-03-27 10:33:33',32,0),(66,20,8,7,'2014-03-27 00:00:00','checagem','Está ok','2014-03-27 10:46:19',32,0),(67,26,8,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-27 10:47:18',19,0),(68,12,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap03p_movimento_uniforme\\provas\\01','2014-03-27 11:07:52',0,8),(69,26,8,7,'2014-04-01 00:00:00','produção (PPT)','Prova 01 na rede:\n\nG:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap14p_gravitacao_universal\\provas\\01','2014-03-27 11:10:08',19,0),(70,13,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap04p_movimento_uniformemente_variado\\provas\\01','2014-03-27 11:10:19',0,8),(71,14,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap08_movimento_circular\\provas\\01','2014-03-27 11:11:49',0,8),(72,16,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap11p_trabalho_potencia\\provas\\01','2014-03-27 11:13:21',0,8),(73,17,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap12p_energia_mecanica\\provas\\01','2014-03-27 11:14:47',0,8),(74,18,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap15p_estatica\\provas\\01','2014-03-27 11:19:00',0,30),(75,21,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap20p_mudancas_de_estado\\provas\\01','2014-03-27 11:20:18',0,8),(76,19,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap18p_dilatometria\\provas\\01','2014-03-27 11:21:40',0,30),(77,26,17,5,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap14p_gravitacao_universal\\provas\\01','2014-03-27 11:24:08',0,21),(78,12,8,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 11:27:02',68,0),(79,27,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-27 12:22:10',20,0),(80,27,21,7,'2014-04-01 00:00:00','produção (PPT)','','2014-03-27 12:26:59',20,0),(81,28,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-27 12:28:14',21,0),(82,33,18,5,'2014-03-28 00:00:00','Produção','G:\\Depto\\01_PRODUCAO\\02_arariba\\02_novos\\geografia\\ARgeo6_un01in_conservacao\n\nAs legendas dos mapas já estão atualizadas.','2014-03-27 12:29:51',0,22),(83,12,8,7,'2014-03-28 00:00:00','checagem','Está ok','2014-03-27 14:01:12',68,0),(84,28,21,7,'2014-04-01 00:00:00','produção (PPT)','','2014-03-27 14:14:40',21,0),(85,13,8,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 14:20:49',70,0),(86,29,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-27 14:36:06',22,0),(87,29,21,7,'2014-04-01 00:00:00','produção (PPT)','','2014-03-27 14:36:09',22,0),(88,30,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-27 14:36:18',23,0),(89,30,21,7,'2014-04-01 00:00:00','produção (PPT)','','2014-03-27 14:36:22',23,0),(90,13,8,7,'2014-03-28 00:00:00','checagem','está ok','2014-03-27 14:52:37',70,0),(91,27,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap16p_hidrostatica\\provas\\01','2014-03-27 15:07:47',0,30),(92,28,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas\\provas\\01','2014-03-27 15:09:47',0,30),(93,29,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap29p_acustica\\provas\\01','2014-03-27 15:10:30',0,30),(94,30,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap39p_ondas_eletromagneticas\\provas\\01','2014-03-27 15:11:17',0,30),(95,14,8,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 15:29:21',71,0),(96,26,21,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 15:44:45',77,0),(97,26,21,7,'2014-03-28 00:00:00','checagem','','2014-03-27 15:44:52',77,0),(98,14,8,7,'2014-03-28 00:00:00','checagem','Está ok','2014-03-27 15:52:49',71,0),(99,16,8,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 16:27:03',72,0),(100,16,8,7,'2014-03-28 00:00:00','checagem','Está ok','2014-03-27 16:36:33',72,0),(101,17,8,6,'2014-03-28 00:00:00','checagem',NULL,'2014-03-27 16:46:34',73,0),(102,17,8,7,'2014-03-28 00:00:00','checagem','Está ok','2014-03-27 18:05:36',73,0),(103,21,8,6,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap20p_mudancas_de_estado\\provas\\01','2014-03-28 10:59:35',75,0),(104,21,8,7,'2014-03-28 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap20p_mudancas_de_estado\\provas\\01','2014-03-28 10:59:51',75,0),(105,164,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap07p_movimentos_bidimensionais','2014-03-31 09:16:42',0,8),(106,165,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap22p_gases_perfeitos','2014-03-31 09:19:25',0,21),(107,166,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap23p_termodinamica','2014-03-31 09:20:39',0,21),(108,167,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap24p_optica_geometrica\n\nImagem nova na pasta \'imagens\'.','2014-03-31 09:21:56',0,8),(109,168,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap25p_reflexao_da_luz','2014-03-31 09:23:35',0,8),(110,169,17,5,'2014-04-02 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap26p_refracao_da_luz','2014-03-31 09:24:50',0,21),(111,170,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap30p_introcucao_eletricidade\n\nImagens novas na pasta \'imagens\'.','2014-03-31 09:26:35',0,21),(112,171,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap31p_campo_eletrico','2014-03-31 09:27:32',0,8),(113,172,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap32p_potencial_eletrico','2014-03-31 09:28:15',0,21),(114,173,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap33p_corrente_eletrica','2014-03-31 09:29:25',0,8),(115,174,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap34p_resistores','2014-03-31 09:30:21',0,21),(116,175,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap35p_geradores_receptores','2014-03-31 09:31:01',0,8),(117,176,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap37p_forca_magnetica','2014-03-31 09:31:50',0,21),(118,177,17,5,'2014-04-03 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap40p_nocoes_fisica_moderna','2014-03-31 09:32:34',0,8),(119,12,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap03p_movimento_uniforme\n\nAs emendas estão a lápis. Gerar prova02. ','2014-03-31 09:35:26',0,21),(120,14,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap08_movimento_circular\n\nAs emendas estão a lápis. Gerar prova02. ','2014-03-31 09:36:44',0,8),(121,16,17,5,'2014-04-01 00:00:00','produção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap11p_trabalho_potencia\n\nAs emendas estão a lápis. Gerar prova 02.','2014-03-31 09:38:13',0,21),(122,12,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-31 11:10:31',119,0),(123,12,21,7,'2014-04-01 00:00:00','produção (PPT)','Ok. corrigido.','2014-03-31 11:11:19',119,0),(124,16,21,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-31 11:11:38',121,0),(125,16,21,7,'2014-04-01 00:00:00','produção (PPT)','Ok, corrigido.','2014-03-31 11:11:54',121,0),(126,2,9,7,'2014-03-24 00:00:00','Produção','Finalizado.\n\nG:\\Depto\\01_PRODUCAO\\02_arariba\\02_novos\\ciências\\ARcie6_un02mi_parques_nacionais\\provas\\01','2014-03-31 11:15:57',11,0),(127,165,21,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 11:21:21',106,0),(128,165,21,7,'2014-04-02 00:00:00','produção (PPT)','Ok. foram feitas as correções pedidas.','2014-03-31 11:21:47',106,0),(129,166,21,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 12:19:30',107,0),(130,166,21,7,'2014-04-02 00:00:00','produção (PPT)','Ok, feitas as correções pedidas.','2014-03-31 12:19:52',107,0),(131,169,21,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 12:28:01',110,0),(132,169,21,7,'2014-04-02 00:00:00','produção (PPT)','Ok, feitas as correções pedidas.','2014-03-31 12:28:24',110,0),(133,14,8,6,'2014-04-01 00:00:00','produção (PPT)',NULL,'2014-03-31 14:00:23',120,0),(134,14,8,7,'2014-04-01 00:00:00','produção (PPT)','prova gerada.','2014-03-31 14:23:54',120,0),(135,170,21,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 14:45:38',111,0),(136,170,21,7,'2014-04-03 00:00:00','produção (PPT)','Ok, feitas as correções solicitadas.','2014-03-31 14:45:54',111,0),(137,164,8,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 14:55:13',105,0),(138,12,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap03p_movimento_uniforme\\provas\\02','2014-03-31 14:55:40',0,30),(139,172,21,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 14:55:55',113,0),(140,172,21,7,'2014-04-03 00:00:00','produção (PPT)','Ok, feitas as correções pedidas. ','2014-03-31 14:56:26',113,0),(141,14,17,5,'2014-04-01 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap08_movimento_circular\\provas\\02','2014-03-31 14:56:38',0,21),(142,16,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap11p_trabalho_potencia\\provas\\02','2014-03-31 14:57:49',0,30),(143,164,8,7,'2014-04-02 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 14:59:31',105,0),(144,167,8,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 15:00:22',108,0),(145,167,8,7,'2014-04-02 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 15:02:10',108,0),(146,168,8,6,'2014-04-02 00:00:00','produção (PPT)',NULL,'2014-03-31 15:03:35',109,0),(147,168,8,7,'2014-04-02 00:00:00','produção (PPT)','prova 01 na rede','2014-03-31 15:04:22',109,0),(148,171,8,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:05:19',112,0),(149,171,8,7,'2014-04-03 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 15:05:29',112,0),(150,173,8,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:05:48',114,0),(151,174,21,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:06:08',115,0),(152,174,21,7,'2014-04-03 00:00:00','produção (PPT)','Ok, feitas as correções solicitadas.','2014-03-31 15:06:31',115,0),(153,173,8,7,'2014-04-03 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 15:06:51',114,0),(154,175,8,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:07:00',116,0),(155,175,8,7,'2014-04-03 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 15:08:23',116,0),(156,177,8,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:08:36',118,0),(157,177,8,7,'2014-04-03 00:00:00','produção (PPT)','prova 1 na rede','2014-03-31 15:09:19',118,0),(158,176,21,6,'2014-04-03 00:00:00','produção (PPT)',NULL,'2014-03-31 15:10:28',117,0),(159,176,21,7,'2014-04-03 00:00:00','produção (PPT)','Ok, foram feitas as correções solicitadas.','2014-03-31 15:10:46',117,0),(160,14,21,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 15:29:27',141,0),(161,14,21,7,'2014-04-01 00:00:00','checagem','Está ok, foram feitas as solicitações pedida.','2014-03-31 15:33:18',141,0),(162,164,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap07p_movimentos_bidimensionais\\provas\\01','2014-03-31 16:12:13',0,21),(163,165,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap22p_gases_perfeitos\\provas\\01','2014-03-31 16:15:15',0,30),(164,166,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap23p_termodinamica\\provas\\01','2014-03-31 16:17:11',0,30),(165,167,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap24p_optica_geometrica\\provas\\01','2014-03-31 16:18:54',0,21),(166,168,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap25p_reflexao_da_luz\\provas\\01','2014-03-31 16:20:30',0,21),(167,169,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap26p_refracao_da_luz\\provas\\01','2014-03-31 16:21:36',0,30),(168,164,21,6,'2014-04-02 00:00:00','checagem',NULL,'2014-03-31 16:31:43',162,0),(169,164,21,7,'2014-04-02 00:00:00','checagem','Está ok, foi feita a solicitação pedida.','2014-03-31 16:32:30',162,0),(170,170,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap30p_introcucao_eletricidade\\provas\\01','2014-03-31 16:34:39',0,30),(171,167,21,6,'2014-04-02 00:00:00','checagem',NULL,'2014-03-31 16:35:10',165,0),(172,167,21,7,'2014-04-02 00:00:00','checagem','Está ok, feita a solicitação pedida.','2014-03-31 16:35:33',165,0),(173,168,21,6,'2014-04-02 00:00:00','checagem',NULL,'2014-03-31 16:39:58',166,0),(174,168,21,7,'2014-04-02 00:00:00','checagem','Está ok, foram feitas as solicitações pedidas.','2014-03-31 16:40:27',166,0),(175,30,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 16:42:35',94,0),(176,29,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 16:46:06',93,0),(177,30,30,7,'2014-04-01 00:00:00','checagem','Ok, checada.','2014-03-31 16:50:22',94,0),(178,29,30,7,'2014-04-01 00:00:00','checagem','Checagem Ok.','2014-03-31 16:53:42',93,0),(179,28,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 16:54:06',92,0),(180,171,17,5,'2014-04-03 00:00:00','checagem ','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap31p_campo_eletrico\\provas\\01','2014-03-31 16:54:11',0,21),(181,172,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap32p_potencial_eletrico\\provas\\01','2014-03-31 16:56:22',0,30),(182,27,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 17:03:39',91,0),(183,19,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 17:04:17',76,0),(184,18,30,6,'2014-04-01 00:00:00','checagem',NULL,'2014-03-31 17:05:30',74,0),(185,171,21,6,'2014-04-03 00:00:00','checagem ',NULL,'2014-03-31 17:05:43',180,0),(186,171,21,7,'2014-04-03 00:00:00','checagem ','Está ok, foram feitas as solicitações pedidas.','2014-03-31 17:06:04',180,0),(187,173,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap33p_corrente_eletrica\\provas\\01','2014-03-31 17:18:42',0,21),(188,174,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap34p_resistores\\provas\\01','2014-03-31 17:23:44',0,30),(189,175,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap35p_geradores_receptores\\provas\\01','2014-03-31 17:25:25',0,21),(190,176,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap37p_forca_magnetica\\provas\\01','2014-03-31 17:26:49',0,30),(191,177,17,5,'2014-04-03 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap40p_nocoes_fisica_moderna\\provas\\01','2014-03-31 17:28:04',0,21),(192,19,30,7,'2014-04-01 00:00:00','checagem','Correção:\n\nSlide 6 e 7:\n- alinhar o tracejado de cima e debaixo ajustando-o rente a ilustração.\n\nSlide 19:\nOK','2014-03-31 17:32:41',76,0),(193,28,30,7,'2014-04-01 00:00:00','checagem','Correções:\n\nSlide 30:\nAs palavras \"com\" e \"sem\" devem estar em bold não em itálico, porém no relatório foi pedido para colocar em itálico.\n\nOs outros slides estão OK.','2014-03-31 17:40:58',92,0),(194,27,30,7,'2014-04-01 00:00:00','checagem','Checagem Ok.','2014-03-31 17:50:25',91,0),(195,18,30,7,'2014-04-01 00:00:00','checagem','Checagem Ok.','2014-03-31 17:55:50',74,0),(196,28,17,5,'2014-04-01 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas\\provas\\01\n\nCorrigir conforme indicação no slide 30. Foi aplicado corretamente o itálico no local indicado, porém o editor disse que queria bold, não itálico. \nSubstituir a prova.','2014-03-31 18:19:46',0,21),(197,19,17,5,'2014-04-01 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap18p_dilatometria\\provas\\01\n\nCorrigir conforme observações da Nathália. Substituir a prova.','2014-03-31 18:23:17',0,21),(198,28,21,6,'2014-04-01 00:00:00','correção (PPT)',NULL,'2014-04-01 09:40:30',196,0),(199,28,21,7,'2014-04-01 00:00:00','correção (PPT)','Ok, corrigido, está na rede.','2014-04-01 09:40:50',196,0),(200,173,21,6,'2014-04-03 00:00:00','checagem',NULL,'2014-04-01 10:43:44',187,0),(201,173,21,7,'2014-04-03 00:00:00','checagem','Está ok, foram feitas as solicitações pedidas.','2014-04-01 10:44:09',187,0),(202,175,21,6,'2014-04-03 00:00:00','checagem',NULL,'2014-04-01 10:46:12',189,0),(203,175,21,7,'2014-04-03 00:00:00','checagem','Está ok, foram feitas as solicitações pedidas.','2014-04-01 10:46:29',189,0),(204,177,21,6,'2014-04-03 00:00:00','checagem',NULL,'2014-04-01 10:51:35',191,0),(205,177,21,7,'2014-04-03 00:00:00','checagem','Está ok, foram feitas as correções pedidas.','2014-04-01 10:51:59',191,0),(206,19,21,6,'2014-04-01 00:00:00','correção (PPT)',NULL,'2014-04-01 11:35:35',197,0),(207,19,21,7,'2014-04-01 00:00:00','correção (PPT)','Ok, feitas as correções pedidas.','2014-04-01 11:36:08',197,0),(208,28,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas\\provas\\01','2014-04-01 11:43:51',0,30),(209,18,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap15p_estatica\\provas\\01','2014-04-01 11:59:21',0,21),(210,27,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap16p_hidrostatica\\provas\\01','2014-04-01 12:00:27',0,21),(211,30,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap39p_ondas_eletromagneticas\\provas\\01','2014-04-01 12:01:27',0,21),(212,67,17,5,'2014-04-02 00:00:00','correção (vídeo)','Nos créditos, deve ser: \'Acesso em 25 mar. 2014.\', ao invés de 2012.\nGerar v3\n\nG:\\Depto\\01_PRODUCAO\\02_arariba\\04_material_3os\\portugues\\ARpor6_un02vt_grio\\provas\\02\n\n','2014-04-01 13:53:55',0,30),(213,164,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap07p_movimentos_bidimensionais\\provas\\01','2014-04-01 14:44:20',0,21),(214,171,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap31p_campo_eletrico\\provas\\01','2014-04-01 14:45:38',0,8),(215,173,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap33p_corrente_eletrica\\provas\\01','2014-04-01 14:46:28',0,8),(216,177,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap40p_nocoes_fisica_moderna\\provas\\01','2014-04-01 14:47:37',0,8),(217,67,30,6,'2014-04-02 00:00:00','correção (vídeo)',NULL,'2014-04-01 14:52:39',212,0),(218,19,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap18p_dilatometria\\provas\\01','2014-04-01 14:55:01',0,30),(219,18,21,6,'2014-04-02 00:00:00','correção (PPT)',NULL,'2014-04-01 15:17:31',209,0),(220,18,21,7,'2014-04-02 00:00:00','correção (PPT)','Corrigido, na rede como v2.','2014-04-01 15:18:06',209,0),(221,67,30,7,'2014-04-02 00:00:00','correção (vídeo)','segue a v3:\n\nG:\\Depto\\01_PRODUCAO\\02_arariba\\04_material_3os\\portugues\\ARpor6_un02vt_grio\\provas\\03','2014-04-01 15:19:31',212,0),(222,28,30,6,'2014-04-02 00:00:00','checagem',NULL,'2014-04-01 15:19:55',208,0),(223,27,21,6,'2014-04-02 00:00:00','correção (PPT)',NULL,'2014-04-01 15:22:03',210,0),(224,27,21,7,'2014-04-02 00:00:00','correção (PPT)','Corrigido, na rede prova 02.','2014-04-01 15:22:23',210,0),(225,28,30,7,'2014-04-02 00:00:00','checagem','Correção: \n\nSlide 30:\nna frase da opção \"B)\" arrumar a palavra \"refrete\" para \"reflete\"\n','2014-04-01 15:25:16',208,0),(226,30,21,6,'2014-04-02 00:00:00','correção (PPT)',NULL,'2014-04-01 15:26:00',211,0),(227,30,21,7,'2014-04-02 00:00:00','correção (PPT)','Corrigido. Na rede prova 02.','2014-04-01 15:26:22',211,0),(228,164,21,6,'2014-04-02 00:00:00','correção (PPT)',NULL,'2014-04-01 15:31:26',213,0),(229,164,21,7,'2014-04-02 00:00:00','correção (PPT)','Corrigido. Na rede prova 02.','2014-04-01 15:31:45',213,0),(230,67,17,5,'2014-04-02 00:00:00','checagem','A indicação da editora foi: Nos créditos, deve ser \'Acesso em 25 mar. 2014.\', ao invés de 2012.\n\nG:\\Depto\\01_PRODUCAO\\02_arariba\\04_material_3os\\portugues\\ARpor6_un02vt_grio\\provas\\03','2014-04-01 15:53:20',0,21),(231,183,17,5,'2014-04-03 00:00:00','produção (vídeo)','G:\\Depto\\01_PRODUCAO\\02_arariba\\04_material_3os\\portugues\\ARpor9_un08vt_palhaco_making_of\n\nVídeo na pasta _originais.\nRelatório na pasta raiz: ARpor9_un08vt_palhaco_making_of_REL\n\nGerar v1. Criar pasta abertos com premiere e after.\n','2014-04-01 15:57:48',0,30),(232,70,17,5,'2014-04-03 00:00:00','produção (vídeo)','G:\\Depto\\01_PRODUCAO\\02_arariba\\04_material_3os\\portugues\\ARpor9_un01vt_liberdade\n\nVídeo na pasta _originais\nRelatório na pasta raiz: ARpor9_un01vt_liberdade_REL\n\nGerar v1. Criar pasta abertos com arquivos premiere e after.\n','2014-04-01 16:02:08',0,30),(233,28,17,5,'2014-04-02 00:00:00','correção (PPT)','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas\\provas\\01\n\nConforme indicado pela Nathália> Slide 30:\nna frase da opção \"B)\" arrumar a palavra \"refrete\" para \"reflete\"','2014-04-01 16:10:28',0,21),(234,28,21,6,'2014-04-02 00:00:00','correção (PPT)',NULL,'2014-04-01 16:20:07',233,0),(235,28,21,7,'2014-04-02 00:00:00','correção (PPT)','Corrigido, na rede prova 02.','2014-04-01 16:21:05',233,0),(236,164,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap07p_movimentos_bidimensionais\\provas\\02','2014-04-01 17:02:08',0,8),(237,18,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap15p_estatica\\provas\\02','2014-04-01 17:02:59',0,8),(238,27,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap16p_hidrostatica\\provas\\02','2014-04-01 17:03:41',0,8),(239,28,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap28p_estudo_das_ondas\\provas\\01','2014-04-01 17:07:38',0,8),(240,30,17,5,'2014-04-02 00:00:00','checagem','G:\\Depto\\01_PRODUCAO\\07_vereda\\fisica\\VDfis_cap39p_ondas_eletromagneticas\\provas\\01','2014-04-01 17:08:43',0,8),(241,67,21,6,'2014-04-02 00:00:00','checagem',NULL,'2014-04-01 17:15:31',230,0),(242,67,21,7,'2014-04-02 00:00:00','checagem','Está ok, foram feitas as correções pedidas.','2014-04-01 17:15:54',230,0);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_teams` */
 
---
--- Table structure for table `moderna_tasks_users`
---
+DROP TABLE IF EXISTS `moderna_teams`;
 
-CREATE TABLE IF NOT EXISTS `moderna_tasks_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `task_id` int(11) unsigned NOT NULL,
-  `userInfo_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`task_id`,`userInfo_id`),
-  KEY `task_id` (`task_id`),
-  KEY `userInfo_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `moderna_tasks_users`
---
-
-INSERT INTO `moderna_tasks_users` (`id`, `task_id`, `userInfo_id`) VALUES
-(2, 1, 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `moderna_teams`
---
-
-CREATE TABLE IF NOT EXISTS `moderna_teams` (
+CREATE TABLE `moderna_teams` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `userInfo_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
-  KEY `user_id` (`userInfo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+  KEY `user_id` (`userInfo_id`),
+  CONSTRAINT `moderna_teams_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_teams`
---
+/*Data for the table `moderna_teams` */
 
-INSERT INTO `moderna_teams` (`id`, `name`, `userInfo_id`) VALUES
-(1, 'Produção', 4),
-(3, 'Arte', 11),
-(4, 'Conteúdo', 10),
-(5, 'Iconográfia', 12);
+insert  into `moderna_teams`(`id`,`name`,`userInfo_id`) values (1,'Produção',4),(3,'Arte',13),(4,'Conteúdo',19),(5,'Iconográfia',12);
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_typeobjects` */
 
---
--- Table structure for table `moderna_typeobjects`
---
+DROP TABLE IF EXISTS `moderna_typeobjects`;
 
-CREATE TABLE IF NOT EXISTS `moderna_typeobjects` (
+CREATE TABLE `moderna_typeobjects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_typeobjects`
---
+/*Data for the table `moderna_typeobjects` */
 
-INSERT INTO `moderna_typeobjects` (`id`, `nome`) VALUES
-(1, 'Animação'),
-(2, 'Mapa animado'),
-(3, 'Mapa interativo');
+insert  into `moderna_typeobjects`(`id`,`name`) values (1,'an - Animação'),(2,'ma - Mapa animado'),(3,'mi - Mapa interativo'),(4,'at - Atividade'),(5,'au - Áudio'),(6,'jg - Jogo'),(7,'si - Simulador'),(8,'vt - Vídeo de terceiros'),(9,'vde - Vídeo de experimento'),(10,'ve - Vídeo exploratório'),(11,'vr - Vídeo reportagem'),(12,'vc - Vídeo conversa com o  autor/editor/especialista'),(13,'sg - Atividade elaborada no SantillanaGo'),(14,'aut- Áudio de terceiros'),(15,'mc - Mapas conceituais'),(16,'sd - Sequência didática digital (ppt)'),(17,'in - Multimídia interativa'),(18,'ai - Animação interativa'),(19,'tu - Vídeo tutorial'),(20,'pc - Painel de história da arte comentado'),(21,'va - Vídeo animação');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_userinfos` */
 
---
--- Table structure for table `moderna_userinfos`
---
+DROP TABLE IF EXISTS `moderna_userinfos`;
 
-CREATE TABLE IF NOT EXISTS `moderna_userinfos` (
+CREATE TABLE `moderna_userinfos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
-  `cargo` varchar(50) NOT NULL,
+  `cargo` varchar(50) DEFAULT NULL,
   `foto` varchar(255) DEFAULT 'public/image/admin/default.png',
   `data_aniversario` date DEFAULT NULL,
   `user_id` int(11) unsigned NOT NULL,
@@ -649,31 +441,21 @@ CREATE TABLE IF NOT EXISTS `moderna_userinfos` (
   `ramal` varchar(45) DEFAULT NULL,
   `telefone` varchar(15) DEFAULT NULL,
   `mailer` tinyint(4) NOT NULL DEFAULT '1',
+  `status` enum('0','1') DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `moderna_userinfos_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `moderna_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_userinfos`
---
+/*Data for the table `moderna_userinfos` */
 
-INSERT INTO `moderna_userinfos` (`id`, `nome`, `email`, `cargo`, `foto`, `data_aniversario`, `user_id`, `team_id`, `ramal`, `telefone`, `mailer`) VALUES
-(4, 'Roberto', 'roberto.ono@moderna.com.br', '', 'public/upload/userinfos/colorful___28__1362718858.jpg', '2000-03-08', 3, 1, '1330', '2790-1330', 1),
-(8, 'Ana', 'editorial_tec22@moderna.com.br', '', 'public/upload/userinfos/penguins_1359665367.jpg', '2000-01-16', 7, 1, '2435', '', 1),
-(9, 'Renato', 'renato.rocha@moderna.com.br', '', 'public/upload/userinfos/desert_1358364620.jpg', NULL, 8, 1, '2483', '', 1),
-(10, 'Luciana', 'editorial_tec18@moderna.com.br', '', 'public/image/admin/default.png', NULL, 9, 4, '2168', '', 1),
-(11, 'Fabio Ventura', 'fabio.ventura@moderna.com.br', '', 'public/image/admin/default.png', NULL, 10, 3, '', '', 1),
-(12, 'Renate', '', '', 'public/image/admin/default.png', NULL, 11, 5, '', '', 1),
-(13, 'Eduardo Bertolini', '', '', 'public/image/admin/default.png', NULL, 12, 3, '2180', '', 1),
-(17, 'Renata Michelin', '', '', 'public/image/admin/default.png', NULL, 16, 1, '', '', 1);
+insert  into `moderna_userinfos`(`id`,`nome`,`email`,`cargo`,`foto`,`data_aniversario`,`user_id`,`team_id`,`ramal`,`telefone`,`mailer`,`status`) values (4,'Roberto Andrade Ono','roberto.ono@moderna.com.br','','public/upload/userinfos/dark_flame_hd_wide_1395955319.jpg','2000-03-27',3,1,'1330','2790-1330',1,'1'),(8,'Ana Maria Totaro Delgado','editorial_tec22@moderna.com.br','','public/upload/userinfos/up_movie_balloons_house_wide_1374591047.jpg',NULL,7,1,'2403','',1,'1'),(9,'Renato Frias Rocha Ibiapina','renato.rocha@moderna.com.br','','public/upload/userinfos/eu_1348251301_1374590942.jpg',NULL,8,1,'2483','',1,'1'),(12,'Renate Hartfiel','editorial_tec19@moderna.com.br','','public/image/admin/default.png',NULL,11,5,'2185','',1,'1'),(13,'Eduardo Reche Bertolini','eduardo.bertolini@moderna.com.br','','public/image/admin/default.png',NULL,12,3,'2180','',1,'1'),(17,'Renata Campos Michelin','editorial_tec26@moderna.com.br','','public/upload/userinfos/Chrysanthemum.jpg',NULL,16,1,'1528','',1,'1'),(18,'Cecília Japiassu Reis (Ciça)','editorial_tec14@moderna.com.br',NULL,'public/upload/userinfos/03_1395684576.png',NULL,18,1,'2170','99102-4618',1,'1'),(19,'Maria José Guimarães de Souza','maria.guimaraes@moderna.com.br',NULL,'public/image/admin/default.png',NULL,20,4,'2168','',1,'1'),(20,'Kelly Mayumi Ishida ','kelly.ishida@moderna.com.br',NULL,'public/upload/userinfos/Hydrangeas.jpg',NULL,21,4,'1275','',1,'1'),(21,'Valdeí Prazeres','editorial_tec10@moderna.com.br',NULL,'public/image/admin/default.png',NULL,22,1,'2189','',1,'1'),(22,'Daniel Palmeira dos Passos','dpassos@moderna.com.br',NULL,'public/image/admin/default.png',NULL,23,1,'2484','',1,'1'),(23,'Audrey Ribas Camargo','audrey.camargo@moderna.com.br',NULL,'public/upload/userinfos/dark_flame_hd_wide_1395932405.jpg',NULL,24,4,'2190','',1,'1'),(24,'Bruna Bressan Bosnic','bruna.bosnic@moderna.com.br',NULL,'public/upload/userinfos/Koala.jpg',NULL,25,4,'1387','',1,'1'),(25,'Cyntia Góes Lemos','cyntia.lemos@moderna.com.br',NULL,'public/image/admin/default.png',NULL,26,4,'2185','',1,'1'),(26,'Denise Ceron','denise.ceron@moderna.com.br',NULL,'public/image/admin/default.png',NULL,27,4,'2201','',1,'1'),(27,'Diego Rezende','editorial_tec28@moderna.com.br',NULL,'public/image/admin/default.png',NULL,28,4,'2178','',1,'1'),(28,'Felipe Jordani','editorial_tec27@moderna.com.br',NULL,'public/image/admin/default.png',NULL,29,4,'2195','',1,'1'),(29,'Luciana Arico Rathsam','luciana.rathsam@moderna.com.br',NULL,'public/image/admin/default.png',NULL,30,4,'2169','',1,'1'),(30,'Nathália Ramalho Curi','ncuri@moderna.com.br ',NULL,'public/image/admin/default.png',NULL,31,1,'','',1,'1'),(31,'Ramiro Morais Torres','revisao_uno01@moderna.com.br',NULL,'public/image/admin/default.png',NULL,32,4,'2201','',1,'1'),(32,'Rodrigo Luis de Andrade','editorial_tec32@moderna.com.br',NULL,'public/image/admin/default.png',NULL,33,3,'2172','',1,'1'),(33,'Sidnei Oliveira','sidnei.oliveira@moderna.com.br',NULL,'public/image/admin/default.png',NULL,34,4,'1470','',1,'1');
 
--- --------------------------------------------------------
+/*Table structure for table `moderna_users` */
 
---
--- Table structure for table `moderna_users`
---
+DROP TABLE IF EXISTS `moderna_users`;
 
-CREATE TABLE IF NOT EXISTS `moderna_users` (
+CREATE TABLE `moderna_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) CHARACTER SET latin1 NOT NULL,
   `password` varchar(64) CHARACTER SET latin1 NOT NULL,
@@ -681,128 +463,82 @@ CREATE TABLE IF NOT EXISTS `moderna_users` (
   `last_login` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `moderna_users`
---
+/*Data for the table `moderna_users` */
 
-INSERT INTO `moderna_users` (`id`, `username`, `password`, `logins`, `last_login`) VALUES
-(3, 'roberto.ono', '165bbc63336c60ac8e5246c8f11c9616863925c3', 35, 1362714719),
-(7, 'ana.totaro', '165bbc63336c60ac8e5246c8f11c9616863925c3', 15, 1360266542),
-(8, 'renato.rocha', '165bbc63336c60ac8e5246c8f11c9616863925c3', 4, 1358364901),
-(9, 'luciana.soares', '165bbc63336c60ac8e5246c8f11c9616863925c3', 0, NULL),
-(10, 'fabio.ventura', '165bbc63336c60ac8e5246c8f11c9616863925c3', 6, 1360324838),
-(11, 'renate', '165bbc63336c60ac8e5246c8f11c9616863925c3', 0, NULL),
-(12, 'eduardo.bertolini', '165bbc63336c60ac8e5246c8f11c9616863925c3', 4, 1360325596),
-(16, 'renata.michelin', '165bbc63336c60ac8e5246c8f11c9616863925c3', 0, NULL);
+insert  into `moderna_users`(`id`,`username`,`password`,`logins`,`last_login`) values (3,'roberto.ono','06aba7453d74901201918fe36721643c05da680d',148,1396374181),(7,'ana.totaro','165bbc63336c60ac8e5246c8f11c9616863925c3',64,1396381325),(8,'renato.rocha','165bbc63336c60ac8e5246c8f11c9616863925c3',13,1396284900),(10,'fabio.ventura','165bbc63336c60ac8e5246c8f11c9616863925c3',6,1360324838),(11,'renate','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(12,'eduardo.bertolini','165bbc63336c60ac8e5246c8f11c9616863925c3',8,1395871509),(16,'renata.michelin','b02aff0a559f3f620a72bef2a769fd8c3b89e352',32,1396382456),(18,'cica.reis','af2f481a7f31dce005f7a3c84def76bf849d1c6c',30,1396044034),(19,'luiz.resende','165bbc63336c60ac8e5246c8f11c9616863925c3',4,1377185431),(20,'maria.jose','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(21,'kelly.ishida','165bbc63336c60ac8e5246c8f11c9616863925c3',3,1395933695),(22,'valdei.prazeres','dead42596af274a81b088691e6730db2f14f8374',8,1396362929),(23,'daniel.passos','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(24,'audrey.camargo','165bbc63336c60ac8e5246c8f11c9616863925c3',4,1395941872),(25,'bruna.bosnic','165bbc63336c60ac8e5246c8f11c9616863925c3',6,1396359470),(26,'cyntia.lemos','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(27,'denise.ceron','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(28,'diego.rezende','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(29,'felipe.jordani','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(30,'luciana.rathsam','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(31,'nathalia.curi','165bbc63336c60ac8e5246c8f11c9616863925c3',5,1396374667),(32,'ramiro.torres','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(33,'rodrigo.andrade','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL),(34,'sidnei.oliveira','165bbc63336c60ac8e5246c8f11c9616863925c3',0,NULL);
 
---
--- Constraints for dumped tables
---
+/*Table structure for table `moderna_objectshistories` */
 
---
--- Constraints for table `moderna_collections`
---
-ALTER TABLE `moderna_collections`
-  ADD CONSTRAINT `moderna_collections_ibfk_1` FOREIGN KEY (`segmento_id`) REFERENCES `moderna_segmentos` (`id`);
+DROP TABLE IF EXISTS `moderna_objectshistories`;
 
---
--- Constraints for table `moderna_files`
---
-ALTER TABLE `moderna_files`
-  ADD CONSTRAINT `moderna_files_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
+/*!50001 DROP VIEW IF EXISTS `moderna_objectshistories` */;
+/*!50001 DROP TABLE IF EXISTS `moderna_objectshistories` */;
 
---
--- Constraints for table `moderna_media`
---
-ALTER TABLE `moderna_media`
-  ADD CONSTRAINT `moderna_media_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
+/*!50001 CREATE TABLE  `moderna_objectshistories`(
+ `id` int(11) unsigned ,
+ `object_id` int(11) unsigned ,
+ `userInfo_id` int(11) ,
+ `status_id` int(11) ,
+ `crono_date` date ,
+ `topic` varchar(255) ,
+ `description` text ,
+ `task_to` varchar(11) ,
+ `created_at` timestamp ,
+ `prova` varchar(10) ,
+ `type` varchar(6) 
+)*/;
 
---
--- Constraints for table `moderna_menus_roles`
---
-ALTER TABLE `moderna_menus_roles`
-  ADD CONSTRAINT `moderna_menus_roles_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `moderna_roles` (`id`),
-  ADD CONSTRAINT `moderna_menus_roles_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `moderna_menus` (`id`);
+/*Table structure for table `moderna_objectstatus` */
 
---
--- Constraints for table `moderna_objects`
---
-ALTER TABLE `moderna_objects`
-  ADD CONSTRAINT `cmp_pais_fk` FOREIGN KEY (`country_id`) REFERENCES `moderna_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `moderna_objects_ibfk_1` FOREIGN KEY (`collection_id`) REFERENCES `moderna_collections` (`id`),
-  ADD CONSTRAINT `tipo_obj_fk` FOREIGN KEY (`typeobject_id`) REFERENCES `moderna_typeobjects` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+DROP TABLE IF EXISTS `moderna_objectstatus`;
 
---
--- Constraints for table `moderna_objects_materias`
---
-ALTER TABLE `moderna_objects_materias`
-  ADD CONSTRAINT `moderna_objects_materias_ibfk_1` FOREIGN KEY (`object_id`) REFERENCES `moderna_objects` (`id`),
-  ADD CONSTRAINT `moderna_objects_materias_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `moderna_materias` (`id`);
+/*!50001 DROP VIEW IF EXISTS `moderna_objectstatus` */;
+/*!50001 DROP TABLE IF EXISTS `moderna_objectstatus` */;
 
---
--- Constraints for table `moderna_objects_softwares`
---
-ALTER TABLE `moderna_objects_softwares`
-  ADD CONSTRAINT `moderna_objects_softwares_ibfk_1` FOREIGN KEY (`object_id`) REFERENCES `moderna_objects` (`id`),
-  ADD CONSTRAINT `moderna_objects_softwares_ibfk_2` FOREIGN KEY (`sfwprod_id`) REFERENCES `moderna_softwares` (`id`);
+/*!50001 CREATE TABLE  `moderna_objectstatus`(
+ `id` int(11) ,
+ `title` varchar(200) ,
+ `taxonomia` varchar(100) ,
+ `typeobject_id` int(11) ,
+ `typeobject_name` varchar(255) ,
+ `collection_id` int(11) ,
+ `collection_name` varchar(100) ,
+ `anotacoes` text ,
+ `materia_id` bigint(11) ,
+ `materia_name` varchar(100) ,
+ `supplier_id` int(11) ,
+ `supplier_empresa` varchar(100) ,
+ `fase` enum('0','1','2','3') ,
+ `interatividade` enum('0','1') ,
+ `reaproveitamento` enum('0','1') ,
+ `task_open` bigint(21) ,
+ `task_init` bigint(21) ,
+ `status_id` bigint(11) ,
+ `statu_status` varchar(45) ,
+ `statu_class` varchar(50) ,
+ `prova` varchar(10) ,
+ `retorno` date ,
+ `crono_date` date ,
+ `project_id` bigint(11) 
+)*/;
 
---
--- Constraints for table `moderna_objects_suppliers`
---
-ALTER TABLE `moderna_objects_suppliers`
-  ADD CONSTRAINT `moderna_objects_suppliers_ibfk_1` FOREIGN KEY (`object_id`) REFERENCES `moderna_objects` (`id`),
-  ADD CONSTRAINT `moderna_objects_suppliers_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `moderna_suppliers` (`id`);
+/*View structure for view moderna_objectshistories */
 
---
--- Constraints for table `moderna_projects`
---
-ALTER TABLE `moderna_projects`
-  ADD CONSTRAINT `moderna_projects_ibfk_1` FOREIGN KEY (`segmento_id`) REFERENCES `moderna_segmentos` (`id`);
+/*!50001 DROP TABLE IF EXISTS `moderna_objectshistories` */;
+/*!50001 DROP VIEW IF EXISTS `moderna_objectshistories` */;
 
---
--- Constraints for table `moderna_roles_users`
---
-ALTER TABLE `moderna_roles_users`
-  ADD CONSTRAINT `fk_moderna_roles_has_moderna_users_moderna_roles1` FOREIGN KEY (`role_id`) REFERENCES `moderna_roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `moderna_roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `moderna_users` (`id`);
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `moderna_objectshistories` AS select `mt`.`id` AS `id`,`mt`.`object_id` AS `object_id`,`mt`.`userInfo_id` AS `userInfo_id`,`mt`.`status_id` AS `status_id`,`mt`.`crono_date` AS `crono_date`,`mt`.`topic` AS `topic`,`mt`.`description` AS `description`,`mt`.`task_to` AS `task_to`,`mt`.`created_at` AS `created_at`,'prova' AS `prova`,'tasks' AS `type` from `moderna_tasks` `mt` where (`mt`.`task_id` = '0') union select `mos`.`id` AS `id`,`mos`.`object_id` AS `object_id`,`mos`.`userInfo_id` AS `userInfo_id`,`mos`.`status_id` AS `status_id`,`mos`.`crono_date` AS `crono_date`,`mos`.`id` AS `topic`,`mos`.`description` AS `description`,'0' AS `task_to`,`mos`.`created_at` AS `created_at`,`mos`.`prova` AS `prova`,'status' AS `type` from `moderna_objects_status` `mos` */;
 
---
--- Constraints for table `moderna_status_tasks`
---
-ALTER TABLE `moderna_status_tasks`
-  ADD CONSTRAINT `moderna_status_tasks_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `moderna_tasks` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `moderna_status_tasks_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `moderna_status` (`id`) ON DELETE NO ACTION,
-  ADD CONSTRAINT `moderna_status_tasks_ibfk_5` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
+/*View structure for view moderna_objectstatus */
 
---
--- Constraints for table `moderna_tasks`
---
-ALTER TABLE `moderna_tasks`
-  ADD CONSTRAINT `moderna_tasks_ibfk_1` FOREIGN KEY (`priority_id`) REFERENCES `moderna_priorities` (`id`),
-  ADD CONSTRAINT `moderna_tasks_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `moderna_projects` (`id`),
-  ADD CONSTRAINT `moderna_tasks_ibfk_3` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
+/*!50001 DROP TABLE IF EXISTS `moderna_objectstatus` */;
+/*!50001 DROP VIEW IF EXISTS `moderna_objectstatus` */;
 
---
--- Constraints for table `moderna_tasks_users`
---
-ALTER TABLE `moderna_tasks_users`
-  ADD CONSTRAINT `moderna_tasks_users_ibfk_3` FOREIGN KEY (`task_id`) REFERENCES `moderna_tasks` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `moderna_tasks_users_ibfk_4` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `moderna_objectstatus` AS (select `obj`.`id` AS `id`,`obj`.`title` AS `title`,`obj`.`taxonomia` AS `taxonomia`,`obj`.`typeobject_id` AS `typeobject_id`,(select `to`.`name` from `moderna_typeobjects` `to` where (`to`.`id` = `obj`.`typeobject_id`) limit 1) AS `typeobject_name`,`obj`.`collection_id` AS `collection_id`,(select `mat`.`name` from `moderna_collections` `mat` where (`mat`.`id` = `obj`.`collection_id`) limit 1) AS `collection_name`,`obj`.`anotacoes` AS `anotacoes`,(select `mat`.`materia_id` from `moderna_collections` `mat` where (`mat`.`id` = `obj`.`collection_id`) limit 1) AS `materia_id`,(select `mat`.`name` from `moderna_materias` `mat` where (`mat`.`id` = `materia_id`) limit 1) AS `materia_name`,`obj`.`supplier_id` AS `supplier_id`,(select `ms`.`empresa` from `moderna_suppliers` `ms` where (`ms`.`id` = `obj`.`supplier_id`) limit 1) AS `supplier_empresa`,`obj`.`fase` AS `fase`,`obj`.`interatividade` AS `interatividade`,`obj`.`reaproveitamento` AS `reaproveitamento`,(select count(`mt`.`id`) from `moderna_tasks` `mt` where ((not(`mt`.`id` in (select `mts`.`task_id` from `moderna_tasks` `mts`))) and (`mt`.`status_id` = '5') and (`mt`.`object_id` = `obj`.`id`))) AS `task_open`,(select count(`mt`.`id`) from `moderna_tasks` `mt` where ((`mt`.`object_id` = `obj`.`id`) and (`mt`.`status_id` = '6') and (not(`mt`.`task_id` in (select `mts`.`task_id` from `moderna_tasks` `mts` where ((`mts`.`object_id` = `obj`.`id`) and (`mts`.`status_id` = '7'))))))) AS `task_init`,(select `mos`.`status_id` from `moderna_objects_status` `mos` where (`mos`.`object_id` = `obj`.`id`) order by `mos`.`id` desc limit 1) AS `status_id`,(select `mos`.`status` from `moderna_status` `mos` where (`mos`.`id` = `status_id`) limit 1) AS `statu_status`,(select `mos`.`class` from `moderna_status` `mos` where (`mos`.`id` = `status_id`) limit 1) AS `statu_class`,(select `mos`.`prova` from `moderna_objects_status` `mos` where (`mos`.`object_id` = `obj`.`id`) order by `mos`.`id` desc limit 1) AS `prova`,(select `mos`.`crono_date` from `moderna_objects_status` `mos` where (`mos`.`object_id` = `obj`.`id`) order by `mos`.`id` desc limit 1) AS `retorno`,`obj`.`crono_date` AS `crono_date`,(select `cp`.`project_id` from `moderna_collections_projects` `cp` where (`cp`.`collection_id` = `obj`.`collection_id`) limit 1) AS `project_id` from `moderna_objects` `obj`) */;
 
---
--- Constraints for table `moderna_teams`
---
-ALTER TABLE `moderna_teams`
-  ADD CONSTRAINT `moderna_teams_ibfk_1` FOREIGN KEY (`userInfo_id`) REFERENCES `moderna_userinfos` (`id`);
-
---
--- Constraints for table `moderna_userinfos`
---
-ALTER TABLE `moderna_userinfos`
-  ADD CONSTRAINT `moderna_userinfos_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `moderna_users` (`id`) ON DELETE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

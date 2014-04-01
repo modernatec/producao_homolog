@@ -13,7 +13,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);	
+		parent::__construct($request, $response);
+		$this->check_login();	
 	}
         
 	public function action_index($fase = null)
@@ -103,8 +104,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->bind('message', $message)
 			->set('values', $this->request->post());
                 
-        //$this->addPlupload();
-		$this->addValidateJs('public/js/admin/validateObjects.js');
+        $this->addValidateJs('public/js/admin/validateObjects.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->objVO = $this->setVO('object', $objeto);
@@ -344,15 +344,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_materia  = json_decode($this->request->query('materia'));					
 		$view->filter_taxonomia = $this->request->query('taxonomia');
 
-		$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();
-		$view->statusList = ORM::factory('objectStatu')->where('status_id', 'IN', DB::Select('id')->from('status'))->where('project_id', '=', $project_id)->group_by('status_id')->find_all();
-		
-		$view->collectionList = ORM::factory('objectStatu')->where('collection_id', 'IN', DB::Select('collection_id')->from('collections_projects'))->where('project_id', '=', $project_id)->group_by('collection_id')->find_all();
-		$view->suppliersList = ORM::factory('objectStatu')->where('supplier_id', 'IN', DB::Select('id')->from('suppliers'))->where('project_id', '=', $project_id)->group_by('supplier_id')->find_all();
-
-		$view->materiasList = ORM::factory('objectStatu')->where('materia_id', 'IN', DB::Select('id')->from('materias'))->group_by('materia_id')->find_all();
-
-		$query = ORM::factory('objectStatu')->where('fase', '=', $this->request->query('fase'));
+		$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
 
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -363,8 +355,73 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 
-		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
+		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->execute();
 		
+		/****Filtros*****/
+
+		$typeObjectsList = array();
+		$typeObjectsList_arr = array();
+		$typeObjectsList_index = array();
+
+		$statusList = array();
+		$statusList_arr = array();
+
+		$collectionList = array();
+		$collectionList_arr = array();
+
+		$suppliersList = array();
+		$suppliersList_arr = array();
+
+		$materiasList = array();
+		$materiasList_arr = array();
+
+
+		foreach ($view->objectsList as $object) {
+			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
+			array_push($typeObjectsList_index, $object['typeobject_name']);
+
+			array_push($statusList_arr, array('status_id' => $object['status_id'], 'statu_status' => $object['statu_status']));
+
+			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
+
+			array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
+
+			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
+		}
+
+		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $typeObjectsList_arr);
+		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $statusList_arr);
+		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
+		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
+		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
+
+		foreach ($typeObjectsList_arr as $typeObject) {
+			array_push($typeObjectsList, json_encode($typeObject));
+		}
+
+		foreach ($statusList_arr as $status) {
+			array_push($statusList, json_encode($status));
+		}
+
+		foreach ($collectionList_arr as $collection) {
+			array_push($collectionList, json_encode($collection));
+		}
+
+		foreach ($suppliersList_arr as $supplier) {
+			array_push($suppliersList, json_encode($supplier));
+		}
+
+		foreach ($materiasList_arr as $materia) {
+			array_push($materiasList, json_encode($materia));
+		}
+
+
+		$view->typeObjectsList = array_unique($typeObjectsList);
+		$view->statusList = array_unique($statusList);
+		$view->collectionList = array_unique($collectionList);
+		$view->suppliersList = array_unique($suppliersList);
+		$view->materiasList = array_unique($materiasList);
+
 		// $this->endProfilling();
 		echo $view;
 	}    

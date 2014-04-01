@@ -9,26 +9,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);                
+		parent::__construct($request, $response); 
+		$this->check_login();	               
 	}
 
 	public function action_index()
 	{	
-		if(Auth::instance()->logged_in()== 0){	
-			Request::current()->redirect('login');
-		}
-		
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 		
-		//$query = ORM::factory('task')->where('status_id', '=', '5')->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'))
-        //        ->order_by('crono_date','ASC');
-						
-		//$view->taskList	= $query->find_all();
-		
-
-	  	$this->template->content = $view;		
-	  	
+	  	$this->template->content = $view;			  	
 	} 
     
    	public function action_update($id){
