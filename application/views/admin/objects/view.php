@@ -6,12 +6,12 @@
         
         <a href="#" data-show="form_status" class="bar_button round show">alterar status</a>
         <a href="#" data-show="form_assign" class="bar_button round show">criar tarefa</a>
-        <a href="#" data-show="replies" class="bar_button round show">expandir</a>
-        <a href="#" data-show="replies" class="bar_button round fade">contrair</a>
+        
         <?}?>
     </div>
     
     <div class="left" style="width:280px;">
+
         <div class="box round">
             <b>título:</b> <?=@$obj->title;?><br/>
             <b>taxonomia:</b> <?=@$obj->taxonomia;?><br/>
@@ -42,10 +42,14 @@
     </div>
 
     <div class="left">
+
         <?=@$assign_form?>
         <?=@$reply_form?>
         <?=@$form_status?>
-        <div>   
+        <div> 
+            <div style="padding:8px;">  
+                <a href="#" class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
+            </div>
             <?if(isset($taskflows)){
                     foreach($taskflows as $status_task){
                         if($status_task->type == 'tasks'){?>

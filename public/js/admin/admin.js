@@ -128,13 +128,11 @@ $(function () {
 
         var element = $(this).data("show");
         $('#' + element).slideToggle();
-        $('.' + element).fadeToggle();
     });
 
     $('.fade').click(function() {
         var element = $(this).data("show");
         $('#' + element).fadeToggle();
-        $('.' + element).fadeToggle();
     });
 
     $('.cancel').click(function() {
@@ -142,7 +140,15 @@ $(function () {
         $('#' + element).slideUp();
     });
 
-
+    $(".collapse").click(function () {
+        $header = $(this);
+        var element = $header.data("show");
+        $('.' + element).fadeToggle(500, function () {
+            $header.text(function () {
+                return $('.' + element).is(":visible") ? "contrair" : "expandir";
+            });
+        });
+    });
 
     $('a.popup').click(function() {
         var url = this.href;
@@ -202,6 +208,8 @@ $(document).ready(function()
             $.jGrowl(msgs[i],{ theme:'aniversariantes', position:'bottom-right',}); 
         } 
     }
+
+
 
     $("#tabs").tabs({
         load: function( event, ui ) {
