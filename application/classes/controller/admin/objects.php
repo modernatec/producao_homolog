@@ -37,7 +37,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		//$count = $query->count_all();
 		//$pag = new Pagination( array( 'total_items' => $count, 'items_per_page' => self::ITENS_POR_PAGINA, 'auto_hide' => true ) );
 		//$view->page_links = $pag->render();
-        $view->projectList = ORM::factory('project')->where('status', '=', '1')->find_all(); 
+        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 
 
 		//$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
