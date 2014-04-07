@@ -128,11 +128,13 @@ $(function () {
 
         var element = $(this).data("show");
         $('#' + element).slideToggle();
+        $('.' + element).fadeToggle();
     });
 
     $('.fade').click(function() {
         var element = $(this).data("show");
         $('#' + element).fadeToggle();
+        $('.' + element).fadeToggle();
     });
 
     $('.cancel').click(function() {
@@ -217,11 +219,14 @@ $(document).ready(function()
         activate: function( event, ui ) { 
             //$.removeCookie("producao");
             $.cookie("producao", ui.newTab[0].id, { expires : 5 });  
+            
         },
     });
 
     var tab = $.cookie("producao");
-    $("#tabs").tabs();
+    console.log('tab = ' + tab);
+    
+    $("#tabs").tabs("option", "active", $("#" + tab).index());
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
 
 

@@ -60,6 +60,24 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_end(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
+			$task = ORM::factory('task', $this->request->post('task_id'));
+			$taskUser = $task->userInfo;     	
+			
+			if($taskUser->mailer == '1'){
+				$linkTask = URL::base().'admin/objects/view/'.$this->request->post('object_id');
+				
+				$email = new Email_Helper();
+				$email->userInfo = $taskUser;
+				if($taskUser->email != ''){
+					$email->assunto = 'Tarefa concluída!';
+					$email->mensagem = '<font face="arial">Olá, '.$taskUser->nome.', a tarefa abaixo foi concuída.<br/><br/>
+						<b>Entregue por:</b> '.$this->current_user->userInfos->nome.'<br/>
+						<b>Observações:</b> <pre>'.$this->request->post('description').'</pre><br/>
+						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+					$envio.= $email->enviaEmail();					
+            	}
+        	}            	    	
+
 			$this->salvar();
 		}
 	}
@@ -68,6 +86,27 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_assign(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{     
+			if($this->request->post('task_to') != 0){
+				$taskUser = ORM::factory('userInfo', $this->request->post('task_to'));     	
+				
+				if($taskUser->mailer == '1'){
+					$linkTask = URL::base().'admin/objects/view/'.$this->request->post('object_id');
+					
+					$email = new Email_Helper();
+					$email->userInfo = $taskUser;
+					if($taskUser->email != ''){
+						$email->assunto = 'Olá, '.$taskUser->nome.' você possuí uma tarefa!';
+						$email->mensagem = '<font face="arial">Olá, '.$taskUser->nome.', você possuí uma nova tarefa.<br/><br/>
+							<b>Título:</b> '.$this->request->post('topic').'<br/>
+							<b>Data de entrega:</b> '.$this->request->post('crono_date').'<br/>
+							<b>Descrição:</b> <pre>'.$this->request->post('description').'</pre><br/>
+							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+						$envio.= $email->enviaEmail();
+						
+                	}
+            	}            	    	
+            }
+
 			$this->salvar();
 		}
 	}

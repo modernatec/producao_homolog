@@ -2,7 +2,7 @@
 <table class="list">
 		<thead>
 			<form action="<?=URL::base();?>admin/objects" method="post" class="form">
-			<th width="250" colspan="2">
+			<th width="250">
 				<div class="filter" >
 				    <ul>
 				        <li class="round" >
@@ -37,7 +37,7 @@
 
 				</div>
             </th>
-            <th >
+            <th width="20">
             	<div class="filter" >
 				    <ul>
 				        <li class="round" >
@@ -73,7 +73,7 @@
 
 				</div>
             </th>
-            <th>
+            <th width="50">
             	<div class="filter" >
 				    <ul>
 				        <li class="round" >
@@ -130,14 +130,16 @@
 				    </ul>
 				</div>
 			</th>
-			<th>retorno</th>
-            <th>fechamento</th>
+			<th width="50">retorno</th>
+            <th width="50">fechamento</th>
             </form>
 		</thead>
 		<tbody>
             <? foreach($objectsList as $objeto){?>
             <tr>
-            	<? if($objeto['task_open'] > 0 or $objeto['status_id'] == 1){
+            	<? 
+            		/*
+            		if($objeto['task_open'] > 0 or $objeto['status_id'] == 1){
             			$class="task_open";
             			$value = $objeto['task_open'];
             		}elseif($objeto['task_init'] > 0){
@@ -150,7 +152,29 @@
             			$class="task_finished";
         				$value = "0";   
             		}
+            		*/
+            		switch($objeto['status_id']){
+            			case 1:
+            				$class_obj 	= $objeto['statu_class'];
+            				$class 		= $objeto['statu_class'];
+            				break;
+            			case 2:
+            				$mod = "";
+            				if($objeto['supplier_id'] != 10){//producao externa
+            					$mod = "_out";	
+            				}else{
+            					$mod = "_in"; 
+            				}
+            				$class_obj 	= $objeto['statu_class'].$mod;
+            				$class 		= $objeto['statu_class'].$modx;
+            				break;
+            			default:
+            				$class_obj 	= $objeto['statu_class'];
+            				$class 		= $objeto['statu_class'];
 
+            		}
+            		
+            		/*
             		if($objeto['status_id'] == 8){
             			$class_obj = $objeto['statu_class'];
             			$class= $objeto['statu_class'];
@@ -169,8 +193,8 @@
             		}else{
             			$class_obj = "";
             		}
+            		*/
             	?>
-            	<td style="width:5px" class="<?=$class?>"><?=$value?></td>
                 <td class="<?=$class_obj?>">
                     <a href="<?=URL::base().'admin/objects/view/'.$objeto['id'];?>" title="Editar"><?=$objeto['taxonomia']?> <br/><?=$objeto['title']?></a>
                 </td>

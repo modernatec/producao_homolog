@@ -28,7 +28,7 @@
 		        </dt>
 		        <dd>
 		            <select name="task_to" id="task_to" class="round" style="width:150px;">
-		                <option value="">selecione</option>
+		                <option value="0">selecione</option>
 		                <? foreach($teamList as $userInfo){?>
 		                    <option value="<?=$userInfo->id?>" ><?=$userInfo->nome?></option>
 		                <?}?>

@@ -6,6 +6,8 @@
         
         <a href="#" data-show="form_status" class="bar_button round show">alterar status</a>
         <a href="#" data-show="form_assign" class="bar_button round show">criar tarefa</a>
+        <a href="#" data-show="replies" class="bar_button round show">expandir</a>
+        <a href="#" data-show="replies" class="bar_button round fade">contrair</a>
         <?}?>
     </div>
     
@@ -84,7 +86,7 @@
                                     </div>  
                                     <a class="down_button fade" data-show="replies_<?=$status_task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
                                 </div>
-                                <div class="hide" id="replies_<?=$status_task->id;?>">
+                                <div class="replies" id="replies_<?=$status_task->id;?>">
                                 <?foreach ($status_task->getReplies($status_task->id) as $taskReply) {?>
                                     <div style='clear:both'>
                                         <div style='width:25px; float:left;'>
@@ -103,7 +105,7 @@
                                                         <input type="hidden" name='topic' value="<?=$status_task->topic?>" />
                                                         <input type="hidden" name='status_id' value="7" />
                                                         <input type="hidden" name='crono_date' value="<?=$status_task->crono_date?>" />
-                                                           <input type="hidden" name='task_id' value="<?=$status_task->id?>" />
+                                                        <input type="hidden" name='task_id' value="<?=$status_task->id?>" />
                                                         <input type="hidden" name='object_id' value="<?=$status_task->object_id?>" />
                                                         <dt> <label for="description">observações</label> </dt>
                                                         <dd>

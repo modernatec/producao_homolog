@@ -375,7 +375,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$materiasList = array();
 		$materiasList_arr = array();
 
-
 		foreach ($view->objectsList as $object) {
 			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
 			array_push($typeObjectsList_index, $object['typeobject_name']);
@@ -415,14 +414,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($materiasList, json_encode($materia));
 		}
 
-
 		$view->typeObjectsList = array_unique($typeObjectsList);
 		$view->statusList = array_unique($statusList);
 		$view->collectionList = array_unique($collectionList);
 		$view->suppliersList = array_unique($suppliersList);
 		$view->materiasList = array_unique($materiasList);
 
-		// $this->endProfilling();
+		//$this->endProfilling();
 		echo $view;
 	}    
 }

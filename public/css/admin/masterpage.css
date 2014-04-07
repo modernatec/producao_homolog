@@ -717,13 +717,40 @@ input[type='text']:focus, input[type='password']:focus{
 	text-align: center;
 }
 
-.object_finished{
-	background:#dcea96;
+
+.object_stoped{
+	background:#fff;
+	color:#000;
+}
+
+.object_started_out{
+	background:#6dbad7;
+	color:#000;
+}
+
+.object_started_in{
+	background:#f8fa74;
 	color:#000;
 }
 
 .object_review{
-	background:#fffcd9;
+	background:#f4de84;
+	color:#000;
+}
+
+.object_qa,.object_consolidate{
+	background:#fde2b7;
+	color:#000;
+}
+
+.object_waiting{
+	background:#fff;
+	color:#000;
+}
+
+
+.object_finished{
+	background:#dcea96;
 	color:#000;
 }
 
@@ -732,10 +759,6 @@ input[type='text']:focus, input[type='password']:focus{
 	color:#000;
 }
 
-.object_review{
-	background:#fff79f;
-	color:#000;
-}
 
 
 .description{
