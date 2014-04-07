@@ -34,6 +34,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		echo $view;
 	}
+
+	/*****ENVIAR E-MAIL?********/
+	public function action_edit($id){
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$this->salvar($id);
+		}
+	}
 	
 	public function action_start(){
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -50,12 +58,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
 
-	public function action_edit($id){
-		if (HTTP_Request::POST == $this->request->method()) 
-		{
-			$this->salvar($id);
-		}
-	}
+	
 
 	public function action_end(){
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -69,8 +72,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$email = new Email_Helper();
 				$email->userInfo = $taskUser;
 				if($taskUser->email != ''){
+					$nome = explode(" ", $taskUser->nome);
+                           
 					$email->assunto = 'Tarefa concluída!';
-					$email->mensagem = '<font face="arial">Olá, '.$taskUser->nome.', a tarefa abaixo foi concuída.<br/><br/>
+					$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi concuída.<br/><br/>
 						<b>Entregue por:</b> '.$this->current_user->userInfos->nome.'<br/>
 						<b>Observações:</b> <pre>'.$this->request->post('description').'</pre><br/>
 						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
@@ -95,8 +100,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$email = new Email_Helper();
 					$email->userInfo = $taskUser;
 					if($taskUser->email != ''){
-						$email->assunto = 'Olá, '.$taskUser->nome.' você possuí uma tarefa!';
-						$email->mensagem = '<font face="arial">Olá, '.$taskUser->nome.', você possuí uma nova tarefa.<br/><br/>
+						$nome = explode(" ", $taskUser->nome);
+						$email->assunto = 'Olá, '.ucfirst($nome[0]).' você possuí uma tarefa!';
+						$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.<br/><br/>
 							<b>Título:</b> '.$this->request->post('topic').'<br/>
 							<b>Data de entrega:</b> '.$this->request->post('crono_date').'<br/>
 							<b>Descrição:</b> <pre>'.$this->request->post('description').'</pre><br/>

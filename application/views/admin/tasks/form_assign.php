@@ -45,7 +45,7 @@
 	                  <span class='error'><?=Arr::get($errors, 'description');?></span>
 	            </dd>
 	            <dd>
-	              <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="criar" />
+	              <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmTask" value="criar" />
 	              <input type="button" class="round cancel" name="btnCancel" id="btnCancel" data-show="form_assign"  value="cancelar" />
 	              
 	            </dd>

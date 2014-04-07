@@ -97,7 +97,7 @@ if (strpos($_SERVER['HTTP_HOST'], '.com.br') !== FALSE){
 
  
 Kohana::init(array(
-	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://10.137.68.81/producao/',
+	'base_url'   => Kohana::$environment === Kohana::PRODUCTION ? 'http://www/' : 'http://10.137.68.81/producao_homolog/',
     'caching'    => Kohana::$environment === Kohana::PRODUCTION,
     'profile'    => TRUE,
 	'index_file' => FALSE,

@@ -718,6 +718,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
+
 .object_stoped{
 	background:#fff;
 	color:#000;
@@ -729,7 +730,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .object_started_in{
-	background:#f8fa74;
+	background:#f5f34a;
 	color:#000;
 }
 
@@ -739,7 +740,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .object_qa,.object_consolidate{
-	background:#fde2b7;
+	background:#ff9743;
 	color:#000;
 }
 
@@ -750,14 +751,16 @@ input[type='text']:focus, input[type='password']:focus{
 
 
 .object_finished{
-	background:#dcea96;
+	background:#9ae266;
 	color:#000;
 }
 
-.object_late{
-	background:#fad7d7;
-	color:#000;
+.object_late, .object_late a{
+	background:#ff4747;
+	color:#fff;
 }
+
+
 
 
 

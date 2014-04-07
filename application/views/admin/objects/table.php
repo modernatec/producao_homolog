@@ -168,10 +168,17 @@
             				$class_obj 	= $objeto['statu_class'].$mod;
             				$class 		= $objeto['statu_class'].$modx;
             				break;
-            			default:
+            			case 8:
             				$class_obj 	= $objeto['statu_class'];
             				$class 		= $objeto['statu_class'];
-
+            				break;	
+            			default:
+            				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+		            			$class_obj = "object_late";
+		            		}else{
+	            				$class_obj 	= $objeto['statu_class'];
+	            				$class 		= $objeto['statu_class'];
+	            			}
             		}
             		
             		/*

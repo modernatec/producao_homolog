@@ -170,3 +170,5 @@ application/logs/*
 application/config/database.php
 nbprojects/*
 sandbox/*
+.htaccess
+application/bootstrap.php
