@@ -13,5 +13,5 @@
             
         </div>
     </div>
-    <?=$page_links?>
+    <?=@$page_links?>
 </div>

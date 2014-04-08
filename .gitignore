@@ -1,3 +1,15 @@
+#moderna
+
+public/upload/*
+public/plupload/temporario/*
+application/bootstrap.php
+application/logs/*
+application/config/database.php
+nbprojects/*
+sandbox/*
+.htaccess
+application/bootstrap.php
+
 #################
 ## Eclipse
 #################
@@ -162,13 +174,3 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
-#moderna
-public/upload/*
-public/plupload/temporario/*
-application/bootstrap.php
-application/logs/*
-application/config/database.php
-nbprojects/*
-sandbox/*
-.htaccess
-application/bootstrap.php

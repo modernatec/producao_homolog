@@ -78,7 +78,5 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		$this->template->content = $view; 
 
-	}
-
-		
+	}		
 }

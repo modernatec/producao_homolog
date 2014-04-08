@@ -10,7 +10,7 @@
                         <option value="<?=$project->id?>" ><?=$project->name?></option>
                     <? }?>
                 </select>
-                <span class='error'><?=Arr::get($errors, 'project_id');?></span>
+                <span class='error'><?=Arr::get(@$errors, 'project_id');?></span>
             </dd>
         </div>
         <div class="left">
@@ -21,7 +21,7 @@
                     <option value="0" >novo</option>
                     <option value="1" >reap.</option>
                 </select>
-                <span class='error'><?=Arr::get($errors, 'origem');?></span>
+                <span class='error'><?=Arr::get(@$errors, 'origem');?></span>
             </dd>
         </div>
         <div class="left">
@@ -34,7 +34,7 @@
                     <option value="supplier_id" >produtora</option> 
                     <option value="typeobject_id" >tipo de objeto</option>                   
                 </select>
-                <span class='error'><?=Arr::get($errors, 'organizar');?></span>
+                <span class='error'><?=Arr::get(@$errors, 'organizar');?></span>
             </dd>
         </div>
         <div class="clear">

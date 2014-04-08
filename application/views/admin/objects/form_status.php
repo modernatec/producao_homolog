@@ -14,7 +14,7 @@
 		                    <option value="<?=$status->id?>" ><?=$status->status?></option>
 		                <?}?>
 		            </select>
-		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
+		            <span class='error'><?=Arr::get(@$errors, 'status_id');?></span>
 		        </dd>				        
 			</div>
 			<div class="left">
@@ -32,7 +32,7 @@
 		                    <option value="prova<?=$i?>" >prova <?=$i?></option>
 		                <?}?>
 		            </select>
-		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
+		            <span class='error'><?=Arr::get(@$errors, 'status_id');?></span>
 		        </dd>				        
 			</div>
 			<dt>
@@ -40,14 +40,14 @@
 	        </dt>
 	        <dd>
 	            <input type="text" name="crono_date" id="crono_date_status" class="round required date" style="width:100px;" />
-	            <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
+	            <span class='error'><?=Arr::get(@$errors, 'crono_date');?></span>
 	        </dd>			
             <dt>
             	<label for="description">observações</label>
             </dt>
             <dd>
                   <textarea class="text round" name="description" id="description" style="width:600px; height:70px;"></textarea>
-                  <span class='error'><?=Arr::get($errors, 'description');?></span>
+                  <span class='error'><?=Arr::get(@$errors, 'description');?></span>
             </dd>
             <dd>
               <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmStatus" value="criar" />

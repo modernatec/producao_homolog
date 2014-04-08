@@ -166,7 +166,7 @@
             					$mod = "_in"; 
             				}
             				$class_obj 	= $objeto['statu_class'].$mod;
-            				$class 		= $objeto['statu_class'].$modx;
+            				$class 		= $objeto['statu_class'].$mod;
             				break;
             			case 8:
             				$class_obj 	= $objeto['statu_class'];
