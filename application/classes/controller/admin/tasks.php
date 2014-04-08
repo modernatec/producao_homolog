@@ -64,6 +64,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
 			$task = ORM::factory('task', $this->request->post('task_id'));
+			$object = ORM::factory('object', $this->request->post('object_id'));
 			$taskUser = $task->userInfo;     	
 			
 			if($taskUser->mailer == '1'){
@@ -74,7 +75,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				if($taskUser->email != ''){
 					$nome = explode(" ", $taskUser->nome);
                            
-					$email->assunto = 'Tarefa concluída!';
+					$email->assunto = $object->taxonomia.' - Tarefa concluída!';
 					$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi concuída.<br/><br/>
 						<b>Entregue por:</b> '.$this->current_user->userInfos->nome.'<br/>
 						<b>Observações:</b> <pre>'.$this->request->post('description').'</pre><br/>
@@ -92,7 +93,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		if (HTTP_Request::POST == $this->request->method()) 
 		{     
 			if($this->request->post('task_to') != 0){
-				$taskUser = ORM::factory('userInfo', $this->request->post('task_to'));     	
+				$taskUser = ORM::factory('userInfo', $this->request->post('task_to')); 
+				$object = ORM::factory('object', $this->request->post('object_id'));    	
 				
 				if($taskUser->mailer == '1'){
 					$linkTask = URL::base().'admin/objects/view/'.$this->request->post('object_id');
@@ -101,7 +103,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$email->userInfo = $taskUser;
 					if($taskUser->email != ''){
 						$nome = explode(" ", $taskUser->nome);
-						$email->assunto = 'Olá, '.ucfirst($nome[0]).' você possuí uma tarefa!';
+						$email->assunto = $this->request->post('topic').' - '.$object->taxonomia;
 						$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.<br/><br/>
 							<b>Título:</b> '.$this->request->post('topic').'<br/>
 							<b>Data de entrega:</b> '.$this->request->post('crono_date').'<br/>
@@ -198,12 +200,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		*/
 		Request::current()->redirect('admin/tasks');
 	}
-	
-
-	
 
     /********************************/
     public function action_getTasks(){
+    	$this->check_login();	
         $this->auto_render = false;
         $view = View::factory('admin/tasks/table');
 

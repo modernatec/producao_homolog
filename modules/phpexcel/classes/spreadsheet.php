@@ -78,9 +78,40 @@ class Spreadsheet
 
 	public function setSheetData( array $data, PHPExcel_Worksheet $Sheet )
 	{
-		foreach ( $data as $row => $columns )
-			foreach ( $columns as $column => $value )
+		/*
+		$styleArray1 = array(
+	    	'font'  => array(
+	        'bold'  => true,
+	        'color' => array('rgb' => 'FF0000'),
+	        'size'  => 15,
+	        'name'  => 'Verdana'
+	    ));
+		*/
+		$styleArray1 = array(
+	    	'font'  => array(
+	        'color' => array('rgb' => 'FF0000'),
+	    ));
+
+	    $styleArray2 = array(
+	    	'font'  => array(
+	        'color' => array('rgb' => '000000'),
+	    ));
+
+	    $letters = range('A','Z');
+
+		foreach ( $data as $row => $columns ){
+			foreach ( $columns as $column => $value ){
 				$Sheet->setCellValueByColumnAndRow($column, $row, $value);
+				$Sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
+				//$Sheet->setCellValueByColumnAndRow($column, $row, $value);
+				if($value == 'ff0000'){
+					$Sheet->getStyle($letters[$column].$row)->applyFromArray($styleArray1);
+				}else{
+					$Sheet->getStyle($letters[$column].$row)->applyFromArray($styleArray2);
+				}
+				 
+			}
+		}
 	}
 
 	/*
