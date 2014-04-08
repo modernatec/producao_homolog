@@ -16,14 +16,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateProjects.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
+               
 	public function action_index()
 	{	
 		$view = View::factory('admin/projects/list')
@@ -39,7 +32,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateProjects.js");
 		$view->isUpdate = false;
 		
 		$view->projectVO = $this->setVO('project');		

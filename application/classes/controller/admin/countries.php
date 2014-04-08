@@ -16,20 +16,13 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateCountries.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
+
 	public function action_index()
 	{	
 		$view = View::factory('admin/countries/list')
 			->bind('message', $message);
 		
-		$view->countriesjsList = ORM::factory('country')->order_by('nome','ASC')->find_all();
+		$view->countriesjsList = ORM::factory('country')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;             
 	} 
 
@@ -39,7 +32,7 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateCountries.js");
 		$view->isUpdate = false;  
 		$view->paisVO = $this->setVO('country');    
 		$this->template->content = $view;
@@ -56,7 +49,7 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();		
+		$this->addValidateJs("public/js/admin/validateCountries.js");		
 		$view->isUpdate = true;       
 		$pais = ORM::factory('country', $id);
 		$view->paisVO = $this->setVO('country', $pais);   		
@@ -76,12 +69,12 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 		try 
 		{            
 			$pais = ORM::factory('country', $id)->values($this->request->post(), array(
-				'nome',
+				'name',
 			));
 			                
 			$pais->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','País '.$pais->nome.' salvo com sucesso.');
+			Utils_Helper::mensagens('add','País salvo com sucesso.');
 			Request::current()->redirect('admin/countries');
 
 		} catch (ORM_Validation_Exception $e) {

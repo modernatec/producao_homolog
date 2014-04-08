@@ -17,13 +17,6 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateMaterias.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/materias/list')
@@ -39,7 +32,7 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateMaterias.js");
 		$view->isUpdate = false;  
 		$view->materiaVO = $this->setVO('materia');
 		$this->template->content = $view;
@@ -56,7 +49,7 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateMaterias.js");
 		$view->isUpdate = true;  
 		$materia = ORM::factory('materia', $id);
 		$view->materiaVO = $this->setVO('materia', $materia);

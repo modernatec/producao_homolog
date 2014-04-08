@@ -7,11 +7,11 @@
 	  <dl>
             <dt> <label for="nome">País</label> </dt>
             <dd>
-                <input type="text" class="text required round" name="nome" id="nome" style="width:500px;" value="<?=@$paisVO['nome'];?>"/>
-                <span class='error'><?=Arr::get($errors, 'nome');?></span>
+                <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$paisVO['name'];?>"/>
+                <span class='error'><?=Arr::get(@$errors, 'name');?></span>
             </dd>            
 	    <dd>
-	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
+	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
 	    </dd>
 	  </dl>
 	</form>

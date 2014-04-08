@@ -24,7 +24,7 @@
 			}
         ?>  
 	    <dd>
-	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
+	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
 	    </dd>
 	  </dl>
 	</form>

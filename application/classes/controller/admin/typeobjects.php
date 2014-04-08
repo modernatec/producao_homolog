@@ -9,13 +9,6 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateTypeObjects.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/typeobjects/list')
@@ -31,7 +24,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateTypeObjects.js");
 		$view->isUpdate = false;
 		$view->typeObjectVO = $this->setVO('typeobject');   
 		$this->template->content = $view;
@@ -48,7 +41,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 			
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateTypeObjects.js");
 		$view->isUpdate = true; 
 
 		$typeObject = ORM::factory('typeobject', $id);

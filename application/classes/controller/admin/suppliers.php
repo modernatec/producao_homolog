@@ -15,13 +15,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateSuppliers.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/suppliers/list')
@@ -40,7 +33,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateSuppliers.js");
 		$view->isUpdate = false;
 		$view->contactVO = $this->setVO('supplier'); 
 		$this->template->content = $view;

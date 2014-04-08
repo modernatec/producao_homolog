@@ -11,7 +11,7 @@
 		<tbody>
             <? foreach($countriesjsList as $country){?>
             <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/countries/edit/'.$country->id;?>" title="Editar"><?=$country->nome?></a></td>				
+				<td><a style='display:block' href="<?=URL::base().'admin/countries/edit/'.$country->id;?>" title="Editar"><?=$country->name?></a></td>				
 				<td class="acao">
                     <a class="excluir" href="<?=URL::base().'admin/countries/delete/'.$country->id;?>" title="Excluir">Excluir</a>
                 </td>

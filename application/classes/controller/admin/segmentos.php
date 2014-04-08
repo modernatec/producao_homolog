@@ -16,14 +16,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateSegmentos.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
+
 	public function action_index()
 	{	
 		$view = View::factory('admin/segmentos/list')
@@ -39,7 +32,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateSegmentos.js");
 		$view->isUpdate = false; 
 		$view->segmentoVO = $this->setVO('segmento');		
 		$this->template->content = $view;
@@ -56,7 +49,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateSegmentos.js");
 		$view->isUpdate = true;              
 
 		$segmento = ORM::factory('segmento', $id);		

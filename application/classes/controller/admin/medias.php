@@ -14,20 +14,6 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	protected function addValidateJs($arr){
-		$scripts =   array(
-			"public/js/admin/validateMedias.js",
-		);
-		
-		if($arr){
-			foreach($arr as $item){
-				array_push($scripts, $item);	
-			}
-		}
-		
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
-        
 	public function action_index()
 	{	
 		$view = View::factory('admin/medias/list')
@@ -43,7 +29,7 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 			->bind('message', $message)
 			->set('values', $this->request->post());
 		
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs("public/js/admin/validateMedias.js");
 		$view->mediaVO = $this->setVO('media');
 		$view->anexosView = View::factory('admin/files/anexos');
 		$this->template->content = $view;
@@ -60,7 +46,7 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 		
-		$this->addValidateJs(Controller_Admin_Files::addJs());
+		$this->addValidateJs("public/js/admin/validateMedias.js");
 		$media = ORM::factory('media', $id);
 		
 		$view->mediaFiles = $media->getFiles($id);

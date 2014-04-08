@@ -14,13 +14,6 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	protected function addValidateJs(){
-		$scripts =   array(
-			"public/js/admin/validateTeams.js",
-		);
-		$this->template->scripts = array_merge( $scripts, $this->template->scripts );
-	}
 	
 	public function action_index()
 	{	
@@ -37,7 +30,7 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			->bind('message', $message);
 
 		$view->isUpdate = false;			
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateTeams.js");
 		$view->projectVO = $this->setVO('team');
 		
 		$view->userInfos = ORM::factory('userInfo')->find_all();
@@ -56,7 +49,7 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			->bind('message', $message);
 
 		
-		$this->addValidateJs();
+		$this->addValidateJs("public/js/admin/validateTeams.js");
 		$view->isUpdate = true;		
 		$team = ORM::factory('team', $id);		
 		$view->teamVO = $this->setVO('team', $team);

@@ -168,9 +168,9 @@ class Controller_Admin_Template extends Controller_Template {
 				$arr[$key] = $post[$key];	
 			}else{
 				if($fields[$key]['data_type'] == 'datetime' || $fields[$key]['data_type'] == 'timestamp' || $fields[$key]['data_type'] == 'date'){
-					$f = Utils_Helper::data($obj->$key);
+					$f = ($obj) ? Utils_Helper::data($obj->$key) : '';
 				}else{
-					$f = $obj->$key;	
+					$f = ($obj) ? $obj->$key : '';	
 				}
 				
 				$arr[$key] = ($obj) ? $f : '';

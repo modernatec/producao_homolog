@@ -138,25 +138,13 @@
             <? foreach($objectsList as $objeto){?>
             <tr>
             	<? 
-            		/*
-            		if($objeto['task_open'] > 0 or $objeto['status_id'] == 1){
-            			$class="task_open";
-            			$value = $objeto['task_open'];
-            		}elseif($objeto['task_init'] > 0){
-        				$class="task_started";
-        				$value = $objeto['task_init'];            			
-            		}elseif($objeto['task_init'] == 0 && $objeto['task_open'] == 0 && $objeto['status_id'] == 2){
-            			$class="task_finished";
-        				$value = "0";   
-            		}elseif($objeto['task_init'] == 0 && $objeto['task_open'] == 0){
-            			$class="task_finished";
-        				$value = "0";   
-            		}
-            		*/
             		switch($objeto['status_id']){
             			case 1:
-            				$class_obj 	= $objeto['statu_class'];
-            				$class 		= $objeto['statu_class'];
+            				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+		            			$class_obj = "object_late";
+		            		}else{
+	            				$class_obj 	= $objeto['statu_class'];
+	            			}
             				break;
             			case 2:
             				$mod = "";
@@ -165,10 +153,15 @@
             				}else{
             					$mod = "_in"; 
             				}
-            				$class_obj 	= $objeto['statu_class'].$mod;
-            				$class 		= $objeto['statu_class'].$mod;
+
+            				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+		            			$class_obj = "object_late";
+		            		}else{
+	            				$class_obj 	= $objeto['statu_class'].$mod;
+	            			}
+           				
             				break;
-            			case 8:
+            			case 8://finalizado
             				$class_obj 	= $objeto['statu_class'];
             				$class 		= $objeto['statu_class'];
             				break;	
@@ -177,30 +170,8 @@
 		            			$class_obj = "object_late";
 		            		}else{
 	            				$class_obj 	= $objeto['statu_class'];
-	            				$class 		= $objeto['statu_class'];
 	            			}
             		}
-            		
-            		/*
-            		if($objeto['status_id'] == 8){
-            			$class_obj = $objeto['statu_class'];
-            			$class= $objeto['statu_class'];
-        				$value = ""; 
-            		}elseif($objeto['status_id'] == 3){
-            			if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
-	            			$class_obj = "object_late";
-	            			$class = "object_late";
-	            		}else{
-	            			$class_obj = $objeto['statu_class'];
-	            			$class= $objeto['statu_class'];
-	        				$value = "";
-	            		}
-            		}elseif(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
-            			$class_obj = "object_late";
-            		}else{
-            			$class_obj = "";
-            		}
-            		*/
             	?>
                 <td class="<?=$class_obj?>">
                     <a href="<?=URL::base().'admin/objects/view/'.$objeto['id'];?>" title="Editar"><?=$objeto['taxonomia']?> <br/><?=$objeto['title']?></a>
