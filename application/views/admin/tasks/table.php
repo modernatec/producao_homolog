@@ -4,6 +4,7 @@
 			<th width="30">para:</th>
             <th width="50">solicitação</th>
             <th width="50">OED</th>
+            <th width="50">status</th>
             <th width="20">criada por:</th> 
             <th width="100">data de entrega</th>	            
 		</thead>
@@ -23,6 +24,9 @@
                     </td>
                     <td>
                         <?=$task->object->taxonomia;?>
+                    </td>
+                    <td>
+                        <?=$task->status->status;?>
                     </td>
                     <td>
                         <img class='round_imgList' src='<?=URL::base();?><?=$task->userInfo->foto?>' height="25" title="<?=ucfirst($task->userInfo->nome);?>" /> 

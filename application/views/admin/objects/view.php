@@ -61,7 +61,7 @@
                                 <div class='hist_task round' style='float:left;'>
                                     <div class='line_bottom'>
 
-                                        <?if($current_auth != "assistente" && $status_task->userInfo_id == $user->id){?>
+                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth != "coordenador"){?>
                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
                                         <b><?=$status_task->topic;?></b></a> <span class="status round <?=$status_task->getStatus($status_task->id)->status->class?>"><?=$status_task->getStatus($status_task->id)->status->status?></span><br/>
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class='hist_task round step' style='float:left;'>
                                     <div class='line_bottom'>
-                                        <?if($current_auth != "assistente" && $status_task->userInfo_id == $user->id){?>
+                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth != "coordenador"){?>
                                             <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
                                         <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
