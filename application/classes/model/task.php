@@ -27,8 +27,21 @@ class Model_Task extends ORM {
             'userInfo_id' => array(
                 array('not_empty'),
             ),
+            
+			'status_id' => array(
+				array('not_empty'),
+			),
+			'topic' => array(
+				array('not_empty'),
+			),
 	    );
 	}
+
+	/*
+	'description' => array(
+				array(array($this, 'description_available'), array(':validation', ':field')),
+			),
+	*/
 
 	public function filters()
 	{
@@ -50,9 +63,10 @@ class Model_Task extends ORM {
 	 * @param   string      Field folder
 	 * @return  void
 	 */
-	public function name_available(Validation $validation, $field)
+	public function description_available(Validation $validation, $field)
 	{	
-		if ($this->unique_name_exists($validation[$field], 'title'))
+		//&& $this->unique_name_exists($validation[$field], 'status_id') && $this->unique_name_exists($validation[$field], 'created_at') && $this->unique_name_exists($validation[$field], 'topic')
+		if ($this->unique_name_exists($validation[$field], 'description') && $this->unique_name_exists($validation['status_id'], 'status_id') && $this->unique_name_exists($validation['topic'], 'topic'))
 		{
 			$validation->error($field, 'name_available', array($validation[$field]));
 		}

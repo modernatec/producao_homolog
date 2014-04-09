@@ -1,4 +1,8 @@
-
+<?
+if(count($objectsList) <= 0){
+	echo '<div>nenhum registro encontrado</div>';	
+}else{
+?>
 <table class="list">
 		<thead>
 			<form action="<?=URL::base();?>admin/objects" method="post" class="form">
@@ -15,7 +19,6 @@
 				            </ul>
 				        </li>
 				    </ul>
-
 				</div>
 			</th>
             <th width="50">
@@ -189,3 +192,4 @@
             <?}?>
 		</tbody>
 	</table>
+<?}?>

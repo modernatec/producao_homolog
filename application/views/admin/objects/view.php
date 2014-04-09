@@ -1,6 +1,6 @@
 <div class="content">
     <div class="bar">
-        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="bar_button round">voltar</a>
+        <a href="<?=URL::base();?>admin/objects" class="bar_button round">voltar</a>
         <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>
         
@@ -105,7 +105,7 @@
                                             <?}?>
                                             <div class="options">
                                                 <? if($taskReply->getStatus($status_task->id)->status_id == '6' && $taskReply->getStatus($status_task->id)->userInfo_id == $user->id){?>
-                                                    <form action="<?=URL::base();?>admin/tasks/end/<?=$status_task->id?>" method="post" class="form">
+                                                    <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks/end/<?=$status_task->id?>" method="post" class="form">
                                                         <input type="hidden" name='topic' value="<?=$status_task->topic?>" />
                                                         <input type="hidden" name='status_id' value="7" />
                                                         <input type="hidden" name='crono_date' value="<?=$status_task->crono_date?>" />

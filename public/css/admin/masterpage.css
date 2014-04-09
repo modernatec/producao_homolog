@@ -47,6 +47,14 @@ a.excluir_todos:hover{color:#666;}
 a.link{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; padding-left: 30px; text-indent: 0; width: auto; color:#000; line-height: 20px; float:none; cursor: pointer;}
 a.link:hover{color:#666; text-decoration: underline;}
 
+
+.tab-loading{
+	 background: transparent url(../../image/admin/ajax-loader.gif) no-repeat center center;
+	 text-indent: -5000px;
+	 display: block;
+	 height: 40px;
+}
+
 .logout{
 	color:#FFF; 
 	background: transparent url(../../image/admin/logout.png) no-repeat 0 0; 

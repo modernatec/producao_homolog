@@ -213,6 +213,8 @@ $(document).ready(function()
 
     $("#tabs").tabs({
         load: function( event, ui ) {
+            $(ui.panel).find(".tab-loading").remove();
+
             $(".filter span").click(function(e) {
                 closeFilterPanel();
                 $(this).parent().children('ul').fadeToggle();
@@ -222,6 +224,15 @@ $(document).ready(function()
             $(".cancelar").click(function() { 
                 closeFilterPanel();
             });
+
+
+        },
+        select: function (e, ui) {
+            var $panel = $(ui.panel);
+
+            if ($panel.is(":empty")) {
+                $panel.append("<div class='tab-loading'>Loading...</div>")
+            }
         }, 
 
         activate: function( event, ui ) { 
@@ -235,6 +246,7 @@ $(document).ready(function()
     console.log('tab = ' + tab);
     
     $("#tabs").tabs("option", "active", $("#" + tab).index());
+
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
 
 

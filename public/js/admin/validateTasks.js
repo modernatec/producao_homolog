@@ -10,10 +10,11 @@ $(document).ready(function() {
             crono_date: { required:'Campo não pode ser vazio'},
             description: { required:'Campo não pode ser vazio'},
         },
-        submitHandler: function(form) {
+        submitHandler: function(form) {          
+          $('input[type=submit]').attr('disabled', 'disabled');
           $(form).submit();
         }
-    })
+    });
 
     $("#frmStatus").validate({
         rules: {
@@ -27,9 +28,19 @@ $(document).ready(function() {
             crono_date: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
+          $('input[type=submit]').attr('disabled', 'disabled');  
           $(form).submit();
         }
     })
+
+    $("#formEndTask").validate({
+        submitHandler: function(form) {
+          $('input[type=submit]').attr('disabled', 'disabled');  
+          $(form).submit();
+        }
+    })
+
+    
 });
 
 function validaTasks(){
@@ -45,6 +56,7 @@ function validaTasks(){
             description: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
             $.ajax({
                 type: "POST",
                 url: $(form).attr('action'),
@@ -55,8 +67,7 @@ function validaTasks(){
                 },
                 error: function() {alert('ocorreu um erro durante o processamento');}
             });
-            return false;          
-          //$(form).submit();
+            return false;       
         }
     })
 
@@ -73,6 +84,7 @@ function validaTasks(){
             crono_date: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
             $.ajax({
                 type: "POST",
                 url: $(form).attr('action'),
@@ -83,8 +95,7 @@ function validaTasks(){
                 },
                 error: function() {alert('ocorreu um erro durante o processamento');}
             });
-            return false;          
-          //$(form).submit();
+            return false;       
         }
     })
 }
