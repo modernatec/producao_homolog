@@ -106,8 +106,20 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'object_id',
 				'task_to',
 			)); 
-	        $task->userInfo_id = $this->current_user->userInfos->id;            
+			if($id == null)
+		        $task->userInfo_id = $this->current_user->userInfos->id;
+
             $task->save();
+
+            if($this->request->post('task_id') != '0'){
+		    	$task_id = ORM::factory('task', $this->request->post('task_id'));
+		    	$task_id->task_to = $this->current_user->userInfos->id;  
+		    	$task_id->save();
+
+				$update_task = ORM::factory('task')->where('task_id', '=', $this->request->post('task_id'))->find();
+		    	$update_task->task_to = $this->current_user->userInfos->id;  
+		    	$update_task->save();		    	
+		    }       
 
             /**atualiza tarefas de status relacionadas --- TRIGGER??**
             DB::update('tasks')->set(array(
@@ -119,11 +131,12 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			*/
 
             $task_replies = ORM::factory('task')->where('task_id', '=', $id)->find_all();
-            	foreach ($task_replies as $task_r) {
+            foreach ($task_replies as $task_r) {
             	$task_r->values($this->request->post(), array(
 				'topic',
 				'crono_date',
 				'description',
+				'task_to',
 				));
 				$task_r->save(); 
             }

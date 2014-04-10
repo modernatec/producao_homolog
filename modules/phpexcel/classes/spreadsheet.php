@@ -78,40 +78,53 @@ class Spreadsheet
 
 	public function setSheetData( array $data, PHPExcel_Worksheet $Sheet )
 	{
-		/*
 		$styleArray1 = array(
 	    	'font'  => array(
-	        'bold'  => true,
-	        'color' => array('rgb' => 'FF0000'),
-	        'size'  => 15,
-	        'name'  => 'Verdana'
-	    ));
-		*/
-		$styleArray1 = array(
-	    	'font'  => array(
-	        'color' => array('rgb' => 'FF0000'),
-	    ));
+	        	'color' => array('rgb' => '000000'),
+	    	)
+	    );
 
 	    $styleArray2 = array(
 	    	'font'  => array(
-	        'color' => array('rgb' => '000000'),
-	    ));
+	       		'color' => array('rgb' => 'FF0000'),
+	    	)
+	    );
+
+	    $styleArray3 = array(
+	    	'font'  => array(
+	        	'color' => array('rgb' => '0eaa19'),
+	    		)
+	    );
 
 	    $letters = range('A','Z');
+	    $rows_filter = 0;
 
 		foreach ( $data as $row => $columns ){
-			foreach ( $columns as $column => $value ){
-				$Sheet->setCellValueByColumnAndRow($column, $row, $value);
-				$Sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
-				//$Sheet->setCellValueByColumnAndRow($column, $row, $value);
-				if($value == 'ff0000'){
-					$Sheet->getStyle($letters[$column].$row)->applyFromArray($styleArray1);
-				}else{
-					$Sheet->getStyle($letters[$column].$row)->applyFromArray($styleArray2);
+			$col = 0;
+			$cor = $styleArray1;
+			foreach ( $columns as $column => $value ){								
+				$Sheet->setCellValueByColumnAndRow($col, $row, $value);
+				$Sheet->getColumnDimensionByColumn($col)->setAutoSize(true);
+				switch ($column) {
+					case 'data_retorno':
+						$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
+						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+						break;
+
+					case 'status':
+						$cor = ($value == 'finalizado') ? $styleArray3 : $cor;
+						break;						
 				}
-				 
+
+				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($cor);
+				$col++;
 			}
+			$rows_filter++;
 		}
+
+		$Sheet->setAutoFilter('A1:'.$letters[$col-1].$rows_filter);
+		$Sheet->getStyle('A1:'.$letters[$col].'1')->applyFromArray($styleArray1);
 	}
 
 	/*
@@ -141,6 +154,11 @@ class Spreadsheet
 		// If you want to output e.g. a PDF file, simply do:
 		//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
 		$Writer->save( $settings['fullpath'] );
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    	header('Content-Disposition: attachment;filename="TESTES.xlsx"');
+    	header('Cache-Control: max-age=0');    
+    	$Writer->save('php://output');
 
 		return $settings['fullpath'];
 	}

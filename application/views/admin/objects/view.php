@@ -1,7 +1,6 @@
 <div class="content">
     <div class="bar">
-        <a href="<?=URL::base();?>admin/objects" class="bar_button round">voltar</a>
-        <?if($current_auth != "assistente"){?>
+        <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>
         
         <a href="#" data-show="form_status" class="bar_button round show">alterar status</a>
@@ -82,6 +81,7 @@
                                                 <input type="hidden" name='status_id' value="6" />
                                                 <input type="hidden" name='crono_date' value="<?=$status_task->crono_date?>" />
                                                 <input type="hidden" name='task_id' value="<?=$status_task->id?>" />
+                                                <input type="hidden" name='task_to' value="<?=$status_task->task_to?>" />
                                                 <input type="hidden" name='object_id' value="<?=$status_task->object_id?>" />
                                                 <input type="submit" class="bar_button round" value="iniciar tarefa">
                                             </form>
