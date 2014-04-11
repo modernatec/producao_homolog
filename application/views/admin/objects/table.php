@@ -1,17 +1,15 @@
-<?
-if(count($objectsList) <= 0){
-	echo '<div>nenhum registro encontrado</div>';	
-}else{
-?>
+<form action="<?=URL::base();?>admin/objects" method="post" class="form">
 <table class="list">
+
 		<thead>
-			<form action="<?=URL::base();?>admin/objects" method="post" class="form">
+			
 			<th width="250">
 				<div class="filter" >
 				    <ul>
 				        <li class="round" >
 				            <span id="tipo">taxonomia <?=(!empty($filter_taxonomia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
+
 				            		<li><input type="text" class="round" style="width:135px" name="taxonomia" value="<?=$filter_taxonomia?>" ></li>
 					                
 					                <input type="submit" class="round bar_button" value="OK"> 
@@ -138,7 +136,12 @@ if(count($objectsList) <= 0){
             </form>
 		</thead>
 		<tbody>
-            <? foreach($objectsList as $objeto){?>
+
+            <? 
+			if(count($objectsList) <= 0){
+				echo '<tr><td colspan="10">nenhum registro encontrado</td></tr>';	
+			}else{
+            foreach($objectsList as $objeto){?>
             <tr>
             	<? 
             		switch($objeto['status_id']){
@@ -189,7 +192,8 @@ if(count($objectsList) <= 0){
                 
                 <td class="<?=$class_obj?>"><?=Utils_Helper::data($objeto['crono_date'],'d/m/Y')?></td>
 			</tr>
-            <?}?>
+            <?}
+            }?>
 		</tbody>
 	</table>
-<?}?>
+</form>	

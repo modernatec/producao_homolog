@@ -23,7 +23,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
-		$view->filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode(array());
+
+		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
+		$status_arr = array();
+		foreach ($status_init as $status) {
+			array_push($status_arr, $status->id);
+		}
+
+		$view->filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode($status_arr);
 		$view->filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
 		$view->filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
 
@@ -346,6 +353,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
 
+
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
 		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status) : '';
@@ -354,6 +362,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
 		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
+
 
 		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->execute();
 		
@@ -365,34 +374,45 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$statusList = array();
 		$statusList_arr = array();
+		$statusList_index = array();
 
 		$collectionList = array();
 		$collectionList_arr = array();
+		$collectionList_index = array();
 
 		$suppliersList = array();
 		$suppliersList_arr = array();
+		$suppliersList_index = array();
 
 		$materiasList = array();
 		$materiasList_arr = array();
+		$materiasList_index = array();
 
-		foreach ($view->objectsList as $object) {
+		$query_filters = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'))
+						->where('project_id', '=', $project_id)->execute();
+
+		foreach ($query_filters as $object) {
 			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
 			array_push($typeObjectsList_index, $object['typeobject_name']);
 
 			array_push($statusList_arr, array('status_id' => $object['status_id'], 'statu_status' => $object['statu_status']));
+			array_push($statusList_index, $object['statu_status']);
 
 			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
+			array_push($collectionList_index, $object['collection_name']);
 
 			array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
+			array_push($suppliersList_index, $object['supplier_empresa']);
 
 			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
+			array_push($materiasList_index, $object['materia_name']);
 		}
 
 		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $typeObjectsList_arr);
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $statusList_arr);
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
+		array_multisort($statusList_index, SORT_ASC, SORT_STRING, $statusList_arr);
+		array_multisort($collectionList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
+		array_multisort($suppliersList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
+		array_multisort($materiasList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
 
 		foreach ($typeObjectsList_arr as $typeObject) {
 			array_push($typeObjectsList, json_encode($typeObject));
