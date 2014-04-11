@@ -153,10 +153,10 @@ class Spreadsheet
 		$Writer = PHPExcel_IOFactory::createWriter($this->_spreadsheet, $settings['format']);
 		// If you want to output e.g. a PDF file, simply do:
 		//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
-		$Writer->save( $settings['fullpath'] );
+		//$Writer->save( $settings['fullpath'] );
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    	header('Content-Disposition: attachment;filename="TESTES.xlsx"');
+    	header('Content-Disposition: attachment;filename="relatorio_'.$settings['name'].'_'.date('dmY').'.xlsx"');
     	header('Cache-Control: max-age=0');    
     	$Writer->save('php://output');
 

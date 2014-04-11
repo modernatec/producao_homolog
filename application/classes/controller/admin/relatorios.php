@@ -47,7 +47,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			array_push($arr, $line);
     	}
 
-		$this->excel($arr);		
+		$this->excel($arr, $objectList[0]->collection_name);		
 	}
 
 	public function getData($post){
@@ -59,7 +59,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		return $objectList;
 	}
 
-	public function excel($data = NULL){
+	public function excel($data = NULL, $filename = NULL){
 
 
 		/*Melhorar*/
@@ -95,7 +95,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		$excel = new Spreadsheet();
 		$excel->setData($data);
-		$excel->save();/**'php://output' force download??***/
+		$excel->save(array('name' => 'projeto'));/**'php://output' force download??***/
 		//var_dump($data);
 	}		
 }
