@@ -39,9 +39,7 @@
             </form>
         </div>
     </div>
-
     <div class="left">
-
         <?=@$assign_form?>
         <?=@$reply_form?>
         <?=@$form_status?>
@@ -59,8 +57,7 @@
                                 </div>
                                 <div class='hist_task round' style='float:left;'>
                                     <div class='line_bottom'>
-
-                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth != "coordenador"){?>
+                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
                                         <b><?=$status_task->topic;?></b></a> <span class="status round <?=$status_task->getStatus($status_task->id)->status->class?>"><?=$status_task->getStatus($status_task->id)->status->status?></span><br/>
@@ -98,7 +95,10 @@
                                         </div>
                                         <div class='hist_task_reply round' style='float:left;'>
                                             <div class='line_bottom'>
-                                                <?=$taskReply->getStatus($taskReply->id)->status->status?> em <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
+                                                <? if(($taskReply->getStatus($status_task->id)->status_id == '7' && $taskReply->getStatus($status_task->id)->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                                                    <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
+                                                <?}?>
+                                                <?=$taskReply->getStatus($taskReply->id)->status->status?></a> em <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
                                             </div>
                                             <?if(!empty($taskReply->description)){ ?>
                                                 <span class="wordwrap description"><?=$taskReply->description;?></span>
@@ -131,8 +131,8 @@
                                 </div>
                                 <div class='hist_task round step' style='float:left;'>
                                     <div class='line_bottom'>
-                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth != "coordenador"){?>
-                                            <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
+                                        <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                                            <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">editar</a>
                                         <?}?>
                                         <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
                                         

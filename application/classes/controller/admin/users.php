@@ -13,12 +13,12 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);    
-        //$this->check_login();               
+		parent::__construct($request, $response);     
 	}
 	
     public function action_index()
 	{	
+        $this->check_login(); 
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
         

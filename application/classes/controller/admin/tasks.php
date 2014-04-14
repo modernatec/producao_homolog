@@ -23,7 +23,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     
    	public function action_update($id){
 		$this->auto_render = false;
-		$view = View::factory('admin/tasks/edit');
+		$view = View::factory('admin/tasks/form_edit');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -31,6 +31,19 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$task = ORM::factory('task', $id);
 		$view->taskVO = $this->setVO('task', $task);
 		$view->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all(); 
+
+		echo $view;
+	}
+
+	public function action_updateReply($id){
+		$this->auto_render = false;
+		$view = View::factory('admin/tasks/form_edit_reply');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+		
+		$task = ORM::factory('task', $id);
+		$view->taskVO = $this->setVO('task', $task);
 
 		echo $view;
 	}
@@ -61,6 +74,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_end(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
+			/*
 			$task_end = ORM::factory('task')->where('status_id', '=',$this->request->post('status_id'))->and_where('topic', '=',$this->request->post('topic'))->and_where('topic', '=',$this->request->post('description'))->find_all();
 			if(count($task_end) > 0){
 				$message = "Tarefa já cadastrada"; 
@@ -68,23 +82,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				Utils_Helper::mensagens('add',$message);
             	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
 			}else{
-				$this->salvar(null, "sendEndMail");
-			}
+			*/	
+			$this->salvar(null, "sendEndMail");
+			//}
 		}
 	}
 
 	public function action_assign(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{    
-			$task_assign = ORM::factory('task')->where('status_id', '=',$this->request->post('status_id'))->and_where('topic', '=',$this->request->post('topic'))->and_where('topic', '=',$this->request->post('description'))->find_all();
-			if(count($task_assign) > 0){
-				$message = "Tarefa já cadastrada"; 
-			
-				Utils_Helper::mensagens('add',$message);
-            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
-			}else{
-	            $this->salvar(null, "sendAssignMail");	
-	        }		
+			$this->salvar(null, "sendAssignMail");			
 		}
 	}
 
@@ -106,20 +113,32 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'object_id',
 				'task_to',
 			)); 
-			if($id == null)
+
+			if(is_null($id)){
 		        $task->userInfo_id = $this->current_user->userInfos->id;
+			}
 
             $task->save();
 
-            if($this->request->post('task_id') != '0'){
+            if(!is_null($this->request->post('task_id'))){
 		    	$task_id = ORM::factory('task', $this->request->post('task_id'));
-		    	$task_id->task_to = $this->current_user->userInfos->id;  
+		    	$task_id->topic = $task_id->topic;
+		    	$task_id->status_id = $task_id->status_id;  
+		    	$task_id->userInfo_id = $task_id->userInfo_id; 
+		    	$task_id->object_id = $task_id->object_id;  
+		    	$task_id->task_to = $this->current_user->userInfos->id; 
 		    	$task_id->save();
 
 				$update_task = ORM::factory('task')->where('task_id', '=', $this->request->post('task_id'))->find();
+		    	$update_task->topic = $update_task->topic;
+		    	$update_task->status_id = $update_task->status_id;  
+		    	$update_task->userInfo_id = $update_task->userInfo_id;
+		    	$update_task->object_id = $update_task->object_id;  
 		    	$update_task->task_to = $this->current_user->userInfos->id;  
 		    	$update_task->save();		    	
-		    }       
+		    } 
+		    
+		       
 
             /**atualiza tarefas de status relacionadas --- TRIGGER??**
             DB::update('tasks')->set(array(
@@ -129,17 +148,21 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             							))->where('task_id', '=', $id)->execute();
             //DB::update('tasks', array('topic', 'crono_date', 'description'))->values($this->request->post(), array('topic', 'crono_date', 'description'))->where('task_id', '=', $id)->execute();
 			*/
-
+			
+			
             $task_replies = ORM::factory('task')->where('task_id', '=', $id)->find_all();
-            foreach ($task_replies as $task_r) {
-            	$task_r->values($this->request->post(), array(
-				'topic',
-				'crono_date',
-				'description',
-				'task_to',
-				));
-				$task_r->save(); 
-            }
+            if(count($task_replies) > 0){
+	            foreach ($task_replies as $task_r) {
+	            	$task_r->values($this->request->post(), array(
+					'topic',
+					'crono_date',
+					'description',
+					'task_to',
+					));
+					$task_r->save(); 
+	            }
+        	}
+        	
             
             $db->commit();
 
@@ -159,10 +182,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Tarefa já cadastrada';
-			Utils_Helper::mensagens('add',$message);
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-			Request::current()->redirect('admin/objects/view/'.$task->object_id);
+		    Utils_Helper::mensagens('add',$message);  
             $db->rollback();
         } catch (Database_Exception $e) {
             $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();

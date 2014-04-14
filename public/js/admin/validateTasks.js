@@ -71,6 +71,23 @@ function validaTasks(){
         }
     })
 
+    $("#frmEditTask").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            $.ajax({
+                type: "POST",
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                timeout: 3000,
+                success: function() {
+                    location.reload();
+                },
+                error: function() {alert('ocorreu um erro durante o processamento');}
+            });
+            return false;       
+        }
+    })
+
 
     $("#frmStatus2").validate({
         rules: {
