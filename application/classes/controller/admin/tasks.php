@@ -66,6 +66,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				Utils_Helper::mensagens('add',$message);
             	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
 			}else{
+				var_dump($this->request->post());
+				//exit();
 				$this->salvar();
 			}
 		}
@@ -115,7 +117,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			)); 
 
 			if(is_null($id)){
-		        $task->userInfo_id = $this->current_user->userInfos->id;
+				if($this->request->post('userinfo_id')){
+				   $task->userInfo_id = $this->request->post('userinfo_id');
+				}else{
+			        $task->userInfo_id = $this->current_user->userInfos->id;
+			    }
 			}
 
             $task->save();
@@ -273,23 +279,22 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         //$view->filter_tipo = json_decode($this->request->query('tipo'));
         $view->filter_status = json_decode($this->request->query('status'));  
-		$view->filter_userInfo_id = $this->request->query('userInfo_id');  
-                
+		$view->filter_userInfo_id = $this->request->query('userInfo_id');             
 
         //$query = ORM::factory('task')->where('status_id', '=', $view->filter_status)        
-        $query = ORM::factory('task')->where('status_id', 'IN', $view->filter_status)     
-        ->and_where('id', 'NOT IN', DB::Select('task_id')->from('tasks'));
+        $query = ORM::factory('taskUser');
 
         /***Filtros***/
         //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
         //(!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
         //(isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id)->and_where('task_id', 'NOT IN', DB::Select('task_id')->from('tasks')->where('status_id', '=', '7')) : '';
-        (isset($view->filter_userInfo_id)) ? $query->and_where_open()->and_where('task_to', '=', $view->filter_userInfo_id)->or_where('userInfo_id', '=', $view->filter_userInfo_id)->and_where_close()->and_where('task_id', 'NOT IN', DB::Select('task_id')->from('tasks')->where('status_id', '=', '7'))->group_by('object_id') : '';
+        (isset($view->filter_status)) ? $query->where('status_id', '=', $view->filter_status) : '';
+        (isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id)->or_where('userInfo_id', '=', $view->filter_userInfo_id) : '';
 
         $view->taskList = $query->order_by('crono_date','ASC')->find_all();
 
         
-        // $this->endProfilling();
+        //$this->endProfilling();
         echo $view;
     }   
 

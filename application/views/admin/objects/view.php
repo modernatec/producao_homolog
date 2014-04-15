@@ -80,6 +80,7 @@
                                                 <input type="hidden" name='task_id' value="<?=$status_task->id?>" />
                                                 <input type="hidden" name='task_to' value="<?=$status_task->task_to?>" />
                                                 <input type="hidden" name='object_id' value="<?=$status_task->object_id?>" />
+                                                <input type="hidden" name='userinfo_id' value="<?=$status_task->userInfo_id?>" />
                                                 <input type="submit" class="bar_button round" value="iniciar tarefa">
                                             </form>
                                         <?}?>
@@ -91,11 +92,11 @@
                                 <?foreach ($status_task->getReplies($status_task->id) as $taskReply) {?>
                                     <div style='clear:both'>
                                         <div style='width:25px; float:left;'>
-                                            <img class='round_imgList' src='<?=URL::base();?><?=$taskReply->userInfo->foto?>' height="25"  title="<?=ucfirst($taskReply->userInfo->nome);?>" /> 
+                                            <img class='round_imgList' src='<?=URL::base();?><?=$taskReply->to->foto?>' height="25"  title="<?=ucfirst($taskReply->to->nome);?>" /> 
                                         </div>
                                         <div class='hist_task_reply round' style='float:left;'>
                                             <div class='line_bottom'>
-                                                <? if(($taskReply->getStatus($status_task->id)->status_id == '7' && $taskReply->getStatus($status_task->id)->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                                                <? if($current_auth == "coordenador" || $current_auth == "admin" || $current_auth == "assistente 2"){?>
                                                     <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
                                                 <?}?>
                                                 <?=$taskReply->getStatus($taskReply->id)->status->status?></a> em <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
@@ -104,13 +105,15 @@
                                                 <span class="wordwrap description"><?=$taskReply->description;?></span>
                                             <?}?>
                                             <div class="options">
-                                                <? if($taskReply->getStatus($status_task->id)->status_id == '6' && $taskReply->getStatus($status_task->id)->userInfo_id == $user->id){?>
+                                                <? if($taskReply->getStatus($status_task->id)->status_id == '6' && $taskReply->getStatus($status_task->id)->task_to == $user->id){?>
                                                     <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks/end/<?=$status_task->id?>" method="post" class="form">
                                                         <input type="hidden" name='topic' value="<?=$status_task->topic?>" />
                                                         <input type="hidden" name='status_id' value="7" />
                                                         <input type="hidden" name='crono_date' value="<?=$status_task->crono_date?>" />
                                                         <input type="hidden" name='task_id' value="<?=$status_task->id?>" />
                                                         <input type="hidden" name='object_id' value="<?=$status_task->object_id?>" />
+                                                        <input type="hidden" name='userinfo_id' value="<?=$status_task->userInfo_id?>" />
+                                                        <input type="hidden" name='task_to' value="<?=$status_task->task_to?>" />
                                                         <dt> <label for="description">observações</label> </dt>
                                                         <dd>
                                                             <textarea class="text round" name="description" id="description" style="width:500px; height:50px;"></textarea>
@@ -132,7 +135,7 @@
                                 <div class='hist_task round step' style='float:left;'>
                                     <div class='line_bottom'>
                                         <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
-                                            <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">editar</a>
+                                            <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
                                         <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
                                         

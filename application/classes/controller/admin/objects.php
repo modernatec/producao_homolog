@@ -192,7 +192,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		                    'crono_date',
 							));
 
-				$object->userInfo_id = $this->current_user->userInfos->id;	
+				
+				$object->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object->userInfo_id;	
+				//$object->userInfo_id = $this->current_user->userInfos->id;
 				$object->save();
 
 				Utils_Helper::mensagens('add','Objeto salvo com sucesso.');

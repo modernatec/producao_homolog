@@ -29,16 +29,17 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$objectList = $this->getData($post);
 		$arr = array(0 => array());
 
-		$titulos = array('coleção','taxonomia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
+		$titulos = array('coleção', 'materia','taxonomia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
 			$line = array(
 						'collection' => $object->collection_name, 
+						'materia' => $object->materia_name, 
 						'taxonomia' => $object->taxonomia, 
 						'typeobject' => $object->typeobject_name, 
-						'reaproveitamento' => $object->reaproveitamento, 
+						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Não' : 'Sim',  
 						'fornecedor' => $object->supplier_empresa, 
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
 						'prova' => $object->prova, 
