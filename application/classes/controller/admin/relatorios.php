@@ -26,7 +26,11 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	} 
 
 	public function generate($post){
-		$objectList = $this->getData($post);
+		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
+					->where('project_id', '=', $post['project_id'])
+					->order_by('crono_date', 'ASC')
+					->find_all();
+
 		$arr = array(0 => array());
 
 		$titulos = array('coleção', 'materia','taxonomia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
@@ -48,55 +52,8 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			array_push($arr, $line);
     	}
 
-		$this->excel($arr, $objectList[0]->collection_name);		
+    	$excel = new Spreadsheet();
+		$excel->setData($arr);
+		$excel->save(array('name' => 'projeto'));
 	}
-
-	public function getData($post){
-		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
-					->where('project_id', '=', $post['project_id'])
-					->order_by('crono_date', 'ASC')
-					->find_all();
-
-		return $objectList;
-	}
-
-	public function excel($data = NULL, $filename = NULL){
-
-
-		/*Melhorar*/
-
-		//$filename = 'relatorio_'.date('d/m/Y').'.xls';
-
-		/*
-		header('Content-Encoding: UTF-8');
-		header("Content-Type:   application/vnd.ms-excel; charset=UTF-8");
-		header("Content-Disposition: attachment; filename='".$filename."'");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private",false);
-		*/
-		/*
-		// Convert to UTF-16LE
-		$data = mb_convert_encoding($data, 'UTF-16LE', 'UTF-8'); 
-
-		// Prepend BOM
-		$data = "\xFF\xFE" . $data;
-
-		header('Pragma: public');
-		header("Content-type: application/x-msexcel"); 
-		header('Content-Disposition: attachment;  filename="'.$filename.'"');
-
-		echo $data;
-
-		$phpExcel->getActiveSheet()->getStyle("A1")->getFont()->setBold(true)
-                                ->setName('Verdana')
-                                ->setSize(10)
-                                ->getColor()->setRGB('6F6F6F');
-		*/
-
-		$excel = new Spreadsheet();
-		$excel->setData($data);
-		$excel->save(array('name' => 'projeto'));/**'php://output' force download??***/
-		//var_dump($data);
-	}		
 }

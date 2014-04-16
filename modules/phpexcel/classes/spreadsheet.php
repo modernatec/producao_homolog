@@ -153,12 +153,21 @@ class Spreadsheet
 		$Writer = PHPExcel_IOFactory::createWriter($this->_spreadsheet, $settings['format']);
 		// If you want to output e.g. a PDF file, simply do:
 		//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
-		//$Writer->save( $settings['fullpath'] );
+		$Writer->save( $settings['fullpath'] );
 
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		/*
+		header('Content-Encoding: UTF-8');
+		header('Pragma: public');
+		header("Content-type: application/x-msexcel"); 
+		header("Content-Type:   application/vnd.ms-excel; charset=UTF-8");
+		//header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     	header('Content-Disposition: attachment;filename="relatorio_'.$settings['name'].'_'.date('dmY').'.xlsx"');
-    	header('Cache-Control: max-age=0');    
+    	header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private",false);
+   
     	$Writer->save('php://output');
+    	*/
 
 		return $settings['fullpath'];
 	}
