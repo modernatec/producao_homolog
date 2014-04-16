@@ -20,10 +20,10 @@ class Spreadsheet
 	public function __construct($headers=array())
 	{
 		$headers = array_merge(array(
-			'title'			=> 'New Spreadsheet',
-			'subject'		=> 'New Spreadsheet',
-			'description'	=> 'New Spreadsheet',
-			'author'		=> 'ClubSuntory',
+			'title'			=> 'Relatorios produção',
+			'subject'		=> 'Relatorios produção',
+			'description'	=> 'relatorios produção',
+			'author'		=> 'Flow - Moderna',
 
 		), $headers);
 
@@ -35,7 +35,7 @@ class Spreadsheet
 			->setSubject( $headers['subject'] )
 			->setDescription( $headers['description'] );
 			//->setActiveSheetIndex(0);
-		//$this->_spreadsheet->getActiveSheet()->setTitle('Minimalistic demo');
+		$this->_spreadsheet->getActiveSheet()->setTitle($headers['title']);
 	}
 
 	/*
@@ -66,14 +66,6 @@ class Spreadsheet
 			//Now remove the auto-created blank sheet at start of XLS
 			$this->_spreadsheet->removeSheetByIndex( 0 );
 		}
-
-		/*
-		array(
-			1 => array('A1', 'B1', 'C1', 'D1', 'E1')
-			2 => array('A2', 'B2', 'C2', 'D2', 'E2')
-			3 => array('A3', 'B3', 'C3', 'D3', 'E3')
-		);
-		*/
 	}
 
 	public function setSheetData( array $data, PHPExcel_Worksheet $Sheet )
@@ -102,10 +94,20 @@ class Spreadsheet
 		foreach ( $data as $row => $columns ){
 			$col = 0;
 			$cor = $styleArray1;
+			echo '<pre>';
 			foreach ( $columns as $column => $value ){								
-				$Sheet->setCellValueByColumnAndRow($col, $row, $value);
+				//$Sheet->setCellValueByColumnAndRow($col, $row, $value);
+				$Sheet->setCellValueByColumnAndRow($col, $row, html_entity_decode($value,ENT_QUOTES,'UTF-8'));
 				$Sheet->getColumnDimensionByColumn($col)->setAutoSize(true);
 				switch ($column) {
+					case 'taxonomia':
+							$new_value = explode("|", $value);
+							$cell_link = $Sheet->getCellByColumnAndRow($col, $row);
+							if(isset($new_value[1])){
+								$cell_link->getHyperlink()->setUrl(urldecode($new_value[1]));
+							}
+							$Sheet->setCellValueByColumnAndRow($col, $row, html_entity_decode($new_value[0],ENT_QUOTES,'UTF-8'));
+						break;
 					case 'data_retorno':
 						$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
 						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
@@ -122,6 +124,7 @@ class Spreadsheet
 			}
 			$rows_filter++;
 		}
+		//exit();
 
 		$Sheet->setAutoFilter('A1:'.$letters[$col-1].$rows_filter);
 		$Sheet->getStyle('A1:'.$letters[$col].'1')->applyFromArray($styleArray1);
@@ -148,27 +151,12 @@ class Spreadsheet
 		), $settings);
 
 		//Generate full path
-		$settings['fullpath'] = $settings['path'] . $settings['name'] . '_'.time().'.xlsx';
+		$settings['fullpath'] = $settings['path'] . $settings['name'] . '_'.date('d').date('m').date('Y').'.xlsx';
 
 		$Writer = PHPExcel_IOFactory::createWriter($this->_spreadsheet, $settings['format']);
 		// If you want to output e.g. a PDF file, simply do:
 		//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
 		$Writer->save( $settings['fullpath'] );
-
-		/*
-		header('Content-Encoding: UTF-8');
-		header('Pragma: public');
-		header("Content-type: application/x-msexcel"); 
-		header("Content-Type:   application/vnd.ms-excel; charset=UTF-8");
-		//header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    	header('Content-Disposition: attachment;filename="relatorio_'.$settings['name'].'_'.date('dmY').'.xlsx"');
-    	header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private",false);
-   
-    	$Writer->save('php://output');
-    	*/
-
 		return $settings['fullpath'];
 	}
 

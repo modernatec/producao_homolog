@@ -7,7 +7,7 @@ $(document).ready(function() {
                 name: { required:"Digite o nome da equipe."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              form.submit();
             }
         })
 });

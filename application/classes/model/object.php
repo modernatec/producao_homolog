@@ -12,7 +12,8 @@ class Model_Object extends ORM {
 		'typeobject' => array('foreign_key' => 'typeobject_id'),
 		'country' => array('foreign_key' => 'country_id'),
 		'collection' => array('foreign_key' => 'collection_id'),		
-		'supplier' => array('model' => 'supplier', 'through' => 'objects_suppliers'),
+		'supplier' =>  array('foreign_key' => 'supplier_id'),
+		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
 	);
 
 

@@ -12,19 +12,24 @@
     <div class="left" style="width:280px;">
 
         <div class="box round">
-            <b>título:</b> <?=@$obj->title;?><br/>
-            <b>taxonomia:</b> <?=@$obj->taxonomia;?><br/>
+            <b>título:</b> <span class="wordwrap"><?=@$obj->title;?></span><br/>
+            <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
             <hr style="margin:8px 0;" />
             <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
             <b>contato:</b> <?=@$obj->supplier->name?><br/>
             <b>email:</b> <?=@$obj->supplier->email?><br/>
-            <b>tels:</b> <?=@$obj->supplier->telefone?><br/>
+            <b>tels:</b> <?=@$obj->supplier->telefone?><br/><br/>
+
+            <b>estúdio:</b> <?=@$obj->audiosupplier->empresa?><br/>
+            <b>locutor(a):</b> <?=@$obj->speaker?><br/>
+            
+
             <hr style="margin:8px 0;" />
             <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
             <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
             <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
             <br/>
-            <b>obs:</b> <?=@$obj->obs?><br/>
+            <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
         </div>
         <div class="box round anotacoes">
             Anotações

@@ -12,7 +12,7 @@ $(document).ready(function() {
         },
         submitHandler: function(form) {          
           $('input[type=submit]').attr('disabled', 'disabled');
-          $(form).submit();
+          form.submit();
         }
     });
 
@@ -29,14 +29,14 @@ $(document).ready(function() {
         },
         submitHandler: function(form) {
           $('input[type=submit]').attr('disabled', 'disabled');  
-          $(form).submit();
+          form.submit();
         }
     })
 
     $("#formEndTask").validate({
         submitHandler: function(form) {
           $('input[type=submit]').attr('disabled', 'disabled');  
-          $(form).submit();
+          form.submit();
         }
     })
 

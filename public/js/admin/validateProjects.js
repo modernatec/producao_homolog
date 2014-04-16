@@ -11,7 +11,7 @@ $(document).ready(function() {
                 description: {required:"Digite uma descrição para o projeto."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              form.submit();
             }
         })
 });

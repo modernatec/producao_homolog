@@ -7,7 +7,7 @@ $(document).ready(function() {
                 nome: { required:'Campo não pode ser vazio'}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              form.submit();
             }
         })
 });

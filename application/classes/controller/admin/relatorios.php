@@ -28,21 +28,21 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	public function generate($post){
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
 					->where('project_id', '=', $post['project_id'])
-					->order_by('crono_date', 'ASC')
+					->order_by('collection_name', 'ASC')
 					->find_all();
 
 		$arr = array(0 => array());
 
-		$titulos = array('coleção', 'materia','taxonomia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
+		$titulos = array('taxonomia', 'tipo', 'coleção', 'materia','reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
 			$line = array(
-						'collection' => $object->collection_name, 
-						'materia' => $object->materia_name, 
-						'taxonomia' => $object->taxonomia, 
+						'taxonomia' => $object->taxonomia.'|'.urlencode(URL::base().'admin/objects/view/'.$object->id), 
 						'typeobject' => $object->typeobject_name, 
+						'collection' => $object->collection_name, 
+						'materia' => $object->materia_name, 						
 						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Não' : 'Sim',  
 						'fornecedor' => $object->supplier_empresa, 
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
@@ -52,8 +52,25 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			array_push($arr, $line);
     	}
 
-    	$excel = new Spreadsheet();
+    	$excel = new Spreadsheet(array('title' => $objectList[0]->project_name));
 		$excel->setData($arr);
-		$excel->save(array('name' => 'projeto'));
+		$file = $excel->save(array('name' => 'relatorio_'.$objectList[0]->project_pasta));
+
+		if(file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($file));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            ob_clean();
+            flush();
+            readfile($file);
+
+            unlink($file);
+            exit;
+        }
 	}
 }

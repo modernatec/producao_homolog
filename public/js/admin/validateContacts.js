@@ -11,7 +11,7 @@ $(document).ready(function() {
                 telefone: {required:"Digite o telefone o contato."}
             },
             submitHandler: function(form) {
-              $(form).submit();
+              form.submit();
             }
         })
 });

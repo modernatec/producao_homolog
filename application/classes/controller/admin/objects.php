@@ -2,13 +2,14 @@
  
 class Controller_Admin_Objects extends Controller_Admin_Template {
  
-	public $auth_required = array('login'); //Auth is required to access this controller
- 
+	//public $auth_required = array('login'); //Auth is required to access this controller
+ 	/*
 	public $secure_actions = array(
                                     'create' => array('login', 'assistente 2'),
                                     'edit' => array('login', 'assistente 2'),
                                     'delete' => array('login', 'coordenador'),
                                  );
+    */                             
     const ITENS_POR_PAGINA = 20;
 					 
 	public function __construct(Request $request, Response $response)
@@ -16,7 +17,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		parent::__construct($request, $response);
 		$this->check_login();	
 	}
-        
+	        
 	public function action_index($fase = null)
 	{	
 		$view = View::factory('admin/objects/list')
@@ -132,17 +133,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	}
         
     public function action_view($id, $task_id = null)
-    {           
+    {       
         $view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
+
 
 		$this->addValidateJs('public/js/admin/validateTasks.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
         $view->user = $this->current_user->userInfos;                          
-		        
+		
+
         $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 
         $obj_history = ORM::factory('objects_statu')->where('object_id', '=', $id)->find_all();
@@ -158,6 +161,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
  		$view->current_auth = $this->current_auth;
         
         $this->template->content = $view;
+        
+        return true;
 	}
 
 	public function action_update($id){
@@ -274,6 +279,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'typeobject_id', 
                     'collection_id', 
                     'supplier_id', 
+                    'audiosupplier_id',
                     'country_id',
                     'format_id',
                     'reaproveitamento', 
@@ -291,6 +297,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'sinopse',
                     'taxonomia_reap',
                     'arq_aberto',
+                    'speaker',
 
                      ));
 

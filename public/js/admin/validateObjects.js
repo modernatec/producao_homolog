@@ -32,7 +32,7 @@ $(document).ready(function() {
             },
             submitHandler: function(form) {
                 $('input[type=submit]').attr('disabled', 'disabled');  
-                $(form).submit();
+                form.submit();
             }
         })
 });

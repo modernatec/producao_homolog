@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=$_SERVER["HTTP_REFERER"]?>" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/objects" class="bar_button round">Voltar</a>
 	</div>
     <form name="frmCreateObject" id="frmCreateObject" method="post" class="form" enctype="multipart/form-data">
 	  <dl>
@@ -92,7 +92,25 @@
                     </dd>     
                 </div>
             <?}?>
-            
+            <div class="clear left">
+                <dt> <label for="audiosupplier_id">estúdio de áudio</label> </dt>
+                <dd>
+                    <select class="round" name="audiosupplier_id" id="audiosupplier_id">
+                        <option value='0'>Selecione</option>
+                        <? foreach($suppliers as $supplier){?>
+                            <option value="<?=$supplier->id?>" <?=((@$objVO["audiosupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'audiosupplier_id');?></span>
+                </dd>       
+            </div>
+            <div class="left">
+                <dt><label for="speaker">locutor</label></dt>
+                <dd>
+                    <input type="text" class="text round" name="speaker" id="speaker" style="width:250px;" value="<?=$objVO['speaker'];?>"/>
+                    <span class='error'><?=Arr::get($errors, 'speaker');?></span>
+                </dd>
+            </div>
 
             <div class="clear left">
                 <dt><label for="cap">capítulo</label></dt>
