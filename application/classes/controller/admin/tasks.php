@@ -122,6 +122,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				}else{
 			        $task->userInfo_id = $this->current_user->userInfos->id;
 			    }
+			}else{
+				/*---atualiza status do objeto----*/
+		    	$objectStatus = ORM::factory('objects_statu')->where('object_id', '=', $this->request->post('object_id'))->order_by('id', 'DESC')->find();
+		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
+				$objectStatus->save();  
 			}
 
             $task->save();
@@ -141,7 +146,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		    	$update_task->userInfo_id = $update_task->userInfo_id;
 		    	$update_task->object_id = $update_task->object_id;  
 		    	$update_task->task_to = $this->current_user->userInfos->id;  
-		    	$update_task->save();		    	
+		    	$update_task->save();	
+
+		    	 	
 		    } 
 		    
 		       
