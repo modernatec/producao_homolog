@@ -5,8 +5,8 @@
     <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
-	  	<div class="left">	    
-		    <div class="foto_form" style="background: url('<?=URL::base();?><?=@$userInfoVO["foto"]?>') no-repeat;"></div> 	
+	  	<div class="left">	
+		    <img class="foto_form" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />		    
 		</div>
 		<div class="left">
 	        <dt>

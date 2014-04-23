@@ -11,13 +11,16 @@
 		<tbody>
             <? foreach($taskList as $task){?>
                 <tr>
-                    <td>
+                    <td width="40">
                         <? 
                             if($task->task_to != "0"){
-                                $nome = explode(" ", $task->to->nome);
-                                echo "<span class='round label_name' >".ucfirst($nome[0])."</span>";
-                            }
-                        ?>
+                                $nome = explode(" ", $task->to->nome);?>
+                                <div class="round_imgDetail green">
+                                    <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
+                                    <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
+                                    
+                                </div>
+                            <?}?>
                     </td>
                     <td>                        
                         <a href="<?=URL::base();?>/admin/objects/view/<?=$task->object_id?>"><?=$task->topic;?></a>
@@ -28,8 +31,13 @@
                     <td>
                         <?=$task->status->status;?>
                     </td>
-                    <td>
-                        <img class='round_imgList' src='<?=URL::base();?><?=$task->userInfo->foto?>' height="25" title="<?=ucfirst($task->userInfo->nome);?>" /> 
+                    <td width="40">
+                        <?$nome = explode(" ", $task->to->nome);?>
+                        <div class="round_imgDetail">
+                            <img class='round_imgList' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
+                            <span><?$nome = explode(" ", $task->userInfo->nome); echo $nome[0];?></span>
+                            
+                        </div>
                     </td> 
                     <td><?=Utils_Helper::data($task->crono_date)?></td>         
                 </tr>

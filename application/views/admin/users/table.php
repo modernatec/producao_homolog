@@ -1,7 +1,7 @@
 
+<form action="<?=URL::base();?>admin/users" method="post" class="form">
 <table class="list">
 		<thead>
-			<form action="<?=URL::base();?>admin/users" method="post" class="form">
 			<th width="250">
 				<div class="filter" >
 				    <ul>
@@ -36,12 +36,11 @@
             <th>equipe</th>
             <th>ramal</th>
 			<th>ação</th>	
-         	</form>
 		</thead>
 		<tbody>
             <? foreach($userinfosList as $usuario){?>
             <tr>
-                <td><img src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" /><a style='display:block' href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" title="Editar"><?=$usuario->nome?></a></td>
+                <td><img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" /><a style='display:block' href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" title="Editar"><?=$usuario->nome?></a></td>
                 <td><?=$usuario->email?></td>
                 <td><?=$usuario->team->name?></td>
                 <td><?=$usuario->ramal?></td>
@@ -52,3 +51,4 @@
             <?}?>
 		</tbody>
 	</table>
+</form>

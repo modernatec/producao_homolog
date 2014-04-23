@@ -1,3 +1,4 @@
+<span class="table_info round"><?=count($objectsList)?> objetos encontrados</span>
 <form action="<?=URL::base();?>admin/objects" method="post" class="form">
 <table class="list">
 

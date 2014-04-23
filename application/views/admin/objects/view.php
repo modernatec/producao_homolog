@@ -68,13 +68,16 @@
                                         <b><?=$status_task->topic;?></b></a> <span class="status round <?=$status_task->getStatus($status_task->id)->status->class?>"><?=$status_task->getStatus($status_task->id)->status->status?></span><br/>
                                         criada por: <?=$status_task->userInfo->nome?> em <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?><br/>
                                         retorno: <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
-                                        <? if($status_task->task_to != "0"){
-                                            $nome = explode(" ", $status_task->to->nome);
-                                            echo "<br/><br/><span class='round label_name' >".ucfirst($nome[0])."</span>";
-                                        }?>
+                                        <? if($status_task->task_to != "0"){?>
+                                            
+                                            <div class="round_imgDetail green" style="margin-top:5px;">
+                                                <img class='round_imgList' src='<?=URL::base();?><?=($status_task->to->foto)?($status_task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($status_task->to->nome);?>" />
+                                                <span><?$nome = explode(" ", $status_task->to->nome); echo $nome[0];?></span>
+                                            </div>
+                                        <?}?>
                                     </div>
                                     <?if(!empty($status_task->description)){ ?>
-                                        <span class="wordwrap description"><?=$status_task->description;?></span>
+                                        <span class="wordwrap description replies replies_<?=$status_task->id;?>"><?=$status_task->description;?></span>
                                     <?}?>
                                     <div class="options">
                                         <? if($status_task->getStatus($status_task->id)->status_id == '5'){?>
@@ -88,12 +91,12 @@
                                                 <input type="hidden" name='userinfo_id' value="<?=$status_task->userInfo_id?>" />
                                                 <input type="submit" class="bar_button round" value="iniciar tarefa">
                                             </form>
+                                        <?}else{?>
+                                            <a class="down_button fade" data-show="replies_<?=$status_task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
                                         <?}?>
-
                                     </div>  
-                                    <a class="down_button fade" data-show="replies_<?=$status_task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
                                 </div>
-                                <div class="replies" id="replies_<?=$status_task->id;?>">
+                                <div class="replies replies_<?=$status_task->id;?>">
                                 <?foreach ($status_task->getReplies($status_task->id) as $taskReply) {?>
                                     <div style='clear:both'>
                                         <div style='width:25px; float:left;'>

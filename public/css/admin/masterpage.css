@@ -1,13 +1,16 @@
 *{
-	font-family: 'verdana';
-	font-size:12px;
+	font-family: 'Open Sans',sans-serif;
+	font-size:13px;
 	text-decoration:none;
 	padding:0;
 	margin:0;
 	outline: 0;
+	text-rendering:optimizeLegibility;
 }
 body{
 	background: url('../../image/admin/bkg.jpg') repeat-x 0 70px fixed;
+	/*background: #f1f2f7;*/
+	/*color: #767676;*/
 }
 
 h1.logo{
@@ -122,25 +125,34 @@ a.link:hover{color:#666; text-decoration: underline;}
 }
 
 #user_info .foto{
+	-o-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -khtml-border-radius: 100px;
+    border-radius: 100px;
+	position:absolute;
 	width:100px;
 	height: 100px;
-	background:#CCC no-repeat 10px 10px;
-	position:absolute;
 	border:3px #FFF solid;
-	border-radius:100px;
 	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);
-	top:-17px;
-	left:-17px;
+	top:0px;
+	left:0px;
+	background: #fff;
 }
 
 .foto_form{
+	-o-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -khtml-border-radius: 100px;
+    border-radius: 100px;
 	width:100px;
 	height: 100px;
-	background:#CCC no-repeat 10px 10px;
 	position:relative;
 	border:3px #FFF solid;
 	border-radius:100px;
-	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);
+	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);	
+	background: #fff;
 }
 
 #head{
@@ -155,7 +167,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	/*background: -webkit-linear-gradient(top, #008fc7, #06608d, #06608d);*/
 	background: #28282e;
 	padding:10px;
-	padding-left:100px;
+	padding-left:110px;
 	color:#FFF;
 	height: 25px;
 	z-index: 11000;
@@ -225,7 +237,7 @@ a{
 .content{
 	margin-top: 100px;
 	margin-right: 10px;
-	padding-left:100px;
+	padding-left:110px;
 
 }
 
@@ -428,7 +440,12 @@ label
     min-width: 600px;
     max-width: 600px;
     border: 1px solid #CCC;
-    /*box-shadow:#999 2px 2px 2px;*/
+    background: #fff;
+}
+
+.step{
+	background: #dfe9f3;
+	border: none;
 }
 
 .hist_task img, .hist_task_reply img{
@@ -441,8 +458,9 @@ label
     margin:-5px 5px 5px 5px;
     min-width: 600px;
     max-width: 600px;
-    border-bottom: 1px dotted #ccc;
-    background: #eee;
+    color: #585858;
+    /*border-bottom: 1px dotted #ccc;*/
+    background: #f3f3f3;
     /*box-shadow:#999 2px 2px 2px;*/
 }
 
@@ -598,7 +616,54 @@ input[type='text']:focus, input[type='password']:focus{
     -webkit-border-radius: 25px;
     -khtml-border-radius: 25px;
     border-radius: 25px;
-    border: 1px solid #ccc;
+    border: 2px solid #fff !important;
+    background: #fff;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top:-2px;
+    left: -2px;
+}
+
+.round_imgDetail{
+	-o-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -khtml-border-radius: 25px;
+    border-radius: 25px;
+    background: #008fc7;
+    color: #fff;
+    width: 100px;
+
+}
+
+.round_imgDetail span{
+	line-height: 26px;
+	padding: 5px;
+	left: -2px;
+	position: relative;
+}
+
+.badge{
+	position: relative;
+	display: block;
+	float: left;
+	top: -35px;
+	left: -8px;
+	padding: 2px;
+	font-size: 12px;
+
+	-o-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -khtml-border-radius: 7px;
+    border-radius: 7px;
+    background: #FCB322;
+    color: #fff;
+}
+
+.green{
+	background: #048b11;
 }
 
 .stepList{
@@ -622,10 +687,6 @@ input[type='text']:focus, input[type='password']:focus{
 
 .ui-tabs, .ui-widget, .ui-widget-content, .ui-corner-all {
 	border: none;
-}
-
-.ui-widget-content{
-	background: #f6f6f6;
 }
 
 .ui-tabs .ui-tabs-panel {
@@ -775,14 +836,12 @@ input[type='text']:focus, input[type='password']:focus{
 .description{
 	padding: 10px 0;
 	display: block;
+	border-bottom: 1px dotted #CCC;
 }
 
-.step{
-	background: #dfe9f3;
-}
+
 
 .down_button{
-	border-top: 1px dotted #CCC;
 	text-align: center;
 	display: block;
 }
@@ -797,11 +856,24 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #fdfdc3;
 }
 
+.table_info{
+	color: #008fc7;
+	padding: 4px;
+	background: #f3f3f3;
+	border-bottom: 1px dotted #eee;
+	display: block;
+}
+
+.ui-widget-content{
+	background: #fff;
+	border: 1px solid #f3f3f3;
+}
+
 .ui-widget-header .ui-state-default.ui-state-active{
-	background: #f6f6f6;
-	border: 1px solid #f6f6f6;
+	background: #fff;
+	border: 1px solid #fff;
 }
 
 .ui-widget-header .ui-state-default{
-	background: #fff;
+	background: #f3f3f3;
 }

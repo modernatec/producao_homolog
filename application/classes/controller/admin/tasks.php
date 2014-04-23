@@ -17,6 +17,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
+
+        $view->has_task = ORM::factory('taskUser')->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')->where('task_to', '!=', '0')->group_by('task_to')->order_by('nome', 'ASC')->find_all();
+        $view->current_auth = $this->current_auth;
 		
 	  	$this->template->content = $view;			  	
 	} 
@@ -52,7 +55,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_edit($id){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
-			$this->salvar($id);
+			$this->salvar($id, null, 'editing');
 		}
 	}
 	
@@ -97,7 +100,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
 
-	protected function salvar($id = null, $method = null)
+	protected function salvar($id = null, $func = null, $method = null)
 	{
         $db = Database::instance();
         $db->begin();
@@ -131,7 +134,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
             $task->save();
 
-            if(!is_null($this->request->post('task_id'))){
+            if(!is_null($this->request->post('task_id')) && is_null($method)){
 		    	$task_id = ORM::factory('task', $this->request->post('task_id'));
 		    	$task_id->topic = $task_id->topic;
 		    	$task_id->status_id = $task_id->status_id;  
@@ -146,9 +149,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		    	$update_task->userInfo_id = $update_task->userInfo_id;
 		    	$update_task->object_id = $update_task->object_id;  
 		    	$update_task->task_to = $this->current_user->userInfos->id;  
-		    	$update_task->save();	
-
-		    	 	
+		    	$update_task->save();			    	 	
 		    } 
 		    
 		       
@@ -179,7 +180,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             
             $db->commit();
 
-            if($method != null){
+            if($func != null){
 	            call_user_func('Controller_Admin_Tasks::'.$method, array('post' => $this->request->post(), 
             																'user' => $this->current_user->userInfos));
             }

@@ -20,6 +20,10 @@ class Model_TaskUser extends ORM {
 		return ORM::factory('task')->where('task_id', '=', $id)->find_all();
 	}
 
+	public function getTasks($id){
+		return ORM::factory('taskUser')->where('task_to', '=', $id)->count_all();
+	}
+
 
 	public function rules()
 	{

@@ -1,7 +1,8 @@
 <div id="head">
 	<div id="user_info">
 		<a href="<?=URL::base();?>admin/users/editInfo" style="float:left;">
-			<div class="foto" style="background: url('<?=URL::base();?><?=$user->userInfos->foto?>') no-repeat;"><!--style="background: url('<?=URL::base();?><?=$user->userInfos->foto?>')"--></div>
+			<img class="foto" src="<?=URL::base();?><?=$user->userInfos->foto?>" />
+			
 	        <?=ucfirst($user->userInfos->nome);?>
 	    </a>
         <a class="logout" href="<?=URL::base();?>logout/" title="Logout">logout</a>

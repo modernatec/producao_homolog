@@ -132,7 +132,7 @@ $(function () {
 
     $('.fade').click(function() {
         var element = $(this).data("show");
-        $('#' + element).fadeToggle();
+        $('.' + element).fadeToggle();
     });
 
     $('.cancel').click(function() {
