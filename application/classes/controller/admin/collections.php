@@ -77,7 +77,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				'name',
 				'op',
 				'materia_id',
-				'ano'
+				'ano',
+				'fechamento',
 			));
 			               
 			

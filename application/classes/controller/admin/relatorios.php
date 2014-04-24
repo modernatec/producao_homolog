@@ -33,21 +33,25 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		$arr = array(0 => array());
 
-		$titulos = array('taxonomia', 'tipo', 'coleção', 'materia','reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'anotações');
+		$titulos = array('taxonomia', 'coleção', 'materia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
+			$datas_f = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 			$line = array(
 						'taxonomia' => $object->taxonomia.'|'.urlencode(URL::base().'admin/objects/view/'.$object->id), 
-						'typeobject' => $object->typeobject_name, 
+						
 						'collection' => $object->collection_name, 
-						'materia' => $object->materia_name, 						
+						
+						'materia' => $object->materia_name, 
+						'typeobject' => $object->typeobject_name, 						
 						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Não' : 'Sim',  
 						'fornecedor' => $object->supplier_empresa, 
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
 						'prova' => $object->prova, 
-						'status' => $object->statu_status,  
+						'status' => $object->statu_status, 
+						'fechamento' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[0], $datas_f[1], $datas_f[2]) : "-",
 						'anotacoes' => $object->anotacoes);
 			array_push($arr, $line);
     	}

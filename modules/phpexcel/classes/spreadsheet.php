@@ -113,6 +113,12 @@ class Spreadsheet
 						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
         PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 						break;
+					case 'fechamento':
+						//$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
+						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+						break;
+
 
 					case 'status':
 						$cor = ($value == 'finalizado') ? $styleArray3 : $cor;

@@ -38,6 +38,21 @@ class Model_Collection extends ORM {
             );
 	}
 
+	public function filters()
+	{
+		return array(
+			'fechamento' => array(
+				array(array($this, 'setup_date'))
+			),
+			
+		);
+	}
+
+	public function setup_date($value)
+	{
+		return  date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $value)));
+	}
+
 	/**
 	 * Does the reverse of unique_key_exists() by triggering error if folder exists.
 	 * Validation callback.

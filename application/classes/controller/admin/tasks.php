@@ -181,7 +181,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $db->commit();
 
             if($func != null){
-	            call_user_func('Controller_Admin_Tasks::'.$method, array('post' => $this->request->post(), 
+	            call_user_func('Controller_Admin_Tasks::'.$func, array('post' => $this->request->post(), 
             																'user' => $this->current_user->userInfos));
             }
 			

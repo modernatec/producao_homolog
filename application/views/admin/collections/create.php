@@ -41,6 +41,15 @@
 		      <span class='error'><?=Arr::get($errors, 'ano');?></span>
 		    </dd>
 	    </div>
+	    <div class="left">
+		    <dt>
+		      <label for="fechamento">Fechamento</label>
+		    </dt>	    
+		    <dd>
+		      <input type="text" class="text date round" name="fechamento" id="fechamento" style="width:80px;" value="<?=@$collectionVO['fechamento'];?>"/>
+		      <span class='error'><?=Arr::get($errors, 'fechamento');?></span>
+		    </dd>
+	    </div>
 	    <dd class='clear'>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
 	    </dd>
