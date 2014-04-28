@@ -360,6 +360,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_materia  = json_decode($this->request->query('materia'));					
 		$view->filter_taxonomia = $this->request->query('taxonomia');
 
+		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
+		$status_arr = array();
+		foreach ($status_init as $status) {
+			array_push($status_arr, $status->id);
+		}
+		$view->reset_filter_status = json_encode($status_arr);
+
 		$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
 
 

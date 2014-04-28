@@ -1,4 +1,7 @@
-<span class="table_info round"><?=count($objectsList)?> objetos encontrados</span>
+<span class="table_info round">
+	<?=count($objectsList)?> objetos encontrados 
+	<a class="bar_button round green" href='<?=URL::base();?>admin/objects/'>limpar filtros</a>
+</span>
 <form action="<?=URL::base();?>admin/objects" method="post" class="form">
 <table class="list">
 

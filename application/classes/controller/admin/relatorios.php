@@ -33,13 +33,14 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		$arr = array(0 => array());
 
-		$titulos = array('taxonomia', 'coleção', 'materia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
+		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
 			$datas_f = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 			$line = array(
+						'title' => $object->title, 
 						'taxonomia' => $object->taxonomia.'|'.urlencode(URL::base().'admin/objects/view/'.$object->id), 
 						
 						'collection' => $object->collection_name, 

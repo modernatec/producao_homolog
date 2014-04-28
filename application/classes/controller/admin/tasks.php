@@ -24,10 +24,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         if($this->request->query('userInfo_id')){
         	$tasks_of = ORM::factory('userInfo', $this->request->query('userInfo_id'));	
         	$nome = explode(" ", $tasks_of->nome);
-        	$view->title = "tarefas de ".$nome[0];
-        	$view->filter = "?userInfo_id=".$tasks_of->id;
+        	$view->title = "tarefas - ".$nome[0];
+        	$view->filter = "?to=".$tasks_of->id;
         }else{
-        	$view->title = "tarefas equipe";
+        	$view->title = "tarefas - equipe";
         	$view->filter = "?status=".json_encode(array("5"));
         }
 		$view->totalTasks = ORM::factory('taskUser')->count_all();
@@ -297,7 +297,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         //$view->filter_tipo = json_decode($this->request->query('tipo'));
         $view->filter_status = json_decode($this->request->query('status'));  
-		$view->filter_userInfo_id = $this->request->query('userInfo_id');             
+		$view->filter_userInfo_id = $this->request->query('userInfo_id'); 
+		$view->filter_task_to = $this->request->query('to');             
 
         //$query = ORM::factory('task')->where('status_id', '=', $view->filter_status)        
         $query = ORM::factory('taskUser');
@@ -308,6 +309,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         //(isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id)->and_where('task_id', 'NOT IN', DB::Select('task_id')->from('tasks')->where('status_id', '=', '7')) : '';
         (isset($view->filter_status)) ? $query->where('status_id', '=', $view->filter_status) : '';
         (isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id)->or_where('userInfo_id', '=', $view->filter_userInfo_id) : '';
+        (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
         $view->taskList = $query->order_by('crono_date','ASC')->find_all();
 
