@@ -20,6 +20,7 @@ class Model_Task extends ORM {
 		return ORM::factory('task')->where('task_id', '=', $id)->find_all();
 	}
 
+	
 
 	public function rules()
 	{

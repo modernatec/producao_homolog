@@ -20,7 +20,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         $view->has_task = ORM::factory('taskUser')->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')->where('task_to', '!=', '0')->group_by('task_to')->order_by('nome', 'ASC')->find_all();
         $view->current_auth = $this->current_auth;
-		
+
+        if($this->request->query('userInfo_id')){
+        	$tasks_of = ORM::factory('userInfo', $this->request->query('userInfo_id'));	
+        	$nome = explode(" ", $tasks_of->nome);
+        	$view->title = "tarefas de ".$nome[0];
+        	$view->filter = "?userInfo_id=".$tasks_of->id;
+        }else{
+        	$view->title = "tarefas equipe";
+        	$view->filter = "?status=".json_encode(array("5"));
+        }
+		$view->totalTasks = ORM::factory('taskUser')->count_all();
 	  	$this->template->content = $view;			  	
 	} 
     
