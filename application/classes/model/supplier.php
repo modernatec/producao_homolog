@@ -10,13 +10,13 @@ class Model_Supplier extends ORM {
 	{
             return array(
                 'name' => array(
-                    array('not_empty'),
+                    //array('not_empty'),
                 ),
                 'email' => array(
-                    array('not_empty'),
+                    //array('not_empty'),
                 ),
                 'telefone' => array(
-                    array('not_empty'),
+                    //array('not_empty'),
                 ),
                 'empresa' => array(
                     array('not_empty'),

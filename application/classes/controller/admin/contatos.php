@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
-class Controller_Admin_Suppliers extends Controller_Admin_Template {
+class Controller_Admin_Contatos extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); //Auth is required to access this controller
  
@@ -17,12 +17,11 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
         
 	public function action_index()
 	{	
-		$view = View::factory('admin/suppliers/list')
+		$view = View::factory('admin/contatos/list')
                 ->bind('message', $message);
 		
-		//$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
-		$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
-		$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
+		//$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
+		//$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
 		          
         $this->template->content = $view;             
 	} 
@@ -35,7 +34,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		$this->addValidateJs("public/js/admin/validateSuppliers.js");
 		$view->isUpdate = false;
-		$view->formatos = ORM::factory('format')->find_all();
 		$view->contactVO = $this->setVO('supplier'); 
 		$this->template->content = $view;
 
@@ -54,16 +52,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$this->addValidateJs();
 		$view->isUpdate = true;
 		$contact = ORM::factory('supplier', $id);
-		$view->contactVO = $this->setVO('supplier', $contact); 
-		$view->formatos = ORM::factory('format')->find_all(); 
-		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
-			
-		$contatos_arr = array();
-		foreach ($contatos as $key => $value) {
-			//$view->contactVO.$key = '1';//$this->setVO('contato', $value); 	
-		}
-		
-
+		$view->contactVO = $this->setVO('supplier', $contact);  		
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -79,28 +68,19 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$supplier = ORM::factory('supplier', $id)->values($this->request->post(), array(
+			$contact = ORM::factory('supplier', $id)->values($this->request->post(), array(
+				'name',
+				'email',
+				'telefone',
 				'site',
 				'empresa',
+				'trabalho',
 				'observacoes'
 			));
-
-			$supplier->save();
-
-			$delete_contacts = DB::delete('contatos')->where('tipo_id', '=', $supplier->id)->execute();
-
-			foreach ($this->request->post('name') as $key => $value) {
-				$contact = ORM::factory('contato');
-				$contact->nome = $this->request->post('name')[$key];
-				$contact->email = $this->request->post('email')[$key];
-				$contact->telefone = $this->request->post('telefone')[$key];
-				$contact->tipo = "supplier";
-				$contact->tipo_id = $supplier->id;	
-				$contact->save();
-			}			 
-			
+			 
+			$contact->save();
 			$db->commit();
-			$message = "Fornecedor salvo com sucesso.";
+			$message = "Fornecedor '{$contact->empresa}' salvo com sucesso.";
 			Utils_Helper::mensagens('add',$message);
 			Request::current()->redirect('admin/suppliers');
 

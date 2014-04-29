@@ -3,7 +3,6 @@
 		<a href="<?=URL::base();?>admin/projects" class="bar_button round">Voltar</a>
 	</div>
     <form name="frmCreateProject" id="frmCreateProject" method="post" class="form" enctype="multipart/form-data">
-	  <dl>
 	    <div class="left">
 		    <dt>
 		      <label for="name">projeto</label>
@@ -44,7 +43,15 @@
 		    <dd>
 		      <textarea class="text required round" name="description" id="description" style="width:500px; height:60px;"><?=@$projectVO['description'];?></textarea>
 		      <span class='error'><?=Arr::get($errors, 'description');?></span>
+		    </dd>		 
+		    <dd class="clear">
+				<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />		      
 		    </dd>
+		    <?
+		     if(!empty($projectVO['id'])){?>
+			    <hr style="margin:8px 0;">
+	            <a href="<?=URL::base();?>admin/relatorios/relatorioLink?project_id=<?=@$projectVO['id']?>" class="round bar_button">gerar relatório</a> 
+		    <?}?>
 		</div>
 		<div class="left">
 		    <dt>
@@ -62,9 +69,5 @@
 			</div>
 		    <ul class="select_holder"></ul>
 		</div>
-	    <dd class="clear">
-	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
-	    </dd>
-	  </dl>
 	</form>
 </div>

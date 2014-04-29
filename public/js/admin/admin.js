@@ -236,8 +236,8 @@ $(document).ready(function()
         }, 
 
         activate: function( event, ui ) { 
-            //$.removeCookie("producao");
-            $.cookie("producao", ui.newTab[0].id, { expires : 5 });  
+            $.removeCookie("producao");
+            $.cookie("producao", ui.newTab[0].id, { expires : 1 });  
             
         },
     });

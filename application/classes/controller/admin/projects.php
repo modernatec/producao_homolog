@@ -4,13 +4,12 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
  
 	public $auth_required		= array('login', 'admin');
  	
-	/*
 	public $secure_actions     	= array(
 								   	'create' => array('login', 'coordenador'),
 									'edit' => array('login', 'coordenador'),
 								   	'delete' => array('login', 'coordenador'),
 								 );
-	*/
+	
 					 
 	public function __construct(Request $request, Response $response)
 	{

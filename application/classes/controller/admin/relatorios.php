@@ -25,6 +25,12 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		}           
 	} 
 
+	public function action_relatorioLink(){
+		$this->auto_render = false;
+		$this->generate(array("project_id"=>$this->request->query('project_id')));
+		return false;
+	}
+
 	public function generate($post){
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
 					->where('project_id', '=', $post['project_id'])
