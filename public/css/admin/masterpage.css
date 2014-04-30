@@ -261,6 +261,7 @@ a{
 	margin-right:5px;
 	color:#FFF;
 	position: relative;
+	cursor: pointer;
 	/*box-shadow:#999 2px 2px 2px;*/
 }
 
@@ -885,4 +886,8 @@ a.green{
 
 .ui-widget-header .ui-state-default{
 	background: #f3f3f3;
+}
+
+.table_anchor{
+	cursor: pointer;
 }

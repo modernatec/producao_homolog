@@ -155,7 +155,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
         $view->assign_form->obj = $objeto; 
 
-
+        $view->anotacoes = ORM::factory('anotacoes_object')->where('object_id', '=', $id)->find_all();
         $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
@@ -225,8 +225,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	        return false;	
 	    }
 	}
-    
-	public function action_anotacoes(){
+
+   
+	public function action_salvaranotacoes(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{ 
 

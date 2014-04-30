@@ -1,8 +1,7 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/collections/create" class="bar_button round">Criar coleção</a>
+		<a href="<?=URL::base();?>admin/collections/create" class="bar_button round">+ coleções</a>
 	</div>
-	<span class="header">coleções</span>
 	<div id="tabs">
 		<ul>
 			<? foreach($collectionsList as $collection){?>

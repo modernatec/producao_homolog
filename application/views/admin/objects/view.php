@@ -3,8 +3,8 @@
         <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>
         
-        <a href="#" data-show="form_status" class="bar_button round show">alterar status</a>
-        <a href="#" data-show="form_assign" class="bar_button round show">criar tarefa</a>
+        <a data-show="form_status" class="bar_button round show">alterar status</a>
+        <a data-show="form_assign" class="bar_button round show">criar tarefa</a>
         
         <?}?>
     </div>
@@ -16,9 +16,9 @@
             <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
             <hr style="margin:8px 0;" />
             <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
-            <b>contato:</b> <?=@$obj->supplier->name?><br/>
-            <b>email:</b> <?=@$obj->supplier->email?><br/>
-            <b>tels:</b> <?=@$obj->supplier->telefone?><br/><br/>
+            <b>contato:</b> <?=@$obj->supplier->contato->nome?><br/>
+            <b>email:</b> <?=@$obj->supplier->contato->email?><br/>
+            <b>tels:</b> <?=@$obj->supplier->contato->telefone?><br/><br/>
 
             <b>estúdio:</b> <?=@$obj->audiosupplier->empresa?><br/>
             <b>locutor(a):</b> <?=@$obj->speaker?><br/>
@@ -31,9 +31,29 @@
             <br/>
             <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
         </div>
-        <div class="box round anotacoes">
-            Anotações
+        <div style="padding: 10px 0">
+            <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round">anotações</a>
             <hr style="margin:8px 0;" />
+            <? foreach ($anotacoes as $anotacao) {?>                
+                <div class="box round anotacoes">  
+                    <div class="left">
+                    <div style="position:relative; top:-20px; left:-15px">
+                        <div class="round_imgDetail green" style="margin-top:5px;">
+                            <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
+                            <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
+                        </div>
+                    </div>          
+                    </div>        
+                    <div class="left">    
+                        <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
+                    </div>
+                    <div class="clear">
+                        <hr style="margin:8px 0;" />
+                        <?=$anotacao->anotacao?>
+                    </div>
+                </div> 
+            <?}?>
+
             <form action="<?=URL::base();?>admin/objects/anotacoes/" method="post" class="form">
                 <dd>
                     <input type="hidden" name='object_id' value="<?=@$obj->id;?>" />
@@ -45,12 +65,13 @@
         </div>
     </div>
     <div class="left">
+        
         <?=@$assign_form?>
         <?=@$reply_form?>
         <?=@$form_status?>
         <div> 
             <div style="padding:8px;">  
-                <a href="#" class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
+                <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
             </div>
             <?if(isset($taskflows)){
                     foreach($taskflows as $status_task){
@@ -66,8 +87,9 @@
                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
                                         <b><?=$status_task->topic;?></b></a> <span class="status round <?=$status_task->getStatus($status_task->id)->status->class?>"><?=$status_task->getStatus($status_task->id)->status->status?></span><br/>
-                                        criada por: <?=$status_task->userInfo->nome?> em <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?><br/>
-                                        retorno: <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
+                                        por: <?=$status_task->userInfo->nome?> - <label><?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?></label> 
+                                        <br/>
+                                        retorno: <label><?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?></label>
                                         <? if($status_task->task_to != "0"){?>
                                             
                                             <div class="round_imgDetail green" style="margin-top:5px;">
@@ -107,7 +129,7 @@
                                                 <? if($current_auth == "coordenador" || $current_auth == "admin" || $current_auth == "assistente 2"){?>
                                                     <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
                                                 <?}?>
-                                                <?=$taskReply->getStatus($taskReply->id)->status->status?></a> em <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
+                                                <?=$taskReply->getStatus($taskReply->id)->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
                                             </div>
                                             <?if(!empty($taskReply->description)){ ?>
                                                 <span class="wordwrap description"><?=$taskReply->description;?></span>
@@ -145,9 +167,9 @@
                                         <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                             <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
-                                        <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
+                                        <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
                                         
-                                        retorno: <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
+                                        retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
                                     </div>
 
                                     <?if(!empty($status_task->description)){ ?>

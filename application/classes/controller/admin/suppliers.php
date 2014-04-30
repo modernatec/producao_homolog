@@ -12,7 +12,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);	
+		parent::__construct($request, $response);
+		$this->check_login();	
 	}
         
 	public function action_index()
@@ -54,15 +55,22 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$this->addValidateJs();
 		$view->isUpdate = true;
 		$contact = ORM::factory('supplier', $id);
-		$view->contactVO = $this->setVO('supplier', $contact); 
+		$view->supplierVO = $this->setVO('supplier', $contact); 
 		$view->formatos = ORM::factory('format')->find_all(); 
 		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
 			
 		$contatos_arr = array();
-		foreach ($contatos as $key => $value) {
-			//$view->contactVO.$key = '1';//$this->setVO('contato', $value); 	
+		foreach ($contatos as $value) {
+			array_push($contatos_arr, $this->setVO('contato', $value));
 		}
-		
+		$view->contactVO = $contatos_arr;
+
+		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
+		$formats_arr = array();
+		foreach ($formats_supplier as $value) {
+			array_push($formats_arr, $value->format_id);
+		}
+		$view->formats_arr = $formats_arr;
 
 		$this->template->content = $view;
 
@@ -87,17 +95,28 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 			$supplier->save();
 
-			$delete_contacts = DB::delete('contatos')->where('tipo_id', '=', $supplier->id)->execute();
+			$delete_contacts = DB::delete('contatos')->where('tipo','=', 'supplier')->and_where('tipo_id', '=', $supplier->id)->execute();
 
-			foreach ($this->request->post('name') as $key => $value) {
-				$contact = ORM::factory('contato');
-				$contact->nome = $this->request->post('name')[$key];
-				$contact->email = $this->request->post('email')[$key];
-				$contact->telefone = $this->request->post('telefone')[$key];
-				$contact->tipo = "supplier";
-				$contact->tipo_id = $supplier->id;	
-				$contact->save();
-			}			 
+			foreach ($this->request->post('nome') as $key => $value) {
+				if($this->request->post('nome')[$key] != ""){
+					$contact = ORM::factory('contato');
+					$contact->nome = $this->request->post('nome')[$key];
+					$contact->email = $this->request->post('email')[$key];
+					$contact->telefone = $this->request->post('telefone')[$key];
+					$contact->tipo = "supplier";
+					$contact->tipo_id = $supplier->id;	
+					$contact->save();
+				}
+			}	
+
+			$delete_contatos_suppliers = DB::delete('formats_suppliers')->where('supplier_id', '=', $supplier->id)->execute();
+		 
+		 	foreach ($this->request->post('formato') as $key => $value) {				
+				$format_supplier = ORM::factory('formats_supplier');
+				$format_supplier->format_id = $this->request->post('formato')[$key];
+				$format_supplier->supplier_id = $supplier->id;
+				$format_supplier->save();			
+			}	
 			
 			$db->commit();
 			$message = "Fornecedor salvo com sucesso.";

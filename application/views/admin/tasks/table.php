@@ -10,7 +10,7 @@
 		</thead>
 		<tbody>
             <? foreach($taskList as $task){?>
-                <tr>
+                <tr class="table_anchor" onclick="document.location = '<?=URL::base();?>/admin/objects/view/<?=$task->object_id?>';">
                     <td width="40">
                         <? 
                             if($task->task_to != "0"){
@@ -22,15 +22,9 @@
                                 </div>
                             <?}?>
                     </td>
-                    <td>                        
-                        <a href="<?=URL::base();?>/admin/objects/view/<?=$task->object_id?>"><?=$task->topic;?></a>
-                    </td>
-                    <td>
-                        <?=$task->object->taxonomia;?>
-                    </td>
-                    <td>
-                        <?=$task->status->status;?>
-                    </td>
+                    <td><?=$task->topic;?></td>
+                    <td><?=$task->object->taxonomia;?></td>
+                    <td><?=$task->status->status;?></td>
                     <td width="40">
                         <?$nome = explode(" ", $task->to->nome);?>
                         <div class="round_imgDetail">

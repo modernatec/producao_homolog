@@ -115,4 +115,27 @@ function validaTasks(){
             return false;       
         }
     })
+
+    $("#frmAnotacoes").validate({
+        rules: {
+            anotacoes: {required:true},
+        },
+        messages: {
+            anotacoes: { required:'Campo não pode ser vazio'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            $.ajax({
+                type: "POST",
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                timeout: 3000,
+                success: function() {
+                    location.reload();
+                },
+                error: function() {alert('ocorreu um erro durante o processamento');}
+            });
+            return false;       
+        }
+    })
 }

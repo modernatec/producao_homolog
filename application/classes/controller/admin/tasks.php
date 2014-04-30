@@ -316,6 +316,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         
         //$this->endProfilling();
         echo $view;
+    }  
+
+    public function action_ongoing(){
+    	$this->check_login();	
+        $this->auto_render = false;
+        $view = View::factory('admin/tasks/table_ongoing');
+
+        $view->objectsList = DB::select('*')->from('ongoings')->order_by('crono_date','ASC')->execute();
+
+        echo $view;
     }   
 
 

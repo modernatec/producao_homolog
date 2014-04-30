@@ -39,13 +39,11 @@
 		</thead>
 		<tbody>
             <? foreach($suppliersList as $supplier){?>
-            <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar"><?=$supplier->empresa?></a></td>
-                <td><a style='display:block' href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar"><?=$supplier->name?></a></td>
-                <td><a style='display:block' href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar"><?=$supplier->telefone?></a></td>
-                
-                <td><a style='display:block' href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar"><?=$supplier->trabalho?></a></td>				
-				
+            <tr class="table_anchor" onclick="document.location = '<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>';">
+				<td><?=$supplier->empresa?></td>
+                <td><?=$supplier->contato->nome?></td>
+                <td><?=$supplier->contato->telefone?></td>                
+                <td><?=$supplier->getFormats($supplier->id)?></a></td>
 			</tr>
             <?}?>
 		</tbody>

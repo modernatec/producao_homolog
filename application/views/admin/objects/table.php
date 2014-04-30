@@ -135,6 +135,7 @@
 				    </ul>
 				</div>
 			</th>
+			<th width="50">prova</th>
 			<th width="50">retorno</th>
             <th width="50">fechamento</th>
             </form>
@@ -191,7 +192,8 @@
                 <td class="<?=$class_obj?>"><?=$objeto['supplier_empresa']?></td>
                 <td class="<?=$class_obj?>"><?=$objeto['materia_name']?></td>
                 <td class="<?=$class_obj?>"><?=$objeto['collection_name']?></td>
-                <td class="<?=$class_obj?>"><?=$objeto['statu_status']?></td>                
+                <td class="<?=$class_obj?>"><?=$objeto['statu_status']?></td>   
+                <td class="<?=$class_obj?>"><?=$objeto['prova']?></td>                
                 <td class="<?=$class_obj?>"><?=Utils_Helper::data($objeto['retorno'],'d/m/Y')?></td>
                 
                 <td class="<?=$class_obj?>"><?=Utils_Helper::data($objeto['crono_date'],'d/m/Y')?></td>
