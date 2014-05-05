@@ -133,7 +133,7 @@ function validaTasks(){
                 success: function() {
                     location.reload();
                 },
-                error: function() {alert('ocorreu um erro durante o processamento');}
+                error: function(e) {alert('ocorreu um erro durante o processamento '); console.log(e);}
             });
             return false;       
         }

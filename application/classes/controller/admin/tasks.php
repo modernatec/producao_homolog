@@ -31,7 +31,24 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$view->filter = "?status=".json_encode(array("5"));
         }
 		$view->totalTasks = ORM::factory('taskUser')->count_all();
-	  	$this->template->content = $view;			  	
+	  	$this->template->content = $view;	
+	  	
+	  	/*
+	  	$rs = ORM::factory('task')->where('id', 'IN', (DB::select('task_id')->from('tasks')->where('status_id', '=', '7')))->find_all();
+	  	foreach($rs as $task){
+	  		$task->ended = '1';
+	  		$task->save();
+
+	  		$rs2 = ORM::factory('task')->where('task_id', '=', $task->id)->find_all();
+	  		foreach($rs2 as $task2){
+	  			$task2->ended = '1';
+	  			$task2->save();
+	  		}
+
+	  	}
+	  	*/
+	  	//SELECT * FROM `moderna_tasks` WHERE `moderna_tasks`.`id` IN(SELECT `mt`.`task_id` FROM `moderna_tasks` `mt` WHERE `mt`.`status_id` = '7')
+	  			  	
 	} 
     
    	public function action_update($id){
@@ -79,9 +96,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				Utils_Helper::mensagens('add',$message);
             	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
 			}else{
-				var_dump($this->request->post());
+				//var_dump($this->request->post());
 				//exit();
-				$this->salvar();
+				$this->salvar(null, null, "starting");
 			}
 		}
 	}	
@@ -142,8 +159,22 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$objectStatus->save();  
 			}
 
+			/**encerra trio de tasks para a task concluida**/
+		    if(!is_null($this->request->post('task_id')) && $func == "sendEndMail"){
+		    	$task_end = ORM::factory('task', $this->request->post('task_id'));
+		    	$task_end->ended = '1';
+		    	$task_end->save();
+
+				$task_id_end = ORM::factory('task')->where('task_id', '=', $this->request->post('task_id'))->find();
+		    	$task_id_end->ended = '1';
+		    	$task_id_end->save();			    	 		
+
+		    	$task->ended = '1';
+		    }
+
             $task->save();
 
+            /**atualiza tarefas relacionadas (ex: ja abertas)**/
             if(!is_null($this->request->post('task_id')) && is_null($method)){
 		    	$task_id = ORM::factory('task', $this->request->post('task_id'));
 		    	$task_id->topic = $task_id->topic;
@@ -161,8 +192,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		    	$update_task->task_to = $this->current_user->userInfos->id;  
 		    	$update_task->save();			    	 	
 		    } 
+
+		    if(!is_null($this->request->post('task_id')) && $method == "starting"){
+		    	$task_start = ORM::factory('task', $this->request->post('task_id'));
+		    	$task_start->ended = '1';
+		    	$task_start->save();
+		    }
 		    
-		       
 
             /**atualiza tarefas de status relacionadas --- TRIGGER??**
             DB::update('tasks')->set(array(
@@ -541,4 +577,55 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
                 
 	}	
+
+
+
+
+	DELIMITER $$
+
+ALTER ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `moderna_taskusers` AS 
+SELECT
+  `moderna_tasks`.`id`          AS `id`,
+  `moderna_tasks`.`object_id`   AS `object_id`,
+  `moderna_tasks`.`userInfo_id` AS `userInfo_id`,
+  `moderna_tasks`.`status_id`   AS `status_id`,
+  `moderna_tasks`.`crono_date`  AS `crono_date`,
+  `moderna_tasks`.`topic`       AS `topic`,
+  `moderna_tasks`.`description` AS `description`,
+  `moderna_tasks`.`created_at`  AS `created_at`,
+  `moderna_tasks`.`task_id`     AS `task_id`,
+  `moderna_tasks`.`task_to`     AS `task_to`
+FROM `moderna_tasks`
+WHERE ((NOT(`moderna_tasks`.`id` IN(SELECT
+                                      `moderna_tasks`.`task_id`
+                                    FROM `moderna_tasks`
+                                    WHERE ((`moderna_tasks`.`status_id` = '7')
+                                            OR (`moderna_tasks`.`status_id` = '6')))))
+       AND (`moderna_tasks`.`task_id` = '0')
+       AND (`moderna_tasks`.`status_id` = '5'))UNION SELECT
+                                                       `moderna_tasks`.`id`           AS `id`,
+                                                       `moderna_tasks`.`object_id`    AS `object_id`,
+                                                       `moderna_tasks`.`userInfo_id`  AS `userInfo_id`,
+                                                       `moderna_tasks`.`status_id`    AS `status_id`,
+                                                       `moderna_tasks`.`crono_date`   AS `crono_date`,
+                                                       `moderna_tasks`.`topic`        AS `topic`,
+                                                       `moderna_tasks`.`description`  AS `description`,
+                                                       `moderna_tasks`.`created_at`   AS `created_at`,
+                                                       `moderna_tasks`.`task_id`      AS `task_id`,
+                                                       `moderna_tasks`.`task_to`      AS `task_to`
+                                                     FROM `moderna_tasks`
+                                                     WHERE ((NOT(`moderna_tasks`.`id` IN(SELECT
+                                                                                           `moderna_tasks`.`task_id`
+                                                                                         FROM `moderna_tasks`
+                                                                                         WHERE (`moderna_tasks`.`status_id` = '7'))))
+                                                            AND (`moderna_tasks`.`task_id` <> '0')
+                                                            AND (NOT(`moderna_tasks`.`task_id` IN(SELECT
+                                                                                                    `moderna_tasks`.`task_id`
+                                                                                                  FROM `moderna_tasks`
+                                                                                                  WHERE (`moderna_tasks`.`status_id` = '7'))))
+                                                            AND (`moderna_tasks`.`status_id` = '6'))
+GROUP BY `moderna_tasks`.`object_id`
+ORDER BY `crono_date`$$
+
+DELIMITER ;
 */

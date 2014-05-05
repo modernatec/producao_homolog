@@ -97,12 +97,15 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 			$delete_contacts = DB::delete('contatos')->where('tipo','=', 'supplier')->and_where('tipo_id', '=', $supplier->id)->execute();
 
-			foreach ($this->request->post('nome') as $key => $value) {
-				if($this->request->post('nome')[$key] != ""){
+			$email = $this->request->post('email');
+			$telefone = $this->request->post('telefone');
+			$nome = $this->request->post('nome');
+			foreach ($nome as $key => $value) {
+				if($nome[$key] != ""){
 					$contact = ORM::factory('contato');
-					$contact->nome = $this->request->post('nome')[$key];
-					$contact->email = $this->request->post('email')[$key];
-					$contact->telefone = $this->request->post('telefone')[$key];
+					$contact->nome = $value;
+					$contact->email = $email[$key];
+					$contact->telefone = $telefone[$key];
 					$contact->tipo = "supplier";
 					$contact->tipo_id = $supplier->id;	
 					$contact->save();
@@ -110,10 +113,11 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			}	
 
 			$delete_contatos_suppliers = DB::delete('formats_suppliers')->where('supplier_id', '=', $supplier->id)->execute();
-		 
-		 	foreach ($this->request->post('formato') as $key => $value) {				
+		 	
+		 	$formato = $this->request->post('formato');
+		 	foreach ($formato as $key => $value) {				
 				$format_supplier = ORM::factory('formats_supplier');
-				$format_supplier->format_id = $this->request->post('formato')[$key];
+				$format_supplier->format_id = $formato[$key];
 				$format_supplier->supplier_id = $supplier->id;
 				$format_supplier->save();			
 			}	

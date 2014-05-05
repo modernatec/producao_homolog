@@ -23,7 +23,6 @@
             <b>estúdio:</b> <?=@$obj->audiosupplier->empresa?><br/>
             <b>locutor(a):</b> <?=@$obj->speaker?><br/>
             
-
             <hr style="margin:8px 0;" />
             <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
             <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
@@ -35,21 +34,30 @@
             <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round">anotações</a>
             <hr style="margin:8px 0;" />
             <? foreach ($anotacoes as $anotacao) {?>                
-                <div class="box round anotacoes">  
+                <div class="box round anotacoes"> 
                     <div class="left">
-                    <div style="position:relative; top:-20px; left:-15px">
-                        <div class="round_imgDetail green" style="margin-top:5px;">
+                        <div class="round_imgDetail green">
                             <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
                             <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
                         </div>
-                    </div>          
                     </div>        
-                    <div class="left">    
-                        <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
+                    <div class="left" style="line-height:27px;">    
+                        em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
                     </div>
+                    <?if(($current_auth != "assistente" && $anotacao->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                                        
+                    <div class="right">
+                    	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
+                    </div>
+                    <?}?>
                     <div class="clear">
                         <hr style="margin:8px 0;" />
-                        <?=$anotacao->anotacao?>
+                        <? if($anotacao->userInfo_id == $user->id){
+                        	echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black">'.$anotacao->anotacao.'</a>';
+                        }else{
+	                    	echo $anotacao->anotacao;
+	                    }
+	                    ?>
                     </div>
                 </div> 
             <?}?>

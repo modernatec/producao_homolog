@@ -3,12 +3,14 @@
 class Controller_Admin_Anotacoes extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); //Auth is required to access this controller
- 
+	
+	/* 
 	public $secure_actions     	= array(
 									'create' => array('login', 'coordenador'),
 									'edit' => array('login', 'coordenador'),
 								   	'delete' => array('login', 'admin'),
 								 );
+	*/
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -22,7 +24,10 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
-	
+		
+		if(!is_null($this->request->query('anotacao_id'))){
+			$view->anotacao_txt = ORM::factory('anotacoes_object', $this->request->query('anotacao_id'));
+		}
 		$view->object_id = $object_id;
 
 		echo $view;          
@@ -61,7 +66,7 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 			$db->commit();
 			$message = "Anotação salva com sucesso.";
 			Utils_Helper::mensagens('add',$message);
-			Request::current()->redirect('admin/suppliers');
+			//Request::current()->redirect('admin/suppliers');
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -85,16 +90,18 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 	{
 		try 
 		{            
-			$contact = ORM::factory('supplier', $id);
-			$contact->delete();
-			$message = "Fornecedor excluído com sucesso.";
+			$anotacao = ORM::factory('anotacoes_object', $id);
+			$object_id = $anotacao->object_id;
+			$anotacao->delete();
+			$message = "anotação excluída com sucesso.";
+		
+			Utils_Helper::mensagens('add',$message); 
+			Request::current()->redirect('admin/objects/view/'.$object_id);
 		} catch (ORM_Validation_Exception $e) {
 			$message = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
 		}
-	
 		Utils_Helper::mensagens('add',$message); 
-		Request::current()->redirect('admin/suppliers');
 	}
 
 
