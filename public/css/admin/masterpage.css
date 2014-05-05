@@ -394,7 +394,7 @@ label
 
 .right{
 	float:right;
-	margin-left:10px;
+	margin-left:5px;
 }
 
 .left{
@@ -486,6 +486,7 @@ label
 	border: 1px solid #ccc;
 	padding: 10px;
 	margin-top: 5px;
+	background: #fff;
 }
 
 
@@ -839,17 +840,11 @@ a.green{
 	color:#fff;
 }
 
-
-
-
-
 .description{
 	padding: 10px 0;
 	display: block;
 	border-bottom: 1px dotted #CCC;
 }
-
-
 
 .down_button{
 	text-align: center;
@@ -860,10 +855,8 @@ a.green{
 	border:none;
 }
 
-
-
 .anotacoes{
-	background: #fdfdc3;
+	background: #dfe9f3;
 }
 
 .table_info{

@@ -16,6 +16,13 @@ class Model_ObjectStatu extends ORM {
 		'statu' => array('model' => 'statu', 'foreign_key' => 'status_id'),
 	);
 
+	public function getAnotacoes($object_id){
+		$anotacoes = "";
+		$rs = ORM::factory('anotacoes_object')->where('object_id', '=', $object_id)->order_by('id', 'DESC')->find_all();
+		foreach ($rs as $anotacao) {
+			$anotacoes.= $anotacao->anotacao."\n-------------------\n";
+		}
 
-	
+		return $anotacoes;
+	}
 }

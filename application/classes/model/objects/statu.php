@@ -7,6 +7,7 @@ class Model_Objects_statu extends ORM {
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
 	);	
 
+
 	public function filters()
 	{
 		return array(

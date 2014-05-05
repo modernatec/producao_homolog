@@ -59,7 +59,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'prova' => $object->prova, 
 						'status' => $object->statu_status, 
 						'fechamento' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[0], $datas_f[1], $datas_f[2]) : "-",
-						'anotacoes' => $object->anotacoes);
+						'anotacoes' => $object->getAnotacoes($object->id));
 			array_push($arr, $line);
     	}
 

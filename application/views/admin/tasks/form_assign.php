@@ -1,4 +1,4 @@
-<div class="boxwired round hide" id="form_assign" style="overflow:auto">
+<div class="boxwired round hide" id="form_assign" style="overflow:auto;">
 	<label><b>nova tarefa</b></label><hr/>
 	<form name="frmCreateTask" id="frmCreateTask" action="<?=URL::base();?>admin/tasks/assign" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$obj->id?>">

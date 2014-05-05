@@ -119,6 +119,9 @@ class Spreadsheet
         PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 						break;
 
+					case 'anotacoes':
+						$Sheet->getStyleByColumnAndRow($col, $row)->getAlignment()->setWrapText(true);
+						break;
 
 					case 'status':
 						$cor = ($value == 'finalizado') ? $styleArray3 : $cor;

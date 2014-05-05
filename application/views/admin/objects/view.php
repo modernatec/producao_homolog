@@ -1,11 +1,11 @@
 <div class="content">
     <div class="bar">
-        <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>
-        
-        <a data-show="form_status" class="bar_button round show">alterar status</a>
-        <a data-show="form_assign" class="bar_button round show">criar tarefa</a>
-        
+        <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        
+        <?if($current_auth != "assistente"){?>
+            <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>       
+        <?}?>
+        <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
+            <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
         <?}?>
     </div>
     
@@ -30,8 +30,8 @@
             <br/>
             <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
         </div>
-        <div style="padding: 10px 0">
-            <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round">anotações</a>
+        <div style="padding: 8px 0;">
+            <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round" style="display:block; text-align:center; margin:0;">criar anotação</a>
             <hr style="margin:8px 0;" />
             <? foreach ($anotacoes as $anotacao) {?>                
                 <div class="box round anotacoes"> 
@@ -53,34 +53,30 @@
                     <div class="clear">
                         <hr style="margin:8px 0;" />
                         <? if($anotacao->userInfo_id == $user->id){
-                        	echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black">'.$anotacao->anotacao.'</a>';
+                            echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black"><pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre></a>';
                         }else{
-	                    	echo $anotacao->anotacao;
-	                    }
-	                    ?>
+                            echo '<pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre>';
+                        }
+                        ?>
                     </div>
                 </div> 
             <?}?>
-
-            <form action="<?=URL::base();?>admin/objects/anotacoes/" method="post" class="form">
-                <dd>
-                    <input type="hidden" name='object_id' value="<?=@$obj->id;?>" />
-                    <textarea class="text round" name="anotacoes" id="anotacoes" style="width:240px; height:50px;"><?=@$obj->anotacoes;?></textarea>
-                    <span class='error'><?=Arr::get($errors, 'anotacoes');?></span>
-                </dd>
-                <input type="submit" value="salvar" class="round" />
-            </form>
         </div>
     </div>
     <div class="left">
-        
-        <?=@$assign_form?>
-        <?=@$reply_form?>
-        <?=@$form_status?>
-        <div> 
-            <div style="padding:8px;">  
-                <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
-            </div>
+        <div style="padding-bottom:4px;">              
+            <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
+            <?if($current_auth != "assistente"){?>
+                <a data-show="form_status" class="bar_button round show right">alterar status</a>
+                <a data-show="form_assign" class="bar_button round show right">criar tarefa</a>        
+            <?}?>
+        </div>
+        <div class="clear" style="padding:4px 0;">
+            <?=@$assign_form?>
+            <?=@$reply_form?>
+            <?=@$form_status?>
+        </div>
+        <div>             
             <?if(isset($taskflows)){
                     foreach($taskflows as $status_task){
                         if($status_task->type == 'tasks'){?>
