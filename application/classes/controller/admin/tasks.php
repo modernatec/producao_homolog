@@ -147,10 +147,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			)); 
 
 			if(is_null($id)){
-				if($this->request->post('userinfo_id')){
+				if($this->request->post('userinfo_id') && $method != "starting"){
 				   $task->userInfo_id = $this->request->post('userinfo_id');
+				   $task->task_to = $this->request->post('task_to');
 				}else{
-			        $task->userInfo_id = $this->current_user->userInfos->id;
+			       $task->userInfo_id = $this->current_user->userInfos->id;
+			       if($method == "starting"){
+				       $task->task_to = $this->current_user->userInfos->id;
+				   }
 			    }
 			}else{
 				/*---atualiza status do objeto----*/
@@ -195,6 +199,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		    if(!is_null($this->request->post('task_id')) && $method == "starting"){
 		    	$task_start = ORM::factory('task', $this->request->post('task_id'));
+		    	$task_start->task_to = $this->current_user->userInfos->id;
 		    	$task_start->ended = '1';
 		    	$task_start->save();
 		    }

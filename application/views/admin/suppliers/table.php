@@ -34,6 +34,7 @@
 				</div>
 			</th>
             <th>telefone</th>
+            <th>equipe</th>
             <th>trabalho</th>	
          	</form>
 		</thead>
@@ -42,7 +43,8 @@
             <tr class="table_anchor" onclick="document.location = '<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>';">
 				<td><?=$supplier->empresa?></td>
                 <td><?=$supplier->contato->nome?></td>
-                <td><?=$supplier->contato->telefone?></td>                
+                <td><?=$supplier->contato->telefone?></td> 
+                <td><?=$supplier->team->name?></td>                
                 <td><?=$supplier->getFormats($supplier->id)?></a></td>
 			</tr>
             <?}?>

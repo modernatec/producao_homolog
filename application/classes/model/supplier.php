@@ -7,6 +7,10 @@ class Model_Supplier extends ORM {
         
 	);
 
+    protected $_belongs_to = array(
+        'team' => array('foreign_key' => 'team_id'),
+    );
+
     protected $_has_one = array(
         'contato' => array('model' => 'contato', 'through' => 'contatos', 'foreign_key'=>'tipo_id'),
     );

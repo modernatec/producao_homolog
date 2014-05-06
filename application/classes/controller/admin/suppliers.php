@@ -38,6 +38,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$view->isUpdate = false;
 		$view->formatos = ORM::factory('format')->find_all();
 		$view->contactVO = $this->setVO('supplier'); 
+		$view->teams = ORM::factory('team')->find_all();
+
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -65,6 +67,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		}
 		$view->contactVO = $contatos_arr;
 
+		$view->teams = ORM::factory('team')->find_all();
 		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
 		$formats_arr = array();
 		foreach ($formats_supplier as $value) {
@@ -90,7 +93,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			$supplier = ORM::factory('supplier', $id)->values($this->request->post(), array(
 				'site',
 				'empresa',
-				'observacoes'
+				'observacoes',
+				'team_id'
 			));
 
 			$supplier->save();

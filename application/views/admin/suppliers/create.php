@@ -92,6 +92,20 @@
 
 		      <span class='error'><?=Arr::get($errors, 'trabalho');?></span>
 		    </dd>
+		    <div class="left">
+			    <dt>
+			      <label for="team_id">equipe</label>
+			    </dt>
+			    <dd>
+			   		<select name="team_id" id="team_id" class="required round" style="width:150px;">
+		                <option value="">selecione</option>
+		                <? foreach($teams as $team){?>
+		                    <option value="<?=$team->id?>" <?=($supplierVO['team_id'] == $team->id) ? "selected" : ""?> ><?=$team->name?></option>
+		                <?}?>
+		            </select>
+		            <span class='error'><?=Arr::get($errors, 'team_id');?></span>
+			    </dd>
+			</div>
 	        <dt>
 		      <label for="site">Site</label>
 		    </dt>
