@@ -141,7 +141,7 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
         
         $view->form_custo = View::factory('admin/custos/form_custo');
         $view->form_custo->obj = $objeto;
-        $view->form_custo->teams = ORM::factory('team')->find_all();
+        $view->form_custo->teamList = ORM::factory('team')->find_all();
         
  		$view->current_auth = $this->current_auth;
         
@@ -230,118 +230,18 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
 	}
 
     /********************************/
-    public function action_getCollections($project_id){
-		$this->auto_render = false;
-		$view = View::factory('admin/objects/table');
-		$view->project_id = $project_id;
+    public function action_getSuppliers($team_id){
+    	$this->auto_render = false;
+    	$query = ORM::factory('supplier')->where('team_id', '=', $team_id)->find_all();
 
-		//$this->startProfilling();
+    	$result = array('dados' => array());
+    	foreach ($query as $supplier) {
+    		array_push($result['dados'], array('id' => $supplier->id, 'display' => $supplier->empresa));
+    	}
 
-		$view->filter_tipo = json_decode($this->request->query('tipo'));
-		$view->filter_status = json_decode($this->request->query('status'));
-		$view->filter_collection  = json_decode($this->request->query('collection'));
-		$view->filter_supplier  = json_decode($this->request->query('supplier'));
-		$view->filter_origem  = json_decode($this->request->query('origem'));
-		$view->filter_materia  = json_decode($this->request->query('materia'));					
-		$view->filter_taxonomia = $this->request->query('taxonomia');
-
-		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
-		$status_arr = array();
-		foreach ($status_init as $status) {
-			array_push($status_arr, $status->id);
-		}
-		$view->reset_filter_status = json_encode($status_arr);
-
-		$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
+    	print json_encode($result);
+    }
 
 
-		/***Filtros***/
-		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status) : '';
-		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
-		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
-		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
-		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
-
-
-		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->execute();
-		
-		/****Filtros*****/
-
-		$typeObjectsList = array();
-		$typeObjectsList_arr = array();
-		$typeObjectsList_index = array();
-
-		$statusList = array();
-		$statusList_arr = array();
-		$statusList_index = array();
-
-		$collectionList = array();
-		$collectionList_arr = array();
-		$collectionList_index = array();
-
-		$suppliersList = array();
-		$suppliersList_arr = array();
-		$suppliersList_index = array();
-
-		$materiasList = array();
-		$materiasList_arr = array();
-		$materiasList_index = array();
-
-		$query_filters = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'))
-						->where('project_id', '=', $project_id)->execute();
-
-		foreach ($query_filters as $object) {
-			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
-			array_push($typeObjectsList_index, $object['typeobject_name']);
-
-			array_push($statusList_arr, array('status_id' => $object['status_id'], 'statu_status' => $object['statu_status']));
-			array_push($statusList_index, $object['statu_status']);
-
-			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
-			array_push($collectionList_index, $object['collection_name']);
-
-			array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
-			array_push($suppliersList_index, $object['supplier_empresa']);
-
-			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
-			array_push($materiasList_index, $object['materia_name']);
-		}
-
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $typeObjectsList_arr);
-		array_multisort($statusList_index, SORT_ASC, SORT_STRING, $statusList_arr);
-		array_multisort($collectionList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
-		array_multisort($suppliersList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
-		array_multisort($materiasList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
-
-		foreach ($typeObjectsList_arr as $typeObject) {
-			array_push($typeObjectsList, json_encode($typeObject));
-		}
-
-		foreach ($statusList_arr as $status) {
-			array_push($statusList, json_encode($status));
-		}
-
-		foreach ($collectionList_arr as $collection) {
-			array_push($collectionList, json_encode($collection));
-		}
-
-		foreach ($suppliersList_arr as $supplier) {
-			array_push($suppliersList, json_encode($supplier));
-		}
-
-		foreach ($materiasList_arr as $materia) {
-			array_push($materiasList, json_encode($materia));
-		}
-
-		$view->typeObjectsList = array_unique($typeObjectsList);
-		$view->statusList = array_unique($statusList);
-		$view->collectionList = array_unique($collectionList);
-		$view->suppliersList = array_unique($suppliersList);
-		$view->materiasList = array_unique($materiasList);
-
-		//$this->endProfilling();
-		echo $view;
-	}    
+ 
 }

@@ -199,6 +199,25 @@ function closeFilterPanel(){
     $('.filter ul li ul').css({'display': 'none'});
 }
 
+function populateSelect(ui)
+{
+    var element = ui.target;
+    var target = $('#' + element.id).data('target');
+    var inId = $('#' + element.id).val();
+    var url = $('#' + element.id).data('url');
+    
+    $('#' + target).html('<option value="">aguarde...</a>');
+    $.getJSON(base_url + url + '/' + inId,function(data)
+    {
+        $('#' + target).html('<option value="">Selecione</a>');
+        $.each(data.dados,function(i)
+        {
+            var dado = data.dados[i];
+            $('#' + target).append('<option value="'+dado.id+'">'+dado.display+'</option>');
+        });
+    });
+}
+
 $(document).ready(function()
 {	
     if(msgs.length>0)
@@ -209,7 +228,9 @@ $(document).ready(function()
         } 
     }
 
-
+    $(".populate").change(function(ui) {
+        populateSelect(ui);
+    });
 
     $("#tabs").tabs({
         load: function( event, ui ) {
@@ -531,37 +552,6 @@ function sldBox(obj){
         $(obj).slideUp('slow');
     }
 }
-
-function getUsersByEquipe(inId)
-{
-    $('#task_to').html('<option value="">aguarde...</a>');
-    setTimeout(function()
-    {
-        $.get(base_url + 'admin/users/equipe/'+inId,function(data)
-        {
-            data = JSON.parse(data);
-            $('#task_to').html('<option value="">Selecione</a>');
-            $.each(data.dados,function(i)
-            {
-                var dado = data.dados[i];
-                $('#task_to').append('<option value="'+dado.id+'">'+dado.nome+'</a>');
-            });
-        });
-    },500);
-}
-
-function pop_load_pais(){
-    $.get(base_url + '/producao/admin/objects/popload',function(data){
-        data = JSON.parse(data); 
-        $('#pop_pais').html('<option value="">Selecione</option>');
-        $.each(data.dados,function(i)
-        {
-            var dado = data.dados[i];
-            $('#pop_pais').append('<option value="'+dado.id+'">'+dado.title+'</option>');            
-        });
-    })
-}
-
 
 function temMensagens()
 {

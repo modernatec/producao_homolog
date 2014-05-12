@@ -226,46 +226,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	    }
 	}
 
-   /*
-	public function action_salvaranotacoes(){
-		if (HTTP_Request::POST == $this->request->method()) 
-		{ 
-
-			$db = Database::instance();
-	        $db->begin();
-			
-			try 
-			{ 
-
-				$object = ORM::factory('object', $this->request->post('object_id'))->values($this->request->post(), array( 
-		                    'anotacoes', 
-							));
-				$object->save();
-
-				Utils_Helper::mensagens('add','Anotação salva com sucesso.');
-				$db->commit();
-				Request::current()->redirect('admin/objects/view/'.$object->id);
-
-			} catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-			    Utils_Helper::mensagens('add',$message);    
-	            $db->rollback();
-	        } catch (Database_Exception $e) {
-	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	            Utils_Helper::mensagens('add',$message);
-	            $db->rollback();
-	        }
-
-	        return false;	
-	    }
-	}
-	*/
+   
 
 	protected function salvar($id = null)
 	{
@@ -352,7 +313,20 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->project_id = $project_id;
 
 		//$this->startProfilling();
+		/*
+		$filter = "?fase=".$this->request->query('fase');
+		$filter.= "&tipo=".$this->request->query('tipo');
+		$filter.= "&collection=".$this->request->query('collection');
+		$filter.= "&status=".$this->request->query('status');
+		$filter.= "&supplier=".$this->request->query('supplier');
+		$filter.= "&taxonomia=".$this->request->query('taxonomia');
+		$filter.= "&origem=".$this->request->query('origem');
+		$filter.= "&materia=".$this->request->query('materia');
 
+		$view->filter = $filter;
+		*/
+
+		
 		$view->filter_tipo = json_decode($this->request->query('tipo'));
 		$view->filter_status = json_decode($this->request->query('status'));
 		$view->filter_collection  = json_decode($this->request->query('collection'));

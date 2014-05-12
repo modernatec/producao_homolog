@@ -1,0 +1,51 @@
+DELIMITER $$
+
+USE `producao_homolog`$$
+
+DROP VIEW IF EXISTS `moderna_objectstatus`$$
+
+CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `moderna_objectstatus` AS (
+SELECT
+  `obj`.`id`               AS `id`,
+  `obj`.`title`            AS `title`,
+  `obj`.`taxonomia`        AS `taxonomia`,
+  `obj`.`typeobject_id`    AS `typeobject_id`,
+  `type`.`name`            AS `typeobject_name`,
+  `obj`.`collection_id`    AS `collection_id`,
+  `obj`.`fase`             AS `fase`,
+  `obj`.`interatividade`   AS `interatividade`,
+  `obj`.`reaproveitamento` AS `reaproveitamento`,
+  `obj`.`supplier_id`      AS `supplier_id`,
+  `ms`.`empresa`           AS `supplier_empresa`,  
+  `collections`.`name`             AS `collection_name`,
+  `collections`.`fechamento`       AS `collection_fechamento`,
+  `collections`.`materia_id`       AS `materia_id`,
+  `materias`.`name`                AS `materia_name`,
+  `obj_status`.`status_id`         AS `status_id`,
+  `obj_status`.`prova`             AS `prova`,
+  `obj_status`.`crono_date`	   AS `retorno`,
+  `status`.`status` AS `statu_status`,
+  `status`.`class` AS `statu_class`,
+  `obj`.`crono_date`       AS `crono_date`,
+  `cp`.`project_id` AS `project_id`,
+  `projects`.`name` AS `project_name`,
+  `projects`.`pasta` AS `project_pasta`
+  
+FROM `moderna_objects` `obj`  
+JOIN `moderna_objects_status` `obj_status` ON (`obj_status`.`object_id` = `obj`.`id`)
+LEFT OUTER JOIN `moderna_objects_status` `obj_status2` ON (`obj_status2`.`object_id` = `obj`.`id` AND 
+    (`obj_status`.`id` < `obj_status2`.`id` ))    
+ 
+INNER JOIN `moderna_typeobjects` `type` ON `type`.`id` = `obj`.`typeobject_id`
+INNER JOIN `moderna_collections` `collections` ON `collections`.`id` = `obj`.`collection_id`
+INNER JOIN `moderna_materias` `materias` ON `materias`.`id` = `materia_id`
+INNER JOIN `moderna_suppliers` `ms` ON `ms`.`id` = `obj`.`supplier_id`
+
+INNER JOIN `moderna_status` `status` ON `status`.`id` = `obj_status`.`status_id`
+INNER JOIN `moderna_collections_projects` `cp` ON `cp`.`collection_id` = `obj`.`collection_id`
+INNER JOIN `moderna_projects` `projects` ON `projects`.`id` = `project_id`
+WHERE `obj_status2`.`id` IS NULL  
+GROUP BY `id`
+)$$
+
+DELIMITER ;

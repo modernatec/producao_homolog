@@ -25,7 +25,7 @@
     </div>
     <div class="left">
         <div style="padding-bottom:4px;">              
-            <a data-show="form_assign" class="bar_button round show right">criar tarefa</a>        
+            <a data-show="form_assign" class="bar_button round show right">+ custo</a>        
         </div>
         <div class="clear" style="padding:4px 0;">
             <?=@$form_custo?>
