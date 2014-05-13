@@ -10,24 +10,26 @@
 		</thead>
 		<tbody>
             <? foreach($taskList as $task){?>
-                <tr class="table_anchor" onclick="document.location = '<?=URL::base();?>/admin/objects/view/<?=$task->object_id?>';">
+                <tr >
                     <td width="40">
                         <? 
                             if($task->task_to != "0"){
                                 $nome = explode(" ", $task->to->nome);?>
-                                <div class="round_imgDetail green">
-                                    <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
-                                    <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
-                                    
-                                </div>
+                                <a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>">
+                                    <div class="round_imgDetail <?=$task->to->team->color?>">
+                                        <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
+                                        <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
+                                        
+                                    </div>
+                                </a>
                             <?}?>
                     </td>
-                    <td><?=$task->topic;?></td>
-                    <td><?=$task->object->taxonomia;?></td>
+                    <td><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><?=$task->topic;?></a></td>
+                    <td><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><?=$task->object->taxonomia;?></a></td>
                     <td><?=$task->status->status;?></td>
                     <td width="40">
                         <?$nome = explode(" ", $task->to->nome);?>
-                        <div class="round_imgDetail">
+                        <div class="round_imgDetail <?=$task->userInfo->team->color?>">
                             <img class='round_imgList' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
                             <span><?$nome = explode(" ", $task->userInfo->nome); echo $nome[0];?></span>
                             

@@ -14,6 +14,9 @@
         <div class="box round">
             <b>título:</b> <span class="wordwrap"><?=@$obj->title;?></span><br/>
             <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
+            <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
+            <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
+            <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
             <hr style="margin:8px 0;" />
             <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
             <b>contato:</b> <?=@$obj->supplier->contato->nome?><br/>
@@ -24,10 +27,7 @@
             <b>locutor(a):</b> <?=@$obj->speaker?><br/>
             
             <hr style="margin:8px 0;" />
-            <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
-            <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
-            <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
-            <br/>
+            
             <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
         </div>
         <div style="padding: 8px 0;">
@@ -36,7 +36,7 @@
             <? foreach ($anotacoes as $anotacao) {?>                
                 <div class="box round anotacoes"> 
                     <div class="left">
-                        <div class="round_imgDetail green">
+                        <div class="round_imgDetail <?=$anotacao->userInfo->team->color?>">
                             <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
                             <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
                         </div>
@@ -44,7 +44,7 @@
                     <div class="left" style="line-height:27px;">    
                         em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
                     </div>
-                    <?if(($current_auth != "assistente" && $anotacao->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                    <?if($anotacao->userInfo_id == $user->id || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                         
                     <div class="right">
                     	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
@@ -85,7 +85,7 @@
                                 <div style='width:25px; float:left; margin-top:5px'>
                                     <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
                                 </div>
-                                <div class='hist_task round' style='float:left;'>
+                                <div class='hist task round' style='float:left;'>
                                     <div class='line_bottom'>
                                         <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$status_task->id?>" class="popup edit black">
@@ -96,7 +96,7 @@
                                         retorno: <label><?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?></label>
                                         <? if($status_task->task_to != "0"){?>
                                             
-                                            <div class="round_imgDetail green" style="margin-top:5px;">
+                                            <div class="round_imgDetail <?=$status_task->to->team->color?>" style="margin-top:5px;">
                                                 <img class='round_imgList' src='<?=URL::base();?><?=($status_task->to->foto)?($status_task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($status_task->to->nome);?>" />
                                                 <span><?$nome = explode(" ", $status_task->to->nome); echo $nome[0];?></span>
                                             </div>
@@ -128,7 +128,7 @@
                                         <div style='width:25px; float:left;'>
                                             <img class='round_imgList' src='<?=URL::base();?><?=$taskReply->to->foto?>' height="25"  title="<?=ucfirst($taskReply->to->nome);?>" /> 
                                         </div>
-                                        <div class='hist_task_reply round' style='float:left;'>
+                                        <div class='hist_reply round' style='float:left;'>
                                             <div class='line_bottom'>
                                                 <? if($current_auth == "coordenador" || $current_auth == "admin" || $current_auth == "assistente 2"){?>
                                                     <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
@@ -166,7 +166,7 @@
                                 <div style='width:25px; float:left; margin-top:5px'>
                                     <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
                                 </div>
-                                <div class='hist_task round step' style='float:left;'>
+                                <div class='hist round step' style='float:left;'>
                                     <div class='line_bottom'>
                                         <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                             <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">

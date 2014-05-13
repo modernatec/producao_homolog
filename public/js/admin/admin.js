@@ -181,7 +181,7 @@ $(function () {
                 dialog.removeClass('loading');
                 setTimeout(function(){ 
                     dialog.dialog('open');
-                    validaTasks();
+                    validateAjax();
                     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
                 }, 200);
             }
@@ -231,6 +231,8 @@ $(document).ready(function()
     $(".populate").change(function(ui) {
         populateSelect(ui);
     });
+
+    $(".fone").mask("(99) 9999-9999");
 
     $("#tabs").tabs({
         load: function( event, ui ) {

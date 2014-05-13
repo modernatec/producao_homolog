@@ -54,28 +54,11 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
 	} 
 	*/
     
-	public function action_create(){ 		
-        $view = View::factory('admin/objects/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-		
-		$view->isUpdate = false; 
-		$this->addValidateJs('public/js/admin/validateObjects.js');
-		$view->objVO = $this->setVO('object');
-        
-        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
-        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
-		
-		       
+	public function action_create($id){ 		
         if (HTTP_Request::POST == $this->request->method()) 
 		{           
-            $this->salvar();
+            $this->salvar($id);
         }    
-        
-        $this->template->content = $view;                     
 	}
       
 	public function action_delete($id)
@@ -100,30 +83,20 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
 	}
 
 	public function action_edit($id)
-    {           
-		$view = View::factory('admin/objects/create')
-			->bind('errors', $errors)
-			->bind('message', $message)
-			->set('values', $this->request->post());
-                
-        $this->addValidateJs('public/js/admin/validateObjects.js');
+    {       
+    	$this->auto_render = false;
+		$view = View::factory('admin/custos/edit');
 
-		$objeto = ORM::factory('object', $id);
-        $view->objVO = $this->setVO('object', $objeto);
-		$view->isUpdate = true;                             
-                
-		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();  
-        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
-                
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-            $this->salvar($id);
-        }
+		$view->bind('errors', $errors)
+			->bind('message', $message);	
+		
+		$custo = ORM::factory('custo', $id);
+		$view->objVO = $this->setVO('custo', $custo);
 
-        $this->template->content = $view;
+		$view->teamList = ORM::factory('team')->find_all();
+		$view->supplierList = ORM::factory('supplier')->where('team_id', '=', $custo->team_id)->find_all();
+
+		echo $view;
 	}
         
     public function action_view($id, $task_id = null)
@@ -132,16 +105,17 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-		$this->addValidateJs('public/js/admin/validateTasks.js');
+		$this->addValidateJs('public/js/admin/validateCustos.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
         $view->user = $this->current_user->userInfos;                          
 		
-        
+        $view->custos = ORM::factory('custo')->where('object_id', '=', $id)->order_by('id', 'DESC')->find_all();
         $view->form_custo = View::factory('admin/custos/form_custo');
         $view->form_custo->obj = $objeto;
         $view->form_custo->teamList = ORM::factory('team')->find_all();
+
         
  		$view->current_auth = $this->current_auth;
         
@@ -158,57 +132,21 @@ class Controller_Admin_Custos extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$object = ORM::factory('object', $id)->values($this->request->post(), array( 
-                    'title', 
-                    'taxonomia', 
-                    'typeobject_id', 
-                    'collection_id', 
-                    'supplier_id', 
-                    'audiosupplier_id',
-                    'country_id',
-                    'format_id',
-                    'reaproveitamento', 
-                    'interatividade',
-                    'fase', 
-                    'crono_date', 
-                    'obs', 
-                    'uni', 
-                    'cap', 
-                    'pagina',
-                    'status',
-                    'tamanho',
-                    'duracao',
-                    'cessao',
-                    'sinopse',
-                    'taxonomia_reap',
-                    'arq_aberto',
-                    'speaker',
+			$custo = ORM::factory('custo', $id)->values($this->request->post(), array( 
+					'object_id',
+                    'team_id', 
+                    'supplier_id',
+                    'valor',
+                    'description', 
 
                      ));
-
+			$custo->userInfo_id = $this->current_user->userInfos->id;
 			
-			if($this->request->post('taxonomia_reap') != ""){
-				$object_source = ORM::factory('object')->where('taxonomia', '=', $this->request->post('taxonomia_reap'))->find();
-				
-				$object->object_id = $object_source->id;	
-			}else{
-				$object->object_id = null;
-			}
-			
-			$object->save();
+			$custo->save();
 
-			if(is_null($id)){
-				$objectStatus = ORM::factory('objects_statu');
-		        $objectStatus->object_id = $object->id;
-		        $objectStatus->status_id = '1';
-		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
-				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
-				$objectStatus->save();
-			}
-
-			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
+			Utils_Helper::mensagens('add','valores salvos com sucesso.');
 			$db->commit();
-			Request::current()->redirect('admin/objects');
+			Request::current()->redirect('admin/custos/view/'.$this->request->post('object_id'));
 
 		}  catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');

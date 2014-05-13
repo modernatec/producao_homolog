@@ -435,26 +435,26 @@ label
     background-color: #7ec353; color: #000;
 }
 
-.hist_task{
+.hist{
     padding:10px;
     margin:5px;
     min-width: 600px;
     max-width: 600px;
-    border: 1px solid #CCC;
     background: #fff;
+    /**/
 }
 
-.step{
-	background: #dfe9f3;
-	border: none;
+.task{
+	border: 1px solid #CCC;
 }
 
-.hist_task img, .hist_task_reply img{
+
+.hist img, .hist_reply img{
     margin-right:5px;
     border:1px solid #999;
 }
 
-.hist_task_reply{
+.hist_reply{
     padding:10px;
     margin:-5px 5px 5px 5px;
     min-width: 600px;
@@ -464,6 +464,8 @@ label
     background: #f3f3f3;
     /*box-shadow:#999 2px 2px 2px;*/
 }
+
+
 
 .hide{
 	display: none;
@@ -585,6 +587,9 @@ label
     font-size: 15px;
 }
 
+input[type='submit'], input[type='button']{
+	cursor: pointer;
+}
 
 
 input[type='text'], input[type='password']{
@@ -664,13 +669,37 @@ input[type='text']:focus, input[type='password']:focus{
     color: #fff;
 }
 
+.red{
+	background: #ffdee0;
+}
+
+.yellow{
+	background: #fced6e;
+}
+
 .orange{
-	background: #FCB322;
+	background: #ef9549;
+}
+
+.light_green{
+	background: #7ce4b4;
+}
+
+.blue{
+	background: #008fc7;
+}
+
+.light_blue{
+	background: #66b5d7;	
 }
 
 .green{
 	background: #048b11;
 	color: #fff;
+}
+
+.step{
+	background: #dfe9f3;
 }
 
 a.green{
