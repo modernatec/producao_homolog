@@ -83,7 +83,7 @@
 		
 		<div class="clear">
 	        <dt>
-		      <label for="trabalho">Trabalho</label>
+		   		<label for="trabalho">Trabalho</label>
 		    </dt>
 		    <dd>
 		   		<? foreach ($formatos as $formato) {?>

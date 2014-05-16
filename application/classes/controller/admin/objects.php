@@ -74,6 +74,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
+        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 		
 		       
         if (HTTP_Request::POST == $this->request->method()) 
@@ -123,6 +124,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
         $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
+        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
                 
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
@@ -239,6 +241,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'title', 
                     'taxonomia', 
                     'typeobject_id', 
+                    'project_id',
                     'collection_id', 
                     'supplier_id', 
                     'audiosupplier_id',
@@ -308,6 +311,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
     /********************************/
     public function action_getCollections($project_id){
+    	$this->auto_render = false;
+    	$query = ORM::factory('Collections_Project')->where('project_id', '=', $project_id)->find_all();
+
+    	$result = array('dados' => array());
+    	foreach ($query as $collection) {
+    		array_push($result['dados'], array('id' => $collection->collection_id, 'display' => $collection->collection->name));
+    	}
+
+    	print json_encode($result);
+    }
+
+
+    public function action_getObjects($project_id){
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/table');
 		$view->project_id = $project_id;
@@ -357,6 +373,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->objectsList = $query->where('project_id', '=', $project_id)->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->execute();
 		
+		/*
+		foreach ($view->objectsList as $obj) {
+			var_dump($obj['id']);
+			$ob = ORM::factory('object', $obj['id']);
+			$ob->project_id = $project_id;
+			$ob->save();
+		}
+		*/
+
 		/****Filtros*****/
 
 		$typeObjectsList = array();

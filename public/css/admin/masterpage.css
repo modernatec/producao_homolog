@@ -665,7 +665,6 @@ input[type='text']:focus, input[type='password']:focus{
     -webkit-border-radius: 7px;
     -khtml-border-radius: 7px;
     border-radius: 7px;
-    background: #FCB322;
     color: #fff;
 }
 
@@ -674,19 +673,23 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .yellow{
-	background: #fced6e;
+	background: #f6bb42;
 }
 
 .orange{
-	background: #ef9549;
+	background: #e9573f;
 }
 
 .light_green{
-	background: #7ce4b4;
+	background: #37bc9b;
 }
 
 .blue{
 	background: #008fc7;
+}
+
+.roxo{
+	background: #9972b5;
 }
 
 .light_blue{
@@ -694,7 +697,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .green{
-	background: #048b11;
+	background: #8cc152;
 	color: #fff;
 }
 

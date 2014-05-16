@@ -44,8 +44,7 @@
                     <div class="left" style="line-height:27px;">    
                         em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
                     </div>
-                    <?if($anotacao->userInfo_id == $user->id || $current_auth == "coordenador" || $current_auth == "admin"){?>
-                                        
+                    <?if($anotacao->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        
                     <div class="right">
                     	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
                     </div>
@@ -67,8 +66,9 @@
         <div style="padding-bottom:4px;">              
             <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
             <?if($current_auth != "assistente"){?>
+                <a data-show="form_assign" class="bar_button round show right">criar tarefa</a> 
                 <a data-show="form_status" class="bar_button round show right">alterar status</a>
-                <a data-show="form_assign" class="bar_button round show right">criar tarefa</a>        
+                       
             <?}?>
         </div>
         <div class="clear" style="padding:4px 0;">

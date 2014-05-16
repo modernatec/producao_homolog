@@ -37,8 +37,10 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$this->addValidateJs("public/js/admin/validateSuppliers.js");
 		$view->isUpdate = false;
 		$view->formatos = ORM::factory('format')->find_all();
-		$view->contactVO = $this->setVO('supplier'); 
+		$view->supplierVO = $this->setVO('supplier'); 
 		$view->teams = ORM::factory('team')->find_all();
+
+		$view->formats_arr = array();
 
 		$this->template->content = $view;
 

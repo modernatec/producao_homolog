@@ -153,7 +153,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				}else{
 			       $task->userInfo_id = $this->current_user->userInfos->id;
 			       if($method == "starting"){
-				       $task->task_to = $this->current_user->userInfos->id;
+			       		$task->userInfo_id = $this->request->post('userinfo_id');
+				       	$task->task_to = $this->current_user->userInfos->id;
 				   }
 			    }
 			}else{

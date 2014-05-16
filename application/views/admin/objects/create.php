@@ -15,9 +15,21 @@
                 <span class='error'><?=Arr::get($errors, 'taxonomia');?></span>
             </dd>
             <div class="left">
+                <dt> <label for="project_id">projeto</label> </dt>
+                <dd>
+                    <select name="project_id" id="project_id" data-target="collection_id" data-url="admin/objects/getCollections" class="populate required round">
+                        <option value=''>Selecione</option>
+                        <? foreach($projectList as $projeto){?>
+                            <option value="<?=$projeto->id?>" <?=((@$objVO["project_id"] == $projeto->id)?('selected'):(''))?> ><?=$projeto->name?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'project_id');?></span>
+                </dd>
+            </div>
+            <div class="left">
                 <dt> <label for="collection_id">coleção</label> </dt>
                 <dd>
-                    <select class="required round" name="collection_id" id="collection_id">
+                    <select class="required round" name="collection_id" id="collection_id" style="width:300px;">
                         <option value=''>Selecione</option>
                         <? foreach($collections as $collection){?>
                             <option value="<?=$collection->id?>" <?=((@$objVO["collection_id"] == $collection->id)?('selected'):(''))?> ><?=$collection->name?></option>
@@ -26,7 +38,7 @@
                     <span class='error'><?=Arr::get($errors, 'collection_id');?></span>
                 </dd>
             </div>
-            <div class="left">
+            <div class="clear left">
                 <dt> <label for="countries">país</label> </dt>
                 <dd>
                     <select class="required round" name="country_id" id="country_id">
@@ -51,8 +63,7 @@
                     <span class='error'><?=Arr::get($errors, 'fase');?></span>
                 </dd>  
             </div>
-
-            <div class="clear left">
+            <div class=" left">
                 <dt> <label for="typeobject_id">tipo do objeto</label> </dt>
                 <dd>
                     <select class="required round" name="typeobject_id" id="typeobject_id" style="width:200px;">
@@ -64,7 +75,7 @@
                     <span class='error'><?=Arr::get($errors, 'tipo_obj');?></span>
                 </dd>
             </div>
-            <div class="left">
+            <div class="clear left">
                 <dt> <label for="supplier_id">produtora</label> </dt>
                 <dd>
                 	<select class="required round" name="supplier_id" id="supplier_id">

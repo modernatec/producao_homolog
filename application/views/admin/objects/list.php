@@ -5,7 +5,7 @@
     <div id="tabs" class="clear">
         <ul>
             <? foreach($projectList as $project){?>
-            <li id="tab_<?=$project->id?>"><a href='<?=URL::base();?>admin/objects/getCollections/<?=$project->id?>?fase=<?=$fase?>&tipo=<?=$filter_tipo?>&collection=<?=$filter_collection?>&status=<?=$filter_status?>&supplier=<?=$filter_supplier?>&taxonomia=<?=$filter_taxonomia?>&origem=<?=$filter_origem?>&materia=<?=$filter_materia?>'><?=$project->name?></a></li>
+            <li id="tab_<?=$project->id?>"><a href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>?fase=<?=$fase?>&tipo=<?=$filter_tipo?>&collection=<?=$filter_collection?>&status=<?=$filter_status?>&supplier=<?=$filter_supplier?>&taxonomia=<?=$filter_taxonomia?>&origem=<?=$filter_origem?>&materia=<?=$filter_materia?>'><?=$project->name?></a></li>
             <?}?>
         </ul>
         

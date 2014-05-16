@@ -7,7 +7,7 @@
 					<span>produção</span>				
 				</a>
 			</div>
-			<div class="badge"><?=$totalTasks?></div>
+			<div class="badge orange"><?=$totalTasks?></div>
 		</div>
 	<?foreach ($has_task as $user_task) {?>
 		<div class="left">
@@ -17,7 +17,7 @@
 					<span><?$nome = explode(" ", $user_task->to->nome); echo $nome[0];?></span>				
 				</a>
 			</div>
-			<div class="badge"><?=$user_task->getTasks($user_task->task_to)?></div>
+			<div class="badge orange"><?=$user_task->getTasks($user_task->task_to)?></div>
 		</div>
 	<?}}?>
     <div id="tabs" class="clear">
