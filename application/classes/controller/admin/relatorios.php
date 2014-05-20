@@ -34,6 +34,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	public function generate($post){
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
 					->where('project_id', '=', $post['project_id'])
+					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
 					->order_by('collection_name', 'ASC')
 					->find_all();
 

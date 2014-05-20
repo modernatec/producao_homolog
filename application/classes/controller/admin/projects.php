@@ -173,5 +173,54 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         exit;
     } 
 
+    public function action_duplicateObjects(){
+    	$db = Database::instance();
+        $db->begin();
+		
+		try 
+		{            
+			$project_id = '4';
+			$collection_id = '36';
+			$objects = ORM::factory('object')->where('project_id', '=', $project_id)->where('collection_id', '=', $collection_id)->find_all();
+	    	foreach ($objects as $old_object) {
+	    		$new_object = ORM::factory('object');
+	    		$fields = ORM::factory('object')->list_columns();
+			
+				foreach($fields as $key=>$value){
+					if($key != 'id'){
+						$new_object->$key = $old_object->$key;	
+					}
+				}
+				$new_object->project_id = '9';
+				$new_object->save();
+
+				$objectStatus = ORM::factory('objects_statu');
+		        $objectStatus->object_id = $new_object->id;
+		        $objectStatus->status_id = '1';
+		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '19/05/2014')));
+				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
+				$objectStatus->save();
+	    	}
+						
+			$db->commit();
+			Utils_Helper::mensagens('add','Objetos copiados com sucesso.');
+			Request::current()->redirect('admin/projects');
+		} catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+		    Utils_Helper::mensagens('add',$message);    
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        }
+        return false;
+    }
     
 }
