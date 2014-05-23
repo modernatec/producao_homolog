@@ -59,13 +59,33 @@
 		    </dt>
 		    <div id="tabs" style="width:500px;">
 				<ul>
-					<? foreach($collectionsList as $collection){?>
-					<li><a href="<?=URL::base();?>admin/collections/getListProject/<?=$collection->ano?>?project_id=<?=@$projectVO['id']?>"><?=$collection->ano?></a></li>
+					<? foreach($anosList as $collection_ano){?>
+					<li><a href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
 					<?}?>
 				</ul>
-				<div id="tabs_content" >
-					
-				</div>
+				<? foreach($anosList as $collection_ano){?>
+					<div id="collection_<?=$collection_ano->ano?>" >
+						<table class="list">
+							<thead>
+								<th></th>
+								<th>Op</th>
+						        <th>Título</th>	
+							</thead>
+							<tbody>
+						        <? foreach($collectionsList as $collection){
+						        	if($collection_ano->ano == $collection->ano){
+						        ?>
+						        <tr>
+						        	<td><input type="checkbox" name="selected[]" id="<?=$collection->op?> - <?=$collection->name?>" class="select" value="<?=$collection->id?>" <?=(in_array($collection->id, $collectionsArr)) ? "checked" : ""?>></td>
+						            <td><label for="<?=$collection->op?> - <?=$collection->name?>" style="color:#000"><?=$collection->op?></label></td>
+									<td><label for="<?=$collection->op?> - <?=$collection->name?>" style="color:#000"><?=$collection->name?></label></td>
+								</tr>
+						        <?}}?>
+							</tbody>
+						</table>
+					</div>
+				<?}?>
+				
 			</div>
 		    <ul class="select_holder"></ul>
 		</div>

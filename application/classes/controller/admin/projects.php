@@ -36,7 +36,9 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		
 		$view->projectVO = $this->setVO('project');		
 		$view->segmentosList = ORM::factory('segmento')->find_all();
-		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		$view->collectionsList = ORM::factory('collection')->find_all();
+		$view->collectionsArr = array();
 		$this->template->content = $view;
 
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -60,7 +62,15 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		$projeto = ORM::factory('project', $id);
 		$view->projectVO = $this->setVO('project', $projeto);
 		$view->segmentosList = ORM::factory('segmento')->find_all();
-		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
+
+		$collectionsArr = array();
+		$collections = ORM::factory('collections_project')->where('project_id', '=', $id)->find_all();
+		foreach ($collections as $collection) {
+			array_push($collectionsArr, $collection->collection_id);
+		}
+		$view->collectionsArr = $collectionsArr;
 		
 		$this->template->content = $view;	
 	   
