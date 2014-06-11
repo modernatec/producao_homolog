@@ -135,6 +135,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 
 		$view = View::factory('admin/collections/select');
 
+
 		$collectionsArr = array();
 		$collections = ORM::factory('collections_project')->where('project_id', '=', $this->request->query('project_id'))->find_all();
 		foreach ($collections as $collection) {
