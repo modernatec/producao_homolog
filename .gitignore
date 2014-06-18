@@ -174,3 +174,6 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
+application/config/database.php
+application/bootstrap.php
+.htaccess
