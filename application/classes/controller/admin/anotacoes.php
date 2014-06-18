@@ -4,6 +4,7 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); //Auth is required to access this controller
 	
+	
 	/* 
 	public $secure_actions     	= array(
 									'create' => array('login', 'coordenador'),
