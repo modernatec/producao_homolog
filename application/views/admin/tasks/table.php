@@ -1,25 +1,12 @@
-
-<div class="list_header round">
-    <table class="list">
-    	<thead>
-    		<th width="30">para:</th>
-            <th width="50">solicitação</th>
-            <th width="50">OED</th>
-            <th width="50">status</th>
-            <th width="20">criada por:</th> 
-            <th width="100">data de entrega</th>	            
-    	</thead>
-    </table>
-</div> 
-<div class="dd">
+<div class="list_body">
 <? 
 if(count($taskList) <= 0){
     echo '<span class="list_alert round">nenhum registro encontrado</span>';    
 }else{
-    echo '<ol class="dd-list">';
+    echo '<ul class="list_item" id="sortable">';
     foreach($taskList as $key=>$task){?>
         <li class="dd-item" data-id="<?=$key?>">
-            <div class="dd-handle left"><?=$key+1?></div>
+            <div class="list_order left"><?=$key+1?></div>
                 <div class="left">
                     
                     <? 
@@ -42,7 +29,7 @@ if(count($taskList) <= 0){
             
         </li>
     <?}
-    echo '<ol>';
+    echo '<ul>';
 }?>
 </div>
 

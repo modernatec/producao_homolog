@@ -491,6 +491,15 @@ label
 .ui-datepicker-title{ float: left;}
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
 
+#sortable .ui-state-highlight{
+	margin: 5px 0; 
+	padding: 0; 
+	min-height: 70px; 
+	background: #f2fbff; 
+	border: 1px dashed #b6bcbf;
+}
+
+
 #filelist div{ 
 	border:1px outset #eee; 
 	padding: 5px 10px; 
@@ -773,6 +782,17 @@ a.green{
 
 .list_item a{
 	color: #000;
+}
+
+.list_order{
+	width: 21px;
+    height: 31px;
+    background: url('../../image/admin/order.png') no-repeat;
+    position: relative;
+    top:-5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
 }
 
 .ui-tabs, .ui-widget, .ui-widget-content, .ui-corner-all {

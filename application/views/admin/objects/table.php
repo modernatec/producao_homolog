@@ -170,21 +170,23 @@
     		}
 		?>
 		<li>
-			<div class="left" style="width:30%">
-				<p><a href="<?=URL::base().'admin/objects/view/'.$objeto['id'];?>" title="Editar"><?=$objeto['taxonomia']?></p>
-				<p><?=$objeto['title']?></a></p>
-				<p class="<?=$class_obj?> round list_faixa"><?=$objeto['statu_status']?> &bull; <?=$objeto['prova']?></p>
-			</div>
-			<div class="left" style="width:20%">
-				<p><?=$objeto['supplier_empresa']?></p>
-				<p><?=($objeto['reaproveitamento'] == '1') ? "reap." : "novo"?> &bull; <?=$objeto['typeobject_name']?></p>
-				<p>retorno: <?=Utils_Helper::data($objeto['retorno'],'d/m/Y')?></p>
-			</div>
-			<div class="left" style="width:40%">
-				<p><?=$objeto['materia_name']?></p>
-				<p><?=$objeto['collection_name']?></p>
-				<p>fechamento: <?=Utils_Helper::data($objeto['crono_date'],'d/m/Y')?></p>
-			</div>
+			<a href="<?=URL::base().'admin/objects/view/'.$objeto['id'];?>" title="Editar">
+				<div class="left" style="width:30%">
+					<p><b><?=$objeto['taxonomia']?></b></p>
+					<p><?=$objeto['title']?></p>
+					<p class="<?=$class_obj?> round list_faixa"><?=$objeto['statu_status']?> &bull; <?=$objeto['prova']?></p>
+				</div>
+				<div class="left" style="width:20%">
+					<p><?=$objeto['supplier_empresa']?></p>
+					<p><?=($objeto['reaproveitamento'] == '1') ? "reap." : "novo"?> &bull; <?=$objeto['typeobject_name']?></p>
+					<p>retorno: <?=Utils_Helper::data($objeto['retorno'],'d/m/Y')?></p>
+				</div>
+				<div class="left" style="width:40%">
+					<p><?=$objeto['materia_name']?></p>
+					<p><?=$objeto['collection_name']?></p>
+					<p>fechamento: <?=Utils_Helper::data($objeto['crono_date'],'d/m/Y')?></p>
+				</div>
+			</a>
 		</li>
 		<?}?>
 	</ul>

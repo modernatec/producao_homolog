@@ -248,13 +248,11 @@ $(document).ready(function()
                 closeFilterPanel();
             });
 
-            $('.dd').nestable({axis: 'y'});
-
-            $('.dd').on('change', function() {
-                console.log('change');
+            $("#sortable").sortable({
+              placeholder: "ui-state-highlight",
+              distance: 70
             });
-
-            console.log('carregou');
+            $("#sortable").disableSelection();
 
         },
         select: function (e, ui) {
