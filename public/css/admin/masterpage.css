@@ -485,6 +485,13 @@ label
 	background: #fed22f;
 	background-image: none;
 }
+
+.ui-state-highlight{
+	background: #f2fbff !important; 
+	border: 1px dashed #b6bcbf !important;
+	height:70px;
+}
+
 .ui-datepicker-header{ padding: 5px; height: 20px;}
 .ui-datepicker-prev{ float:left; margin-right: 10px; cursor: pointer;}
 .ui-datepicker-next{ float:right; cursor: pointer;}
@@ -745,7 +752,7 @@ a.green{
 	padding: 5px;
 }
 
-.list_item li, .dd-item{
+.list_item li{
 	margin: 5px 0;
 	padding: 5px;
 	background: #fff; 
@@ -767,13 +774,29 @@ a.green{
 	float: left;
 }
 
-.list_item li:nth-child(odd), .dd-list li{ 
+.list_item li:nth-child(odd){ 
 	background: #f3f3f3; 
 }
 
 .list_item a{
 	color: #000;
 }
+
+.list_order{
+	width: 21px;
+    height: 31px;
+    background: url('../../image/admin/order.png') no-repeat;
+    position: relative;
+    top:-5px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ui-sortable-helper{
+	background: red;
+}
+
 
 .ui-tabs, .ui-widget, .ui-widget-content, .ui-corner-all {
 	border: none;
