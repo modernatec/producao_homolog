@@ -248,6 +248,13 @@ $(document).ready(function()
                 closeFilterPanel();
             });
 
+            $('.dd').nestable({axis: 'y'});
+
+            $('.dd').on('change', function() {
+                console.log('change');
+            });
+
+            console.log('carregou');
 
         },
         select: function (e, ui) {
@@ -264,6 +271,8 @@ $(document).ready(function()
             
         },
     });
+
+    
 
     var tab = $.cookie("producao");
     console.log('tab = ' + tab);

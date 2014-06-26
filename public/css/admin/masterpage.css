@@ -329,23 +329,6 @@ table tbody td table tbody tr:hover {
     background-color: #e0e0eF; color: #000;
 }
 
-.list{
-	width:100%;
-}
-
-.title_list{
-	color:#666;
-	font-size: 10px;
-}
-
-.sortable{
-	margin-top: 10px;
-}
-
-.sortable li{
-	padding:5px;
-	padding-left: 10px;
-}
 
 
 /*****Forms****/
@@ -362,7 +345,6 @@ table tbody td table tbody tr:hover {
 }
 
 input[type='submit'], input[type='button']{
-	margin-top: 10px;
 	box-shadow: none;
 }
 
@@ -669,7 +651,8 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .red{
-	background: #ffdee0;
+	background: #ff4747;
+	color: #fff;
 }
 
 .yellow{
@@ -719,9 +702,73 @@ a.green{
 	margin-right: 4px;
 }
 
-.list_item{
-	overflow: auto;;
-	color: #000;
+
+
+.list{
+	width:100%;
+}
+
+.title_list{
+	color:#666;
+	font-size: 10px;
+}
+
+.sortable{
+	margin-top: 10px;
+}
+
+.sortable li{
+	padding:5px;
+	padding-left: 10px;
+}
+
+.list_header{
+	background: #fff;
+	padding: 8px;
+	border: 1px #ddd solid;
+	border-top: none;
+}
+
+.list_faixa{
+	margin: 8px 0;
+	padding: 5px;
+	display: inline;
+	line-height: 30px !important
+}
+
+.list_alert{
+	display: block;
+	text-align: center;
+	background: #49c5bf;
+	color: #fff;
+	margin: 5px 0;
+	padding: 5px;
+}
+
+.list_item li, .dd-item{
+	margin: 5px 0;
+	padding: 5px;
+	background: #fff; 
+	overflow: auto;
+	border: 1px #ddd solid;
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.list_item li p, .list_body-list li p{
+	line-height: 20px;
+}
+
+.list_colum{
+	float: left;
+}
+
+.list_item li:nth-child(odd), .dd-list li{ 
+	background: #f3f3f3; 
 }
 
 .list_item a{
@@ -733,7 +780,7 @@ a.green{
 }
 
 .ui-tabs .ui-tabs-panel {
-	padding: 5px;
+	padding: 0;
 }
 
 .ui-widget-header{
@@ -893,15 +940,16 @@ a.green{
 
 .table_info{
 	color: #008fc7;
-	padding: 8px;
 	background: #f3f3f3;
 	border-bottom: 1px dotted #eee;
-	display: block;
+	padding: 8px;
 }
 
 .ui-widget-content{
-	background: #fff;
-	border: 1px solid #f3f3f3;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
 }
 
 .ui-widget-header .ui-state-default.ui-state-active{

@@ -177,3 +177,6 @@ pip-log.txt
 application/config/database.php
 application/bootstrap.php
 .htaccess
+*.htaccess
+application/bootstrap.php
+application/config/database.php
