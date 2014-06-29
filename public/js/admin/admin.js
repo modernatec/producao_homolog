@@ -248,11 +248,14 @@ $(document).ready(function()
                 closeFilterPanel();
             });
 
-            $( "#sortable" ).sortable({
-		      placeholder: "ui-state-highlight"
-		    });
-		    $( "#sortable" ).disableSelection();
-		    
+            $('.dd').nestable({axis: 'y'});
+
+            $('.dd').on('change', function() {
+                console.log('change');
+            });
+
+            console.log('carregou');
+
         },
         select: function (e, ui) {
             var $panel = $(ui.panel);
