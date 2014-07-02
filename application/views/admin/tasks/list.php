@@ -1,4 +1,5 @@
 <div class="content">
+
 	<?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
 		<div class="left">
 			<div class="round_imgDetail blue">

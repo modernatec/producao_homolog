@@ -99,7 +99,6 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery.cookie.js',
 				'public/js/common/jquery/jquery-dateFormat.min.js',
 				'public/js/common/jgrowl/jquery.jgrowl.js',
-				'public/js/common/Nestable-master/jquery.nestable.js',	
 				'public/js/common/jquery/jquery.maskedinput.min.js',
 				'public/js/admin/admin.js',
 				'public/js/admin/validateAjax.js',

@@ -1,68 +1,69 @@
 <div class="content">
-    <div class="bar">
-        <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        
-        <?if($current_auth != "assistente"){?>
-            <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>       
-        <?}?>
-        <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
-            <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
-        <?}?>
-    </div>
-    
-    <div class="left" style="width:280px;">
-
-        <div class="box round">
-            <b>título:</b> <span class="wordwrap"><?=@$obj->title;?></span><br/>
-            <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
-            <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
-            <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
-            <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
-            <hr style="margin:8px 0;" />
-            <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
-            <b>contato:</b> <?=@$obj->supplier->contato->nome?><br/>
-            <b>email:</b> <?=@$obj->supplier->contato->email?><br/>
-            <b>tels:</b> <?=@$obj->supplier->contato->telefone?><br/><br/>
-
-            <b>estúdio:</b> <?=@$obj->audiosupplier->empresa?><br/>
-            <b>locutor(a):</b> <?=@$obj->speaker?><br/>
-            
-            <hr style="margin:8px 0;" />
-            
-            <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
-        </div>
-        <div style="padding: 8px 0;">
-            <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round" style="display:block; text-align:center; margin:0;">criar anotação</a>
-            <hr style="margin:8px 0;" />
-            <? foreach ($anotacoes as $anotacao) {?>                
-                <div class="box round anotacoes"> 
-                    <div class="left">
-                        <div class="round_imgDetail <?=$anotacao->userInfo->team->color?>">
-                            <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
-                            <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
-                        </div>
-                    </div>        
-                    <div class="left" style="line-height:27px;">    
-                        em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
-                    </div>
-                    <?if($anotacao->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        
-                    <div class="right">
-                    	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
-                    </div>
-                    <?}?>
-                    <div class="clear">
-                        <hr style="margin:8px 0;" />
-                        <? if($anotacao->userInfo_id == $user->id){
-                            echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black"><pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre></a>';
-                        }else{
-                            echo '<pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre>';
-                        }
-                        ?>
-                    </div>
-                </div> 
+    <div style="position:fixed">
+        <div class="bar">
+            <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        
+            <?if($current_auth != "assistente"){?>
+                <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>       
             <?}?>
+            <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
+                <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
+            <?}?>
+        </div>    
+        <div class="left" style="width:280px;">
+
+            <div class="box round">
+                <b>título:</b> <span class="wordwrap"><?=@$obj->title;?></span><br/>
+                <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
+                <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
+                <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
+                <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
+                <hr style="margin:8px 0;" />
+                <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
+                <b>contato:</b> <?=@$obj->supplier->contato->nome?><br/>
+                <b>email:</b> <?=@$obj->supplier->contato->email?><br/>
+                <b>tels:</b> <?=@$obj->supplier->contato->telefone?><br/><br/>
+
+                <b>estúdio:</b> <?=@$obj->audiosupplier->empresa?><br/>
+                <b>locutor(a):</b> <?=@$obj->speaker?><br/>
+                
+                <hr style="margin:8px 0;" />
+                
+                <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
+            </div>
+            <div style="padding: 8px 0;">
+                <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round" style="display:block; text-align:center; margin:0;">criar anotação</a>
+                <hr style="margin:8px 0;" />
+                <? foreach ($anotacoes as $anotacao) {?>                
+                    <div class="box round anotacoes"> 
+                        <div class="left">
+                            <div class="round_imgDetail <?=$anotacao->userInfo->team->color?>">
+                                <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
+                                <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
+                            </div>
+                        </div>        
+                        <div class="left" style="line-height:27px;">    
+                            em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
+                        </div>
+                        <?if($anotacao->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        
+                        <div class="right">
+                        	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
+                        </div>
+                        <?}?>
+                        <div class="clear">
+                            <hr style="margin:8px 0;" />
+                            <? if($anotacao->userInfo_id == $user->id){
+                                echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black"><pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre></a>';
+                            }else{
+                                echo '<pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre>';
+                            }
+                            ?>
+                        </div>
+                    </div> 
+                <?}?>
+            </div>
         </div>
     </div>
-    <div class="left">
+    <div class="left" style="margin-left: 290px;">
         <div style="padding-bottom:4px;">              
             <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
             <?if($current_auth != "assistente"){?>
