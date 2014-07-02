@@ -5,7 +5,7 @@ if(count($taskList) <= 0){
 }else{
     echo '<ul class="list_item" id="sortable">';
     foreach($taskList as $key=>$task){?>
-        <li id="<?=$task->id?>">
+        <li class="dd-item" data-id="<?=$key?>">
             <div class="list_order left"><?=$key+1?></div>
                 <div class="left">
                     
@@ -29,7 +29,7 @@ if(count($taskList) <= 0){
             
         </li>
     <?}
-    echo '</ul>';
+    echo '<ul>';
 }?>
 </div>
 
