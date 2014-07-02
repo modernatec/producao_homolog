@@ -24,14 +24,7 @@
 }
 
 .dd-handle {
-    width: 21px;
-    height: 31px;
-    background: url('../../image/admin/order.png') no-repeat;
-    position: relative;
-    top:-5px;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
+    
     /*display: block; height: 30px; margin: 5px 0; padding: 5px 10px; color: #333; text-decoration: none; /*font-weight: bold; border: 1px solid #ccc;
      background: #fafafa;*/
     /*background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
