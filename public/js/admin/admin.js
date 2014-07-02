@@ -239,9 +239,17 @@ $(document).ready(function()
             $(ui.panel).find(".tab-loading").remove();
 
             $(".filter span").click(function(e) {
-                closeFilterPanel();
-                $(this).parent().children('ul').fadeToggle();
-                $(this).parent().parent().children('li').css({'background': '#cccccc'})
+                if($(this).parent().children('ul').css('display') == 'none'){
+                    closeFilterPanel();
+                }
+                $(this).parent().children('ul').fadeToggle(function(){
+                    if($(this).parent().children('ul').css('display') == 'none'){
+                        $(this).parent().parent().children('li').css({'background': ''});
+                    }
+                });
+
+                $(this).parent().parent().children('li').css({'background': '#cccccc'});
+                
             });
 
             $(".cancelar").click(function() { 

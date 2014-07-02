@@ -160,7 +160,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	width: 100%;
 	top:0;
 	left:0;
-	z-index: 999;
+	z-index: 10001;
 }
 
 #menu{
@@ -500,6 +500,12 @@ label
 }
 
 
+.filters{
+	height: 30px;
+	padding-top: 5px;
+	position: relative;
+}
+
 #filelist div{ 
 	border:1px outset #eee; 
 	padding: 5px 10px; 
@@ -817,25 +823,23 @@ a.green{
 }
 
 
+
 .filter{
 	color:#008fc7;
 	display: block;
 	cursor: pointer;
 }
 
-.filter span{
-	display: block;
-}
-
 .filter ul li{
-	width: 80px;
 	float:left;
 	position: relative;
 	padding: 5px;
+	margin-left: 5px;
 }
 
 .filter ul li:hover{
-	background: #ccc;
+	background: #f3f3f3;
+
 }
 
 /*
@@ -852,13 +856,25 @@ a.green{
 	background: #ccc;
 	display: none;
 	left: 0;
+	margin-top: 2px;
 	padding: 5px;
+	width: 150px;
 }
 
-.filter ul li > ul li{
-	width: 150px;
+.filter ul li > ul li{	
 	display: block;
 	float: none;
+	margin: 0;
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.filter ul li > ul li label{	
+	cursor: pointer;
 }
 
 .status{
@@ -965,12 +981,19 @@ a.green{
 	padding: 8px;
 }
 
+
 .ui-widget-content{
 	background: none;
 	border: none;
 	padding: 0;
 	margin: 0;
 }
+
+
+.ui-dialog .ui-dialog-content {
+	background: #fff;
+}
+
 
 .ui-widget-header .ui-state-default.ui-state-active{
 	background: #fff;
