@@ -47,6 +47,30 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	  	}
 	  	*/
+	  	/*
+	  	$rs = ORM::factory('task')->where('task_id', '!=', '0')->find_all();
+	  	foreach($rs as $task){
+	  		$rs2 = ORM::factory('tasks_statu');
+	  		$rs2->userInfo_id = $task->task_to;
+	  		$rs2->status_id = $task->status_id;
+	  		$rs2->task_id = $task->task_id;
+	  		$rs2->description = $task->description;
+	  		$rs2->created_at = $task->created_at;
+	  		$rs2->save();
+	  	}
+	  	*/
+
+		/*
+	  	$rs = ORM::factory('task')->where('task_id', '=', '0')->find_all();
+	  	foreach($rs as $task){
+	  		$rs2 = ORM::factory('tasks_statu');
+	  		$rs2->userInfo_id = $task->userInfo_id;
+	  		$rs2->status_id = $task->status_id;
+	  		$rs2->task_id = $task->id;
+	  		$rs2->created_at = $task->created_at;
+	  		$rs2->save();
+	  	}
+	  	*/
 	  	//SELECT * FROM `moderna_tasks` WHERE `moderna_tasks`.`id` IN(SELECT `mt`.`task_id` FROM `moderna_tasks` `mt` WHERE `mt`.`status_id` = '7')
 	  			  	
 	} 
@@ -89,7 +113,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_start(){
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
-			$task_ini = ORM::factory('task')->where('task_id', '=',$this->request->post('task_id'))->find_all();
+			$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->find_all();
 			if(count($task_ini) > 0){
 				$message = "Tarefa já foi iniciada"; 
 			
@@ -141,8 +165,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				'crono_date',
 				'description',
 				'status_id',
-				'task_id',
 				'object_id',
+				'object_status_id',
 				'task_to',
 			)); 
 
@@ -164,7 +188,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$objectStatus->save();  
 			}
 
-			/**encerra trio de tasks para a task concluida**/
+			/**encerra trio de tasks para a task concluida**
 		    if(!is_null($this->request->post('task_id')) && $func == "sendEndMail"){
 		    	$task_end = ORM::factory('task', $this->request->post('task_id'));
 		    	$task_end->ended = '1';
@@ -176,10 +200,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		    	$task->ended = '1';
 		    }
+		    */
 
             $task->save();
 
-            /**atualiza tarefas relacionadas (ex: ja abertas)**/
+            /**atualiza tarefas relacionadas (ex: ja abertas)**
             if(!is_null($this->request->post('task_id')) && is_null($method)){
 		    	$task_id = ORM::factory('task', $this->request->post('task_id'));
 		    	$task_id->topic = $task_id->topic;
@@ -204,7 +229,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		    	$task_start->ended = '1';
 		    	$task_start->save();
 		    }
-		    
+		    */
 
             /**atualiza tarefas de status relacionadas --- TRIGGER??**
             DB::update('tasks')->set(array(
@@ -215,7 +240,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             //DB::update('tasks', array('topic', 'crono_date', 'description'))->values($this->request->post(), array('topic', 'crono_date', 'description'))->where('task_id', '=', $id)->execute();
 			*/
 			
-			
+			/*
             $task_replies = ORM::factory('task')->where('task_id', '=', $id)->find_all();
             if(count($task_replies) > 0){
 	            foreach ($task_replies as $task_r) {
@@ -228,7 +253,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$task_r->save(); 
 	            }
         	}
-        	
+        	*/
             
             $db->commit();
 

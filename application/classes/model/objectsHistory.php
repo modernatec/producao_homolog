@@ -8,12 +8,17 @@ class Model_ObjectsHistory extends ORM {
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
 	);	
 
+	/****APAGAR***/
 	public function getStatus($id){
-		return ORM::factory('task')->where('task_id', '=', $id)->or_where('id', '=', $id)->order_by('id', 'DESC')->find();
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();
 	}
 
 	public function getReplies($id){
-		return ORM::factory('task')->where('task_id', '=', $id)->find_all();
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
+	}
+
+	public function getTasks($id){
+		return ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
 	}
 	
 }

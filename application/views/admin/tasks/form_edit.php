@@ -45,6 +45,7 @@
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>
+        <input type="text" name="object_status_id" value="<?=@$taskVO['object_status_id']?>" />
         <dd>
           <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="salvar" />             
         </dd>	    
