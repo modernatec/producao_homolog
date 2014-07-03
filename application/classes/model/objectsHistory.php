@@ -18,7 +18,7 @@ class Model_ObjectsHistory extends ORM {
 	}
 
 	public function getTasks($id){
-		return ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
+		return ORM::factory('task')->where('object_status_id', '=', $id)->order_by('id', 'DESC')->find_all();
 	}
 	
 }

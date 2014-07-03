@@ -68,17 +68,17 @@
             <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
             <?if($current_auth != "assistente"){?>
                 <a data-show="form_assign" class="bar_button round show right">criar tarefa</a> 
-                <a data-show="form_status" class="bar_button round show right">alterar status</a>
-                       
+                <a data-show="form_status" class="bar_button round show right">alterar status</a> 
+                              
             <?}?>
         </div>
         <div class="clear" style="padding:4px 0;">
-            <?=@$assign_form?>
-            <?=@$reply_form?>
+            
             <?=@$form_status?>
         </div>
         <div>             
             <?if(isset($taskflows)){
+            		$count = 0;
                     foreach($taskflows as $status_task){
                         if($status_task->type == 'tasks'){?>
 
@@ -165,12 +165,18 @@
                                 </div>
                                 
                             </div>
-                        <?}elseif ($status_task->type == 'status') {?>
-                            <div style='clear:both' >
+                        <?}elseif ($status_task->type == 'status') {?>                        	
+                            <div style='clear:both' >                            	
                                 <div style='width:25px; float:left; margin-top:5px'>
                                     <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
                                 </div>
                                 <div class='hist round step' style='float:left;'>
+                                	<?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
+                                        <div class="right">
+				                        	<a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$status_task->id?>" title="excluir">Excluir</a>
+				                        </div>
+                                    <?}?>
+	                                
                                     <div class='line_bottom'>
                                         id: <?=$status_task->id;?>
                                         <?if(($current_auth != "assistente" && $status_task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
@@ -180,7 +186,10 @@
                                         
                                         retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
                                     </div>
-
+                                    <? if($count == 0){
+	                                    echo @$assign_form;
+	                                    $count++;
+	                                }?>
                                     <?if(!empty($status_task->description)){ ?>
                                         <span class="wordwrap description"><?=$status_task->description;?></span>
                                     <?}?>
@@ -188,10 +197,15 @@
 
                                     <?foreach ($status_task->getTasks($status_task->id) as $task) {?>
                                         <div style='clear:both'>
-                                            <div class='hist task round' style='float:left;'>
+                                            <div class='hist task round'>
+                                            	<?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
+			                                        <div class="right">
+							                        	<a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" title="excluir">Excluir</a>
+							                        </div>
+			                                    <?}?>
                                                 <div class='line_bottom'>
                                                     <?if(($current_auth != "assistente" && $task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
-                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$status_task->id?>" class="popup edit black">
+                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
                                                     <?}?>
                                                     <b><?=$task->topic;?></b></a> <span class="status round <?=$task->getStatus($task->id)->status->class?>"><?=$task->getStatus($task->id)->status->status?></span><br/>
                                                     por: <?=$task->userInfo->nome?> - <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
@@ -209,23 +223,19 @@
                                                     <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
                                                 <div class="options">
-                                                    <? if($task->getStatus($task->id)->status_id == '5'){?>
-                                                        <form action="<?=URL::base();?>admin/tasks/start/<?=$task->id?>" method="post" class="form">
-                                                            <input type="hidden" name='topic' value="<?=$task->topic?>" />
-                                                            <input type="hidden" name='status_id' value="6" />
-                                                            <input type="hidden" name='crono_date' value="<?=$task->crono_date?>" />
-                                                            <!--input type="hidden" name='task_id' value="<?=$status_task->id?>" /-->
-                                                            <input type="hidden" name='task_to' value="<?=$task->task_to?>" />
-                                                            <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                            <input type="hidden" name='userinfo_id' value="<?=$task->userInfo_id?>" />
-                                                            <input type="submit" class="bar_button round" value="iniciar tarefa">
-                                                        </form>
-                                                    <?}else{?>
+                                                    <? if($task->getStatus($task->id)->status->id != '5'){?>
                                                         <a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
                                                     <?}?>
                                                 </div>  
                                             </div>
                                             <div class="replies replies_<?=$task->id;?>">
+                                            	 <? if($task->getStatus($task->id)->status->id == '5'){?>
+                                                    <form action="<?=URL::base();?>admin/tasks/start" method="post" class="form">
+                                                        <input type="hidden" name='task_id' value="<?=$task->id?>" />
+                                                        <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
+                                                        <input type="submit" class="bar_button round" value="iniciar">
+                                                    </form>
+                                                <?}?>
                                                 <?foreach ($task->getReplies($task->id) as $taskReply) {?>
                                                 <div style='clear:both'>
                                                     <div class='hist_reply round' style='float:left;'>
@@ -239,21 +249,15 @@
                                                             <span class="wordwrap description"><?=$taskReply->description;?></span>
                                                         <?}?>
                                                         <div class="options">
-                                                            <? if($taskReply->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
-                                                                <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks/end/<?=$status_task->id?>" method="post" class="form">
-                                                                    <input type="hidden" name='topic' value="<?=$status_task->topic?>" />
-                                                                    <input type="hidden" name='status_id' value="7" />
-                                                                    <input type="hidden" name='crono_date' value="<?=$status_task->crono_date?>" />
-                                                                    <!--input type="hidden" name='task_id' value="<?=$status_task->id?>" /-->
-                                                                    <input type="hidden" name='object_id' value="<?=$status_task->object_id?>" />
-                                                                    <input type="hidden" name='userinfo_id' value="<?=$status_task->userInfo_id?>" />
-                                                                    <input type="hidden" name='task_to' value="<?=$status_task->task_to?>" />
-                                                                    <dt> <label for="description">observações</label> </dt>
+                                                            <? if($task->getStatus($task->id)->status->id == '6' && $taskReply->userInfo_id == $user->id){?>
+                                                                <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks/end" method="post" class="form">
+                                                                    <input type="hidden" name='task_id' value="<?=$task->id?>" />
+                                                                    <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                                     <dd>
-                                                                        <textarea class="text round" name="description" id="description" style="width:500px; height:50px;"></textarea>
+                                                                        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:500px; height:50px;"></textarea>
                                                                         <span class='error'><?=Arr::get($errors, 'description');?></span>
                                                                     </dd>
-                                                                    <input type="submit" value="concluir" class="round" />
+                                                                    <input type="submit" value="entregar" class="round" />
                                                                 </form>
                                                             <?}?>
                                                         </div>  

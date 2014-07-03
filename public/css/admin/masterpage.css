@@ -420,10 +420,9 @@ label
 .hist{
     padding:10px;
     margin:5px;
-    min-width: 600px;
-    max-width: 600px;
+    width: 600px;
     background: #fff;
-    /**/
+
 }
 
 .task{
@@ -438,10 +437,10 @@ label
 }
 
 .hist_reply{
+	width:600px;
     padding:10px;
     margin-top: -5px;
-    min-width: 600px;
-    max-width: 600px;
+    margin-bottom: 5px;
     color: #585858;
     /*border-bottom: 1px dotted #ccc;*/
     background: #f3f3f3;

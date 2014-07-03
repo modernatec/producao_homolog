@@ -156,6 +156,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->assign_form = View::factory('admin/tasks/form_assign');
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
         $view->assign_form->obj = $objeto; 
+        $view->assign_form->object_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
 
         $view->anotacoes = ORM::factory('anotacoes_object')->where('object_id', '=', $id)->order_by('id', 'DESC')->find_all();
         $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
@@ -226,6 +227,55 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	        return false;	
 	    }
+	}
+
+
+	public function action_deleteStatus($id){    
+		$db = Database::instance();
+        $db->begin();
+		
+		try {  
+			
+			$object_status = ORM::factory('objects_statu', $id);
+			$object_id = $object_status->object_id;
+			
+			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
+			foreach($tasks as $task){
+				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
+				foreach($task_status as $status){
+					$status->delete();
+				}
+
+				$task->delete();
+			}
+
+			$object_status->delete();
+
+            $db->commit();
+
+            $message = "Status excluído com sucesso."; 
+			
+			Utils_Helper::mensagens('add',$message);
+            Request::current()->redirect('admin/objects/view/'.$object_id);
+            
+        } catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+		    Utils_Helper::mensagens('add',$message);  
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+			Utils_Helper::mensagens('add',$message);
+            $db->rollback();
+        }
+
+        
+        return false;	        
 	}
 
    
