@@ -171,7 +171,7 @@
                                             <div style='clear:both'>
                                                 <div class="hist anotacoes round"> 
                                                     <div class="left">
-                                                        <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>" class="popup edit black"><b>anotação</b></a><br/>  
+                                                        <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>&status_id=<?=$status_task->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
                                                         por: <?=$task->userInfo->nome?> - <?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?>
                                                     </div>
                                                     <?if($task->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        

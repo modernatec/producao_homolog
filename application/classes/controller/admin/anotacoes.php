@@ -21,7 +21,7 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 	public function action_form($object_id)
 	{	
 		$this->auto_render = false;
-		$view = View::factory('admin/anotacoes/anotacoes');
+		$view = View::factory('admin/anotacoes/form_anotacoes_edit');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -30,6 +30,7 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 			$view->anotacao_txt = ORM::factory('anotacoes_object', $this->request->query('anotacao_id'));
 		}
 		$view->object_id = $object_id;
+		$view->status_id = $this->request->query('status_id');
 
 		echo $view;          
 	} 
