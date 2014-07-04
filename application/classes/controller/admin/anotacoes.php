@@ -60,15 +60,18 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 		{            
 			$anotacao = ORM::factory('anotacoes_object', $id)->values($this->request->post(), array(
 				'object_id',
+				'object_status_id',
 				'anotacao',
 			));
 			$anotacao->userInfo_id = $this->current_user->userInfos->id;
-			 
 			$anotacao->save();
+			
 			$db->commit();
+
 			$message = "Anotação salva com sucesso.";
 			Utils_Helper::mensagens('add',$message);
-			//Request::current()->redirect('admin/suppliers');
+			Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
+
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';

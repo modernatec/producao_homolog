@@ -136,6 +136,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         
     public function action_view($id, $task_id = null)
     {       
+    	//$this->startProfilling();
+        
         $view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
@@ -148,10 +150,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->user = $this->current_user->userInfos;                          
 		
 
-        $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
 
+        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $last_status = $view->taskflows[0];
 
-        $last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
+        //ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
+
 
         $view->assign_form = View::factory('admin/tasks/form_assign');
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
@@ -169,6 +175,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         
         $this->template->content = $view;
         
+        //$this->endProfilling();
         return true;
 	}
 

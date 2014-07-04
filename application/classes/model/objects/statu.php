@@ -7,6 +7,19 @@ class Model_Objects_statu extends ORM {
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
 	);	
 
+	/****APAGAR***/
+	public function getStatus($id){
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();
+	}
+
+	public function getReplies($id){
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
+	}
+
+	public function getHistory($id){
+		return ORM::factory('tasksnota')->where('object_status_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+	}
+
 
 	public function filters()
 	{

@@ -14,7 +14,7 @@ class Model_TasksNota extends ORM {
 	}
 
 	public function getHistory($id){
-		return ORM::factory('taskView')->where('object_status_id', '=', $id)->order_by('id', 'DESC')->find_all();
+		return ORM::factory('tasksNota')->where('object_status_id', '=', $id)->order_by('id', 'DESC')->find_all();
 	}
 	
 }
