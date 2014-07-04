@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_TaskUser extends ORM {
+class Model_TaskView extends ORM {
 	//protected $load_with = array('statu');
 
 	protected $_belongs_to  = array(
@@ -12,18 +12,13 @@ class Model_TaskUser extends ORM {
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
 	);	
 
-	public function getStatus($id){
-		return ORM::factory('task')->where('task_id', '=', $id)->or_where('id', '=', $id)->order_by('id', 'DESC')->find();
-	}
-
 	public function getReplies($id){
-		return ORM::factory('task')->where('task_id', '=', $id)->find_all();
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
 	}
 
-	public function getTasks($id){
-		return ORM::factory('taskUser')->where('task_to', '=', $id)->count_all();
+	public function getUserTasks($id){
+		return ORM::factory('taskView')->where('task_to', '=', $id)->where('ended', '=', '0')->count_all();
 	}
-
 
 	public function rules()
 	{

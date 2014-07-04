@@ -18,11 +18,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 
-        $view->has_task = ORM::factory('taskUser')->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')->where('task_to', '!=', '0')->group_by('task_to')->order_by('nome', 'ASC')->find_all();
+        $view->has_task = ORM::factory('taskView')
+        						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
+        						->where('ended', '=', '0')
+        						->where('task_to', '!=', '0')->group_by('task_to')
+        						->order_by('nome', 'ASC')->find_all();
+        
         $view->current_auth = $this->current_auth;
 
-        if($this->request->query('userInfo_id')){
-        	$tasks_of = ORM::factory('userInfo', $this->request->query('userInfo_id'));	
+        if($this->request->query('to')){
+        	$tasks_of = ORM::factory('userInfo', $this->request->query('to'));	
         	$nome = explode(" ", $tasks_of->nome);
         	$view->title = "tarefas - ".$nome[0];
         	$view->filter = "?to=".$tasks_of->id;
@@ -30,7 +35,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$view->title = "tarefas - equipe";
         	$view->filter = "?status=".json_encode(array("5"));
         }
-		$view->totalTasks = ORM::factory('taskUser')->count_all();
+		$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
 	  	$this->template->content = $view;	
 	  	
 		/*
@@ -57,6 +62,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	  		$rs2->created_at = $task->created_at;
 	  		$rs2->save();
 	  	}
+
+
+	  	APAGAR AS TASKS DE HISTORIES
 	  	*/		  	
 	} 
     
@@ -87,214 +95,74 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		echo $view;
 	}
 	
-	/*
-	* inicia uma tarefa 
-	*/
-	public function action_start(){
+	public function action_salvar($id = null)
+	{
 		if (HTTP_Request::POST == $this->request->method()) 
-		{
-			$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '6')->find_all();
-			if(count($task_ini) > 0){
-				$message = "Tarefa já foi iniciada ".$this->request->post('task_id'); 
+		{  
+	        $db = Database::instance();
+	        $db->begin();
 			
-				Utils_Helper::mensagens('add',$message);
-            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
-			}else{
-				$db = Database::instance();
-		        $db->begin();
+			try {  
 				
-				try {  					
+				$task = ORM::factory('task', $id);
+				
+				$task->values($this->request->post(), array(
+					'object_id',
+					'object_status_id',
+					'topic',
+					'crono_date',
+					'description',
+					'task_to',
+				)); 
+				
+				$task->userInfo_id = $this->current_user->userInfos->id;
+	            $task->save();  
+
+	            if(empty($id)){
+	            	/*
+					* cria status inicial da tarefa
+					*/    
 					$task_statu = ORM::factory('tasks_statu');
 					$task_statu->userInfo_id = $this->current_user->userInfos->id;
-					$task_statu->status_id = '6';
-					$task_statu->task_id = $this->request->post('task_id');
-					$task_statu->description = $this->request->post('description'); 
-					$task_statu->save();
+					$task_statu->status_id = '5';
+					$task_statu->task_id = $task->id;
+					$task_statu->save();  
 
 					/*
-					* atualiza tarefa com info do user que a iniciou
-					*/
-					$task = ORM::factory('task', $this->request->post('task_id'));
-					$task->task_to = $this->current_user->userInfos->id;
-		            $task->save();
-		            
-		            $db->commit();
-					
-		            $message = "Tarefa salva com sucesso."; 
-					
-					Utils_Helper::mensagens('add',$message);
-		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
-		            
-		        } catch (ORM_Validation_Exception $e) {
-		            $errors = $e->errors('models');
-					$erroList = '';
-					foreach($errors as $erro){
-						$erroList.= $erro.'<br/>';	
-					}
-		            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-				    Utils_Helper::mensagens('add',$message);  
-		            $db->rollback();
-		        } catch (Database_Exception $e) {
-		            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-					Utils_Helper::mensagens('add',$message);
-		            $db->rollback();
-		        }
-
-		        return false;
-			}
-		}
-	}	
-
-	/*
-	* encerra uma tarefa
-	*/
-	public function action_end(){
-		if (HTTP_Request::POST == $this->request->method()) 
-		{
-			$task_end = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
-			if(count($task_end) > 0){
-				$message = "Tarefa já finalizada";
-			
-				Utils_Helper::mensagens('add',$message);
-            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
-			}else{
-				$db = Database::instance();
-		        $db->begin();
-				
-				try {  					
-					$task_statu = ORM::factory('tasks_statu');
-					$task_statu->userInfo_id = $this->current_user->userInfos->id;
-					$task_statu->status_id = '7';
-					$task_statu->task_id = $this->request->post('task_id');
-					$task_statu->description = $this->request->post('description'); 
-					$task_statu->save();
-		            
-		            /*
-					* atualiza flag ended, encerrando a tarefa para o user
-					*/
-					$task = ORM::factory('task', $this->request->post('task_id'));
-					$task->ended = '1';
-		            $task->save();
-
-		            /*
-		            * envia email de entrega
+		            * envia email de tarefa para o usuário
 		            */
-		            $this->sendMail(
-			            	array(	
-				            	'type' => 'entrega_tarefa',
-				            	'post' => $this->request->post(), 
-		            			'user' => $this->current_user->userInfos));
-		            
-		            $db->commit();
-					
-		            $message = "Tarefa salva com sucesso."; 
-					
-					Utils_Helper::mensagens('add',$message);
-		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
-		            
-		        } catch (ORM_Validation_Exception $e) {
-		            $errors = $e->errors('models');
-					$erroList = '';
-					foreach($errors as $erro){
-						$erroList.= $erro.'<br/>';	
-					}
-		            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+					Controller_Admin_Taskstatus::sendMail(array(
+															'type' => 'inicia_tarefa',
+															'post' => $this->request->post(), 
+            												'user' => $this->current_user->userInfos));		
+				}
 
-				    Utils_Helper::mensagens('add',$message);  
-		            $db->rollback();
-		        } catch (Database_Exception $e) {
-		            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-					Utils_Helper::mensagens('add',$message);
-		            $db->rollback();
-		        }
+	            $db->commit();
 
-		        return false;
-			}
-		}
-	}
+	            $message = "Tarefa salva com sucesso."; 
+				
+				Utils_Helper::mensagens('add',$message);
+	            Request::current()->redirect('admin/objects/view/'.$task->object_id);
+	            
+	        } catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-	public function action_assign(){
-		if (HTTP_Request::POST == $this->request->method()) 
-		{    
-			$this->salvar();			
-		}
-	}
+			    Utils_Helper::mensagens('add',$message);  
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+				Utils_Helper::mensagens('add',$message);
+	            $db->rollback();
+	        }
 
-	/*****ENVIAR E-MAIL?********/
-	public function action_edit($id){
-		if (HTTP_Request::POST == $this->request->method()) 
-		{
-			$this->salvar($id);
-		}
-	}
-
-	protected function salvar($id = null)
-	{
-        $db = Database::instance();
-        $db->begin();
-		
-		try {  
-			
-			$task = ORM::factory('task', $id);
-			
-			$task->values($this->request->post(), array(
-				'object_id',
-				'object_status_id',
-				'topic',
-				'crono_date',
-				'description',
-				'task_to',
-			)); 
-			
-			$task->userInfo_id = $this->current_user->userInfos->id;
-            $task->save();  
-
-            if(is_null($id)){
-            	/*
-				* cria status inicial da tarefa
-				*/    
-				$task_statu = ORM::factory('tasks_statu');
-				$task_statu->userInfo_id = $this->current_user->userInfos->id;
-				$task_statu->status_id = '5';
-				$task_statu->task_id = $task->id;
-				$task_statu->save();  
-
-				/*
-	            * envia email de tarefa para o usuário
-	            */
-	            $this->sendMail(
-		            	array(
-		            		'type' => 'inicia_tarefa',
-			            	'post' => $this->request->post(), 
-	            			'user' => $this->current_user->userInfos));
-			}
-
-            $db->commit();
-
-            $message = "Tarefa salva com sucesso."; 
-			
-			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/objects/view/'.$task->object_id);
-            
-        } catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);  
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			Utils_Helper::mensagens('add',$message);
-            $db->rollback();
-        }
-
-        
-        return false;
+	        
+	        return false;
+	    }
     }
 	
 	public function action_delete($id){    
@@ -340,58 +208,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         return false;	        
 	}
 
-
-	public function sendMail($arg){
-		$object = ORM::factory('object', $arg['post']['object_id']);    	
-		$linkTask = URL::base().'admin/objects/view/'.$arg['post']['object_id'];
-		
-		switch($arg['type']){
-			case 'inicia_tarefa':
-				if($arg['post']['task_to'] != 0){
-					$taskUser = ORM::factory('userInfo', $arg['post']['task_to']); 
-					
-					if($taskUser->mailer == '1'){							
-						$email = new Email_Helper();
-						$email->userInfo = $taskUser;
-						if($taskUser->email != ''){
-							$nome = explode(" ", $taskUser->nome);
-							$email->assunto = $arg['post']['topic'].' - '.$object->taxonomia;
-							$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.<br/><br/>
-								<b>Título:</b> '.$arg['post']['topic'].'<br/>
-								<b>Data de entrega:</b> '.$arg['post']['crono_date'].'<br/>
-								<b>Descrição:</b> <pre>'.$arg['post']['description'].'</pre><br/>
-								<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-							
-							$email->enviaEmail();						
-		            	}
-		        	}            	    	
-		        }
-			break;
-			case 'entrega_tarefa':
-				$task = ORM::factory('task', $arg['post']['task_id']);
-				$taskUser = $task->userInfo;     	
-				
-				if($taskUser->mailer == '1'){					
-					$email = new Email_Helper();
-					$email->userInfo = $taskUser;
-					if($taskUser->email != ''){
-						$nome = explode(" ", $taskUser->nome);
-		                       
-						$email->assunto = $object->taxonomia.' - Tarefa concluída!';
-						$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi concuída.<br/><br/>
-							<b>Entregue por:</b> '.$arg['user']->nome.'<br/>
-							<b>Observações:</b> <pre>'.$arg['post']['description'].'</pre><br/>
-							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-						
-						$email->enviaEmail();					
-		        	}
-		    	}   
-			break;
-		} 
-	}
-
-	
-
     /********************************/
     public function action_getTasks(){
     	$this->check_login();	
@@ -402,21 +218,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         //$view->filter_tipo = json_decode($this->request->query('tipo'));
         $view->filter_status = json_decode($this->request->query('status'));  
-		$view->filter_userInfo_id = $this->request->query('userInfo_id'); 
+		//$view->filter_userInfo_id = $this->request->query('userInfo_id'); 
 		$view->filter_task_to = $this->request->query('to');             
 
         //$query = ORM::factory('task')->where('status_id', '=', $view->filter_status)        
-        $query = ORM::factory('taskUser');
+        $query = ORM::factory('taskView');
 
         /***Filtros***/
-        //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-        //(!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
-        //(isset($view->filter_userInfo_id)) ? $query->and_where('userInfo_id', '=', $view->filter_userInfo_id)->and_where('task_id', 'NOT IN', DB::Select('task_id')->from('tasks')->where('status_id', '=', '7')) : '';
         (isset($view->filter_status)) ? $query->where('status_id', '=', $view->filter_status) : '';
-        (isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id)->or_where('userInfo_id', '=', $view->filter_userInfo_id) : '';
+        //(isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id) : '';
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
-        $view->taskList = $query->order_by('crono_date','ASC')->find_all();
+        $view->taskList = $query->and_where('ended', '=', '0')->order_by('crono_date','ASC')->find_all();
 
         
         //$this->endProfilling();
@@ -432,121 +245,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         echo $view;
     }   
-
-
-
-
-
-
-
-
-    /*******************ANALIZAR************************/
-
-	public function action_load()
-	{
-		$db = Database::instance();
-        $db->begin();
-		
-		try {  
-
-			$file = new Spreadsheet();
-			$sheet = $file->read();
-
-			$highestRow = $sheet->getHighestRow(); 
-			$highestColumn = $sheet->getHighestColumn();
-
-			//  Loop through each row of the worksheet in turn
-			for ($row = 1; $row <= $highestRow; $row++){ 
-
-			    //  Read a row of data into an array
-			    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-
-			   	if($rowData[0][0] == "END_SHEET"){
-					break;
-				}
-			    
-			    $task = ORM::factory('task');	
-				$task->project_id = '4';
-				$task->title = (empty($rowData[0][0])) ? "definir" : $rowData[0][0];
-				$task->priority_id = '2';
-				$task->crono_date = "01/02/2014";				
-				$task->taxonomia = (empty($rowData[0][2])) ? "definir" : $rowData[0][2];
-				$task->obs = (empty($rowData[0][7])) ? "-" : $rowData[0][7];
-				//$task->vol_ano = $rowData[0][3];
-				//$task->uni = $rowData[0][4];
-				$task->cap = "-";
-				$task->source = (empty($rowData[0][6])) ? "definir" : $rowData[0][6];
-		        $task->userInfo_id = $this->current_user->userInfos->id;
-	            $task->save();
-
-	            $task_user = ORM::factory('tasks_user');
-	            $task_user->task_id = $task->id;
-				$task_user->userInfo_id = $task->userInfo_id;
-				$task_user->save();
-
-				$status_task = ORM::factory('status_task');
-	            $status_task->status_id = 8;
-				$status_task->task_id = $task->id;
-				$status_task->date = date("Y-m-d H:i:s");
-				$status_task->userInfo_id = $task->userInfo_id;
-				$status_task->save();
-			    //  Insert row data array into your database of choice here
-			}
-
-			$db->commit();
-			
-            $message = "Tarefas carregadas com sucesso."; 
-			
-			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/tasks/tasks');
-
-        } catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-			Utils_Helper::mensagens('add',$message);
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			Utils_Helper::mensagens('add',$message);
-            $db->rollback();
-        }
-
-        
-        return false;
-
-		/*
-
-		$view = View::factory('admin/tasks/create')
-                    ->bind('errors', $errors)
-                    ->bind('message', $message);
-                
-        $this->addValidateJs();
-		$view->isUpdate = false;                		
-        $view->teamsList = ORM::factory('team')->find_all();
-		$view->projectList = ORM::factory('project')->find_all();
-		//$view->statusList = ORM::factory('statu')->find_all();
-		$view->materiasList = ORM::factory('materia')->find_all();
-		$view->collectionList = ORM::factory('collection')->find_all();
-		$view->typeObjList = ORM::factory('typeobject')->find_all();
-		$view->supplierList = ORM::factory('supplier')->find_all();
-		$view->segmentoList = ORM::factory('segmento')->find_all();
-		
-
-		//$view->anexosView = View::factory('admin/files/anexos');
-	  	$this->template->content = $view;	
-                
-	  	if (HTTP_Request::POST == $this->request->method()) 
-		{                                             
-			$this->salvar();
-		}
-		*/
-	}
     
-	
 	/*--------------*/
     public function action_searchnew()
     {	
@@ -561,140 +260,3 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         print $callback.json_encode($arr);        
     } 
 }
-
-
-/*
-
-            /*
-            if($this->request->post('task_to')){
-				$task->remove('userInfos');
-				$taskUser = ORM::factory('userInfo', ;     	
-            	$task->add('userInfos', $taskUser);
-				
-				$envio = $taskUser->nome;
-				
-				/*
-				if($taskUser->mailer == '1'){
-					$linkTask = URL::base().'admin/tasks/edit/'.$task->id;
-					if($this->request->post('statu_id') == 5)// 5 = Solicitada
-					{
-						$email = new Email_Helper();
-						$email->userInfo = $taskUser;
-						if($taskUser->email != ''){
-							$email->assunto = 'Olá, '.$taskUser->nome.' você possuí uma tarefa!';
-							$email->mensagem = '<font face="arial">Olá, '.$task->userInfo->nome.' lhe enviou uma tarefa.<br/><br/>
-							<b>Projeto:</b> '.$task->project->name.'<br/>
-							<b>Título:</b> '.$task->title.'<br/>
-							<b>Data de entrega:</b> '.Utils_Helper::data($task->crono_date).'<br/>
-							<b>Descrição:</b> '.$this->request->post('description').'<br/>
-							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-							$envio.= $email->enviaEmail();
-						}
-                	}
-            	}
-            				
-            }
-            */
-            /*
-            if($this->request->post('statu_id')){
-				if($this->request->post('statu_id') == 7) // 7 = Concluído
-				{
-					$email = new Email_Helper();
-					$email->userInfo = $task->userInfo;
-					
-					/*
-					if($task->userInfo->email!=''){
-						$email->assunto = 'Tarefa '.$task->title.' foi '.ORM::factory('statu',$this->request->post('statu_id'))->status;
-						$email->mensagem = '<font face="arial">Tarefa <b><em>'.$task->title.'</em></b><br/><br/>
-						<b>'.ORM::factory('statu',$this->request->post('statu_id'))->status.'</b> em '.date('d/m/Y - H:i:s').'<br/>
-						<b>Por:</b> '.ORM::factory('userInfo',array('user_id'=>$status_tasks->user_id))->nome.'<br/>
-						<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-						$email->enviaEmail();
-					}					
-				}
-				
-            	$status_tasks = ORM::factory('status_task');
-				$status_tasks->status_id = $this->request->post('');
-				$status_tasks->task_id = $task->id;
-				$status_tasks->userInfo_id = $this->current_user->userInfos->id;
-				$status_tasks->description = $this->request->post('description');
-				$status_tasks->step_id = $this->request->post('step_id');
-				$status_tasks->save();
-	
-	            Controller_Admin_Files::salvar($this->request, "public/upload/curriculum", $status_tasks->id, "task", $this->current_user);	
-            }	
-
-
-            if(isset($envio)){
-				$message.= "<br/>Email enviado ".$envio; 	
-			}
-
-			 /*
-	public function action_create(){
-		$view = View::factory('admin/tasks/create')
-                    ->bind('errors', $errors)
-                    ->bind('message', $message);
-                
-        $this->addValidateJs();
-		$view->isUpdate = false;                		
-        
-	  	$this->template->content = $view;	
-                
-	  	if (HTTP_Request::POST == $this->request->method()) 
-		{                                             
-			$this->salvar();
-		}
-                
-	}	
-
-
-
-
-	DELIMITER $$
-
-ALTER ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `moderna_taskusers` AS 
-SELECT
-  `moderna_tasks`.`id`          AS `id`,
-  `moderna_tasks`.`object_id`   AS `object_id`,
-  `moderna_tasks`.`userInfo_id` AS `userInfo_id`,
-  `moderna_tasks`.`status_id`   AS `status_id`,
-  `moderna_tasks`.`crono_date`  AS `crono_date`,
-  `moderna_tasks`.`topic`       AS `topic`,
-  `moderna_tasks`.`description` AS `description`,
-  `moderna_tasks`.`created_at`  AS `created_at`,
-  `moderna_tasks`.`task_id`     AS `task_id`,
-  `moderna_tasks`.`task_to`     AS `task_to`
-FROM `moderna_tasks`
-WHERE ((NOT(`moderna_tasks`.`id` IN(SELECT
-                                      `moderna_tasks`.`task_id`
-                                    FROM `moderna_tasks`
-                                    WHERE ((`moderna_tasks`.`status_id` = '7')
-                                            OR (`moderna_tasks`.`status_id` = '6')))))
-       AND (`moderna_tasks`.`task_id` = '0')
-       AND (`moderna_tasks`.`status_id` = '5'))UNION SELECT
-                                                       `moderna_tasks`.`id`           AS `id`,
-                                                       `moderna_tasks`.`object_id`    AS `object_id`,
-                                                       `moderna_tasks`.`userInfo_id`  AS `userInfo_id`,
-                                                       `moderna_tasks`.`status_id`    AS `status_id`,
-                                                       `moderna_tasks`.`crono_date`   AS `crono_date`,
-                                                       `moderna_tasks`.`topic`        AS `topic`,
-                                                       `moderna_tasks`.`description`  AS `description`,
-                                                       `moderna_tasks`.`created_at`   AS `created_at`,
-                                                       `moderna_tasks`.`task_id`      AS `task_id`,
-                                                       `moderna_tasks`.`task_to`      AS `task_to`
-                                                     FROM `moderna_tasks`
-                                                     WHERE ((NOT(`moderna_tasks`.`id` IN(SELECT
-                                                                                           `moderna_tasks`.`task_id`
-                                                                                         FROM `moderna_tasks`
-                                                                                         WHERE (`moderna_tasks`.`status_id` = '7'))))
-                                                            AND (`moderna_tasks`.`task_id` <> '0')
-                                                            AND (NOT(`moderna_tasks`.`task_id` IN(SELECT
-                                                                                                    `moderna_tasks`.`task_id`
-                                                                                                  FROM `moderna_tasks`
-                                                                                                  WHERE (`moderna_tasks`.`status_id` = '7'))))
-                                                            AND (`moderna_tasks`.`status_id` = '6'))
-GROUP BY `moderna_tasks`.`object_id`
-ORDER BY `crono_date`$$
-
-DELIMITER ;
-*/

@@ -1,6 +1,6 @@
 <div class="hist task round hide" id="form_assign" >
 	<label><b>nova tarefa</b></label><hr/>
-	<form name="frmCreateTask" id="frmCreateTask" action="<?=URL::base();?>admin/tasks/assign" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmCreateTask" id="frmCreateTask" action="<?=URL::base();?>admin/tasks/salvar" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$obj->id?>">
 		<input type="hidden" name="object_status_id" value="<?=$object_status->id?>">
 		<dl>

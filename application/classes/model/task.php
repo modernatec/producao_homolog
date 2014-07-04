@@ -20,6 +20,9 @@ class Model_Task extends ORM {
 		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
 	}
 
+	public function getTasks($id){
+		return ORM::factory('task')->where('task_to', '=', $id)->count_all();
+	}
 	
 
 	public function rules()

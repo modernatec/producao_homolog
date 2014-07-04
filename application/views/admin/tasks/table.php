@@ -32,36 +32,3 @@ if(count($taskList) <= 0){
     echo '<ul>';
 }?>
 </div>
-
-		<!--tbody>
-            <? foreach($taskList as $task){?>
-                <tr >
-                    <td width="40">
-                        <? 
-                        if($task->task_to != "0"){
-                            $nome = explode(" ", $task->to->nome);?>
-                            <a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>">
-                                <div class="round_imgDetail <?=$task->to->team->color?>">
-                                    <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
-                                    <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
-                                    
-                                </div>
-                            </a>
-                        <?}?>
-                    </td>
-                    <td></td>
-                    <td></a></td>
-                    <td></td>
-                    <td width="40">
-                        <?$nome = explode(" ", $task->to->nome);?>
-                        <div class="round_imgDetail <?=$task->userInfo->team->color?>">
-                            <img class='round_imgList' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
-                            <span><?$nome = explode(" ", $task->userInfo->nome); echo $nome[0];?></span>
-                            
-                        </div>
-                    </td> 
-                    <td></td>         
-                </tr>
-                <? }?>
-		</tbody>
-	</table-->

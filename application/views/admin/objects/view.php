@@ -30,42 +30,12 @@
                 
                 <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
             </div>
-            <div style="padding: 8px 0;">
-                <a href="<?=URL::base();?>admin/anotacoes/form/<?=@$obj->id?>" class="popup bar_button round" style="display:block; text-align:center; margin:0;">criar anotação</a>
-                <hr style="margin:8px 0;" />
-                <? foreach ($anotacoes as $anotacao) {?>                
-                    <div class="box round anotacoes"> 
-                        <div class="left">
-                            <div class="round_imgDetail <?=$anotacao->userInfo->team->color?>">
-                                <img class='round_imgList' src='<?=URL::base().$anotacao->userInfo->foto;?>' height="20" style='float:left' alt="<?=ucfirst($anotacao->userInfo->nome);?>" />
-                                <span><?$nome = explode(" ", $anotacao->userInfo->nome); echo $nome[0];?></span>
-                            </div>
-                        </div>        
-                        <div class="left" style="line-height:27px;">    
-                            em: <?=Utils_Helper::data($anotacao->created_at,'d/m/Y')?>
-                        </div>
-                        <?if($anotacao->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        
-                        <div class="right">
-                        	<a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="Excluir">Excluir</a>
-                        </div>
-                        <?}?>
-                        <div class="clear">
-                            <hr style="margin:8px 0;" />
-                            <? if($anotacao->userInfo_id == $user->id){
-                                echo '<a href="'.URL::base().'admin/anotacoes/form/'.@$obj->id.'?anotacao_id='.$anotacao->id.'" class="popup black"><pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre></a>';
-                            }else{
-                                echo '<pre><span class="wordwrap">'.$anotacao->anotacao.'</span></pre>';
-                            }
-                            ?>
-                        </div>
-                    </div> 
-                <?}?>
-            </div>
         </div>
     </div>
     <div class="left" style="margin-left: 290px;">
         <div style="padding-bottom:4px;">              
             <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
+                <a data-show="form_anotacoes" class="bar_button round show right">criar anotação</a>
             <?if($current_auth != "assistente"){?>
                 <a data-show="form_assign" class="bar_button round show right">criar tarefa</a> 
                 <a data-show="form_status" class="bar_button round show right">alterar status</a> 
@@ -188,6 +158,7 @@
                                     </div>
                                     <? if($count == 0){
 	                                    echo @$assign_form;
+                                        echo @$anotacoes_form;
 	                                    $count++;
 	                                }?>
                                     <?if(!empty($status_task->description)){ ?>
@@ -195,7 +166,26 @@
                                     <?}?>
 
 
-                                    <?foreach ($status_task->getTasks($status_task->id) as $task) {?>
+                                    <?foreach ($status_task->getHistory($status_task->id) as $task) {?>
+                                        <? if($task->type == 'anotacoes'){?>
+                                            <div style='clear:both'>
+                                                <div class="hist anotacoes round"> 
+                                                    <div class="left">
+                                                        <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>" class="popup edit black"><b>anotação</b></a><br/>  
+                                                        por: <?=$task->userInfo->nome?> - <?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?>
+                                                    </div>
+                                                    <?if($task->userInfo_id == $user->id || $current_auth != "assistente"){?>                                        
+                                                    <div class="right">
+                                                        <a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$task->id?>" title="Excluir">Excluir</a>
+                                                    </div>
+                                                    <?}?>
+                                                    <div class="clear">
+                                                        <hr style="margin:8px 0;" />
+                                                        <pre><span class="wordwrap"><?=$task->description?></span></pre>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        <?}else{?>
                                         <div style='clear:both'>
                                             <div class='hist task round'>
                                             	<?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
@@ -207,7 +197,7 @@
                                                     <?if(($current_auth != "assistente" && $task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                                         <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
                                                     <?}?>
-                                                    <b><?=$task->topic;?></b></a> <span class="status round <?=$task->getStatus($task->id)->status->class?>"><?=$task->getStatus($task->id)->status->status?></span><br/>
+                                                    <b><?=$task->topic;?></b></a> <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span><br/>
                                                     por: <?=$task->userInfo->nome?> - <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
                                                     <br/>
                                                     retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
@@ -223,14 +213,14 @@
                                                     <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
                                                 <div class="options">
-                                                    <? if($task->getStatus($task->id)->status->id != '5'){?>
+                                                    <? if($task->status_id != '5'){?>
                                                         <a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
                                                     <?}?>
                                                 </div>  
                                             </div>
                                             <div class="replies replies_<?=$task->id;?>">
-                                            	 <? if($task->getStatus($task->id)->status->id == '5'){?>
-                                                    <form action="<?=URL::base();?>admin/tasks/start" method="post" class="form">
+                                            	 <? if($task->status_id == '5'){?>
+                                                    <form action="<?=URL::base();?>admin/taskstatus/start" method="post" class="form">
                                                         <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                         <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                         <input type="submit" class="bar_button round" value="iniciar">
@@ -249,8 +239,8 @@
                                                             <span class="wordwrap description"><?=$taskReply->description;?></span>
                                                         <?}?>
                                                         <div class="options">
-                                                            <? if($task->getStatus($task->id)->status->id == '6' && $taskReply->userInfo_id == $user->id){?>
-                                                                <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks/end" method="post" class="form">
+                                                            <? if($task->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
+                                                                <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
                                                                     <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                                     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                                     <dd>
@@ -266,7 +256,7 @@
                                                 <?}?>
                                             </div>                                    
                                         </div>
-                                    <?}?>
+                                    <?}}?>
                                 </div> 
                                 
                             </div>

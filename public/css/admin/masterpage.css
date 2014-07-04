@@ -427,7 +427,12 @@ label
 
 .task{
 	border: 1px solid #CCC;
-	margin: 5px 0;
+	margin: 10px 0 5px 0;
+}
+
+.anotacoes{
+	background: #a0d0d4;
+	margin: 10px 0;
 }
 
 
@@ -970,9 +975,7 @@ a.green{
 	border:none;
 }
 
-.anotacoes{
-	background: #dfe9f3;
-}
+
 
 .table_info{
 	color: #008fc7;

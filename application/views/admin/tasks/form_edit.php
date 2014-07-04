@@ -1,5 +1,5 @@
 <label><b>editar tarefa</b></label><hr/>
-<form name="frmCreateTask2" id="frmCreateTask2" action="<?=URL::base();?>admin/tasks/edit/<?=@$taskVO['id']?>" method="post" class="form">
+<form name="frmCreateTask2" id="frmCreateTask2" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
 	
 	<input type="hidden" name="object_id" value="<?=@$taskVO['object_id']?>">
 	<input type="hidden" name="status_id" value="5">

@@ -150,15 +150,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 
-        $obj_history = ORM::factory('objects_statu')->where('object_id', '=', $id)->find_all();
-        
-        $view->form_status = View::factory('admin/objects/form_status');
+
+        $last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
+
         $view->assign_form = View::factory('admin/tasks/form_assign');
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
         $view->assign_form->obj = $objeto; 
-        $view->assign_form->object_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
+        $view->assign_form->object_status = $last_status;
 
-        $view->anotacoes = ORM::factory('anotacoes_object')->where('object_id', '=', $id)->order_by('id', 'DESC')->find_all();
+        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
+        $view->anotacoes_form->obj = $objeto; 
+        $view->anotacoes_form->object_status = $last_status;
+
+        $view->form_status = View::factory('admin/objects/form_status');
         $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
