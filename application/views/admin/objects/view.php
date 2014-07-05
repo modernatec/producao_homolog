@@ -166,7 +166,7 @@
                                     <?}?>
 
 
-                                    <?foreach ($status_task->getHistory($status_task->id) as $task) {?>
+                                    <?foreach ($status_task->getHistory($status_task->id) as $task) {?>	
                                         <? if($task->type == 'anotacoes'){?>
                                             <div style='clear:both'>
                                                 <div class="hist anotacoes round"> 

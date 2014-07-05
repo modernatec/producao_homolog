@@ -150,11 +150,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->user = $this->current_user->userInfos;                          
 		
 
-        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
+        $view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
 
-        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->taskflows[0];
+        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
+        //$view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        //$last_status = $view->taskflows[0];
 
         //ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->find(); 
 
