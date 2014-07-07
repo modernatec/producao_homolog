@@ -3,7 +3,13 @@
 if(count($taskList) <= 0){
     echo '<span class="list_alert round">nenhum registro encontrado</span>';    
 }else{
-    echo '<ul class="list_item" id="sortable">';
+    if($current_auth != "assistente"){
+        $id = "sortable";
+    }else{
+        $id = "";
+    }
+                 
+    echo '<ul class="list_item" id="'.$id.'">';
     foreach($taskList as $key=>$task){?>
         <li class="dd-item" id="item-<?=$task->id?>">
             <div class="list_order left"><?=$key+1?></div>

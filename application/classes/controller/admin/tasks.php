@@ -24,7 +24,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         						->where('task_to', '!=', '0')->group_by('task_to')
         						->order_by('nome', 'ASC')->find_all();
         
-        $view->current_auth = $this->current_auth;
+        
 
         if($this->request->query('to')){
         	$tasks_of = ORM::factory('userInfo', $this->request->query('to'));	
@@ -36,6 +36,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$view->filter = "?status=".json_encode(array("5"));
         }
 		$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
+		$view->current_auth = $this->current_auth;
+
 	  	$this->template->content = $view;	
 	  	
 		/*
@@ -228,6 +230,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     	$this->check_login();	
         $this->auto_render = false;
         $view = View::factory('admin/tasks/table');
+
+        $view->current_auth = $this->current_auth;
 
         //$this->startProfilling();
 
