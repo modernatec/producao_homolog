@@ -257,9 +257,20 @@ $(document).ready(function()
             });
 
             $("#sortable").sortable({
-              placeholder: "ui-state-highlight",
-              distance: 70
+				placeholder: "ui-state-highlight",
+				distance: 70,
+				axis: 'y',
+				update: function (event, ui) {
+					var data = $(this).sortable('serialize');
+					// POST to server using $.post or $.ajax
+					$.ajax({
+						data: data,
+						type: 'POST',
+						url: base_url + '/tasks/reorder'
+					});
+				}
             });
+
             $("#sortable").disableSelection();
 
         },
@@ -355,7 +366,7 @@ $.validator.addMethod('date',
         
         
         //prevent the browser to follow the link
-        return false;
+        return false;_
     });
     */
 

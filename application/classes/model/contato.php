@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+s<?php defined('SYSPATH') or die('No direct script access.');
 
 class Model_Contato extends ORM {
 	protected $_table_name = 'contatos';
