@@ -177,34 +177,55 @@ a.link:hover{color:#666; text-decoration: underline;}
 #menu ul li{
 	padding:5px 10px;
 	float:left;
-	box-shadow:1px 0 0 rgba(255, 255, 255, .3);
+	border-right: 1px solid #008fc7;
+	/*box-shadow:1px 0 0 rgba(255, 255, 255, .3);*/
 	position: relative;
 }
 
 #menu ul li:hover ul{
 	display: block;
 	margin-top: 5px;
+
 }
 
 #menu ul li > ul{
 	position: absolute;
-	background: transparent url(../../image/admin/bg_menu.jpg);
+	background: #008fc7; /*#28282e;*/
+	/*background: transparent url(../../image/admin/bg_menu.jpg);*/
 	width: 150px;
-	left: -.5px;
+	top: 19px;
+	left: -.6px;
 	display: none;
+	padding: 5px;
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
 }
 
 #menu ul li > ul li{
 	display: block;
 	float: none;
+	border-right: none;
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#menu ul li:hover{
+	background: #008fc7;
 }
 
 #menu ul li > ul li:hover{
-	background: #333;
+	background: #0aa699;
 }
 
-#menu ul li a:hover{
-	color: #008fc7;
+#menu ul li a{
 	display: block;
 }
 
