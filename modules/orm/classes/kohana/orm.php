@@ -370,6 +370,7 @@ class Kohana_ORM extends Model implements serializable {
 			$defaults['foreign_key'] = $this->_object_name.$this->_foreign_key_suffix;
 
 			$this->_has_one[$alias] = array_merge($defaults, $details);
+
 		}
 
 		foreach ($this->_has_many as $alias => $details)

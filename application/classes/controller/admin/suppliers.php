@@ -25,7 +25,13 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
 		$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
 		          
-        $this->template->content = $view;             
+        $this->template->content = $view;       
+
+        $contato = ORM::factory('contato', '3');//->find_all();
+        foreach ($contato as $value) {
+        	echo $value->nome."<br/>";
+        }
+
 	} 
 
 	public function action_create()
@@ -191,6 +197,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		(!empty($view->filter_contato)) ? $query->where('name', 'LIKE', '%'.$view->filter_contato.'%') : '';
 
 		$view->suppliersList = $query->order_by('empresa','ASC')->find_all();
+
 		
 		// $this->endProfilling();
 		echo $view;

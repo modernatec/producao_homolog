@@ -51,6 +51,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		//$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
 		//$view->linkPage = ($this->assistente)?('view'):('edit');
 		//$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
+
 		$this->template->content = $view;             
 	} 
 

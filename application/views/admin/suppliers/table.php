@@ -1,4 +1,3 @@
-
 <table class="list">
 		<thead>
 			<form action="<?=URL::base();?>admin/suppliers" method="post" class="form">
