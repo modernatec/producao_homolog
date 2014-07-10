@@ -3,7 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="content-language" content="<?=I18n::$lang ?>" /> 
-		<title>Flow <?php echo $title; ?></title>
+		<?=@$refresh?>
+		<title>Kaizen<?php echo $title; ?></title>
 	    <?php foreach ($styles as $file => $type) echo HTML::style($file, array('media' => $type)), PHP_EOL ?>
         <script>var base_url = "<?=URL::base();?>"</script>  
         <link rel="icon" type="image/vnd.microsoft.icon" href="<?=URL::base();?>public/image/common/favicon.ico" />

@@ -15,6 +15,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	public function action_index()
 	{	
+		$this->setRefresh();
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 

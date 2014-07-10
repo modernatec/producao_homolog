@@ -1,19 +1,19 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Model_Supplier extends ORM {
-        
-    protected $_has_many = array(
-		'objects'       => array('model' => 'object', 'through' => 'objects_suppliers'),
-        
-	);
 
     protected $_belongs_to = array(
         'team' => array('foreign_key' => 'team_id'),
     );
 
     protected $_has_one = array(
-        'contato' => array('model' => 'contato', 'through' => 'contatos', 'foreign_key'=>'tipo_id'),
+        'contato' => array('model' => 'contato', 'foreign_key'=>'tipo_id'),
     );
+
+    public function getContato($supplier_id){
+        $contato = ORM::factory('contato')->where('tipo_id', '=', $supplier_id)->find();
+        return $contato;
+    }
 
     public function getFormats($supplier_id){
         $formats = ORM::factory('formats_supplier')->where('supplier_id', '=', $supplier_id)->find_all();

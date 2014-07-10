@@ -74,6 +74,10 @@ class Controller_Admin_Template extends Controller_Template {
 			}
 		}		
   	}
+
+  	public function setRefresh($time = 300){
+  		$this->template->refresh   = '<meta http-equiv="refresh" content="'.$time.'">';
+  	}
  
 	/**
 	* The after() method is called after your controller action.
