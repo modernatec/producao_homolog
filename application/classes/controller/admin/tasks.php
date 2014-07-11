@@ -68,6 +68,40 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 
 	  	APAGAR AS TASKS DE HISTORIES
+
+	  	SELECT * FROM moderna_tasks WHERE topic LIKE '%checagem%' AND ISNULL(tag_id) GROUP BY topic
+		SELECT * FROM moderna_tasks WHERE ISNULL(tag_id) GROUP BY topic
+
+		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pre-che%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pre che%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pré - che%' AND ISNULL(tag_id)
+
+		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pré prod%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pré - prod%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pre-prod%' AND ISNULL(tag_id)
+
+		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE 'checagem' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem conso%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem de%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem%' AND ISNULL(tag_id)
+
+		UPDATE moderna_tasks SET tag_id = '5' WHERE topic LIKE '%prod%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '5' WHERE topic LIKE '%desca%' AND ISNULL(tag_id)
+
+		UPDATE moderna_tasks SET tag_id = '6' WHERE topic LIKE '%corre%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '6' WHERE topic LIKE '%corri%' AND ISNULL(tag_id)
+
+		UPDATE moderna_tasks SET tag_id = '2' WHERE topic LIKE '%conso%' AND ISNULL(tag_id)
+		UPDATE moderna_tasks SET tag_id = '2' WHERE topic LIKE '%comp%' AND ISNULL(tag_id)
+
+
+
+		1 - checagem
+		2 - consolidacao
+		3 - pre-producao
+		4 - pre checagem
+		5 - producao
+		6 - correcao
 	  	*/		  	
 	} 
 
@@ -96,6 +130,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$task = ORM::factory('task', $id);
 		$view->taskVO = $this->setVO('task', $task);
 		$view->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all(); 
+		$view->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
 
 		echo $view;
 	}
@@ -127,6 +162,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$task->values($this->request->post(), array(
 					'object_id',
 					'object_status_id',
+					'tag_id',
 					'topic',
 					'crono_date',
 					'description',

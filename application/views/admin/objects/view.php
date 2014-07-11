@@ -197,7 +197,8 @@
                                                         <?if(($current_auth != "assistente" && $task->userInfo_id == $user->id) || $current_auth == "coordenador" || $current_auth == "admin"){?>
                                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
                                                         <?}?>
-                                                        <b><?=$task->topic;?></b></a> <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span><br/>
+                                                        <span class="light_blue round list_faixa"><?=$task->tag->tag?></span></a> 
+                                                        <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span><br/>
                                                         por: <?=$task->userInfo->nome?> - <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
                                                         <br/>
                                                         retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>

@@ -28,9 +28,9 @@ if(count($taskList) <= 0){
                         <?}?>
                 </div>
                 <div class="left">
-                    <p><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><b><?=$task->topic;?></b></a></p>
-                    <p><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><?=$task->object->taxonomia;?></a></p>
-                    <p class="red round list_faixa"><?=$task->status->status;?> &bull; retorno: <?=Utils_Helper::data($task->crono_date)?></p>
+                    <p><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><span class="light_blue round list_faixa"><b><?=$task->tag->tag?></b></span> &bull; <?=$task->object->taxonomia;?></a></p>
+                    <p>por: <?=$task->userInfo->nome?> em: <?=Utils_Helper::data($task->created_at, "d/m/Y - H:i")?></p>
+                    <p class="red round list_faixa"><?=$task->status->status;?> &bull; para: <?=Utils_Helper::data($task->crono_date)?></p>
                 </div>
             
         </li>

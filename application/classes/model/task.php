@@ -10,6 +10,7 @@ class Model_Task extends ORM {
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
     	//'task' => array('model' => 'task', 'foreign_key' => 'task_id'),
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
+    	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
 	);	
 
 	public function getStatus($id){

@@ -163,6 +163,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         $view->assign_form = View::factory('admin/tasks/form_assign');
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
+        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
         $view->assign_form->obj = $objeto; 
         $view->assign_form->object_status = $last_status;
 

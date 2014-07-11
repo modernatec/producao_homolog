@@ -6,11 +6,16 @@
 	<dl>
 		<div class="left">
 			<dt>
-	            <label for="topic">assunto:</label>
+	            <label for="tag_id">tag:</label>
 	        </dt>
 	        <dd>
-	            <input type="text" name="topic" id="topic" class="required round" style="width:300px;" value="<?=@$taskVO['topic']?>" />
-	            <span class='error'><?=Arr::get($errors, 'statu_id');?></span>
+	            <select name="tag_id" id="tag_id" class="round" style="width:150px;">
+	                <option value="0">tag:</option>
+	                <? foreach($tagList as $tag){?>
+	                    <option value="<?=$tag->id?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
+	                <?}?>
+	            </select>
+	            <span class='error'><?=Arr::get(@$errors, 'tag_id');?></span>
 	        </dd>
 	    </div>  
         <div class="left">  

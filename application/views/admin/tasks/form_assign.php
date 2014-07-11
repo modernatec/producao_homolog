@@ -6,8 +6,13 @@
 		<dl>
 			<div class="left">
 		        <dd>
-		            <input type="text" name="topic" id="topic" placeholder="assunto" class="required round" style="width:290px;" />
-		            <span class='error'><?=Arr::get(@$errors, 'statu_id');?></span>
+		            <select name="tag_id" id="tag_id" class="round" style="width:150px;">
+		                <option value="0">tag:</option>
+		                <? foreach($tagList as $tag){?>
+		                    <option value="<?=$tag->id?>" ><?=$tag->tag?></option>
+		                <?}?>
+		            </select>
+		            <span class='error'><?=Arr::get(@$errors, 'tag_id');?></span>
 		        </dd>
 		    </div>  
 		    <div class="left">  

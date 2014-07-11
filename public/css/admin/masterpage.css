@@ -191,7 +191,6 @@ a.link:hover{color:#666; text-decoration: underline;}
 #menu ul li > ul{
 	position: absolute;
 	background: #008fc7; /*#28282e;*/
-	/*background: transparent url(../../image/admin/bg_menu.jpg);*/
 	width: 150px;
 	top: 19px;
 	left: -.6px;
@@ -203,6 +202,10 @@ a.link:hover{color:#666; text-decoration: underline;}
     -webkit-border-radius: 4px;
     -khtml-border-radius: 4px;
     border-radius: 4px;
+
+   	-moz-box-shadow: 2px 8px 8px #333;
+	-webkit-box-shadow: 5px 8px 8px #333;
+	box-shadow: 5px 8px 8px #333;
 }
 
 #menu ul li > ul li{
@@ -725,6 +728,12 @@ input[type='text']:focus, input[type='password']:focus{
 
 .light_blue{
 	background: #66b5d7;	
+	color: #fff;
+}
+
+.cyan{
+	background: #49c5bf;
+	color:#fff;
 }
 
 .green{
