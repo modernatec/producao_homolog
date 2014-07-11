@@ -87,13 +87,6 @@
                     <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
                 </dd>       
             </div>
-            <div class="left">
-                <dt> <label for="crono_date">Data de fechamento</label> </dt>
-                <dd>
-                    <input type="text" class="text required round date" name="crono_date" id="crono_date" style="width:100px;" value="<?=$objVO['crono_date'];?>"/>
-                    <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
-                </dd>     
-            </div>
             <? if(empty($objVO["id"])){ //criando objeto novo?>
                 <div class="left">
                     <dt> <label for="ini_date">Data de início</label> </dt>

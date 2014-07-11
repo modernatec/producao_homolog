@@ -4,12 +4,11 @@
 	</div>
     <form name="frmCreateSegmento" id="frmCreateSegmento" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
-	  <dl>
-            <dt> <label for="name">Segmento</label> </dt>
-            <dd>
-                <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$segmentoVO['name'];?>"/>
-                <span class='error'><?=Arr::get($errors, 'name');?></span>
-            </dd>            
+	  <dl>            
+        <dd>
+            <input type="text" class="text required round" placeholder="nome do segmento" name="name" id="name" style="width:500px;" value="<?=@$segmentoVO['name'];?>"/>
+            <span class='error'><?=Arr::get($errors, 'name');?></span>
+        </dd>            
 	    <dd>
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
 	    </dd>

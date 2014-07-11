@@ -314,7 +314,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'reaproveitamento', 
                     'interatividade',
                     'fase', 
-                    'crono_date', 
                     'obs', 
                     'uni', 
                     'cap', 

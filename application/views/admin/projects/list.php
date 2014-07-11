@@ -7,27 +7,18 @@
 			<li><a href="#tabs_content">projetos</a></li>
 		</ul>
 		<div id="tabs_content" >
-			<table class="list">
-				<thead>
-					<th>nome</th>
-					<th>status</th>			
-					<th>ação</th>
-				</thead>
-				<tbody>
-		            <? foreach($projectsList as $projeto){?>
-		            <tr>
-						<td><a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>" title="Editar"><?=$projeto->name?></a></td>				
-						<td><?=($projeto->status == 0) ? "finalizado" : "em produção"?></td>				
-						<td class="acao">
-		                    <a class="excluir" href="<?=URL::base().'admin/projects/delete/'.$projeto->id;?>" title="Excluir">Excluir</a>
-		                </td>
-					</tr>
-		            <?}?>
-				</tbody>
-			</table>
+			<div class="list_body">
+				<ul class="list_item">
+					<? foreach($projectsList as $projeto){?>
+					<li>
+						<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>" title="Editar">
+							<p><b><?=$projeto->name?></b></p>
+							<p class="<?=($projeto->status == 0) ? "object_finished" : "task_open"?> round list_faixa"><?=($projeto->status == 0) ? "finalizado" : "em produção"?></p>
+						</a>
+					</li>
+					<?}?>
+				</ul>
+			</div>
 		</div>
-	</div>
-
-
-	
+	</div>	
 </div>

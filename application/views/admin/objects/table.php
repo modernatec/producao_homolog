@@ -188,7 +188,7 @@
 				<div class="left" style="width:40%">
 					<p><?=$objeto['materia_name']?></p>
 					<p><?=$objeto['collection_name']?></p>
-					<p>fechamento: <?=Utils_Helper::data($objeto['crono_date'],'d/m/Y')?></p>
+					<p>fechamento: <?=Utils_Helper::data($objeto['collection_fechamento'],'d/m/Y')?></p>
 				</div>
 			</a>
 		</li>

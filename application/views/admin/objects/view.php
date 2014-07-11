@@ -16,7 +16,7 @@
                 <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
                 <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
                 <b>classificação:</b> <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?><br/>
-                <b>fechamento:</b> <?=Utils_Helper::data($obj->crono_date,'d/m/Y')?><br/>
+                <b>fechamento:</b> <?=Utils_Helper::data($obj->collection->fechamento,'d/m/Y')?><br/>
                 <hr style="margin:8px 0;" />
                 <b>produtora:</b> <?=@$obj->supplier->empresa?><br/>
                 <b>contato:</b> <?=@$obj->supplier->contato->nome?><br/>

@@ -1,6 +1,6 @@
 <div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/collections/create" class="bar_button round">+ coleções</a>
+		<a href="<?=URL::base();?>admin/collections/create" class="bar_button round">cadastrar coleção</a>
 	</div>
 	<div id="tabs">
 		<ul>

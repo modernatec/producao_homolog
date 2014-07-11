@@ -461,6 +461,10 @@ label
 .anotacoes{
 	background: #a0d0d4;
 	margin: 10px 0;
+
+	-moz-box-shadow: 2px 2px 8px #ccc;
+	-webkit-box-shadow: 2px 2px 8px #ccc;
+	box-shadow: 2px 2px 8px #ccc;
 }
 
 

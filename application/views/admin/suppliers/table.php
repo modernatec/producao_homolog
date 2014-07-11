@@ -1,51 +1,42 @@
-<table class="list">
-		<thead>
-			<form action="<?=URL::base();?>admin/suppliers" method="post" class="form">
-			<th width="250">
-				<div class="filter" >
-				    <ul>
-				        <li class="round" >
-				            <span id="tipo">empresa <?=(!empty($filter_empresa) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-			            		<li><input type="text" class="round" style="width:135px" name="empresa" value="<?=$filter_empresa?>" ></li>
-				                
-				                <input type="submit" class="round bar_button" value="OK"> 
-				                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
-				            </ul>
-				        </li>
-				    </ul>
+<div class="list_header round">
+	<div class="table_info round">
+		<?=count($suppliersList)?> objetos encontrados 
+		<a class="bar_button round green" href='<?=URL::base();?>admin/suppliers'>limpar filtros</a>
+	</div>
+	<form action="<?=URL::base();?>admin/suppliers" method="post" class="form">
+		<div class="filters">
+			<div class="left">
+				<input type="text" class="round left" style="width:135px" placeholder="empresa" name="empresa" value="<?=$filter_empresa?>" >
+       		</div>
+			<div class="left">
+				<input type="text" class="round left" style="width:135px" placeholder="contato" name="contato" value="<?=$filter_contato?>" >
+       			<input type="submit" class="round bar_button left" value="OK"> 
+       		</div>
+		</div>
+	</form>	
+</div>
+<div class="list_body">
+    <? 
+	if(count($suppliersList) <= 0){
+		echo '<span class="list_alert round">nenhum registro encontrado</span>';	
+	}else{
+	?>
+	<ul class="list_item">
+		<? foreach($suppliersList as $supplier){?>
+		<li>
+			<a href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar">
+				<div class="left" style="width:30%">
+					<p><b><?=$supplier->empresa?></b></p>
+					<p><?=$supplier->contato->nome?> &bull; <?=$supplier->contato->telefone?></p>
+					<p><?=$supplier->contato->email?></p>
 				</div>
-			</th>
-			<th width="200">
-				<div class="filter" >
-				    <ul>
-				        <li class="round" >
-				            <span id="tipo">contato <?=(!empty($filter_contato) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-			            		<li><input type="text" class="round" style="width:135px" name="contato" value="<?=$filter_contato?>" ></li>
-				                
-				                <input type="submit" class="round bar_button" value="OK"> 
-				                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
-				            </ul>
-				        </li>
-				    </ul>
-
+				<div class="left" style="width:40%">
+					<p><?=$supplier->team->name?></p>
+					<p><?=$supplier->getFormats($supplier->id)?></p>
 				</div>
-			</th>
-            <th>telefone</th>
-            <th>equipe</th>
-            <th>trabalho</th>	
-         	</form>
-		</thead>
-		<tbody>
-            <? foreach($suppliersList as $supplier){?>
-            <tr class="table_anchor" onclick="document.location = '<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>';">
-				<td><?=$supplier->empresa?></td>
-                <td><?=$supplier->contato->nome?></td>
-                <td><?=$supplier->contato->telefone?></td> 
-                <td><?=$supplier->team->name?></td>                
-                <td><?=$supplier->getFormats($supplier->id)?></a></td>
-			</tr>
-            <?}?>
-		</tbody>
-	</table>
+			</a>
+		</li>
+		<?}?>
+	</ul>
+	<?}?>
+</div>

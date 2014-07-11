@@ -1,54 +1,44 @@
-
-<form action="<?=URL::base();?>admin/users" method="post" class="form">
-<table class="list">
-		<thead>
-			<th width="250">
-				<div class="filter" >
-				    <ul>
-				        <li class="round" >
-				            <span id="tipo">nome <?=(!empty($filter_nome) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-			            		<li><input type="text" class="round" style="width:135px" name="nome" value="<?=$filter_nome?>" ></li>
-				                
-				                <input type="submit" class="round bar_button" value="OK"> 
-				                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
-				            </ul>
-				        </li>
-				    </ul>
+<div class="list_header round">
+	<div class="table_info round">
+		<?=count($userinfosList)?> objetos encontrados 
+		<a class="bar_button round green" href='<?=URL::base();?>admin/users'>limpar filtros</a>
+	</div>
+	<form action="<?=URL::base();?>admin/users" method="post" class="form">
+		<div class="filters">
+			<div class="left">
+				<input type="text" class="round left" style="width:135px" placeholder="nome" name="nome" value="<?=$filter_nome?>" >
+       		</div>
+       		<div class="left">
+				<input type="text" class="round left" style="width:135px" placeholder="email" name="email" value="<?=$filter_email?>" >
+       			<input type="submit" class="round bar_button left" value="OK"> 
+       		</div>
+		</div>
+	</form>	
+</div>
+<div class="list_body">
+    <? 
+	if(count($userinfosList) <= 0){
+		echo '<span class="list_alert round">nenhum registro encontrado</span>';	
+	}else{
+	?>
+	<ul class="list_item">
+		<? foreach($userinfosList as $usuario){?>
+		<li>
+			<img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" /><a style='display:block' href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" title="Editar">
+				<div class="left" style="width:30%">
+					<p><b><?=$usuario->nome?></b></p>
+					<p><?=$usuario->email?></p>
+					<p>ramal: <?=$usuario->ramal?></p>
 				</div>
-			</th>
-			<th width="200">
-				<div class="filter" >
-				    <ul>
-				        <li class="round" >
-				            <span id="tipo">email <?=(!empty($filter_email) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-			            		<li><input type="text" class="round" style="width:135px" name="email" value="<?=$filter_email?>" ></li>
-				                
-				                <input type="submit" class="round bar_button" value="OK"> 
-				                <input type="button" class="round bar_button cancelar" value="Cancelar"> 
-				            </ul>
-				        </li>
-				    </ul>
-
+				<div class="left" style="width:20%">
+					<p><?=$usuario->team->name?></p>
 				</div>
-			</th>
-            <th>equipe</th>
-            <th>ramal</th>
-			<th>ação</th>	
-		</thead>
-		<tbody>
-            <? foreach($userinfosList as $usuario){?>
-            <tr>
-                <td><img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" /><a style='display:block' href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" title="Editar"><?=$usuario->nome?></a></td>
-                <td><?=$usuario->email?></td>
-                <td><?=$usuario->team->name?></td>
-                <td><?=$usuario->ramal?></td>
-                <td class="acao">
-                    <a class="excluir" href="<?=URL::base().'admin/users/inativate/'.$usuario->id;?>" title="inativar">Excluir</a>
-                </td>
-			</tr>
-            <?}?>
-		</tbody>
-	</table>
-</form>
+				<div class="right">
+					<p><a class="excluir" href="<?=URL::base().'admin/users/inativate/'.$usuario->id;?>" title="inativar">Excluir</a></p>
+				</div>
+			</a>
+		</li>
+		<?}?>
+	</ul>
+	<?}?>
+</div>
