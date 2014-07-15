@@ -25,4 +25,9 @@ class Model_ObjectStatu extends ORM {
 
 		return $anotacoes;
 	}
+
+	public function getStatus($objId){
+		$status = ORM::factory('taskview')->where('object_status_id', '=', $objId)->order_by("id", 'DESC')->find();
+		return (is_null($status->statu->status)) ? "" : $status->statu->status;
+	}
 }

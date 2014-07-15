@@ -24,6 +24,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         						->where('ended', '=', '0')
         						->where('task_to', '!=', '0')->group_by('task_to')
         						->order_by('nome', 'ASC')->find_all();
+
+
         
         
 
@@ -169,7 +171,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					'task_to',
 				)); 
 				
-				$task->userInfo_id = $this->current_user->userInfos->id;
+				if(empty($id)){				
+					/**para não atualizar o criador da tarefa no update**/
+					$task->userInfo_id = $this->current_user->userInfos->id;
+	            }
+
 	            $task->save();  
 
 	            if(empty($id)){
@@ -267,7 +273,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     	$this->check_login();	
         $this->auto_render = false;
         $view = View::factory('admin/tasks/table');
-
         $view->current_auth = $this->current_auth;
 
         //$this->startProfilling();
@@ -286,7 +291,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
         $view->taskList = $query->and_where('ended', '=', '0')->order_by('ordem', 'ASC')->order_by('crono_date','ASC')->find_all();
+       
 
+        if(isset($view->filter_task_to) && $this->current_auth != "assistente"){
+        	
+        }
         
         //$this->endProfilling();
         echo $view;
@@ -295,9 +304,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     public function action_ongoing(){
     	$this->check_login();	
         $this->auto_render = false;
-        $view = View::factory('admin/tasks/table_ongoing');
+        $view = View::factory('admin/tasks/table');
+        $view->current_auth = $this->current_auth;
 
-        $view->objectsList = DB::select('*')->from('ongoings')->order_by('crono_date','ASC')->execute();
+        $view->taskList = ORM::factory('ongoing')->where('status_id', '=', '7')->find_all();
 
         echo $view;
     }   

@@ -32,9 +32,7 @@ class Model_Task extends ORM {
             'userInfo_id' => array(
                 array('not_empty'),
             ),
-			'topic' => array(
-				array('not_empty'),
-			),
+			
 	    );
 	}
 

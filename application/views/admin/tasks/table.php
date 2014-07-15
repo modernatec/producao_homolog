@@ -33,7 +33,7 @@ if(count($taskList) <= 0){
                     
                 </div>
                 <div class="left">
-                    <p class="red round list_faixa">para: <?=Utils_Helper::data($task->crono_date)?> &bull; <?=$task->status->status;?></p>
+                    <p class="<?=$task->status->class?> round list_faixa">para: <?=Utils_Helper::data($task->crono_date)?> &bull; <?=$task->status->status;?></p>
                 </div>
             
         </li>

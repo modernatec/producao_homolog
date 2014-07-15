@@ -6,6 +6,7 @@ class Model_Object extends ORM {
 		'sfwprods'       => array('model' => 'sfwprod', 'through' => 'objects_sfwprods'),		
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_id'),
 		'statu' => array('model' => 'status_type', 'foreign_key' => 'status_id'),
+
 	);
         
 	protected $_belongs_to  = array(
@@ -15,12 +16,6 @@ class Model_Object extends ORM {
 		'supplier' =>  array('foreign_key' => 'supplier_id'),
 		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
 	);
-
-
-	public function getStatus($objId){
-		$status = ORM::factory('objects_statu')->where('object_id', '=', $objId)->order_by("id", 'DESC')->find();
-		return (is_null($status->statu->status)) ? "não iniciado" : $status->statu->status;
-	}
 
 
 	public function rules()

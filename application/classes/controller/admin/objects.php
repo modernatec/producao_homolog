@@ -426,7 +426,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		/***Filtros***/
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		(count($view->filter_status ) > 0) ? $query->where('status_id', 'IN', $view->filter_status) : '';
+		(count($view->filter_status ) > 0) ? $query->where('objectStatus.status_id', 'IN', $view->filter_status) : '';
 		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
 		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
 		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
@@ -434,7 +434,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 
 
-		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->execute();
+		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
+			->where('project_id', '=', $project_id))
+			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')
+			->join('taskViews', 'LEFT')->on('objectStatus.object_status_id', '=', 'taskViews.object_status_id')->execute();
 		
 		/*
 		foreach ($view->objectsList as $obj) {

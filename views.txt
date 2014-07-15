@@ -49,3 +49,99 @@ GROUP BY `id`
 )$$
 
 DELIMITER ;
+
+
+**********************
+
+
+SELECT
+  `obj`.`id`                 AS `id`,
+  `obj`.`title`              AS `title`,
+  `obj`.`taxonomia`          AS `taxonomia`,
+  `obj`.`typeobject_id`      AS `typeobject_id`,
+  `type`.`name`              AS `typeobject_name`,
+  `obj`.`collection_id`      AS `collection_id`,
+  `obj`.`fase`               AS `fase`,
+  `obj`.`interatividade`     AS `interatividade`,
+  `obj`.`reaproveitamento`   AS `reaproveitamento`,
+  `obj`.`supplier_id`        AS `supplier_id`,
+  `ms`.`empresa`             AS `supplier_empresa`,
+  `collections`.`name`       AS `collection_name`,
+  `collections`.`fechamento` AS `collection_fechamento`,
+  `collections`.`materia_id` AS `materia_id`,
+  `materias`.`name`          AS `materia_name`,
+  `obj_status`.`id`          AS `object_status_id`,
+  `obj_status`.`status_id`   AS `status_id`,
+  `obj_status`.`prova`       AS `prova`,
+  `obj_status`.`crono_date`  AS `retorno`,
+  `status`.`status`          AS `statu_status`,
+  `status`.`class`           AS `statu_class`,
+  `obj`.`crono_date`         AS `crono_date`,
+  `obj`.`project_id`         AS `project_id`,
+  `projects`.`name`          AS `project_name`,
+  `projects`.`pasta`         AS `project_pasta`,
+  `taskView`.`status_id`     AS `task_status`
+FROM (((((((((`moderna_objects` `obj`
+          JOIN `moderna_objects_status` `obj_status`
+            ON ((`obj_status`.`object_id` = `obj`.`id`)))
+         LEFT JOIN `moderna_objects_status` `obj_status2`
+           ON (((`obj_status2`.`object_id` = `obj`.`id`)
+                AND (`obj_status`.`id` < `obj_status2`.`id`))))
+        JOIN `moderna_typeobjects` `type`
+          ON ((`type`.`id` = `obj`.`typeobject_id`)))
+       JOIN `moderna_collections` `collections`
+         ON ((`collections`.`id` = `obj`.`collection_id`)))
+      JOIN `moderna_materias` `materias`
+        ON ((`materias`.`id` = `collections`.`materia_id`)))
+     JOIN `moderna_suppliers` `ms`
+       ON ((`ms`.`id` = `obj`.`supplier_id`)))
+    JOIN `moderna_status` `status`
+      ON ((`status`.`id` = `obj_status`.`status_id`)))
+   JOIN `moderna_projects` `projects`
+     ON ((`projects`.`id` = `obj`.`project_id`)))
+   JOIN `moderna_taskViews` `taskView`
+     ON ((`obj_status`.`id` = `taskView`.`object_status_id`)))  
+WHERE ISNULL(`obj_status2`.`id`)
+GROUP BY `obj`.`id` 
+
+
+--------------on going-------------
+SELECT b.* FROM moderna_objectstatus a 
+JOIN moderna_taskviews b ON a.object_status_id = b.object_status_id
+LEFT OUTER JOIN moderna_taskviews b2 ON (`a`.`object_status_id` = `b2`.`object_status_id` AND (`b`.`id` < `b2`.`id` ))    
+WHERE `b2`.`id` IS NULL AND a.status_id IN ('2', '4', '9')  GROUP BY a.object_status_id
+
+
+---------------old ongoing----------------
+SELECT
+  `moderna_objectstatus`.`id`                    AS `id`,
+  `moderna_objectstatus`.`title`                 AS `title`,
+  `moderna_objectstatus`.`taxonomia`             AS `taxonomia`,
+  `moderna_objectstatus`.`typeobject_id`         AS `typeobject_id`,
+  `moderna_objectstatus`.`typeobject_name`       AS `typeobject_name`,
+  `moderna_objectstatus`.`collection_id`         AS `collection_id`,
+  `moderna_objectstatus`.`collection_name`       AS `collection_name`,
+  `moderna_objectstatus`.`collection_fechamento` AS `collection_fechamento`,
+  `moderna_objectstatus`.`materia_id`            AS `materia_id`,
+  `moderna_objectstatus`.`materia_name`          AS `materia_name`,
+  `moderna_objectstatus`.`supplier_id`           AS `supplier_id`,
+  `moderna_objectstatus`.`supplier_empresa`      AS `supplier_empresa`,
+  `moderna_objectstatus`.`fase`                  AS `fase`,
+  `moderna_objectstatus`.`interatividade`        AS `interatividade`,
+  `moderna_objectstatus`.`reaproveitamento`      AS `reaproveitamento`,
+  `moderna_objectstatus`.`status_id`             AS `status_id`,
+  `moderna_objectstatus`.`statu_status`          AS `statu_status`,
+  `moderna_objectstatus`.`statu_class`           AS `statu_class`,
+  `moderna_objectstatus`.`prova`                 AS `prova`,
+  `moderna_objectstatus`.`retorno`               AS `retorno`,
+  `moderna_objectstatus`.`crono_date`            AS `crono_date`,
+  `moderna_objectstatus`.`project_id`            AS `project_id`,
+  `moderna_objectstatus`.`project_name`          AS `project_name`,
+  `moderna_objectstatus`.`project_pasta`         AS `project_pasta`
+FROM `moderna_objectstatus`
+WHERE ((`moderna_objectstatus`.`status_id` NOT IN('1','8','3'))
+       AND (NOT(`moderna_objectstatus`.`id` IN(SELECT
+                                                 `moderna_taskviews`.`object_id`
+                                               FROM `moderna_taskviews`
+                                               GROUP BY `moderna_taskviews`.`object_id`))))
+GROUP BY `moderna_objectstatus`.`id`
