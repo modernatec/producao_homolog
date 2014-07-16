@@ -152,8 +152,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	public function action_salvar($id = null)
 	{
-		if (HTTP_Request::POST == $this->request->method()) 
-		{  
+		if (HTTP_Request::POST == $this->request->method()){  
 	        $db = Database::instance();
 	        $db->begin();
 			
@@ -186,16 +185,21 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$task_statu->userInfo_id = $this->current_user->userInfos->id;
 					$task_statu->status_id = '5';
 					$task_statu->task_id = $task->id;
-					$task_statu->save();  
-
+					$task_statu->save();  	
+				}
+				
+				if($this->request->post('sendmail') || empty($id)){
 					/*
 		            * envia email de tarefa para o usuário
 		            */
 					Controller_Admin_Taskstatus::sendMail(array(
 															'type' => 'inicia_tarefa',
+															'subject'=> $task->tag->tag,
 															'post' => $this->request->post(), 
-            												'user' => $this->current_user->userInfos));		
+            												'user' => $this->current_user->userInfos));	
 				}
+				
+				//var_dump($this->request->post('sendmail'));
 
 	            $db->commit();
 

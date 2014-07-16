@@ -138,57 +138,71 @@
 	?>
 	<ul class="list_item">
 		<?foreach($objectsList as $objeto){
-			switch($objeto['status_id']){
+			$status = "";
+    		$tag = "";
+			
+			switch($objeto->status_id){
     			case 1:
-    				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
             			$class_obj = "object_late";
             		}else{
-        				$class_obj 	= $objeto['statu_class'];
+        				$class_obj 	= $objeto->statu_class;
         			}
     				break;
     			case 2:
     				$mod = "";
-    				if($objeto['supplier_id'] != 10){//producao externa
+    				if($objeto->supplier_id != 10){//producao externa
     					$mod = "_out";	
     				}else{
     					$mod = "_in"; 
     				}
 
-    				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
             			$class_obj = "object_late";
             		}else{
-        				$class_obj 	= $objeto['statu_class'].$mod;
+        				$class_obj 	= $objeto->statu_class.$mod;
         			}
+
+
+        			if(is_object($objeto->getStatus($objeto->object_status_id))){
+		    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
+		    			$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
+		    			$tag = '<span class="round light_blue list_faixa">'.$obj_taskView->tag->tag.'</span>';
+		    		}
    				
     				break;
     			case 8://finalizado
-    				$class_obj 	= $objeto['statu_class'];
-    				$class 		= $objeto['statu_class'];
+    				$class_obj 	= $objeto->statu_class;
+    				$class 		= $objeto->statu_class;
     				break;	
     			default:
-    				if(strtotime($objeto['retorno']) < strtotime(date("Y-m-d H:i:s"))){
+    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
             			$class_obj = "object_late";
             		}else{
-        				$class_obj 	= $objeto['statu_class'];
+        				$class_obj 	= $objeto->statu_class;
         			}
     		}
 		?>
 		<li>
-			<a href="<?=URL::base().'admin/objects/view/'.$objeto['id'];?>" title="Editar">
+			<a href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" title="Editar">
 				<div class="left" style="width:30%">
-					<p><b><?=$objeto['taxonomia']?></b></p>
-					<p><?=$objeto['title']?></p>
-					<p class="<?=$class_obj?> round list_faixa"><?=$objeto['statu_status']?> &bull; <?=$objeto['prova']?></p>
+					<p><b><?=$objeto->taxonomia?></b></p>
+					<p><?=$objeto->title?></p>
+					<p>
+						<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
+						<?=$tag;?>
+						<?=$status;?>
+					</p>
 				</div>
 				<div class="left" style="width:20%">
-					<p><?=$objeto['supplier_empresa']?></p>
-					<p><?=($objeto['reaproveitamento'] == '1') ? "reap." : "novo"?> &bull; <?=$objeto['typeobject_name']?></p>
-					<p>retorno: <?=Utils_Helper::data($objeto['retorno'],'d/m/Y')?></p>
+					<p><?=$objeto->supplier_empresa?></p>
+					<p><?=($objeto->reaproveitamento == '1') ? "reap." : "novo"?> &bull; <?=$objeto->typeobject_name?></p>
+					<p>retorno: <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></p>
 				</div>
 				<div class="left" style="width:40%">
-					<p><?=$objeto['materia_name']?></p>
-					<p><?=$objeto['collection_name']?></p>
-					<p>fechamento: <?=Utils_Helper::data($objeto['collection_fechamento'],'d/m/Y')?></p>
+					<p><?=$objeto->materia_name?></p>
+					<p><?=$objeto->collection_name?></p>
+					<p>fechamento: <?=Utils_Helper::data($objeto->collection_fechamento,'d/m/Y')?></p>
 				</div>
 			</a>
 		</li>

@@ -50,6 +50,8 @@
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>
+        <input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label>
+        <br/>
         <input type="text" name="object_status_id" placeholder="id do status" value="<?=@$taskVO['object_status_id']?>" />
         <dd>
           <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="salvar" />             

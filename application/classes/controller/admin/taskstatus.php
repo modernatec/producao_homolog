@@ -47,7 +47,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            
 		            $db->commit();
 					
-		            $message = "Tarefa salva com sucesso."; 
+		            $message = "Tarefa iniciada com sucesso."; 
 					
 					Utils_Helper::mensagens('add',$message);
 		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
@@ -105,17 +105,47 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            $task->save();
 
 		            /*
-		            * envia email de entrega
+		            * abre tarefa automaticamente para o próx. fluxo
+		            * melhorar data e separaçao de metodos
 		            */
+		            if($task->tag_id == "5" || $task->tag_id == "6"){
+		            	$new_tag_id = '1';						
+		            	$task_to = '0';
+			        }else{
+			        	$new_tag_id = '7';						
+		            	$task_to = $task->userInfo_id;
+			        }
+
+			        $new_task = ORM::factory('task');
+	            	$new_task->object_id = $task->object_id;
+	            	$new_task->object_status_id = $task->object_status_id;
+	            	$new_task->tag_id = $new_tag_id;
+	            	$new_task->topic = '1';
+	            	$new_task->crono_date = $task->crono_date;
+	            	$new_task->description = "checar prova produzida";
+	            	$new_task->task_to = $task_to;
+	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
+		            $new_task->save();  
+		            
+					$new_statu = ORM::factory('tasks_statu');
+					$new_statu->userInfo_id = $this->current_user->userInfos->id;
+					$new_statu->status_id = '5';
+					$new_statu->task_id = $new_task->id;
+					$new_statu->save();  
+
+		            /*
+		            * envia email de entrega
+		            *
 		            $this->sendMail(
 			            	array(	
 				            	'type' => 'entrega_tarefa',
 				            	'post' => $this->request->post(), 
 		            			'user' => $this->current_user->userInfos));
+		            */
 		            
 		            $db->commit();
 					
-		            $message = "Tarefa salva com sucesso."; 
+		            $message = "Tarefa finalizada com sucesso."; 
 					
 					Utils_Helper::mensagens('add',$message);
 		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
@@ -155,9 +185,9 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 						$email->userInfo = $taskUser;
 						if($taskUser->email != ''){
 							$nome = explode(" ", $taskUser->nome);
-							$email->assunto = $arg['post']['topic'].' - '.$object->taxonomia;
+							$email->assunto = $arg['subject'].' - '.$object->taxonomia;
 							$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.<br/><br/>
-								<b>Título:</b> '.$arg['post']['topic'].'<br/>
+								<b>Título:</b> '.$arg['subject'].'<br/>
 								<b>Data de entrega:</b> '.$arg['post']['crono_date'].'<br/>
 								<b>Descrição:</b> <pre>'.$arg['post']['description'].'</pre><br/>
 								<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';

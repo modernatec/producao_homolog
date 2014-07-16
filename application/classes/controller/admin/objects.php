@@ -421,7 +421,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}
 		$view->reset_filter_status = json_encode($status_arr);
 
-		$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
+		//$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
+		$query = ORM::factory('objectStatu')->where('fase', '=', $this->request->query('fase'));
 
 
 		/***Filtros***/
@@ -436,17 +437,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
 			->where('project_id', '=', $project_id))
-			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')
-			->join('taskViews', 'LEFT')->on('objectStatus.object_status_id', '=', 'taskViews.object_status_id')->execute();
+			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
-		/*
-		foreach ($view->objectsList as $obj) {
-			var_dump($obj['id']);
-			$ob = ORM::factory('object', $obj['id']);
-			$ob->project_id = $project_id;
-			$ob->save();
-		}
-		*/
 
 		/****Filtros*****/
 
