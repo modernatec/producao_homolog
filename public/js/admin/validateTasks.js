@@ -40,5 +40,11 @@ $(document).ready(function() {
         }
     })
 
+    $('#correcao').click(function(){
+        $('#next_step').val('6');
+        $('#submit_btn').click();
+    });
+        
+
     
 });

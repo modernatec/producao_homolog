@@ -728,6 +728,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 .roxo{
 	background: #9972b5;
+	color: #fff;
 }
 
 .light_blue{
@@ -743,6 +744,7 @@ input[type='text']:focus, input[type='password']:focus{
 .green{
 	background: #8cc152;
 	color: #fff;
+	border: none !important;
 }
 
 .step{

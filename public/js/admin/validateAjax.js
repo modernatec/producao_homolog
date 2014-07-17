@@ -16,11 +16,14 @@ function validateAjax(){
                 type: "POST",
                 url: $(form).attr('action'),
                 data: $(form).serialize(),
-                timeout: 3000,
+                timeout: 10000,
                 success: function() {
                     location.reload();
                 },
-                error: function() {alert('ocorreu um erro durante o processamento');}
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
             });
             return false;       
         }
@@ -37,7 +40,10 @@ function validateAjax(){
                 success: function() {
                     location.reload();
                 },
-                error: function() {alert('ocorreu um erro durante o processamento');}
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
             });
             return false;       
         }
@@ -65,7 +71,10 @@ function validateAjax(){
                 success: function() {
                     location.reload();
                 },
-                error: function() {alert('ocorreu um erro durante o processamento');}
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
             });
             return false;       
         }
@@ -88,7 +97,10 @@ function validateAjax(){
                 success: function() {
                     location.reload();
                 },
-                error: function(e) {alert('ocorreu um erro durante o processamento '); console.log(e);}
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
             });
             return false;       
         }
@@ -115,7 +127,10 @@ function validateAjax(){
                 success: function() {
                     location.reload();
                 },
-                error: function(e) {alert('ocorreu um erro durante o processamento '); console.log(e);}
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
             });
             return false;       
         }

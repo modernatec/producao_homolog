@@ -5,7 +5,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public $auth_required		= array('login'); 
 	public $secure_actions     	= array(
 										'create' => array('login','coordenador'),
-										'delete' => array('login','admin'),);
+										'delete' => array('login','assistente 2'),);
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -122,6 +122,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
     
+	public function action_mail(){
+		$this->auto_render = false;
+		$view = View::factory('admin/tasks/layout_mail');
+		echo $view;
+
+	}
+    
+
    	public function action_update($id){
 		$this->auto_render = false;
 		$view = View::factory('admin/tasks/form_edit');
@@ -144,8 +152,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
 			->bind('message', $message);
 		
-		$task = ORM::factory('task', $id);
-		$view->taskVO = $this->setVO('task', $task);
+		$task = ORM::factory('tasks_statu', $id);
+		$view->taskVO = $this->setVO('tasks_statu', $task);
 
 		echo $view;
 	}
@@ -186,6 +194,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$task_statu->status_id = '5';
 					$task_statu->task_id = $task->id;
 					$task_statu->save();  	
+
+					$type = "inicia_tarefa";
+				}else{
+					/*
+					* atualiza status caso a tarefa já tenha sido iniciada
+					*/
+					$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $id)->and_where('status_id', '=', '6')->find();
+					$task_statu->userInfo_id = $task->task_to;
+					$task_statu->save(); 
+
+					$type = "atualiza_tarefa";
 				}
 				
 				if($this->request->post('sendmail') || empty($id)){
@@ -193,7 +212,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		            * envia email de tarefa para o usuário
 		            */
 					Controller_Admin_Taskstatus::sendMail(array(
-															'type' => 'inicia_tarefa',
+															'type' => $type,
 															'subject'=> $task->tag->tag,
 															'post' => $this->request->post(), 
             												'user' => $this->current_user->userInfos));	

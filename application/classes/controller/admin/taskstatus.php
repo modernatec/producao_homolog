@@ -5,7 +5,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	public $auth_required		= array('login'); 
 	public $secure_actions     	= array(
 										'create' => array('login','coordenador'),
-										'delete' => array('login','admin'),);
+										'delete' => array('login','assistente 2'),);
 					 
 	public function __construct(Request $request, Response $response)
 	{
@@ -111,9 +111,18 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            if($task->tag_id == "5" || $task->tag_id == "6"){
 		            	$new_tag_id = '1';						
 		            	$task_to = '0';
+		            	$description = 'checagem de prova/correção.';
+		            	$date = new DateTime('tomorrow');//date('Y-m-d H:i:s', strtotime($task->created_at . ' + 1 day'));
+			        }elseif($task->tag_id == '1' && $this->request->post('next_step') == "6"){
+		        		$new_tag_id = '6';						
+		            	$task_to = '0';
+		            	$description = 'corrigir conforme relatório de checagem anterior.';
+		            	$date = new DateTime('tomorrow');//date('Y-m-d H:i:s', strtotime($task->crono_date . ' + 1 day'));
 			        }else{
 			        	$new_tag_id = '7';						
-		            	$task_to = $task->userInfo_id;
+		            	$task_to = '0';
+		            	$description = 'em trânsito';
+		            	$date = $task->crono_date;
 			        }
 
 			        $new_task = ORM::factory('task');
@@ -121,8 +130,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	            	$new_task->object_status_id = $task->object_status_id;
 	            	$new_task->tag_id = $new_tag_id;
 	            	$new_task->topic = '1';
-	            	$new_task->crono_date = $task->crono_date;
-	            	$new_task->description = "checar prova produzida";
+	            	$new_task->crono_date = $date;
+	            	$new_task->description = $description;
 	            	$new_task->task_to = $task_to;
 	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
 		            $new_task->save();  
@@ -171,52 +180,127 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		}
 	}
 
+	/*
+	* edita um status 
+	*/
+	public function action_edit($id){
+		if (HTTP_Request::POST == $this->request->method()){
+			$db = Database::instance();
+	        $db->begin();
+			
+			try {
+				$task_status = ORM::factory('tasks_statu', $id);
+				$task_status->description = $this->request->post('description');
+				$task_status->save();
+
+				$task = ORM::factory('task', $task_status->task_id);
+
+	            $db->commit();
+				
+	            $message = "status editado com sucesso."; 
+				
+				Utils_Helper::mensagens('add',$message);
+	            Request::current()->redirect('admin/objects/view/'.$task->object_id);
+	            
+	        } catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+
+			    Utils_Helper::mensagens('add',$message);  
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+				Utils_Helper::mensagens('add',$message);
+	            $db->rollback();
+	        }
+
+	        return false;
+		}
+	}
+
 	public static function sendMail($arg){
 		$object = ORM::factory('object', $arg['post']['object_id']);    	
 		$linkTask = URL::base().'admin/objects/view/'.$arg['post']['object_id'];
+		$email = new Email_Helper();
+		
 		
 		switch($arg['type']){
 			case 'inicia_tarefa':
 				if($arg['post']['task_to'] != 0){
 					$taskUser = ORM::factory('userInfo', $arg['post']['task_to']); 
-					
-					if($taskUser->mailer == '1'){							
-						$email = new Email_Helper();
-						$email->userInfo = $taskUser;
-						if($taskUser->email != ''){
-							$nome = explode(" ", $taskUser->nome);
-							$email->assunto = $arg['subject'].' - '.$object->taxonomia;
-							$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.<br/><br/>
-								<b>Título:</b> '.$arg['subject'].'<br/>
-								<b>Data de entrega:</b> '.$arg['post']['crono_date'].'<br/>
-								<b>Descrição:</b> <pre>'.$arg['post']['description'].'</pre><br/>
-								<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-							
-							$email->enviaEmail();						
-		            	}
-		        	}            	    	
+					$send = ($taskUser->mailer == '1' && $taskUser->email != '') ? true: false;
+
+					$email->userInfo = $taskUser;
+					$nome = explode(" ", $taskUser->nome);
+
+					$assunto = $arg['subject'].' - '.$object->taxonomia;
+					$data_arr = array(
+						'mensagem' => 'Olá, '.ucfirst($nome[0]).', você possuí uma nova tarefa.',
+						'titulo' => $arg['subject'],
+						'por' => $arg['user']->nome,
+						'entrega' => $arg['post']['crono_date'],
+						'descricao' => $arg['post']['description'],
+						'link' => $linkTask
+					);
+		        }
+			break;
+			case 'atualiza_tarefa':
+				if($arg['post']['task_to'] != 0){
+					$taskUser = ORM::factory('userInfo', $arg['post']['task_to']); 
+					$send = ($taskUser->mailer == '1' && $taskUser->email != '') ? true: false;
+
+					$email->userInfo = $taskUser;
+					$nome = explode(" ", $taskUser->nome);
+
+					$assunto = $arg['subject'].' - '.$object->taxonomia;
+					$data_arr = array(
+						'mensagem' => 'Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi atualizada.',
+						'titulo' => $arg['subject'],
+						'por' => $arg['user']->nome,
+						'entrega' => $arg['post']['crono_date'],
+						'descricao' => $arg['post']['description'],
+						'link' => $linkTask
+					);
 		        }
 			break;
 			case 'entrega_tarefa':
+				/*
 				$task = ORM::factory('task', $arg['post']['task_id']);
-				$taskUser = $task->userInfo;     	
-				
-				if($taskUser->mailer == '1'){					
-					$email = new Email_Helper();
-					$email->userInfo = $taskUser;
-					if($taskUser->email != ''){
-						$nome = explode(" ", $taskUser->nome);
-		                       
-						$email->assunto = $object->taxonomia.' - Tarefa concluída!';
-						$email->mensagem = '<font face="arial">Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi concuída.<br/><br/>
-							<b>Entregue por:</b> '.$arg['user']->nome.'<br/>
-							<b>Observações:</b> <pre>'.$arg['post']['description'].'</pre><br/>
-							<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-						
-						$email->enviaEmail();					
-		        	}
-		    	}   
+				$taskUser = $task->userInfo;    
+				$send = ($taskUser->mailer == '1' && $taskUser->email != '') ? true: false; 	
+				$email->userInfo = $taskUser;
+				$nome = explode(" ", $taskUser->nome);
+
+				$assunto = $object->taxonomia.' - Tarefa concluída!';
+				$data_arr = array(
+					'mensagem' => 'Olá, '.ucfirst($nome[0]).', a tarefa abaixo foi concuída.',
+					'titulo' => $arg['subject'],
+					'entrega' => $arg['post']['crono_date'],
+					'descricao' => $arg['post']['description'],
+					'link' => $linkTask
+				);
+                       
+				$email->assunto = 
+				$email->mensagem = '<font face="arial"><br/><br/>
+					<b>Entregue por:</b> '.$arg['user']->nome.'<br/>
+					<b>Observações:</b> <pre>'.$arg['post']['description'].'</pre><br/>
+					<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
+				*/		
 			break;
 		} 
+
+
+		if($send){
+			$template = View::factory('admin/tasks/layout_mail')
+							->bind('data', $data_arr);
+
+			$email->assunto = $assunto;
+			$email->mensagem = $template;
+			$email->enviaEmail();
+		}
 	}
 }

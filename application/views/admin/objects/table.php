@@ -167,7 +167,7 @@
         			if(is_object($objeto->getStatus($objeto->object_status_id))){
 		    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
 		    			$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
-		    			$tag = '<span class="round light_blue list_faixa">'.$obj_taskView->tag->tag.'</span>';
+		    			$tag = '<span class="round list_faixa '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';
 		    		}
    				
     				break;
