@@ -25,7 +25,7 @@ if(count($taskList) <= 0){
                                     
                                 </div>
                             </a>
-                        <?}?>
+                        <?}else{ echo "&nbsp;";}?>
                 </div>
                 <div class="left" style="width:350px;">
                     <p><a href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>"><span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span> &bull; <?=$task->object->taxonomia;?></a></p>

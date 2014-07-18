@@ -108,40 +108,42 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            * abre tarefa automaticamente para o próx. fluxo
 		            * melhorar data e separaçao de metodos
 		            */
-		            if($task->tag_id == "5" || $task->tag_id == "6"){
-		            	$new_tag_id = '1';						
-		            	$task_to = '0';
-		            	$description = 'checagem de prova/correção.';
-		            	$date = new DateTime('tomorrow');//date('Y-m-d H:i:s', strtotime($task->created_at . ' + 1 day'));
-			        }elseif($task->tag_id == '1' && $this->request->post('next_step') == "6"){
-		        		$new_tag_id = '6';						
-		            	$task_to = '0';
-		            	$description = 'corrigir conforme relatório de checagem anterior.';
-		            	$date = new DateTime('tomorrow');//date('Y-m-d H:i:s', strtotime($task->crono_date . ' + 1 day'));
-			        }else{
-			        	$new_tag_id = '7';						
-		            	$task_to = '0';
-		            	$description = 'em trânsito';
-		            	$date = $task->crono_date;
-			        }
+		            if($task->tag_id != "7"){
+			            if($task->tag_id == "5" || $task->tag_id == "6"){
+			            	$new_tag_id = '1';						
+			            	$task_to = '0';
+			            	$description = 'checagem de prova/correção.';
+			            	$date = date('Y-m-d H:i:s', strtotime($task->created_at . ' + 1 day'));
+				        }elseif($task->tag_id == '1' && $this->request->post('next_step') == "6"){
+			        		$new_tag_id = '6';						
+			            	$task_to = '0';
+			            	$description = 'corrigir conforme relatório de checagem anterior.';
+			            	$date = date('Y-m-d H:i:s', strtotime($task->crono_date . ' + 1 day'));
+				        }else{
+				        	$new_tag_id = '7';						
+			            	$task_to = '0';
+			            	$description = 'em trânsito';
+			            	$date = $task->crono_date;
+				        }
 
-			        $new_task = ORM::factory('task');
-	            	$new_task->object_id = $task->object_id;
-	            	$new_task->object_status_id = $task->object_status_id;
-	            	$new_task->tag_id = $new_tag_id;
-	            	$new_task->topic = '1';
-	            	$new_task->crono_date = $date;
-	            	$new_task->description = $description;
-	            	$new_task->task_to = $task_to;
-	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
-		            $new_task->save();  
-		            
-					$new_statu = ORM::factory('tasks_statu');
-					$new_statu->userInfo_id = $this->current_user->userInfos->id;
-					$new_statu->status_id = '5';
-					$new_statu->task_id = $new_task->id;
-					$new_statu->save();  
-
+				        $new_task = ORM::factory('task');
+		            	$new_task->object_id = $task->object_id;
+		            	$new_task->object_status_id = $task->object_status_id;
+		            	$new_task->tag_id = $new_tag_id;
+		            	$new_task->topic = '1';
+		            	$new_task->crono_date = $date;
+		            	$new_task->description = $description;
+		            	$new_task->task_to = $task_to;
+		            	$new_task->userInfo_id = $this->current_user->userInfos->id;
+			            $new_task->save();  
+			            
+						$new_statu = ORM::factory('tasks_statu');
+						$new_statu->userInfo_id = $this->current_user->userInfos->id;
+						$new_statu->status_id = '5';
+						$new_statu->task_id = $new_task->id;
+						$new_statu->save();  
+					}
+					
 		            /*
 		            * envia email de entrega
 		            *
