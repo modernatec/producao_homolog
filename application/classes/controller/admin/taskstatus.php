@@ -228,6 +228,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		$object = ORM::factory('object', $arg['post']['object_id']);    	
 		$linkTask = URL::base().'admin/objects/view/'.$arg['post']['object_id'];
 		$email = new Email_Helper();
+		$send = false;
 		
 		
 		switch($arg['type']){
@@ -270,7 +271,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		        }
 			break;
 			case 'entrega_tarefa':
-				/*
+				/* removemos as entregas uma vez que as tarefas são abertas automaticamente
+
 				$task = ORM::factory('task', $arg['post']['task_id']);
 				$taskUser = $task->userInfo;    
 				$send = ($taskUser->mailer == '1' && $taskUser->email != '') ? true: false; 	

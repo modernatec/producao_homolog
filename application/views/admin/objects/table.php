@@ -166,8 +166,14 @@
 
         			if(is_object($objeto->getStatus($objeto->object_status_id))){
 		    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
-		    			$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
-		    			$tag = '<span class="round list_faixa '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';
+		    			
+		    			if($obj_taskView->tag->id == '7' && $obj_taskView->status->id == '7'){
+		    				$status = "";
+		    				$tag = "";
+				    	}else{
+				    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
+			    			$tag = '<span class="round list_faixa '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
+			    		}
 		    		}
    				
     				break;

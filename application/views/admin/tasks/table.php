@@ -13,7 +13,7 @@ if(count($taskList) <= 0){
     foreach($taskList as $key=>$task){?>
         <li class="dd-item" id="item-<?=$task->id?>">
             <div class="list_order left"><?=$key+1?></div>
-                <div class="left">
+                <div class="left" style="width:100px;">
                     
                     <? 
                         if($task->task_to != "0"){
