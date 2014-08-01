@@ -32,8 +32,8 @@
                 <label for="task_to">para:</label>
             </dt>
             <dd>
-                <select name="task_to" id="task_to" class="required round" style="width:150px;">
-                    <option value="">selecione</option>
+                <select name="task_to" id="task_to" class="round" style="width:150px;">
+                    <option value="0">selecione</option>
                     <? foreach($teamList as $userInfo){?>
                         <option value="<?=$userInfo->id?>" <?=($taskVO['task_to'] == $userInfo->id) ? "selected" : ""?> ><?=$userInfo->nome?></option>
                     <?}?>
@@ -51,10 +51,8 @@
             </dd>
         </div>
         <input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label>
-        <br/>
-        <input type="text" name="object_status_id" placeholder="id do status" value="<?=@$taskVO['object_status_id']?>" />
         <dd>
-          <input type="submit" class="round" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="salvar" />             
+          <input type="submit" class="round green" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="salvar" />             
         </dd>	    
 	</dl>
 </form>

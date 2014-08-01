@@ -39,10 +39,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$view->filter = "?status=".json_encode(array("5"));
         }
 		$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
-		$view->current_auth = $this->current_auth;
-
-	  	$this->template->content = $view;	
+		$view->current_auth = $this->current_auth;	
 	  	
+	  	/*alert de nova tarefa*/
+	  	$view->update = false;
+  		if(Session::instance()->get('total_tarefas') < $view->totalTasks){
+  			$view->update = true;	  			
+  		}
+
+	  	Session::instance()->set('total_tarefas', $view->totalTasks);
+
+	  	$this->template->content = $view;
+
 		/*
 	  	$rs = ORM::factory('task')->where('task_id', '=', '0')->find_all();
 	  	foreach($rs as $task){

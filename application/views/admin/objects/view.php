@@ -50,6 +50,7 @@
             <?if(isset($taskflows)){
                     $count = 0;
                     foreach($taskflows as $status_task){
+                        /*
                         if($status_task->type == 'tasks'){?>
 
                             <div style='clear:both'>
@@ -135,7 +136,7 @@
                                 </div>
                                 
                             </div>
-                        <?}elseif ($status_task->type == 'status') {?>                          
+                        <?}elseif ($status_task->type == 'status') {*/?>                          
                             <div style='clear:both' >                               
                                 <div style='width:25px; float:left; margin-top:5px'>
                                     <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
@@ -148,7 +149,6 @@
                                     <?}?>
                                     
                                     <div class='line_bottom'>
-                                        id: <?=$status_task->id;?>
                                         <?if($current_auth != "assistente"){?>
                                             <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                         <?}?>
@@ -267,7 +267,7 @@
                                 </div> 
                                 
                             </div>
-                        <?}                
+                        <?/*}*/                
                     }   
                 }
             ?>

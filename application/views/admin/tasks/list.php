@@ -34,4 +34,9 @@
             
         </div>
     </div>
+    <? 
+    	if($update){
+    		echo '<span id="update"></span>';
+    	}
+    ?>
 </div>

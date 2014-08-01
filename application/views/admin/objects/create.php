@@ -6,12 +6,12 @@
 	  <dl>
             <dt> <label for="title">título</label></dt>
             <dd>
-                <input type="text" class="text required round" name="title" id="title" style="width:500px;" value="<?=$objVO['title'];?>"/>
+                <input type="text" class="text required round" name="title" id="title" style="width:500px;" value='<?=$objVO['title'];?>'/>
                 <span class='error'><?=Arr::get($errors, 'title');?></span>
             </dd>
             <dt><label for="taxonomia">taxonomia</label></dt>
             <dd>
-                <input type="text" class="text required round" name="taxonomia" id="taxonomia" style="width:500px;" value="<?=$objVO['taxonomia'];?>"/>
+                <input type="text" class="text required round" name="taxonomia" id="taxonomia" style="width:500px;" value='<?=$objVO['taxonomia'];?>'/>
                 <span class='error'><?=Arr::get($errors, 'taxonomia');?></span>
             </dd>
             <div class="left">
@@ -20,7 +20,7 @@
                     <select name="project_id" id="project_id" data-target="collection_id" data-url="admin/objects/getCollections" class="populate required round">
                         <option value=''>Selecione</option>
                         <? foreach($projectList as $projeto){?>
-                            <option value="<?=$projeto->id?>" <?=((@$objVO["project_id"] == $projeto->id)?('selected'):(''))?> ><?=$projeto->name?></option>
+                            <option value='<?=$projeto->id?>' <?=((@$objVO["project_id"] == $projeto->id)?('selected'):(''))?> ><?=$projeto->name?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'project_id');?></span>
@@ -32,7 +32,7 @@
                     <select class="required round" name="collection_id" id="collection_id" style="width:300px;">
                         <option value=''>Selecione</option>
                         <? foreach($collections as $collection){?>
-                            <option value="<?=$collection->id?>" <?=((@$objVO["collection_id"] == $collection->id)?('selected'):(''))?> ><?=$collection->name?></option>
+                            <option value='<?=$collection->id?>' <?=((@$objVO["collection_id"] == $collection->id)?('selected'):(''))?> ><?=$collection->name?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'collection_id');?></span>
@@ -44,7 +44,7 @@
                     <select class="required round" name="country_id" id="country_id">
                         <option value=''>Selecione</option>
                         <? foreach($countries as $country){?>
-                            <option value="<?=$country->id?>" <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
+                            <option value='<?=$country->id?>' <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'country_id');?></span>
@@ -69,7 +69,7 @@
                     <select class="required round" name="typeobject_id" id="typeobject_id" style="width:200px;">
                         <option value=''>Selecione</option>
                         <? foreach($typeObjects as $type){?>
-                            <option value="<?=$type->id?>" <?=((@$objVO["typeobject_id"] == $type->id)?('selected'):(''))?> ><?=$type->name?></option>
+                            <option value='<?=$type->id?>' <?=((@$objVO["typeobject_id"] == $type->id)?('selected'):(''))?> ><?=$type->name?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'tipo_obj');?></span>
@@ -81,7 +81,7 @@
                 	<select class="required round" name="supplier_id" id="supplier_id">
                         <option value=''>Selecione</option>
                         <? foreach($suppliers as $supplier){?>
-                            <option value="<?=$supplier->id?>" <?=((@$objVO["supplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
+                            <option value='<?=$supplier->id?>' <?=((@$objVO["supplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
@@ -102,7 +102,7 @@
                     <select class="round" name="audiosupplier_id" id="audiosupplier_id">
                         <option value='0'>Selecione</option>
                         <? foreach($suppliers as $supplier){?>
-                            <option value="<?=$supplier->id?>" <?=((@$objVO["audiosupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
+                            <option value='<?=$supplier->id?>' <?=((@$objVO["audiosupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'audiosupplier_id');?></span>
@@ -111,7 +111,7 @@
             <div class="left">
                 <dt><label for="speaker">locutor</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="speaker" id="speaker" style="width:250px;" value="<?=$objVO['speaker'];?>"/>
+                    <input type="text" class="text round" name="speaker" id="speaker" style="width:250px;" value='<?=$objVO['speaker'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'speaker');?></span>
                 </dd>
             </div>
@@ -119,35 +119,35 @@
             <div class="clear left">
                 <dt><label for="cap">capítulo</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="cap" id="cap" style="width:50px;" value="<?=$objVO['cap'];?>"/>
+                    <input type="text" class="text round" name="cap" id="cap" style="width:50px;" value='<?=$objVO['cap'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'cap');?></span>
                 </dd>                
             </div>
             <div class="left">
                 <dt><label for="uni">unidade</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="uni" id="uni" style="width:50px;" value="<?=$objVO['uni'];?>"/>
+                    <input type="text" class="text round" name="uni" id="uni" style="width:50px;" value='<?=$objVO['uni'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'uni');?></span>
                 </dd>
             </div>
             <div class="left">
                 <dt><label for="pagina">página</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="pagina" id="pagina" style="width:50px;" value="<?=$objVO['pagina'];?>"/>
+                    <input type="text" class="text round" name="pagina" id="pagina" style="width:50px;" value='<?=$objVO['pagina'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'pagina');?></span>
                 </dd>  
             </div>
             <div class="left">
                 <dt><label for="tamanho">tam. (kb)</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="tamanho" id="tamanho" style="width:50px;" value="<?=$objVO['tamanho'];?>"/>
+                    <input type="text" class="text round" name="tamanho" id="tamanho" style="width:50px;" value='<?=$objVO['tamanho'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'tamanho');?></span>
                 </dd>  
             </div>
             <div class="left">
                 <dt><label for="duracao">duração</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="duracao" id="duracao" style="width:50px;" value="<?=$objVO['duracao'];?>"/>
+                    <input type="text" class="text round" name="duracao" id="duracao" style="width:50px;" value='<?=$objVO['duracao'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'duracao');?></span>
                 </dd>  
             </div>
@@ -191,7 +191,7 @@
                     <select class="required round" name="format_id" id="format_id">
                         <option value=''>Selecione</option>
                         <? foreach($formats as $format){?>
-                            <option value="<?=$format->id?>" <?=((@$objVO["format_id"] == $format->id)?('selected'):(''))?> ><?=$format->name?></option>
+                            <option value='<?=$format->id?>' <?=((@$objVO["format_id"] == $format->id)?('selected'):(''))?> ><?=$format->name?></option>
                         <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'format_id');?></span>
@@ -211,7 +211,7 @@
             <div class="left">
                 <dt><label for="taxonomia_reap">Taxonomia do reap.</label></dt>
                 <dd>
-                    <input type="text" class="text round" name="taxonomia_reap" id="taxonomia_reap" style="width:250px;" value="<?=$objVO['taxonomia_reap'];?>"/>
+                    <input type="text" class="text round" name="taxonomia_reap" id="taxonomia_reap" style="width:250px;" value='<?=$objVO['taxonomia_reap'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'taxonomia_reap');?></span>
                 </dd>  
             </div>
@@ -230,7 +230,7 @@
                 </dd>
             </div>
 	    <dd>
-	      <input type="submit" class="round" name="btnCriar" id="btnCriar" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
+	      <input type="submit" class="round" name="btnCriar" id="btnCriar" value='<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>' />
 	    </dd>
 	  </dl>
 	</form>

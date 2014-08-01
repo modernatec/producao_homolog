@@ -289,8 +289,29 @@ $(document).ready(function()
         },
     });
 
+    /*alert para novas tarefas!*/
+    old_title = document.title;
+    cont_blink = 0;
+    if($('#update').length != 0){
+        setTimeout(function(){
+            alert('existem novas tarefas!');
+            clearInterval(blink);
+        }, 5000);
+        var blink = setInterval(
+            function(){
+                if(cont_blink %2 == 0){
+                    document.title = "existem novas tarefas!";
+                }else{
+                    document.title = old_title;
+                }
+                cont_blink++;
+
+            }, 500
+        );
+    }
     
 
+    /*ativa a última aba selecionada*/
     var tab = $.cookie("producao");
     console.log('tab = ' + tab);
     

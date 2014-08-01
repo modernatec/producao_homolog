@@ -32,12 +32,15 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	}
 
 	public function generate($post){
+		ini_set('max_execution_time', 300); //max. response para 5 minutos
+
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
-					->where('project_id', '=', $post['project_id'])
-					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
+					->where('project_id', '=', $post['project_id'])	
+					->where('status_id', '!=', '8')				
 					->order_by('collection_name', 'ASC')
 					->find_all();
 
+//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
 		$arr = array(0 => array());
 
 		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
@@ -48,7 +51,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			$datas_f = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 			$line = array(
 						'title' => $object->title, 
-						'taxonomia' => $object->taxonomia.'|'.urlencode(URL::base().'admin/objects/view/'.$object->id), 
+						'taxonomia' => $object->taxonomia, 
 						
 						'collection' => $object->collection_name, 
 						
@@ -60,7 +63,8 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'prova' => $object->prova, 
 						'status' => $object->statu_status, 
 						'fechamento' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[0], $datas_f[1], $datas_f[2]) : "-",
-						'anotacoes' => $object->getAnotacoes($object->id));
+						'anotacoes' => ($object->status_id != '8') ? $object->getAnotacoes($object->id) : '',
+					);
 			array_push($arr, $line);
     	}
 

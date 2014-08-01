@@ -49,7 +49,7 @@
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
             <dd>
-              <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
+              <input type="submit" class="round green" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
             </dd>	    
 		</dl>
 	</form>

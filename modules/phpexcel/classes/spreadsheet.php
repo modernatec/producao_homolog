@@ -72,9 +72,34 @@ class Spreadsheet
 	{
 		$styleArray1 = array(
 	    	'font'  => array(
+	    		'name' 	=> 'Calibri',
+	    		'size'	=> 11,
+	    		'bold'  => true,
 	        	'color' => array('rgb' => '000000'),
-	    	)
+	    	),
+	    	'allborders' => array(
+                 'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
+                 'color' => array(
+                     'rgb' => '000000'
+                 )
+             )
 	    );
+
+		$styleArray = array(
+			'font' => array(
+				'name' 	=> 'Calibri',
+	    		'size'	=> 11,
+				'color' => array('rgb' => '000000'),
+			),
+		'borders' => array(
+				'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb' => '000000')),
+				'right'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb' => '000000')),
+				'left'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000')),
+				'top'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))
+			)
+		     
+		    );
+
 
 	    $styleArray2 = array(
 	    	'font'  => array(
@@ -87,6 +112,11 @@ class Spreadsheet
 	        	'color' => array('rgb' => '0eaa19'),
 	    		)
 	    );
+
+	    
+		
+
+
 
 	    $letters = range('A','Z');
 	    $rows_filter = 0;
@@ -128,7 +158,7 @@ class Spreadsheet
 						break;						
 				}
 
-				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($cor);
+				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($styleArray);
 				$col++;
 			}
 			$rows_filter++;
