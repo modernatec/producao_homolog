@@ -55,6 +55,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->template->content = $view;             
 	} 
 
+	public function action_redirect(){
+		$this->auto_render = false;
+		$view = View::factory('admin/objects/redirect');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+			
+		echo $view;
+	}
 
 	public function action_acervo()
 	{	

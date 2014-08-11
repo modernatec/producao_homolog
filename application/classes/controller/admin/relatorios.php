@@ -35,15 +35,14 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		ini_set('max_execution_time', 300); //max. response para 5 minutos
 
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
-					->where('project_id', '=', $post['project_id'])	
-					->where('status_id', '!=', '8')				
+					->where('project_id', '=', $post['project_id'])
+					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
 					->order_by('collection_name', 'ASC')
 					->find_all();
 
-//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
 		$arr = array(0 => array());
 
-		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
+		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'formato', 'tamanho (kb)', 'duracao', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
@@ -56,7 +55,10 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'collection' => $object->collection_name, 
 						
 						'materia' => $object->materia_name, 
-						'typeobject' => $object->typeobject_name, 						
+						'typeobject' => $object->typeobject_name,
+						'format' => $object->format,
+						'tamanho' => $object->tamanho,
+						'duracao' => $object->duracao,
 						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Não' : 'Sim',  
 						'fornecedor' => $object->supplier_empresa, 
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),

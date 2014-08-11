@@ -1,3 +1,33 @@
+SELECT 
+	`obj`.`id` AS `id`,
+	`obj`.`title` AS `title`,
+	`obj`.`taxonomia` AS `taxonomia`,
+	`obj`.`typeobject_id` AS `typeobject_id`,
+	`type`.`name` AS `typeobject_name`,
+	`obj`.`collection_id` AS `collection_id`,
+	`obj`.`fase` AS `fase`,
+	`obj`.`interatividade` AS `interatividade`,
+	`obj`.`reaproveitamento` AS `reaproveitamento`,
+	`obj`.`supplier_id` AS `supplier_id`,
+	`ms`.`empresa` AS `supplier_empresa`,
+	`collections`.`name` AS `collection_name`,
+	`collections`.`fechamento` AS `collection_fechamento`,
+	`collections`.`materia_id` AS `materia_id`,
+	`materias`.`name` AS `materia_name`,
+	`obj_status`.`id` AS `object_status_id`,
+	`obj_status`.`status_id` AS `status_id`,
+	`obj_status`.`prova` AS `prova`,
+	`obj_status`.`crono_date` AS `retorno`,
+	`status`.`status` AS `statu_status`,
+	`status`.`class` AS `statu_class`,
+	`obj`.`crono_date` AS `crono_date`,
+	`obj`.`project_id` AS `project_id`,
+	`projects`.`name` AS `project_name`,
+	`projects`.`pasta` AS `project_pasta` 
+FROM ((((((((`moderna_objects` `obj` JOIN `moderna_objects_status` `obj_status` ON((`obj_status`.`object_id` = `obj`.`id`))) LEFT JOIN `moderna_objects_status` `obj_status2` ON(((`obj_status2`.`object_id` = `obj`.`id`) AND (`obj_status`.`id` < `obj_status2`.`id`)))) JOIN `moderna_typeobjects` `type` ON((`type`.`id` = `obj`.`typeobject_id`))) JOIN `moderna_collections` `collections` ON((`collections`.`id` = `obj`.`collection_id`))) JOIN `moderna_materias` `materias` ON((`materias`.`id` = `collections`.`materia_id`))) JOIN `moderna_suppliers` `ms` ON((`ms`.`id` = `obj`.`supplier_id`))) JOIN `moderna_status` `status` ON((`status`.`id` = `obj_status`.`status_id`))) JOIN `moderna_projects` `projects` ON((`projects`.`id` = `obj`.`project_id`))) WHERE ISNULL(`obj_status2`.`id`) GROUP BY `obj`.`id`
+
+--------------------------------------
+
 DELIMITER $$
 
 USE `producao_homolog`$$

@@ -12,6 +12,7 @@
         <div class="left" style="width:280px;">
 
             <div class="box round">
+                <a href="<?=URL::base();?>admin/objects/redirect/">teste</a>
                 <b>título:</b> <span class="wordwrap"><?=@$obj->title;?></span><br/>
                 <b>taxonomia:</b> <span class="wordwrap"><?=@$obj->taxonomia;?></span><br/>
                 <b>tipo:</b> <?=@$obj->typeobject->name;?><br/>
