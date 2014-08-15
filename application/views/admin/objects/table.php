@@ -5,10 +5,10 @@
 	</div>
 	<form action="<?=URL::base();?>admin/objects" method="post" class="form">
 		<div class="filters">
-			<div class="left">
+			<!--div class="left">
 				<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="taxonomia" value="<?=$filter_taxonomia?>" >
        			<input type="submit" class="round bar_button left" value="OK"> 
-       		</div>
+       		</div-->
 
        		<div class="filter" >
 			    <ul>
@@ -188,27 +188,23 @@
         				$class_obj 	= $objeto->statu_class;
         			}
     		}
+    		//href="
 		?>
 		<li>
-			<a href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" title="Editar">
-				<div class="left" style="width:30%">
+
+			<a class="load" href="#" data-url="<?=URL::base().'admin/objects/view/'.$objeto->id?>" title="Editar">
+				<div>
 					<p><b><?=$objeto->taxonomia?></b></p>
 					<p><?=$objeto->title?></p>
+					<p>retorno: <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?> - fechamento: <?=Utils_Helper::data($objeto->collection_fechamento,'d/m/Y')?></p>
+					<p><?=$objeto->supplier_empresa?></p>
 					<p>
 						<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
+						
+						
 						<?=$tag;?>
 						<?=$status;?>
 					</p>
-				</div>
-				<div class="left" style="width:20%">
-					<p><?=$objeto->supplier_empresa?></p>
-					<p><?=($objeto->reaproveitamento == '1') ? "reap." : "novo"?> &bull; <?=$objeto->typeobject_name?></p>
-					<p>retorno: <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></p>
-				</div>
-				<div class="left" style="width:40%">
-					<p><?=$objeto->materia_name?></p>
-					<p><?=$objeto->collection_name?></p>
-					<p>fechamento: <?=Utils_Helper::data($objeto->collection_fechamento,'d/m/Y')?></p>
 				</div>
 			</a>
 		</li>

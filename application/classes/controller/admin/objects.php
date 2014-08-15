@@ -143,7 +143,52 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         $this->template->content = $view;
 	}
+
+	public function action_view($id, $task_id = null)
+    {       
+    	$this->auto_render = false;
         
+        $view = View::factory('admin/objects/view')
+            ->bind('errors', $errors)
+            ->bind('message', $message);
+
+
+		$this->addValidateJs('public/js/admin/validateTasks.js');
+
+		$objeto = ORM::factory('object', $id);
+        $view->obj = $objeto;   
+        $view->user = $this->current_user->userInfos;                          
+		
+
+        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
+
+        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
+        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $last_status = $view->taskflows[0];
+
+        $view->assign_form = View::factory('admin/tasks/form_assign');
+        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
+        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
+        $view->assign_form->obj = $objeto; 
+        $view->assign_form->object_status = $last_status;
+
+        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
+        $view->anotacoes_form->obj = $objeto; 
+        $view->anotacoes_form->object_status = $last_status;
+
+        $view->form_status = View::factory('admin/objects/form_status');
+        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
+        $view->form_status->obj = $objeto; 
+ 		$view->current_auth = $this->current_auth;
+        
+        //$this->template->content = $view;
+        echo $view;
+        //$this->endProfilling();
+        return true;
+	}
+    
+    /*    
     public function action_view($id, $task_id = null)
     {       
     	//$this->startProfilling();
@@ -187,6 +232,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         //$this->endProfilling();
         return true;
 	}
+	*/
 
 	public function action_update($id){
 		$this->auto_render = false;

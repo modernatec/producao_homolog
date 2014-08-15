@@ -190,7 +190,6 @@ $(function () {
         //prevent the browser to follow the link
         return false;
     });
-    
 
 });
 
@@ -250,6 +249,18 @@ $(document).ready(function()
 
                 $(this).parent().parent().children('li').css({'background': '#cccccc'});
                 
+            });
+
+            $('a.load').click(function() {
+               
+                $(".lateral").slideUp(300, function(){
+                     $(".lateral").html("");
+                });
+                $.get($(this).data("url"), function( data ) {
+                    $(".lateral").html( data );
+                    $(".lateral").slideDown();
+                    
+                });
             });
 
             $(".cancelar").click(function() { 

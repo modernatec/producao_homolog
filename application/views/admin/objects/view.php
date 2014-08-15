@@ -1,15 +1,7 @@
-<div class="content">
-    <div style="position:fixed">
-        <div class="bar">
-            <a href="<?=URL::base();?><?=($current_auth != "assistente") ? 'admin/objects' : 'admin/tasks' ?>" class="bar_button round">voltar</a>        
-            <?if($current_auth != "assistente"){?>
-                <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>       
-            <?}?>
-            <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
-                <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
-            <?}?>
-        </div>    
-        <div class="left" style="width:280px;">
+<div class="content_">
+    <div>
+         
+        <!--div class="left" style="width:280px;">
 
             <div class="box round">
                 <a href="<?=URL::base();?>admin/objects/redirect/">teste</a>
@@ -31,23 +23,40 @@
                 
                 <b>obs:</b> <span class="wordwrap"><?=@$obj->obs?></span><br/>
             </div>
-        </div>
+        </div-->
     </div>
-    <div class="left" style="margin-left: 290px;">
-        <div style="padding-bottom:4px;">              
-            <a class="collapse bar_button round right" data-show="replies"><span>contrair</span></a>
-                <a data-show="form_anotacoes" class="bar_button round show right">criar anotação</a>
+    <div class="left">
+        <div class="box round">
+            <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
+            <span class="wordwrap"><?=@$obj->taxonomia;?></span>
+            <hr style="margin:8px 0;" />
+            <?=@$obj->typeobject->name;?> 
+            &bullet; <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?>
+            &bullet; <?=@$obj->supplier->empresa?>
+            <br/>
+            <b>fechamento:</b> <?=Utils_Helper::data($obj->collection->fechamento,'d/m/Y')?><br/>
+        </div>
+        <div class="bar">
             <?if($current_auth != "assistente"){?>
-                <a data-show="form_assign" class="bar_button round show right">criar tarefa</a> 
-                <a data-show="form_status" class="bar_button round show right">alterar status</a> 
+                <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" class="bar_button round">editar OED</a>       
+            <?}?>
+            <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
+                <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
+            <?}?>
+
+            <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
+                <a data-show="form_anotacoes" class="bar_button round show">criar anotação</a>
+            <?if($current_auth != "assistente"){?>
+                <a data-show="form_assign" class="bar_button round show">criar tarefa</a> 
+                <a data-show="form_status" class="bar_button round show">alterar status</a> 
                               
             <?}?>
-        </div>
+        </div>   
         <div class="clear" style="padding:4px 0;">
             
             <?=@$form_status?>
         </div>
-        <div>             
+        <div class="lateral_content">             
             <?if(isset($taskflows)){
                     $count = 0;
                     foreach($taskflows as $status_task){
