@@ -1,4 +1,4 @@
-<form name="frmEditTask" id="frmEditTask" action="<?=URL::base();?>admin/taskstatus/edit/<?=@$taskVO['id']?>" method="post" class="form">
+<form name="frmEditTask" id="frmEditTask"  data-panel="#direita" action="<?=URL::base();?>admin/taskstatus/edit/<?=@$taskVO['id']?>" method="post" class="form">
 	<dl>
         <div class="clear">		
             <dd>

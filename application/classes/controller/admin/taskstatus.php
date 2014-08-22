@@ -18,6 +18,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	* inicia uma tarefa 
 	*/
 	public function action_start(){
+		$this->auto_render = false;
+
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
 			$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '6')->find_all();
@@ -50,7 +52,9 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            $message = "Tarefa iniciada com sucesso."; 
 					
 					Utils_Helper::mensagens('add',$message);
-		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
+		            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
+
+		            echo URL::base().'admin/objects/view/'.$task->object_id;
 		            
 		        } catch (ORM_Validation_Exception $e) {
 		            $errors = $e->errors('models');
@@ -77,6 +81,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	* encerra uma tarefa
 	*/
 	public function action_end(){
+		$this->auto_render = false;
 		if (HTTP_Request::POST == $this->request->method()) 
 		{
 			$task_end = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
@@ -159,7 +164,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            $message = "Tarefa finalizada com sucesso."; 
 					
 					Utils_Helper::mensagens('add',$message);
-		            Request::current()->redirect('admin/objects/view/'.$task->object_id);
+		            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
+		            echo URL::base().'admin/objects/view/'.$task->object_id;
 		            
 		        } catch (ORM_Validation_Exception $e) {
 		            $errors = $e->errors('models');
@@ -186,6 +192,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	* edita um status 
 	*/
 	public function action_edit($id){
+		$this->auto_render = false;
 		if (HTTP_Request::POST == $this->request->method()){
 			$db = Database::instance();
 	        $db->begin();
@@ -202,7 +209,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	            $message = "status editado com sucesso."; 
 				
 				Utils_Helper::mensagens('add',$message);
-	            Request::current()->redirect('admin/objects/view/'.$task->object_id);
+	            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
+	            echo URL::base().'admin/objects/view/'.$task->object_id;
 	            
 	        } catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');

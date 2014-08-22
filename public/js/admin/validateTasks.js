@@ -1,4 +1,5 @@
-$(document).ready(function() {        
+$(document).ready(function() {    
+    /*    
     $("#frmCreateTask").validate({
         rules: {
             topic: {required:true},
@@ -44,7 +45,7 @@ $(document).ready(function() {
         $('#next_step').val('6');
         $('#submit_btn').click();
     });
-        
-
+         
+    */
     
 });

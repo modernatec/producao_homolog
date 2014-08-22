@@ -1,5 +1,5 @@
 <label><b>editar status</b></label><hr/>
-	<form name="frmStatus2" id="frmStatus2" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
 		<dl>
 			<div class="left">

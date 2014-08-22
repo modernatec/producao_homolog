@@ -1,9 +1,9 @@
 <div id="head">
-	<div id="user_info">
+	<div id="user_info" >
 		<a href="<?=URL::base();?>admin/users/editInfo" style="float:left;">
-			<img class="round_imgList" src="<?=URL::base();?><?=$user->userInfos->foto?>" />
+			<img class="foto" src="<?=URL::base();?><?=$user->userInfos->foto?>" />
 			
-	        <?=ucfirst($user->userInfos->nome);?>
+	        <span><?$nome = explode(" ", $user->userInfos->nome); echo ucfirst($nome[0]);?></span>
 	    </a>
 	</div>
 	<div id="menu">

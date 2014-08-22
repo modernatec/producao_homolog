@@ -1,5 +1,5 @@
 <label><b>editar tarefa</b></label><hr/>
-<form name="frmCreateTask2" id="frmCreateTask2" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
+<form name="frmCreateTask2" id="frmCreateTask2"  data-panel="#direita" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
 	
 	<input type="hidden" name="object_id" value="<?=@$taskVO['object_id']?>">
 	<input type="hidden" name="status_id" value="5">
@@ -23,7 +23,7 @@
                 <label for="crono_date">retorno para:</label>
             </dt>
             <dd>
-                <input type="text" name="crono_date" id="crono_date3" class="required round date" style="width:100px;" value="<?=@$taskVO['crono_date']?>" />
+                <input type="text" name="crono_date" id="crono_date" class="required round date" style="width:100px;" value="<?=@$taskVO['crono_date']?>" />
                 <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
             </dd>
         </div>	
@@ -52,7 +52,7 @@
         </div>
         <input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label>
         <dd>
-          <input type="submit" class="round green" name="btnSubmit" id="btnSubmit" data-form="frmTask" value="salvar" />             
+          <input type="submit" class="round green" value="salvar" />             
         </dd>	    
 	</dl>
 </form>

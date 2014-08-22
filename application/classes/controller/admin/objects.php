@@ -22,35 +22,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/objects/list')
 			->bind('message', $message);
-		
-		$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
 
-		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
-		$status_arr = array();
-		foreach ($status_init as $status) {
-			array_push($status_arr, $status->id);
-		}
-
-		$view->filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode($status_arr);
-		$view->filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
-		$view->filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
-
-		$view->filter_origem = ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : json_encode(array());		
-		$view->filter_materia = ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : json_encode(array());
-
-		$view->filter_taxonomia = ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : "";
-		$view->fase = (empty($fase)) ? 1 : $fase;
-		
-		//$query = ORM::factory('object');						
-		//$count = $query->count_all();
-		//$pag = new Pagination( array( 'total_items' => $count, 'items_per_page' => self::ITENS_POR_PAGINA, 'auto_hide' => true ) );
-		//$view->page_links = $pag->render();
-        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-
-
-		//$view->objectsList = $query->order_by('id','DESC')->limit($pag->items_per_page)->offset($pag->offset)->find_all();
-		//$view->linkPage = ($this->assistente)?('view'):('edit');
-		//$view->styleExclusao = ($this->assistente)?('style="display:none"'):('');
+		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 
 		$this->template->content = $view;             
 	} 
@@ -117,7 +90,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	}
 
 	public function action_edit($id)
-    {           
+    {    
+    	$this->auto_render = false;       
 		$view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
 			->bind('message', $message)
@@ -141,7 +115,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $this->salvar($id);
         }
 
-        $this->template->content = $view;
+        //$this->template->content = $view;
+        echo $view;
 	}
 
 	public function action_view($id, $task_id = null)
@@ -153,7 +128,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             ->bind('message', $message);
 
 
-		$this->addValidateJs('public/js/admin/validateTasks.js');
+		//$this->addValidateJs('public/js/admin/validateAjax.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
@@ -250,6 +225,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	}
 
 	public function action_updateStatus($id = null){
+		$this->auto_render = false;
 		if (HTTP_Request::POST == $this->request->method()) 
 		{ 
 
@@ -268,12 +244,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 				
 				$object->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object->userInfo_id;	
-				//$object->userInfo_id = $this->current_user->userInfos->id;
-				$object->save();
-
-				Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
+				
+				$object->save();				
 				$db->commit();
-				Request::current()->redirect('admin/objects/view/'.$object->object_id);
+				//Request::current()->redirect('admin/objects/view/'.$object->object_id);
+				Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
+				echo URL::base().'admin/objects/view/'.$object->object_id;
 
 			} catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
@@ -296,7 +272,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	}
 
 
-	public function action_deleteStatus($id){    
+	public function action_deleteStatus($id){   
+		$this->auto_render = false; 
 		$db = Database::instance();
         $db->begin();
 		
@@ -322,7 +299,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $message = "Status excluído com sucesso."; 
 			
 			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/objects/view/'.$object_id);
+            //Request::current()->redirect('admin/objects/view/'.$object_id);
+            echo URL::base().'admin/objects/view/'.$object_id;
+
             
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -348,6 +327,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -404,6 +384,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
 			Request::current()->redirect('admin/objects');
+			//echo URL::base().'admin/objects/view/'.$object_id;
 
 		}  catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -439,15 +420,48 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 
     public function action_getObjects($project_id){
+    	//$this->startProfilling();
+
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/table');
+		
 		$view->project_id = $project_id;
+		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
+
+		$filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
+		$filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
+
+		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
+		$status_arr = array();
+		foreach ($status_init as $status) {
+			array_push($status_arr, $status->id);
+		}
+
+		$filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode($status_arr);
+		$filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
+		$filter_taxonomia = ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : "";
+		
+		$filter_origem = ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : json_encode(array());		
+		$filter_materia = ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : json_encode(array());
+
+		
+
+		$view->action = $project_id.'?fase='.$view->fase
+						.'&tipo='.$filter_tipo
+						.'&collection='.$filter_collection
+						.'&status='.$filter_status
+						.'&supplier='.$filter_supplier
+						.'&taxonomia='.$filter_taxonomia
+						.'&origem='.$filter_origem
+						.'&materia='.$filter_materia;	
+
+		$view->reset = 	$project_id.'?fase='.$view->fase;
 
 		//$this->startProfilling();
 		/*
 		$filter = "?fase=".$this->request->query('fase');
 		$filter.= "&tipo=".$this->request->query('tipo');
-		$filter.= "&collection=".$this->request->query('collection');
+		$filter.= "&collection=".$this->request->query('collectionstion');
 		$filter.= "&status=".$this->request->query('status');
 		$filter.= "&supplier=".$this->request->query('supplier');
 		$filter.= "&taxonomia=".$this->request->query('taxonomia');
@@ -457,14 +471,16 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter = $filter;
 		*/
 
+		$view->filter_tipo = json_decode($filter_tipo);
+		$view->filter_status = json_decode($filter_status);
+		$view->filter_collection  = json_decode($filter_collection);
+		$view->filter_supplier  = json_decode($filter_supplier);
+		$view->filter_origem  = json_decode($filter_origem);
+		$view->filter_materia  = json_decode($filter_materia);					
+		$view->filter_taxonomia = $filter_taxonomia;
+
 		
-		$view->filter_tipo = json_decode($this->request->query('tipo'));
-		$view->filter_status = json_decode($this->request->query('status'));
-		$view->filter_collection  = json_decode($this->request->query('collection'));
-		$view->filter_supplier  = json_decode($this->request->query('supplier'));
-		$view->filter_origem  = json_decode($this->request->query('origem'));
-		$view->filter_materia  = json_decode($this->request->query('materia'));					
-		$view->filter_taxonomia = $this->request->query('taxonomia');
+
 
 		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
 		$status_arr = array();
@@ -474,7 +490,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->reset_filter_status = json_encode($status_arr);
 
 		//$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
-		$query = ORM::factory('objectStatu')->where('fase', '=', $this->request->query('fase'));
+		$query = ORM::factory('objectStatu')->where('fase', '=', $view->fase);
 
 
 		/***Filtros***/
@@ -514,7 +530,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$materiasList_arr = array();
 		$materiasList_index = array();
 
-		$query_filters = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'))
+		$query_filters = DB::select('*')->from('objectStatus')->where('fase', '=', $view->fase)
 						->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->execute();
 
 		foreach ($query_filters as $object) {

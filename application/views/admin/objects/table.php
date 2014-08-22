@@ -1,9 +1,9 @@
 <div class="list_header round">
 	<div class="table_info round">
 		<?=count($objectsList)?> objetos encontrados 
-		<a class="bar_button round green" href='<?=URL::base();?>admin/objects/'>limpar filtros</a>
+		<a class="bar_button round green" href='<?=URL::base();?>admin/objects/getObjects/<?=$reset?>' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
 	</div>
-	<form action="<?=URL::base();?>admin/objects" method="post" class="form">
+	<form action='<?=URL::base();?>admin/objects/getObjects/<?=$action?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
 		<div class="filters">
 			<!--div class="left">
 				<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="taxonomia" value="<?=$filter_taxonomia?>" >
@@ -192,12 +192,12 @@
 		?>
 		<li>
 
-			<a class="load" href="#" data-url="<?=URL::base().'admin/objects/view/'.$objeto->id?>" title="Editar">
+			<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
 				<div>
 					<p><b><?=$objeto->taxonomia?></b></p>
 					<p><?=$objeto->title?></p>
-					<p>retorno: <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?> - fechamento: <?=Utils_Helper::data($objeto->collection_fechamento,'d/m/Y')?></p>
-					<p><?=$objeto->supplier_empresa?></p>
+					<hr style="margin:8px 0;" />
+					<p><img src="<?=URL::base()?>/public/image/admin/calendar.png" height="16"> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?> - <?=$objeto->supplier_empresa?></p>
 					<p>
 						<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
 						

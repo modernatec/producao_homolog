@@ -14,6 +14,20 @@ body{
 	/*color: #767676;*/
 }
 
+#nav{
+	overflow: hidden;
+}
+
+#head{
+	position: fixed;
+	width: 136px;
+	color: #fff;
+	float: left;
+	background: #22262e;
+	box-shadow: 0 0 5px 1px rgba(0,0,0, .8);
+
+}
+
 .wordwrap {
     white-space: pre-wrap; /* css-3 */
     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -103,30 +117,41 @@ a.link:hover{color:#666; text-decoration: underline;}
 	color:#FFF;
 	overflow:hidden;
 	padding: 8px;
-	width: 150px;
+	width: 120px;
+	height: 30px;
 }
 
 #user_info table tbody tr:nth-child(odd){
     background-color:transparent;
 }
 
-/*
+#user_info span{
+	line-height: 30px;
+	margin-left: 40px;
+	color: #fff;
+}
+
+a{
+	text-decoration: none;
+	color: #fff;
+}
+
+
 #user_info .foto{
-	-o-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -webkit-border-radius: 100px;
-    -khtml-border-radius: 100px;
-    border-radius: 100px;
+	-o-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -khtml-border-radius: 30px;
+    border-radius: 30px;
 	position:absolute;
-	width:100px;
-	height: 100px;
-	border:3px #FFF solid;
-	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);
-	top:0px;
-	left:0px;
+	width:30px;
+	height: 30px;
+	border:2px #FFF solid;
+	/*box-shadow: 0 0 10px 1px rgba(0,0,0, .8);*/
+	top:4px;
+	left:4px;
 	background: #fff;
 }
-*/
 
 .foto_form{
 	-o-border-radius: 100px;
@@ -143,23 +168,17 @@ a.link:hover{color:#666; text-decoration: underline;}
 	background: #fff;
 }
 
-#head{
-	position: fixed;
-	width: 150px;
-	float: left;
-}
-
 #menu{
 	/*background: -webkit-linear-gradient(top, #008fc7, #06608d, #06608d);*/
-	width: 150px;
-	background: #28282e;
+	width: 120px;
+	
 	padding:8px;
 	color:#FFF;
     /*box-shadow:0 2px 6px 2px rgba(0,0,0, .4);*/
 }
 
 #menu ul li{
-	padding:5px 10px;
+	padding:5px 4px;
 }
 
 #menu ul li:hover{
@@ -168,10 +187,11 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 #menu ul li a{
 	display: block;
+	color: #fff;
 }
 
 .submenu li a{
-	padding-left: 20px;
+	padding-left: 15px;
 }
 /*
 #menu ul li:hover ul{
@@ -215,9 +235,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 */
 
 
-
-
-
+a
 
 
 a{
@@ -239,18 +257,14 @@ a{
 .content{
 	position: relative;
 	float: left;
-	height: 700px;
-	left: 168px;
-	padding: 8px;
+	left: 135px;
+	padding: 4px 8px;
 	overflow: hidden;
 }
 
 /*Content itens*/
 
-.bar{
-	overflow:hidden;
-	padding:5px 5px 10px 0;
-}
+
 
 .header{
 	padding:10px 0;
@@ -258,6 +272,12 @@ a{
 	font-weight:bold;
 }
 
+
+.bar{
+	overflow:hidden;
+	padding: 8px 0;
+	margin: 0;
+}
 
 .bar_button{
 	background:#008fc7;
@@ -269,25 +289,59 @@ a{
 	/*box-shadow:#999 2px 2px 2px;*/
 }
 
-#tabs {
-	width: 480px;
+.tabs{
+	padding: 8px 0;
 }
 
-.lateral{
-	width: 580px;
-	overflow: hidden;
-	padding-left: 10px;
-	left: 650px;
-	display: none;
+.tabs li{
+	display: inline;
+	padding: 5px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+.tabs li a{
+	color: #000;
+}
+
+
+#esquerda{
+    overflow:auto;
+    float: left;
+    position: relative;
+}
+
+
+#direita{
+	padding: 0 5px;
+    border-left: 1px dotted #008fc7;
+    overflow:hidden;
+    float: left;
+    position: relative;
+}
+
+
+.scrollable_content{
+	position: relative;
+    overflow:auto;
+    width: 560px;
+}
+
+
+.fixed{
 	position: fixed;
 }
 
-.lateral_content{
+
+/*
+.direita{
 	width: 580px;
 	height: 700px;
 	overflow-x:hidden;
     overflow-y:scroll;
 }
+*/
+
 
 table{
 	border-collapse:collapse;
@@ -325,7 +379,7 @@ table tbody td a:hover{
 }
 
 table tbody tr:nth-child(odd){
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 
 table tbody tr:nth-child(even){
@@ -342,11 +396,11 @@ table tbody td table{
 }
 
 table tbody td table tbody tr:nth-child(odd){
-    background-color: #fefefe;
+    /*background-color: #fefefe;*/
 }
 
 table tbody td table tbody tr:nth-child(even){
-    background-color: #f0f0ff;
+    /*background-color: #f0f0ff;*/
 }
 
 table tbody td table tbody tr:hover {
@@ -401,6 +455,7 @@ label
 .right{
 	float:right;
 	margin-left:5px;
+	top: 0;
 }
 
 .left{
@@ -513,7 +568,7 @@ label
 	background: #fff;
 }
 
-
+/*
 .ui-datepicker{ background-color: #000; box-shadow:#999 0 5px 10px; color: #fff; }
 .ui-datepicker table{ border:0; background-color:#fff; border:1px solid #bbb; }
 .ui-datepicker table tr:nth-child(even), .ui-datepicker table tr:nth-child(odd), .ui-datepicker table tr:hover{ background: none; }
@@ -530,6 +585,8 @@ label
 .ui-datepicker-next{ float:right; cursor: pointer;}
 .ui-datepicker-title{ float: left;}
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
+*/
+
 
 #sortable .ui-state-highlight{
 	margin: 5px 0; 
@@ -789,7 +846,8 @@ a.green{
 	background: #fff;
 	padding: 8px;
 	border: 1px #ddd solid;
-	border-top: none;
+	width: 512px;	
+	position: fixed;
 }
 
 .list_faixa{
@@ -830,7 +888,7 @@ a.green{
 	float: left;
 }
 
-.list_item li:nth-child(odd), .dd-list li{ 
+.list_item li, .dd-list li{ 
 	background: #f3f3f3; 
 }
 
@@ -849,6 +907,7 @@ a.green{
     text-align: center;
 }
 
+/*
 .ui-tabs, .ui-widget, .ui-widget-content, .ui-corner-all {
 	border: none;
 }
@@ -860,6 +919,7 @@ a.green{
 .ui-widget-header{
 	background:#008fc7;
 }
+*/
 
 .select_holder{
 	width: 500px;
@@ -1028,13 +1088,16 @@ a.green{
 }
 
 
+.ui-widget-overlay{
+	background: #333;
+}
+/*
 .ui-widget-content{
 	background: none;
 	border: none;
 	padding: 0;
 	margin: 0;
 }
-
 
 .ui-dialog .ui-dialog-content {
 	background: #fff;
@@ -1064,6 +1127,7 @@ a.green{
 .ui-widget-header .ui-state-default{
 	background: #f3f3f3;
 }
+*/
 
 .table_anchor{
 	cursor: pointer;

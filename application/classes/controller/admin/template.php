@@ -90,20 +90,23 @@ class Controller_Admin_Template extends Controller_Template {
         {
         	$styles = array(
 				'public/css/common/reset.css' => 'screen',
-				'public/css/common/ui-lightness/jquery-ui-1.9.2.custom.min.css' => 'screen',						
+				'public/css/common/jquery-ui/jquery-ui.min.css' => 'screen',						
 				'public/css/common/jquery.jgrowl.css' => 'screen',
 				'public/css/admin/nested.css' => 'screen',
+				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/admin/masterpage.css' => 'screen',
+
             );
 
             $scripts = array(
 				'public/js/common/jquery/jquery-1.8.3.js',
-				'public/js/common/jquery/jquery-ui-1.9.2.custom.min.js',
+				'public/js/common/jquery/jquery-ui.min.js',
 				'public/js/common/jquery/jquery.validate.js',
 				'public/js/common/jquery/jquery.cookie.js',
 				'public/js/common/jquery/jquery-dateFormat.min.js',
 				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery.maskedinput.min.js',
+				'public/js/admin/jquery.mCustomScrollbar.concat.min.js',
 				'public/js/admin/admin.js',
 				'public/js/admin/validateAjax.js',
 				'public/js/common/Popup.js',

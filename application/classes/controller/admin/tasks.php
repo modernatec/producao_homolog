@@ -168,6 +168,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	public function action_salvar($id = null)
 	{
+		$this->auto_render = false;
 		if (HTTP_Request::POST == $this->request->method()){  
 	        $db = Database::instance();
 	        $db->begin();
@@ -233,8 +234,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	            $message = "Tarefa salva com sucesso."; 
 				
 				Utils_Helper::mensagens('add',$message);
-	            Request::current()->redirect('admin/objects/view/'.$task->object_id);
-	            
+	            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
+	            echo URL::base().'admin/objects/view/'.$task->object_id;
+
 	        } catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
@@ -257,6 +259,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     }
 	
 	public function action_delete($id){    
+		$this->auto_render = false;
+
 		$db = Database::instance();
         $db->begin();
 		
@@ -277,7 +281,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $message = "Tarefa excluída com sucesso."; 
 			
 			Utils_Helper::mensagens('add',$message);
-            Request::current()->redirect('admin/objects/view/'.$object_id);
+            //Request::current()->redirect('admin/objects/view/'.$object_id);
+            echo URL::base().'admin/objects/view/'.$object_id;
             
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');

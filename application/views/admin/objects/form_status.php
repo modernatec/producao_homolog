@@ -1,6 +1,6 @@
 <div class="boxwired round hide" id="form_status" style="overflow:auto;">
 	<label><b>alterar status</b></label><hr/>
-	<form name="frmStatus" id="frmStatus" action="<?=URL::base();?>admin/objects/updateStatus" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmAlteraStatus" id="frmAlteraStatus"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$obj->id?>">
 		<dl>
 			<div class="left">
@@ -46,13 +46,13 @@
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text round" name="description" id="description" style="width:600px; height:70px;"></textarea>
+                  <textarea class="text round" name="description" id="description" style="width:515px; height:70px;"></textarea>
                   <span class='error'><?=Arr::get(@$errors, 'description');?></span>
             </dd>
             <dd>
               
-              <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmStatus" value="criar" />
-              <input type="button" class="round cancel" name="btnCancel" id="btnCancel" data-show="form_status"  value="cancelar" />
+              <input type="submit" class="round" id="btnCriar" value="criar" />
+              <input type="button" class="round cancel" id="btnCancel" data-show="form_status"  value="cancelar" />
               
             </dd>	    
 		</dl>

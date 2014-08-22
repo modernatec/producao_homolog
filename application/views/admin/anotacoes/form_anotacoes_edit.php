@@ -1,5 +1,5 @@
 <label><b>anotações</b></label><hr/>
-  <form name="frmAnotacoes" id="frmAnotacoes" action="<?=URL::base();?>admin/anotacoes/edit/<?=@$anotacao_txt->id?>" method="post" class="form" enctype="multipart/form-data">
+  <form name="frmAnotacoes" id="frmAnotacoes_edit" data-panel="#direita" action="<?=URL::base();?>admin/anotacoes/edit/<?=@$anotacao_txt->id?>" method="post" class="form" enctype="multipart/form-data">
   	<input type="hidden" name="object_id" value="<?=$object_id?>">
     <input type="hidden" name="object_status_id" value="<?=$status_id?>">
   	<dl>

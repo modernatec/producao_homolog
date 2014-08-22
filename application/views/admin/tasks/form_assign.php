@@ -1,6 +1,6 @@
 <div class="hist task round hide" id="form_assign" >
 	<label><b>nova tarefa</b></label><hr/>
-	<form name="frmCreateTask" id="frmCreateTask" action="<?=URL::base();?>admin/tasks/salvar" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmCreateTask" id="frmCreateTask"  data-panel="#direita" action="<?=URL::base();?>admin/tasks/salvar" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$obj->id?>">
 		<input type="hidden" name="object_status_id" value="<?=$object_status->id?>">
 		<dl>
@@ -17,7 +17,7 @@
 		    </div>  
 		    <div class="left">  
 		        <dd>
-		            <input type="text" name="crono_date" placeholder="retorno para:" id="crono_date" class="required round date" style="width:100px;" />
+		            <input type="text" name="crono_date" id="crono_date" placeholder="retorno para:" class="required round date" style="width:100px;" />
 		            <span class='error'><?=Arr::get(@$errors, 'crono_date');?></span>
 		        </dd>
 	        </div>
@@ -34,11 +34,11 @@
 		    </div>
 		    <div class="clear"> 
 	            <dd>
-	                  <textarea class="text required round" placeholder="observações" name="description" id="description" style="width:573px; height:70px;"></textarea>
+	                  <textarea class="text required round" placeholder="observações" name="description" id="description" style="width:470px; height:70px;"></textarea>
 	                  <span class='error'><?=Arr::get(@$errors, 'description');?></span>
 	            </dd>
 	            <dd>
-	              <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmTask" value="criar" />
+	              <input type="submit" class="round" value="criar" />
 	              <input type="button" class="round cancel" name="btnCancel" id="btnCancel" data-show="form_assign"  value="cancelar" />
 	              
 	            </dd>

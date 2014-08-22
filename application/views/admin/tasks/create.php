@@ -3,7 +3,7 @@
 		<a href="<?=$_SERVER['HTTP_REFERER']?>" class="bar_button round">Voltar</a>
 	</div>
 	
-	<form name="frmTask" id="frmTask" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmTask" id="frmTask" method="post"  data-panel="#direita" class="form" enctype="multipart/form-data">
 	  <dl>
 	  	<dt>
 	      	<label for="title">título</label>

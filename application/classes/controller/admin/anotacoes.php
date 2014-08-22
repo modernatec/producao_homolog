@@ -53,6 +53,8 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
+		
 		$db = Database::instance();
         $db->begin();
 		
@@ -70,7 +72,9 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 
 			$message = "Anotação salva com sucesso.";
 			Utils_Helper::mensagens('add',$message);
-			Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
+			//Request::current()->redirect('admin/objects/view/'.);
+
+			echo URL::base().'admin/objects/view/'.$this->request->post('object_id');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -93,6 +97,7 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 		
 	public function action_delete($id)
 	{
+		$this->auto_render = false;
 		try 
 		{            
 			$anotacao = ORM::factory('anotacoes_object', $id);
@@ -101,7 +106,9 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 			$message = "anotação excluída com sucesso.";
 		
 			Utils_Helper::mensagens('add',$message); 
-			Request::current()->redirect('admin/objects/view/'.$object_id);
+			//Request::current()->redirect('admin/objects/view/'.$object_id);
+
+			echo URL::base().'admin/objects/view/'.$object_id;
 		} catch (ORM_Validation_Exception $e) {
 			$message = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
