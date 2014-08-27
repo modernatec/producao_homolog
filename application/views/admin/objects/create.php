@@ -1,7 +1,7 @@
 <div class="bar">
-	<a href="<?=URL::base();?>admin/objects" class="bar_button round">Voltar</a>
+	<a href="<?=URL::base();?>admin/objects/view/<?=@$objVO["id"]?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 </div>
-<form name="frmCreateObject" id="frmCreateObject" method="post" data-panel="#direita" class="form" enctype="multipart/form-data">
+<form name="frmCreateObject" action="<?=URL::base();?>admin/objects/edit/<?=@$objVO["id"]?>" id="frmCreateObject" method="post" data-panel="#direita" class="form" enctype="multipart/form-data">
   <dl>
         <dt> <label for="title">título</label></dt>
         <dd>

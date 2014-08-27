@@ -290,20 +290,42 @@ a{
 }
 
 .tabs{
-	padding: 8px 0;
+	padding: 8px 0 4px 0;
 }
 
 .tabs li{
 	display: inline;
 	padding: 5px;
 	border: 1px solid #ccc;
+	border-bottom: none;
 	background: #fff;
 }
 
-.tabs li a{
-	color: #000;
+.tabs .selected{
+	background: #008fc7;	
+	border: 1px solid #008fc7;
+	border-bottom: none;
 }
 
+.tabs .selected a{
+	color: #fff;
+}
+
+.tabs .selected a:hover{
+	color: #fff;
+}
+
+.tabs li a{
+	color: #ccc;
+}
+
+.tabs li a:hover{
+	color: #008fc7;
+}
+
+#topo{
+	padding: 8px 0 0 0;
+}
 
 #esquerda{
     overflow:auto;
@@ -497,39 +519,12 @@ label
 }
 
 .hist{
-    padding:10px;
-    margin:5px;
-    width: 480px;
+    padding:5px;
     background: #fff;
-
-}
-
-.task{
-	border: 1px solid #CCC;
-	margin: 10px 0 5px 0;
-
-	-moz-box-shadow: 2px 2px 8px #ccc;
-	-webkit-box-shadow: 2px 2px 8px #ccc;
-	box-shadow: 2px 2px 8px #ccc;
-}
-
-.anotacoes{
-	background: #a0d0d4;
-	margin: 10px 0;
-
-	-moz-box-shadow: 2px 2px 8px #ccc;
-	-webkit-box-shadow: 2px 2px 8px #ccc;
-	box-shadow: 2px 2px 8px #ccc;
-}
-
-
-.hist img, .hist_reply img{
-    margin-right:5px;
-    border:1px solid #999;
 }
 
 .hist_reply{
-	width:480px;
+	/*width:480px;*/
     padding:10px;
     margin-top: -5px;
     margin-bottom: 5px;
@@ -537,10 +532,42 @@ label
     /*border-bottom: 1px dotted #ccc;*/
     background: #f3f3f3;
 
+    /*
     -moz-box-shadow: 2px 2px 5px #ccc;
 	-webkit-box-shadow: 2px 0 5px #ccc;
 	box-shadow: 2px 2px 5px #ccc;
+	*/
 }
+
+.hist img, .hist_reply img{
+    margin-right:5px;
+    border:1px solid #999;
+}
+
+.task{
+	border: 1px solid #CCC;
+	margin: 10px 0 5px 0;
+	/*
+	-moz-box-shadow: 2px 2px 8px #ccc;
+	-webkit-box-shadow: 2px 2px 8px #ccc;
+	box-shadow: 2px 2px 8px #ccc;
+	*/
+}
+
+.anotacoes{
+	background: #a0d0d4;
+	margin: 10px 0;
+	/*
+	-moz-box-shadow: 2px 2px 8px #ccc;
+	-webkit-box-shadow: 2px 2px 8px #ccc;
+	box-shadow: 2px 2px 8px #ccc;
+	*/
+}
+
+
+
+
+
 
 
 
@@ -562,7 +589,7 @@ label
 }
 
 .boxwired{
-	border: 1px solid #ccc;
+	border: 1px solid #008fc7;
 	padding: 10px;
 	margin-top: 5px;
 	background: #fff;
@@ -707,8 +734,8 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-.steps{
-	margin-bottom: 4px;
+.step{
+	margin-bottom: 5px;
 }
 
 .round_imgList{
@@ -845,9 +872,10 @@ a.green{
 .list_header{
 	background: #fff;
 	padding: 8px;
-	border: 1px #ddd solid;
+	border: 1px solid #008fc7;
 	width: 512px;	
 	position: fixed;
+	z-index: 1;
 }
 
 .list_faixa{
@@ -864,6 +892,7 @@ a.green{
 	color: #fff;
 	margin: 5px 0;
 	padding: 5px;
+	width: 520px;
 }
 
 .list_item li, .dd-item{
@@ -872,6 +901,7 @@ a.green{
 	background: #fff; 
 	overflow: auto;
 	border: 1px #ddd solid;
+	min-width: 480px;
 
 	-o-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -897,14 +927,17 @@ a.green{
 }
 
 .list_order{
-	width: 21px;
-    height: 31px;
-    background: url('../../image/admin/order.png') no-repeat;
-    position: relative;
-    top:-5px;
+	text-align: center;
+	font-weight: bold;
+
+    -o-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -khtml-border-radius: 25px;
+    border-radius: 25px;
+    background: #008fc7;
     color: #fff;
-    font-weight: bold;
-    text-align: center;
+    width: 25px;
 }
 
 /*

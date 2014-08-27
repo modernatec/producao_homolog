@@ -42,11 +42,12 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		$arr = array(0 => array());
 
-		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'formato', 'tamanho (kb)', 'duracao', 'reaproveitamento', 'fornecedor', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
+		$titulos = array('título', 'taxonomia', 'coleção', 'materia', 'tipo', 'formato', 'tamanho (kb)', 'duracao', 'reaproveitamento', 'fornecedor', 'envio', 'retorno', 'prova', 'status', 'fechamento', 'anotações');
 		array_push($arr, $titulos);
 
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
+			$datas_e = explode("-", $object->envio);
 			$datas_f = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 			$line = array(
 						'title' => $object->title, 
@@ -61,6 +62,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'duracao' => $object->duracao,
 						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Não' : 'Sim',  
 						'fornecedor' => $object->supplier_empresa, 
+						'data_envio' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas_e[0], $datas_e[1], $datas_e[2]),
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
 						'prova' => $object->prova, 
 						'status' => $object->statu_status, 

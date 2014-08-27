@@ -43,30 +43,31 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->action_index(2);           
 	} 	
     
-	public function action_create(){ 		
-        $view = View::factory('admin/objects/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-		
-		$view->isUpdate = false; 
-		$this->addValidateJs('public/js/admin/validateObjects.js');
-		$view->objVO = $this->setVO('object');
-        
-        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
-        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
-        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-		
-		       
-        if (HTTP_Request::POST == $this->request->method()) 
+    /*
+	public function action_create($id){ 	
+		if (HTTP_Request::POST == $this->request->method()) 
 		{           
-            $this->salvar();
-        }    
-        
-        $this->template->content = $view;                     
+            $this->salvar($id);
+        }else{  	
+	        $view = View::factory('admin/objects/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+			
+			$view->isUpdate = false; 
+			//$this->addValidateJs('public/js/admin/validateObjects.js');
+			$view->objVO = $this->setVO('object');
+	        
+	        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
+	        $view->countries = ORM::factory('country')->find_all();
+	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
+	        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
+	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
+	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+			       
+	        $this->template->content = $view;                     
+	    }
 	}
+	*/
       
 	public function action_delete($id)
 	{
@@ -91,32 +92,31 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	public function action_edit($id)
     {    
-    	$this->auto_render = false;       
-		$view = View::factory('admin/objects/create')
-			->bind('errors', $errors)
-			->bind('message', $message)
-			->set('values', $this->request->post());
-                
-        $this->addValidateJs('public/js/admin/validateObjects.js');
-
-		$objeto = ORM::factory('object', $id);
-        $view->objVO = $this->setVO('object', $objeto);
-		$view->isUpdate = true;                             
-                
-		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();  
-        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
-        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-                
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
+    	if (HTTP_Request::POST == $this->request->method()){                                              
             $this->salvar($id);
-        }
+        }else{
+	    	$this->auto_render = false;       
+			$view = View::factory('admin/objects/create')
+				->bind('errors', $errors)
+				->bind('message', $message)
+				->set('values', $this->request->post());
+	                
+	        $this->addValidateJs('public/js/admin/validateObjects.js');
 
-        //$this->template->content = $view;
-        echo $view;
+			$objeto = ORM::factory('object', $id);
+	        $view->objVO = $this->setVO('object', $objeto);
+			$view->isUpdate = true;                             
+	                
+			$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
+	        $view->countries = ORM::factory('country')->find_all();
+	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+	        $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
+	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
+	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+	                
+	        //$this->template->content = $view;
+	        echo $view;
+	    }
 	}
 
 	public function action_view($id, $task_id = null)
@@ -372,7 +372,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 			$object->save();
 
-			if(is_null($id)){
+			if(is_null($id) || $id == ""){
 				$objectStatus = ORM::factory('objects_statu');
 		        $objectStatus->object_id = $object->id;
 		        $objectStatus->status_id = '1';
@@ -383,8 +383,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
 			$db->commit();
-			Request::current()->redirect('admin/objects');
-			//echo URL::base().'admin/objects/view/'.$object_id;
+			//Request::current()->redirect('admin/objects');
+			echo URL::base().'admin/objects/view/'.$object->id;
 
 		}  catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');

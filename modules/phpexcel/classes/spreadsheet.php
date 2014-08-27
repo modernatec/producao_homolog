@@ -72,34 +72,9 @@ class Spreadsheet
 	{
 		$styleArray1 = array(
 	    	'font'  => array(
-	    		'name' 	=> 'Calibri',
-	    		'size'	=> 11,
-	    		'bold'  => true,
 	        	'color' => array('rgb' => '000000'),
-	    	),
-	    	'allborders' => array(
-                 'style' => PHPExcel_Style_Border::BORDER_MEDIUM,
-                 'color' => array(
-                     'rgb' => '000000'
-                 )
-             )
+	    	)
 	    );
-
-		$styleArray = array(
-			'font' => array(
-				'name' 	=> 'Calibri',
-	    		'size'	=> 11,
-				'color' => array('rgb' => '000000'),
-			),
-		'borders' => array(
-				'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb' => '000000')),
-				'right'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb' => '000000')),
-				'left'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000')),
-				'top'	 => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'))
-			)
-		     
-		    );
-
 
 	    $styleArray2 = array(
 	    	'font'  => array(
@@ -112,11 +87,6 @@ class Spreadsheet
 	        	'color' => array('rgb' => '0eaa19'),
 	    		)
 	    );
-
-	    
-		
-
-
 
 	    $letters = range('A','Z');
 	    $rows_filter = 0;
@@ -138,6 +108,11 @@ class Spreadsheet
 							}
 							$Sheet->setCellValueByColumnAndRow($col, $row, html_entity_decode($new_value[0],ENT_QUOTES,'UTF-8'));
 						break;
+					case 'data_envio':
+						//$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
+						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+						break;	
 					case 'data_retorno':
 						$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
 						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
@@ -158,7 +133,7 @@ class Spreadsheet
 						break;						
 				}
 
-				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($styleArray);
+				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($cor);
 				$col++;
 			}
 			$rows_filter++;

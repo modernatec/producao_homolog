@@ -2,12 +2,12 @@
     <div id="esquerda">
         <div class="fixed clear">
             <div class="bar">
-                <a href="<?=URL::base();?>admin/objects/create" class="bar_button round">catalogar objeto</a>
+                <a href="<?=URL::base();?>admin/objects/edit" rel="load-content" data-panel="#direita" class="bar_button round">catalogar objeto</a>
             </div>    
             <div class="clear left">
                 <ul class="tabs">
                     <? foreach($projectList as $project){?>
-                    <li><a id='p<?=$project->id?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
+                    <li class="round"><a id='p<?=$project->id?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
                     <?}?>
                 </ul>  
             </div>

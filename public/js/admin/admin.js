@@ -142,18 +142,16 @@ $(document).ready(function()
         } 
     }
 
-    $(".populate").change(function(ui) {
-        populateSelect(ui);
-    });
-
-    $(".fone").mask("(99) 9999-9999");
+    
 
     $('.tabs a').click(function(e){
         e.preventDefault();
+        $('.tabs li').removeClass('selected');
         loadContent($(this).attr('href'), '#tabs_content');
 
         $.removeCookie("producao");
         $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
+        $(this).parent().addClass('selected');
         //location = $(this)[0].baseURI + ;
     })
     
@@ -203,7 +201,7 @@ $(document).ready(function()
     //$('.list_body').css({height:$( window ).height()- $('.list_body').offset().top});
 
     setupScroll();
-    //setupAjax();
+    setupAjax('#esquerda');
 });
 
 
@@ -244,6 +242,12 @@ function setupAjax(container){
 
     $(".filter span, .cancelar, .collapse, .show, .fade, .cancel, a:contains('Excluir'), a.excluir, a.popup").off('click');
 
+    $(".populate").change(function(ui) {
+        populateSelect(ui);
+    });
+
+    $(".fone").mask("(99) 9999-9999");
+    
     $('.list_body').css('padding-top', $('.list_header').height() + 20);
 
     $(".filter span").on("click", function(e) {
@@ -284,6 +288,7 @@ function setupAjax(container){
 
     $(container + " a[rel='load-content']").on('click', function(e){
         e.preventDefault();
+        console.log("chamou")
         loadContent($(this).attr("href"), $(this).data("panel"));
     });
 

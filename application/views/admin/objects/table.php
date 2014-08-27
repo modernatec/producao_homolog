@@ -5,12 +5,12 @@
 	</div>
 	<form action='<?=URL::base();?>admin/objects/getObjects/<?=$action?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
 		<div class="filters">
-			<!--div class="left">
+			<div>
 				<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="taxonomia" value="<?=$filter_taxonomia?>" >
        			<input type="submit" class="round bar_button left" value="OK"> 
-       		</div-->
+       		</div>
 
-       		<div class="filter" >
+       		<div class="clear filter" >
 			    <ul>
 			        <li class="round" >
 			            <span class="round" id="colecao">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>

@@ -1,6 +1,6 @@
 <div class="bar">
     <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" class="bar_button round">editar OED</a>       
+        <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" class="bar_button round">editar OED</a>       
     <?}?>
     <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
         <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
@@ -13,7 +13,7 @@
     <a data-show="form_anotacoes" class="bar_button round show">criar anotação</a>
     <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
 </div>  
-    <div class="box round">
+    <div class="boxwired round" >
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
@@ -32,11 +32,11 @@
                 $count = 0;
                 foreach($taskflows as $status_task){
                     ?>                          
-                        <div style='clear:both' >                               
-                            <div style='width:25px; float:left; margin-top:5px'>
-                                <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
-                            </div>
-                            <div class='hist round step' style='float:left;'>
+                        <div style='clear:both' >
+                            <div class='hist round step'>
+                                <div style='width:30px; float:left; margin:5px'>
+                                    <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
+                                </div>
                                 <?if($current_auth != "assistente"){?>
                                     <div class="right">
                                         <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$status_task->id?>" title="excluir" data-panel="#direita">Excluir</a>
@@ -66,8 +66,14 @@
                                         <div style='clear:both'>
                                             <div class="hist anotacoes round"> 
                                                 <div class="left">
+                                                    <div class="round_imgDetail <?=$task->to->team->color?>">
+                                                        <img class='round_imgList' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
+                                                        <span><?$nome = explode(" ", $task->userInfo->nome); echo $nome[0];?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="left">
                                                     <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>&status_id=<?=$status_task->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
-                                                    por: <?=$task->userInfo->nome?> - <?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?>
+                                                    em: <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?>
                                                 </div>
                                                 <?if($current_auth != "assistente"){?>                                        
                                                 <div class="right">
@@ -124,7 +130,7 @@
                                                 <?}?>
                                                 <?foreach ($task->getReplies($task->id) as $taskReply) {?>
                                                 <div style='clear:both'>
-                                                    <div class='hist_reply round' style='float:left;'>
+                                                    <div class='hist_reply round'>
                                                         <div class='line_bottom'>
                                                             <? if($current_auth != "assistente"){?>
                                                                 <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
@@ -141,7 +147,7 @@
                                                                     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                                     <input type="hidden" name='next_step' id="next_step" value="0" />
                                                                     <dd>
-                                                                        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:500px; height:50px;"></textarea>
+                                                                        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:480px; height:50px;"></textarea>
                                                                         <span class='error'><?=Arr::get($errors, 'description');?></span>
                                                                     </dd>
                                                                     <? if($task->tag_id == '1'){?>
