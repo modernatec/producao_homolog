@@ -1,6 +1,6 @@
 <div class="list_header round">
 	<div class="table_info round">
-		<?=count($userinfosList)?> objetos encontrados 
+		<?=count($userinfosList)?> usuários encontrados 
 		<a class="bar_button round green" href='<?=URL::base();?>admin/users'>limpar filtros</a>
 	</div>
 	<form action="<?=URL::base();?>admin/users" method="post" class="form">
@@ -24,7 +24,8 @@
 	<ul class="list_item">
 		<? foreach($userinfosList as $usuario){?>
 		<li>
-			<img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" /><a style='display:block' href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" title="Editar">
+			<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
+				<img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" />
 				<div class="left" style="width:30%">
 					<p><b><?=$usuario->nome?></b></p>
 					<p><?=$usuario->email?></p>
@@ -32,9 +33,6 @@
 				</div>
 				<div class="left" style="width:20%">
 					<p><?=$usuario->team->name?></p>
-				</div>
-				<div class="right">
-					<p><a class="excluir" href="<?=URL::base().'admin/users/inativate/'.$usuario->id;?>" title="inativar">Excluir</a></p>
 				</div>
 			</a>
 		</li>

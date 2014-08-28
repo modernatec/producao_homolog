@@ -34,37 +34,42 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     */
 	public function action_edit($userInfo_id, $view = NULL)
     {
-		if(!$view)
-			$view = View::factory('admin/users/create');
-    	            
-		$view->bind('errors', $errors)
-            ->bind('message', $message);
-		
-        $this->addValidateJs("public/js/admin/validateUsersEdit.js");
-		$userInfo = ORM::factory('userInfo', $userInfo_id);
-		$view->teamsList = ORM::factory('team')->find_all();
-		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
-		
-        $view->anexosView = View::factory('admin/files/anexos');
-		$this->template->content = $view;			
-		
-		$roles = $userInfo->user->roles->find_all();
-        $roles_arr = array();
-		foreach($roles as $roleObj){
-            if($roleObj->id != '1'){
-    			array_push($roles_arr, $roleObj->id);
-            }
-		}	
-		
-		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
-		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
-        $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
-		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
-		
-		if (HTTP_Request::POST == $this->request->method())
-		{                                              
+        if (HTTP_Request::POST == $this->request->method())
+        {                                              
             $this->salvar($userInfo_id);
-        }
+        }else{
+    		$this->auto_render = false;
+            if(!$view)
+    			$view = View::factory('admin/users/create');
+        	            
+    		$view->bind('errors', $errors)
+                ->bind('message', $message);
+    		
+            //$this->addValidateJs("public/js/admin/validateUsersEdit.js");
+    		$userInfo = ORM::factory('userInfo', $userInfo_id);
+    		$view->teamsList = ORM::factory('team')->find_all();
+    		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
+    		
+            $view->anexosView = View::factory('admin/files/anexos');
+    				
+    		
+    		$roles = $userInfo->user->roles->find_all();
+            $roles_arr = array();
+    		foreach($roles as $roleObj){
+                if($roleObj->id != '1'){
+        			array_push($roles_arr, $roleObj->id);
+                }
+    		}	
+    		
+    		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
+    		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
+            $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
+    		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
+
+            //$this->template->content = $view;   
+            echo $view;
+		}
+		
     }
 
     /*

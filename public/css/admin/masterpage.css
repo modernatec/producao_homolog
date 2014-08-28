@@ -270,6 +270,8 @@ a{
 	padding:10px 0;
 	display:block;
 	font-weight:bold;
+	color: #008fc7;
+	border-bottom: 1px dotted #008fc7;
 }
 
 
@@ -331,12 +333,13 @@ a{
     overflow:auto;
     float: left;
     position: relative;
+    border-right: 1px dotted #008fc7;
 }
 
 
 #direita{
 	padding: 0 5px;
-    border-left: 1px dotted #008fc7;
+    
     overflow:hidden;
     float: left;
     position: relative;

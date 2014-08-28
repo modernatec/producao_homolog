@@ -1,9 +1,9 @@
 <div class="list_header round">
 	<div class="table_info round">
 		<?=count($suppliersList)?> objetos encontrados 
-		<a class="bar_button round green" href='<?=URL::base();?>admin/suppliers'>limpar filtros</a>
+		<a class="bar_button round green" href='<?=URL::base();?>admin/suppliers/getSuppliers' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
 	</div>
-	<form action="<?=URL::base();?>admin/suppliers" method="post" class="form">
+	<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 		<div class="filters">
 			<div class="left">
 				<input type="text" class="round left" style="width:135px" placeholder="empresa" name="empresa" value="<?=$filter_empresa?>" >
@@ -24,7 +24,7 @@
 	<ul class="list_item">
 		<? foreach($suppliersList as $supplier){?>
 		<li>
-			<a href="<?=URL::base().'admin/suppliers/edit/'.$supplier->id;?>" title="Editar">
+			<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 				<div class="left" style="width:30%">
 					<p><b><?=$supplier->empresa?></b></p>
 					<p><?=$supplier->contato->nome?> &bull; <?=$supplier->contato->telefone?></p>

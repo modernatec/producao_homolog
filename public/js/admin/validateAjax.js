@@ -75,6 +75,28 @@ function validateAjax(){
         }
     })
 
+    $("#frmSupplier").validate({
+        rules: {
+            empresa:{required:true},
+            "nome[]": {required:true},
+            "email[]": {required:true,email:true},
+            "telefone[]": {required:true}
+        },
+        messages: {
+            empresa: { required:"Digite o nome da empresa."},
+            "nome[]": { required:"Digite o nome do contato."},
+            "email[]": { required: "Digite o email do contato." },
+            "telefone[]": {required:"Digite o telefone o contato."}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;       
+        }
+    })
+
+    
+
     $("#frmAnotacoes").validate({
         rules: {
             anotacoes: {required:true},
@@ -146,6 +168,15 @@ function validateAjax(){
             return false;       
         }
     });
+
+    $("#frm_suppliers").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
+    
 
     
 

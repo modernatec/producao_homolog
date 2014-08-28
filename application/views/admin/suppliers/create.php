@@ -1,13 +1,14 @@
-<div class="content">
+	<? if(@$supplierVO['id'] != ""){?>
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$supplierVO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 	</div>
-    <form name="frmSupplier" id="frmSupplier" method="post" class="form" enctype="multipart/form-data">
+	<?}?>
+    <form name="frmSupplier" id="frmSupplier" data-panel="#direita" action="<?=URL::base();?>admin/suppliers/edit/<?=$supplierVO['id']?>" method="post" class="form" enctype="multipart/form-data">
     	<dt>
 			<label for="empresa">Empresa</label>
 		</dt>
 	    <dd>
-	      <input type="text" class="text round" name="empresa" id="empresa" style="width:300px;" value="<?=@$supplierVO['empresa'];?>"/>
+	      <input type="text" class="text required round" name="empresa" id="empresa" style="width:300px;" value="<?=@$supplierVO['empresa'];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
 	    </dd>
 	    <div class="left">
@@ -15,21 +16,21 @@
 		    	<label for="name1">Contato 1</label>
 		    </dt>
 		    <dd>
-			    <input type="text" class="text round" name="nome[]" id="name1" style="width:200px;" value="<?=@$contactVO['0']['nome'];?>"/>
+			    <input type="text" class="text required round" name="nome[]" id="name1" style="width:200px;" value="<?=@$contactVO['0']['nome'];?>"/>
 			    <span class='error'><?=Arr::get($errors, 'name');?></span>
 		    </dd>
 		    <dt>
 		      	<label for="email1">E-mail</label>
 		    </dt>
 		    <dd>
-			    <input type="text" class="text round" name="email[]" id="email1" style="width:200px;" value="<?=@$contactVO['0']['email'];?>"/>
+			    <input type="text" class="text required round" name="email[]" id="email1" style="width:200px;" value="<?=@$contactVO['0']['email'];?>"/>
 			    <span class='error'><?=Arr::get($errors, 'email');?></span>
 		    </dd>
 		    <dt>
 		      	<label for="telefone1">Telefone</label>
 		    </dt>	    
 		    <dd>
-	            <input type="text" class="text round" name="telefone[]" id="telefone1" style="width:100px;" value="<?=@$contactVO['0']['telefone'];?>"/>
+	            <input type="text" class="text required round" name="telefone[]" id="telefone1" style="width:100px;" value="<?=@$contactVO['0']['telefone'];?>"/>
 		      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
 		    </dd>
 		</div>
@@ -125,4 +126,3 @@
 		    </dd>
 		</div>	
 	</form>
-</div>

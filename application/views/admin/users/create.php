@@ -1,4 +1,4 @@
-<div class="content">
+
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/users" class="bar_button round">voltar</a>
 	</div>
@@ -109,4 +109,3 @@
 	    </dd>	
 	  </dl>
 	</form>
-</div>

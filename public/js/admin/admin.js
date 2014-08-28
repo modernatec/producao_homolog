@@ -158,7 +158,11 @@ $(document).ready(function()
     var tab = $.cookie("producao");
     
     setTimeout(function(){
-       $(tab).click(); 
+        if($(tab).length > 0){
+            $(tab).click(); 
+        }else{
+            $('#tab_1').click(); 
+        }
     }, 100);
     
 
@@ -247,7 +251,7 @@ function setupAjax(container){
     });
 
     $(".fone").mask("(99) 9999-9999");
-    
+
     $('.list_body').css('padding-top', $('.list_header').height() + 20);
 
     $(".filter span").on("click", function(e) {

@@ -27,13 +27,9 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		          
         $this->template->content = $view;       
 
-        $contato = ORM::factory('contato', '3');//->find_all();
-        foreach ($contato as $value) {
-        	echo $value->nome."<br/>";
-        }
-
 	} 
 
+	/*
 	public function action_create()
 	{ 
 		$view = View::factory('admin/suppliers/create')
@@ -55,44 +51,60 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			$this->salvar();
 		} 
 	}
+	*/
+
+	public function action_view($id){
+		$this->auto_render = false;
+			$view = View::factory('admin/suppliers/view')
+				->bind('errors', $errors)
+				->bind('message', $message);
+
+		$view->fornecedorVO = ORM::factory('supplier', $id);	
+		$view->current_auth = $this->current_auth;
+
+		echo $view;	
+	}
 
 	public function action_edit($id)
 	{
-		$view = View::factory('admin/suppliers/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs();
-		$view->isUpdate = true;
-		$contact = ORM::factory('supplier', $id);
-		$view->supplierVO = $this->setVO('supplier', $contact); 
-		$view->formatos = ORM::factory('format')->find_all(); 
-		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
-			
-		$contatos_arr = array();
-		foreach ($contatos as $value) {
-			array_push($contatos_arr, $this->setVO('contato', $value));
-		}
-		$view->contactVO = $contatos_arr;
-
-		$view->teams = ORM::factory('team')->find_all();
-		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
-		$formats_arr = array();
-		foreach ($formats_supplier as $value) {
-			array_push($formats_arr, $value->format_id);
-		}
-		$view->formats_arr = $formats_arr;
-
-		$this->template->content = $view;
-
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id); 
-		} 
+		}else{ 
+			$this->auto_render = false;
+			$view = View::factory('admin/suppliers/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+
+			$this->addValidateJs();
+			$view->isUpdate = true;
+			$contact = ORM::factory('supplier', $id);
+			$view->supplierVO = $this->setVO('supplier', $contact); 
+			$view->formatos = ORM::factory('format')->find_all(); 
+			$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+				
+			$contatos_arr = array();
+			foreach ($contatos as $value) {
+				array_push($contatos_arr, $this->setVO('contato', $value));
+			}
+			$view->contactVO = $contatos_arr;
+
+			$view->teams = ORM::factory('team')->find_all();
+			$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
+			$formats_arr = array();
+			foreach ($formats_supplier as $value) {
+				array_push($formats_arr, $value->format_id);
+			}
+			$view->formats_arr = $formats_arr;
+			echo $view;
+			//$this->template->content = $view;
+		}
+		
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -137,7 +149,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			$db->commit();
 			$message = "Fornecedor salvo com sucesso.";
 			Utils_Helper::mensagens('add',$message);
-			Request::current()->redirect('admin/suppliers');
+			//Request::current()->redirect('admin/suppliers');
+			echo URL::base().'admin/suppliers/view/'.$supplier->id;
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -183,8 +196,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		//$this->startProfilling();
 
 		//$view->filter_origem  = json_decode($this->request->query('origem'));			
-		$view->filter_empresa = $this->request->query('empresa');
-		$view->filter_contato = $this->request->query('contato');	
+		$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
+		$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
 
 
 		//$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();

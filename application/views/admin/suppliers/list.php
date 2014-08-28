@@ -1,14 +1,21 @@
 <div class="content">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers/create" class="bar_button round">cadastrar fornecedores</a>
-	</div>    
-    <div id="tabs" class="clear">
-        <ul>
-            <li id="tab_1"><a href='<?=URL::base();?>admin/suppliers/getSuppliers/?empresa=<?=$filter_empresa?>&contato=<?=$filter_contato?>'>fornecedores</a></li>
-        </ul>
-        
-        <div id="tabs_content">
-            
+    <div id="esquerda">
+        <div class="fixed clear">
+            <div class="bar">
+                <a href="<?=URL::base();?>admin/suppliers/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar fornecedores</a>
+            </div>    
+            <div class="clear left">
+                <ul class="tabs">
+                    <li class="round"><a id="tab_1" href='<?=URL::base();?>admin/suppliers/getSuppliers/?empresa=<?=$filter_empresa?>&contato=<?=$filter_contato?>'>fornecedores</a></li>
+                </ul>  
+            </div>
+            <div id="tabs_content" class="scrollable_content clear">
+                
+            </div>
         </div>
+        
+    </div>
+    <div id="direita">
+        
     </div>
 </div>

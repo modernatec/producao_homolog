@@ -6,8 +6,8 @@
             </div>    
             <div class="clear left">
                 <ul class="tabs">
-                    <? foreach($projectList as $project){?>
-                    <li class="round"><a id='p<?=$project->id?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
+                    <? foreach($projectList as $key=>$project){?>
+                    <li class="round"><a id='tab_<?=$key+1;?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
                     <?}?>
                 </ul>  
             </div>
