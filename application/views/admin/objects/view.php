@@ -95,21 +95,26 @@
                                                     </div>
                                                 <?}?>
                                                 <div class='line_bottom'>
-                                                    <?if($current_auth != "assistente"){?>
-                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
-                                                    <?}?>
-                                                    <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
-                                                    <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span><br/>
-                                                    por: <?=$task->userInfo->nome?> - <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
-                                                    <br/>
-                                                    retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
+                                                    <div class="left">
+                                                        <?if($current_auth != "assistente"){?>
+                                                            <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
+                                                        <?}?>
+                                                        <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
+                                                    </div>
                                                     <? if($task->task_to != "0"){?>
                                                         
-                                                        <div class="round_imgDetail <?=$task->to->team->color?>" style="margin-top:5px;">
+                                                        <div class="round_imgDetail <?=$task->to->team->color?>">
                                                             <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
                                                             <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
                                                         </div>
                                                     <?}?>
+                                                    <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span>
+                                                    <div class="clear" style="padding-top:5px;">
+                                                        por: <?=$task->userInfo->nome?><br/>
+                                                        solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
+                                                        <br/>
+                                                        retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
+                                                    </div>                                                    
                                                 </div>
                                                 <?if(!empty($task->description)){ ?>
                                                     <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>

@@ -13,7 +13,7 @@
 		    </dd>
 		    <div class="left">
 			    <dt>
-			      <label for="target">seguimento</label>
+			      <label for="target">segmento</label>
 			    </dt>
 			    <dd>
 			      <select name="segmento_id" id="segmento_id" style="width:150px;">
@@ -57,14 +57,15 @@
 		    <dt>
 		      <label for="collections">coleções</label>
 		    </dt>
-		    <div id="tabs" style="width:500px;">
-				<ul>
-					<? foreach($anosList as $collection_ano){?>
-					<li><a href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
+		    <div>
+				<ul class="tabs">
+					<? foreach($anosList as $key=>$collection_ano){?>
+					<li class="round"><a id='tab_<?=$key+1;?>' href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
 					<?}?>
 				</ul>
 				<? foreach($anosList as $collection_ano){?>
-					<div id="collection_<?=$collection_ano->ano?>" >
+					<div id="collection_<?=$collection_ano->ano?>" class="content_hide" >
+					
 						<table class="list">
 							<thead>
 								<th></th>
@@ -84,10 +85,8 @@
 							</tbody>
 						</table>
 					</div>
-				<?}?>
-				
+				<?}?>				
 			</div>
-		    <ul class="select_holder"></ul>
 		</div>
 	</form>
 </div>

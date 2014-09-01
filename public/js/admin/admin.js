@@ -144,15 +144,24 @@ $(document).ready(function()
 
     
 
-    $('.tabs a').click(function(e){
+    $('.tabs a').unbind('click').bind('click', function(e){
         e.preventDefault();
         $('.tabs li').removeClass('selected');
-        loadContent($(this).attr('href'), '#tabs_content');
+        $('.content_hide').each(function(index, element){            
+            if($(this).hasClass('content_show')){
+                $(this).removeClass('content_show');
+            }
+        });
+
+        if($(this).hasClass('ajax')){
+            loadContent($(this).attr('href'), '#tabs_content');
+        }else{
+            $($(this).attr('href')).addClass('content_show');
+        }
 
         $.removeCookie("producao");
         $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
         $(this).parent().addClass('selected');
-        //location = $(this)[0].baseURI + ;
     })
     
     var tab = $.cookie("producao");
@@ -206,6 +215,7 @@ $(document).ready(function()
 
     setupScroll();
     setupAjax('#esquerda');
+    setupAjax('#direita');
 });
 
 
@@ -244,8 +254,6 @@ function reloadContent(data, container){
 function setupAjax(container){
     validateAjax(); 
 
-    $(".filter span, .cancelar, .collapse, .show, .fade, .cancel, a:contains('Excluir'), a.excluir, a.popup").off('click');
-
     $(".populate").change(function(ui) {
         populateSelect(ui);
     });
@@ -254,7 +262,7 @@ function setupAjax(container){
 
     $('.list_body').css('padding-top', $('.list_header').height() + 20);
 
-    $(".filter span").on("click", function(e) {
+    $(".filter span").unbind('click').bind("click", function(e) {
         if($(this).parent().children('ul').css('display') == 'none'){
             closeFilterPanel();
         }
@@ -268,7 +276,7 @@ function setupAjax(container){
         
     });
 
-    $(".cancelar").on('click', function() { 
+    $(".cancelar").unbind('click').bind('click', function() { 
         closeFilterPanel();
     });
 
@@ -290,13 +298,13 @@ function setupAjax(container){
 
     $("#sortable").disableSelection();
 
-    $(container + " a[rel='load-content']").on('click', function(e){
+    $(container + " a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
         console.log("chamou")
         loadContent($(this).attr("href"), $(this).data("panel"));
     });
 
-    $(".collapse").on('click', function () {
+    $(".collapse").unbind('click').bind('click', function () {
         $header = $(this);
         var element = $header.data("show");
         $('.' + element).fadeToggle(500, function () {
@@ -306,24 +314,24 @@ function setupAjax(container){
         });
     });
 
-    $('.show').on('click', function() {
+    $('.show').unbind('click').bind('click', function() {
         $('.hide').slideUp();
 
         var element = $(this).data("show");
         $('#' + element).slideToggle();
     });
 
-    $('.fade').on('click', function() {
+    $('.fade').unbind('click').bind('click', function() {
         var element = $(this).data("show");
         $('.' + element).fadeToggle();
     });
 
-    $('.cancel').on('click', function() {
+    $('.cancel').unbind('click').bind('click', function() {
         var element = $(this).data("show");
         $('#' + element).slideUp();
     });
 
-    $("a:contains('Excluir'), a.excluir").on('click', function() {        
+    $("a:contains('Excluir'), a.excluir").unbind('click').bind('click', function() {        
         var NewDialog = $('<div id="dialog"><p>Deseja realmente excluir este conteúdo?</p></div>'),
             btExcluir = this;
             NewDialog.dialog({
@@ -356,7 +364,7 @@ function setupAjax(container){
         return false;
     });
 
-    $('a.popup').on('click', function() {
+    $('a.popup').unbind('click').bind('click', function() {
         var url = this.href;
         // show a spinner or something via css
         var dialog = $('<div style="display:none" id="dialog" class="loading"></div>').appendTo('body');

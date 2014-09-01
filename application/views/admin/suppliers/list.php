@@ -6,7 +6,7 @@
             </div>    
             <div class="clear left">
                 <ul class="tabs">
-                    <li class="round"><a id="tab_1" href='<?=URL::base();?>admin/suppliers/getSuppliers/?empresa=<?=$filter_empresa?>&contato=<?=$filter_contato?>'>fornecedores</a></li>
+                    <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/suppliers/getSuppliers/?empresa=<?=$filter_empresa?>&contato=<?=$filter_contato?>'>fornecedores</a></li>
                 </ul>  
             </div>
             <div id="tabs_content" class="scrollable_content clear">

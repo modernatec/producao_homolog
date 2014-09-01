@@ -122,8 +122,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	public function action_view($id, $task_id = null)
     {       
     	$this->auto_render = false;
-        
-        $view = View::factory('admin/objects/view')
+        echo $this->action_window($id, true);
+        return true;
+	}
+
+	public function action_window($id, $ajax = false){
+		$view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
 
@@ -157,10 +161,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
         
-        //$this->template->content = $view;
-        echo $view;
-        //$this->endProfilling();
-        return true;
+        if($ajax){
+        	return $view;
+        }else{
+	        $this->template->content = '<div class="content"><div id="direita">'.$view.'</div></div>';
+	    }
 	}
     
     /*    

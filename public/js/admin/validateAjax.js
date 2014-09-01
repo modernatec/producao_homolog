@@ -176,6 +176,16 @@ function validateAjax(){
             return false;       
         }
     });
+
+    $("#frm_usuarios").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
+
+    
     
 
     

@@ -325,8 +325,17 @@ a{
 	color: #008fc7;
 }
 
+.content_hide{
+	display: none;
+}
+
+.content_show{
+	display: block;
+}
+
 #topo{
-	padding: 8px 0 0 0;
+	padding: 0 0 8px 0;
+	overflow: auto;
 }
 
 #esquerda{
@@ -752,8 +761,7 @@ input[type='text']:focus, input[type='password']:focus{
     width: 25px;
     height: 25px;
     position: relative;
-    top:-2px;
-    left: -2px;
+    left: -1px;
 }
 
 .round_imgDetail{
@@ -764,12 +772,14 @@ input[type='text']:focus, input[type='password']:focus{
     border-radius: 25px;
     background: #008fc7;
     color: #fff;
-    width: 100px;
+    position: relative;
+    float: left;
+    min-width: 100px;
 
 }
 
 .round_imgDetail span{
-	line-height: 26px;
+	line-height: 28px;
 	padding: 5px;
 	left: -2px;
 	position: relative;

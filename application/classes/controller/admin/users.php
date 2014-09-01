@@ -333,8 +333,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         //$this->startProfilling();
 
         //$view->filter_tipo = json_decode($this->request->query('tipo'));
-        $view->filter_nome = $this->request->query('nome');  
-        $view->filter_email = $this->request->query('email');   
+        $view->filter_nome = $this->request->post('nome');  
+        $view->filter_email = $this->request->post('email');   
 
 
         $query = ORM::factory('userInfo');

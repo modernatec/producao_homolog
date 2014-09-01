@@ -1,3 +1,8 @@
+<div class="list_header round">
+	<div class="table_info round">
+		<?=count($collectionsList)?> coleções encontradas 
+	</div>
+</div>
 <div class="list_body">
 	<ul class="list_item">
 		<? foreach($collectionsList as $collection){?>
