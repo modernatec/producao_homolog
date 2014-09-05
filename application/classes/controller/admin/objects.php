@@ -164,7 +164,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         if($ajax){
         	return $view;
         }else{
-	        $this->template->content = '<div class="content"><div id="direita">'.$view.'</div></div>';
+	        $this->template->content = '<div class="content"><div id="esquerda"></div><div id="direita">'.$view.'</div></div>';
 	    }
 	}
     
