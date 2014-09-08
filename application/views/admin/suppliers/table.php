@@ -25,14 +25,10 @@
 		<? foreach($suppliersList as $supplier){?>
 		<li>
 			<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
-				<div class="left" style="width:30%">
-					<p><b><?=$supplier->empresa?></b></p>
+				<div>
+					<p><span class="<?=$supplier->team->color?> round list_faixa"><?=$supplier->team->name?></span> <b><?=$supplier->empresa?></b></p>					
 					<p><?=$supplier->contato->nome?> &bull; <?=$supplier->contato->telefone?></p>
 					<p><?=$supplier->contato->email?></p>
-				</div>
-				<div class="left" style="width:40%">
-					<p><?=$supplier->team->name?></p>
-					<p><?=$supplier->getFormats($supplier->id)?></p>
 				</div>
 			</a>
 		</li>

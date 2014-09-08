@@ -230,7 +230,7 @@ function loadContent(url, container){
     $('#dialog, ui-dialog').remove();
     console.log('chamou loadContent = ' + url);
     $(container + " .mCSB_container").load(url, function() {
-        $(container).slideDown();  
+        $(container).fadeIn();  
         setupAjax(container);       
     });
     
@@ -297,7 +297,7 @@ function setupAjax(container){
 
     $("#sortable").disableSelection();
 
-    $(container + " a[rel='load-content']").unbind('click').bind('click', function(e){
+    $("a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
         console.log("chamou")
         loadContent($(this).attr("href"), $(this).data("panel"));
