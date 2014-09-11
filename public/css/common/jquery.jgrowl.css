@@ -142,7 +142,9 @@ div.jGrowl div.jGrowl-notification{
 
 div.jGrowl div.aniversariantes {
         color:#FFF;
+        background: #000;
         box-shadow:#999 1px 1px 1px;
+        border: none;
 }
 
 /** Hide jGrowl when printing **/

@@ -17,15 +17,22 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/materias/list')
 			->bind('message', $message);
 		
 		$view->materiasList = ORM::factory('materia')->order_by('id','DESC')->find_all();
-		$this->template->content = $view;             
+		
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}          
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/materias/create')
@@ -42,27 +49,32 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
             $this->salvar();
 		}
 	}
+	*/
         
 	public function action_edit($id)
-    {           
-		$view = View::factory('admin/materias/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateMaterias.js");
-		$view->isUpdate = true;  
-		$materia = ORM::factory('materia', $id);
-		$view->materiaVO = $this->setVO('materia', $materia);
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
+    {      
+    	if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id);
-		}
+		}else{   
+			$this->auto_render = false;  
+			$view = View::factory('admin/materias/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+
+			//$this->addValidateJs("public/js/admin/validateMaterias.js");
+			$view->isUpdate = true;  
+			$materia = ORM::factory('materia', $id);
+			$view->materiaVO = $this->setVO('materia', $materia);
+			//$this->template->content = $view;
+
+			echo $view;
+		}		
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 
@@ -74,8 +86,14 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			                
 			$materia->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
-			Request::current()->redirect('admin/materias');
+			//Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
+			//Request::current()->redirect('admin/materias');
+
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				'esquerda' => URL::base().'admin/materias/index/ajax',				
+				'msg' => "matéria salva com sucesso.",
+			));
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -98,17 +116,25 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{	
+		$this->auto_render = false;
 		try 
 		{            
 			$objeto = ORM::factory('materia', $id);
 			$objeto->delete();
-			Utils_Helper::mensagens('add','Matéria excluído com sucesso.'); 
+			//Utils_Helper::mensagens('add',''); 
+			$msg = "matéria excluído com sucesso";
 		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
 		
-		Request::current()->redirect('admin/materias');
+		//Request::current()->redirect('admin/materias');
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/materias/index/ajax',				
+			'msg' => $msg,
+		));
 	}
 
 }

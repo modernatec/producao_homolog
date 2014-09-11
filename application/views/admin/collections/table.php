@@ -8,7 +8,7 @@
 		<? foreach($collectionsList as $collection){?>
 		<li>
 			<div class="left">
-				<p><a style='display:block' href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" title="Editar"><b><?=$collection->op?> - <?=$collection->name?></b></a></p>
+				<p><a style='display:block' href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" rel="load-content" data-panel="#direita" title="Editar"><b><?=$collection->op?> - <?=$collection->name?></b></a></p>
 				<p>fechamento: <?=Utils_Helper::data($collection->fechamento,'d/m/Y')?></p>
 			</div>
 			<div class="right">

@@ -21,13 +21,7 @@ class Controller_Admin_Template extends Controller_Template {
 	public $current_auth;
 
 	protected $menus;
-
-	public function check_login(){	
-		if(Auth::instance()->logged_in()== 0){	
-			Request::current()->redirect('login');
-		}
-	}
-	  
+ 
 	/**
 	* The before() method is called before your controller action.
 	* In our template controller we override this method so that we can
@@ -48,8 +42,11 @@ class Controller_Admin_Template extends Controller_Template {
 				Auth::instance()->logged_in($this->secure_actions[$action_name]) === FALSE))
 		{
 			if (Auth::instance()->logged_in()){
+				//Request::instance()->redirect('account/noaccess');
 				Utils_Helper::mensagens('add',"você não tem acesso a este conteúdo");
 				Request::current()->redirect('admin');
+			}else{
+				Request::current()->redirect('login');
 			}
 		}
 		
@@ -91,9 +88,10 @@ class Controller_Admin_Template extends Controller_Template {
         	$styles = array(
 				'public/css/common/reset.css' => 'screen',
 				'public/css/common/jquery-ui/jquery-ui.min.css' => 'screen',						
-				'public/css/common/jquery.jgrowl.css' => 'screen',
+				
 				'public/css/admin/nested.css' => 'screen',
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
+				'public/css/common/jquery.jgrowl.css' => 'screen',
 				'public/css/admin/masterpage.css' => 'screen',
 
             );

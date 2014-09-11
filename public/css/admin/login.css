@@ -1,16 +1,8 @@
-body
-{
-	background-position:top;
-}
-
 #login{
-	width: 600px;
-	min-height: 100px;
-	position: absolute;
+	min-height: 400px;
 	padding: 5px;
 	top: 50%;
 	left: 50%;
-	margin: -50px 0 0 -300px;
     -moz-box-sizing: border-box;
 }
 
@@ -36,12 +28,14 @@ body
 	margin-left: 10px;
 }
 
+/*
 h1.logo{
 	float:left;
 	padding-right: 20px;
 	top:-25px;
 	position:relative;
 }
+
 /*
 #login p.label, #login p.error
 {

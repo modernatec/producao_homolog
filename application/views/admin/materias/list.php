@@ -1,13 +1,12 @@
-<div class="content">
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/materias/create" class="bar_button round">cadastrar matéria</a>
+		<a href="<?=URL::base();?>admin/materias/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar matéria</a>
 	</div>
 	<span class="header">matérias</span>
 	<ul class="list_item">
 		<? foreach($materiasList as $materia){?>
 		<li>
 			<div class="left">
-				<a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" title="Editar"><?=$materia->name?></a>
+				<a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$materia->name?></a>
 			</div>
 			<div class="right">
 				<a class="excluir" href="<?=URL::base().'admin/materias/delete/'.$materia->id;?>" title="Excluir">Excluir</a>
@@ -15,4 +14,3 @@
 		</li>
 		<?}?>
 	</ul>
-</div>

@@ -17,15 +17,22 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
 
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/segmentos/list')
 			->bind('message', $message);
 		
 		$view->segmentosList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
-		$this->template->content = $view;             
+		
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/segmentos/create')
@@ -42,28 +49,31 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
         	$this->salvar();
 		}		
 	}
+	*/
 
 	public function action_edit($id)
-    {           
-		$view = View::factory('admin/segmentos/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateSegmentos.js");
-		$view->isUpdate = true;              
-
-		$segmento = ORM::factory('segmento', $id);		
-		$view->segmentoVO = $this->setVO('segmento', $segmento);				
-		$this->template->content = $view;
-		
+    {   
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id);
+		}else{
+			$this->auto_render = false;
+			$view = View::factory('admin/segmentos/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+
+			$view->isUpdate = true;              
+
+			$segmento = ORM::factory('segmento', $id);		
+			$view->segmentoVO = $this->setVO('segmento', $segmento);				
+			//$this->template->content = $view;
+			echo $view;
 		}
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -75,8 +85,14 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			                
 			$segmento->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','Segmento '.$segmento->name.' salvo com sucesso.');
-			Request::current()->redirect('admin/segmentos');
+			//Utils_Helper::mensagens('add','Segmento '.$segmento->name.' salvo com sucesso.');
+			//Request::current()->redirect('admin/segmentos');
+
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				'esquerda' => URL::base().'admin/segmentos/index/ajax',				
+				'msg' => "Segmento salvo com sucesso.",
+			));
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -99,16 +115,25 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{	
+		$this->auto_render = false;
 		try 
 		{            
 			$objeto = ORM::factory('segmento', $id);
 			$objeto->delete();
-			Utils_Helper::mensagens('add','Segmento excluído com sucesso.'); 
+			//Utils_Helper::mensagens('add','Segmento excluído com sucesso.'); 
+			$msg = "segmento excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
 		
-		Request::current()->redirect('admin/segmentos');
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/segmentos/index/ajax',				
+			'msg' => $msg,
+		));
+		//Request::current()->redirect('admin/segmentos');
 	}
 }

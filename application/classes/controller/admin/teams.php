@@ -15,14 +15,22 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
 	
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
-            $view = View::factory('admin/teams/list')
-                ->bind('message', $message);
-            $view->teamsList = ORM::factory('team')->order_by('name','ASC')->find_all();
-            $this->template->content = $view;             
+        $view = View::factory('admin/teams/list')
+            ->bind('message', $message);
+        $view->teamsList = ORM::factory('team')->order_by('name','ASC')->find_all();
+        //$this->template->content = $view;             
+
+        if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}  
 	} 
 
+	/*
 	public function action_create()
 	{ 
 		$view = View::factory('admin/teams/create')
@@ -41,30 +49,35 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			$this->salvar(); 
 		}	  
 	}
+	*/
 
 	public function action_edit($id)
 	{
-		$view = View::factory('admin/teams/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		
-		$this->addValidateJs("public/js/admin/validateTeams.js");
-		$view->isUpdate = true;		
-		$team = ORM::factory('team', $id);		
-		$view->teamVO = $this->setVO('team', $team);
-
-		$view->userInfos = ORM::factory('userInfo')->find_all();
-		$this->template->content = $view;
-		
 		if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id); 
-		}		           
+		}else{
+			$this->auto_render = false;
+			$view = View::factory('admin/teams/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+
+			
+			$this->addValidateJs("public/js/admin/validateTeams.js");
+			$view->isUpdate = true;		
+			$team = ORM::factory('team', $id);		
+			$view->teamVO = $this->setVO('team', $team);
+
+			$view->userInfos = ORM::factory('userInfo')->find_all();
+			//$this->template->content = $view;
+			echo $view;
+		}
+			           
 	}
 
 	protected function salvar($id = null)
 	{	
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -76,9 +89,9 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			$team->save();
 			$db->commit();
 			
-			$message = "Equipe '{$team->name}' salva com sucesso.";
-			Utils_Helper::mensagens('add',$message);
-			Request::current()->redirect('admin/teams');
+			$msg = "Equipe '{$team->name}' salva com sucesso.";
+			//Utils_Helper::mensagens('add',$message);
+			//Request::current()->redirect('admin/teams');
 			
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -86,15 +99,21 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);    
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/teams/index/ajax',				
+			'msg' => $msg,
+		));
 
         return false;
 	}

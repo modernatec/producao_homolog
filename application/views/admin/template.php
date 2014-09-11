@@ -19,7 +19,12 @@
     <div id="nav">
         <?//$lightbox?>
     	<?=$menu;?>
-    	<?=$content;?>
+    	<div class="content">
+    		<div id="esquerda">
+    			<?=$content;?>
+    		</div>
+    		<div id="direita"></div>
+    	</div>
     </div>
     
 	<?php foreach ($scripts as $file) echo HTML::script($file), PHP_EOL ?>

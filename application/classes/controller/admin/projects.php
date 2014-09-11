@@ -2,13 +2,15 @@
  
 class Controller_Admin_Projects extends Controller_Admin_Template {
  
-	public $auth_required		= array('login', 'admin');
+	public $auth_required		= array('login', 'coordenador');
  	
-	public $secure_actions     	= array(
+ 	/*
+	public $secure_actions     	= array( 
 								   	'create' => array('login', 'coordenador'),
 									'edit' => array('login', 'coordenador'),
 								   	'delete' => array('login', 'coordenador'),
 								 );
+	*/
 	
 					 
 	public function __construct(Request $request, Response $response)
@@ -16,22 +18,29 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
                
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/projects/list')
 			->bind('message', $message);
 		
 		$view->projectsList = ORM::factory('project')->order_by('name','ASC')->find_all();
-		$this->template->content = $view; 		
+		
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}		
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/projects/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs("public/js/admin/validateProjects.js");
+		//$this->addValidateJs("public/js/admin/validateProjects.js");
 		$view->isUpdate = false;
 		
 		$view->projectVO = $this->setVO('project');		
@@ -46,42 +55,46 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			$this->salvar();
 		}    
 	}
+	*/
 
 	public function action_edit($id)
-    {        
-		$view = View::factory('admin/projects/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
-	
-		$this->addValidateJs();
-		$view->isUpdate = true;
-
-		//$json = '[{"id":14,"children":[{"id":16,"children":[{"id":18}]}]},{"id":17},{"id":15}]';
-		//var_dump(json_decode($json, true));
-				
-		$projeto = ORM::factory('project', $id);
-		$view->projectVO = $this->setVO('project', $projeto);
-		$view->segmentosList = ORM::factory('segmento')->find_all();
-		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
-		$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
-
-		$collectionsArr = array();
-		$collections = ORM::factory('collections_project')->where('project_id', '=', $id)->find_all();
-		foreach ($collections as $collection) {
-			array_push($collectionsArr, $collection->collection_id);
-		}
-		$view->collectionsArr = $collectionsArr;
-		
-		$this->template->content = $view;	
-	   
-		if (HTTP_Request::POST == $this->request->method()) 
+    {      
+    	if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id); 
-		} 
+		}else{
+			$this->auto_render = false;
+			$view = View::factory('admin/projects/create')
+					->bind('errors', $errors)
+					->bind('message', $message);
+		
+			//$this->addValidateJs();
+			$view->isUpdate = true;
+
+			//$json = '[{"id":14,"children":[{"id":16,"children":[{"id":18}]}]},{"id":17},{"id":15}]';
+			//var_dump(json_decode($json, true));
+					
+			$projeto = ORM::factory('project', $id);
+			$view->projectVO = $this->setVO('project', $projeto);
+			$view->segmentosList = ORM::factory('segmento')->find_all();
+			$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+			$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
+
+			$collectionsArr = array();
+			$collections = ORM::factory('collections_project')->where('project_id', '=', $id)->find_all();
+			foreach ($collections as $collection) {
+				array_push($collectionsArr, $collection->collection_id);
+			}
+			$view->collectionsArr = $collectionsArr;
+			
+			//$this->template->content = $view;	
+			echo $view;
+	   	}		
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -123,8 +136,9 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 						
 			$db->commit();
-			Utils_Helper::mensagens('add','Projeto salvo com sucesso.');
-			Request::current()->redirect('admin/projects');
+			//Utils_Helper::mensagens('add','');
+			$msg = "projeto salvo com sucesso.";
+			//Request::current()->redirect('admin/projects');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -132,15 +146,21 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);    
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/projects/index/ajax',				
+			'msg' => $msg,
+		));
 
         return false;
 	}

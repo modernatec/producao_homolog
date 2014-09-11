@@ -126,10 +126,6 @@ function validateAjax(){
     });
 
     $("#startTask").validate({
-        rules: {
-        },
-        messages: {            
-        },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form);
@@ -138,10 +134,6 @@ function validateAjax(){
     });
 
     $("#frmEditTask").validate({
-        rules: {
-        },
-        messages: {            
-        },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form);
@@ -149,11 +141,115 @@ function validateAjax(){
         }
     });
 
-    $("#formEndTask").validate({
+    $("#frmCreateSegmento").validate({
         rules: {
+            nome: {required:true}
         },
-        messages: {            
+        messages: {
+            nome: { required:'Campo não pode ser vazio'}
         },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    $("#frmCreateCollection").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    $("#frmCreateMaterias").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    $("#frmCreatePais").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    $("#frmCreateTipoObj").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+
+    $("#frmCreateSfwprod").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    $("#frmCreateProject").validate({
+        rules: {
+            name: {required:true},
+            target: {required:true},
+            description: {required:true}
+        },
+        messages: {
+            name: { required:"Digite o nome do projeto."},
+            target: { required: "Digite o seguimento do projeto." },
+            description: {required:"Digite uma descrição para o projeto."}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;    
+        }
+    })
+
+    
+
+       
+    
+
+    $("#formEndTask").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form);
@@ -248,41 +344,3 @@ function validateAjax(){
     })   
 }
 
-function ajaxPost(form){
-    $.ajax({
-        type: "POST",
-        url: $(form).attr('action'),
-        data: $(form).serialize(),
-        timeout: 10000,
-        success: function(retorno) {
-            //console.log('r ' + retorno);
-            
-            loadContent(retorno, $(form).data('panel'));
-            $('input[type=submit]').prop("disabled", null );
-        },
-        error: function(e) {
-            console.log(e);
-            alert("ocorreu um erro.");
-        }
-    });    
-}
-
-
-function ajaxReload(form){
-    
-    //console.log('chamou reload')
-    $.ajax({
-        type: "POST",
-        url: $(form).attr('action'),
-        data: $(form).serialize(),
-        timeout: 10000,
-        success: function(retorno) {
-            reloadContent(retorno, $(form).data('panel'));
-            $('input[type=submit]').prop("disabled", null );
-        },
-        error: function(e) {
-            console.log(e);
-            alert("ocorreu um erro.");
-        }
-    });    
-}

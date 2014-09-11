@@ -17,14 +17,19 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
              
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/collections/list')
 			->bind('message', $message);
 		
 		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
 		
-		$this->template->content = $view;    
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}   
 	} 
 
 	public function action_create()
@@ -47,27 +52,30 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	}
 
 	public function action_edit($id)
-    {        
-		$view = View::factory('admin/collections/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
-	
-		$this->addValidateJs("public/js/admin/validateCollections.js");
-		$view->isUpdate = true;
-				
-		$collection = ORM::factory('collection', $id);
-		$view->collectionVO = $this->setVO('collection', $collection);
-		$view->materiaList = ORM::factory('materia')->find_all();
-		$this->template->content = $view;	
-	   
-		if (HTTP_Request::POST == $this->request->method()) 
+    {   
+    	if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id); 
-		} 
+		}else{      
+	    	$this->auto_render = false;
+			$view = View::factory('admin/collections/create')
+					->bind('errors', $errors)
+					->bind('message', $message);
+		
+			//$this->addValidateJs("public/js/admin/validateCollections.js");
+			$view->isUpdate = true;
+					
+			$collection = ORM::factory('collection', $id);
+			$view->collectionVO = $this->setVO('collection', $collection);
+			$view->materiaList = ORM::factory('materia')->find_all();
+			//$this->template->content = $view;	
+			echo $view;		   
+		}
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -85,8 +93,14 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$colecao->save();
 			
 			$db->commit();
-			Utils_Helper::mensagens('add','Coleção '.$colecao->name.' salvo com sucesso.');
-			Request::current()->redirect('admin/collections');
+			//Utils_Helper::mensagens('add','Coleção '.$colecao->name.' salvo com sucesso.');
+			//Request::current()->redirect('admin/collections');
+
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				'esquerda' => URL::base().'admin/collections/index/ajax',				
+				'msg' => "coleção salva com sucesso.",
+			));
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -109,16 +123,25 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{
+		$this->auto_render = false;
 		try 
 		{            
 			$projeto = ORM::factory('collection', $id);
 			$projeto->delete();
-			Utils_Helper::mensagens('add','Coleção excluída com sucesso.'); 
+			$msg = "coleção excluída com sucesso.";
+			//Utils_Helper::mensagens('add',''); 
 		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			//Utils_Helper::mensagens('add',''); 
 			$errors = $e->errors('models');
+			$msg = "houveram alguns erros na exclusão dos dados.";
 		}
-		Request::current()->redirect('admin/collections');
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/collections/index/ajax',				
+			'msg' => $msg,
+		));
+		//Request::current()->redirect('admin/collections');
 	}
 
 	/*******************************************/

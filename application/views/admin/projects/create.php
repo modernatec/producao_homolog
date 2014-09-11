@@ -1,9 +1,5 @@
-<div class="content">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/projects" class="bar_button round">Voltar</a>
-	</div>
-    <form name="frmCreateProject" id="frmCreateProject" method="post" class="form" enctype="multipart/form-data">
-	    <div class="left">
+    <form name="frmCreateProject" id="frmCreateProject" action="<?=URL::base();?>admin/projects/edit/<?=@$projectVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
+	    <div>
 		    <dt>
 		      <label for="name">projeto</label>
 		    </dt>
@@ -33,7 +29,6 @@
                     <option value=''>Selecione</option>
                     <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
                     <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>em produção</option>
-               
                 </select>
 	            <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
 		    </dd>
@@ -53,7 +48,7 @@
 	            <a href="<?=URL::base();?>admin/relatorios/relatorioLink?project_id=<?=@$projectVO['id']?>" class="round bar_button">gerar relatório</a> 
 		    <?}?>
 		</div>
-		<div class="left">
+		<div >
 		    <dt>
 		      <label for="collections">coleções</label>
 		    </dt>
@@ -89,4 +84,3 @@
 			</div>
 		</div>
 	</form>
-</div>

@@ -18,15 +18,22 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 	}
 
         
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/formats/list')
 			->bind('message', $message);
 		
 		$view->sfwprodsList = ORM::factory('format')->order_by('id','DESC')->find_all();
-		$this->template->content = $view;             
+		
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}            
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/formats/create')
@@ -43,28 +50,33 @@ class Controller_Admin_Format extends Controller_Admin_Template {
         	$this->salvar();
 		}       
 	}
+	*/
         
 	public function action_edit($id)
     {  
-		$view = View::factory('admin/formats/create')
-		->bind('errors', $errors)
-		->bind('message', $message);
-		
-		$this->addValidateJs();
-		$view->isUpdate = true;   
-		
-		$sfwprod = ORM::factory('format', $id);
-		$view->sfwprodVO = $this->setVO('format', $sfwprod);
-		$this->template->content = $view; 
-
-		if (HTTP_Request::POST == $this->request->method()) 
+    	if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id);
+		}else{
+			$this->auto_render = false;
+			$view = View::factory('admin/formats/create')
+			->bind('errors', $errors)
+			->bind('message', $message);
+			
+			$this->addValidateJs();
+			$view->isUpdate = true;   
+			
+			$sfwprod = ORM::factory('format', $id);
+			$view->sfwprodVO = $this->setVO('format', $sfwprod);
+			//$this->template->content = $view; 
+			echo $view;
 		}
+		
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -76,8 +88,9 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 			                
 			$sfwprod->save();
 			$db->commit();
-			Utils_Helper::mensagens('add','Formato salvo com sucesso.');
-			Request::current()->redirect('admin/format');
+			//Utils_Helper::mensagens('add','');
+			$msg = "formato salvo com sucesso.";
+			//Request::current()->redirect('admin/format');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -85,30 +98,45 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);    
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/format/index/ajax',				
+			'msg' => "formato salvo com sucesso.",
+		));
 
         return false;
 	}
 	
 	public function action_delete($id)
 	{	
+		$this->auto_render = false;
 		try{            
 			$objeto = ORM::factory('format', $id);
 			$objeto->delete();
-			Utils_Helper::mensagens('add','Software de produção excluído com sucesso.'); 
+			//Utils_Helper::mensagens('add','Software de produção excluído com sucesso.'); 
+			$msg = "formato excluído com sucesso";
 		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			//Utils_Helper::mensagens('add',''); 
+			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/format/index/ajax',				
+			'msg' => $msg,
+		));
 		
-		Request::current()->redirect('admin/format');
+		//Request::current()->redirect('admin/format');
 	}
 }

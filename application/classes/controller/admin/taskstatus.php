@@ -10,7 +10,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	public function __construct(Request $request, Response $response)
 	{
 		parent::__construct($request, $response); 
-		$this->check_login();	               
+		              
 	}
   
 	

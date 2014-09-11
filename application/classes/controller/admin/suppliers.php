@@ -13,10 +13,9 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 	public function __construct(Request $request, Response $response)
 	{
 		parent::__construct($request, $response);
-		$this->check_login();	
 	}
         
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/suppliers/list')
                 ->bind('message', $message);
@@ -25,7 +24,12 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
 		$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
 		          
-        $this->template->content = $view;       
+        if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}          
 
 	} 
 
@@ -147,10 +151,10 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			}	
 			
 			$db->commit();
-			$message = "Fornecedor salvo com sucesso.";
-			Utils_Helper::mensagens('add',$message);
+			$msg = "Fornecedor salvo com sucesso.";
+			//Utils_Helper::mensagens('add',$message);
 			//Request::current()->redirect('admin/suppliers');
-			echo URL::base().'admin/suppliers/view/'.$supplier->id;
+			//echo URL::base().'admin/suppliers/view/'.$supplier->id;
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -158,15 +162,21 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);    
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/suppliers/index/ajax',				
+			'msg' => $msg,
+		));
 
         return false;
 	}

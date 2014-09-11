@@ -2,13 +2,14 @@
  
 class Controller_Admin_Users extends Controller_Admin_Template {
  
- 	public $auth_required		= array('login'); //Auth is required to access this controller
+ 	//public $auth_required		= array('login'); //Auth is required to access this controller
  	
 	public $secure_actions     	= array(
-									'edit' => array('coordenador'),
-									'delete' => array('admin'),
-									'create' => array('admin'),	
-                                    'inativate'	=> array('admin'),  									
+                                    'index' => array('login'),
+									'edit' => array('login', 'coordenador'),
+									'delete' => array('login', 'admin'),
+									'create' => array('login', 'admin'),	
+                                    'inativate'	=> array('login', 'admin'),  									
 								  );	
 	
 	public function __construct(Request $request, Response $response)
@@ -16,9 +17,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 		parent::__construct($request, $response);     
 	}
 	
-    public function action_index()
+    public function action_index($ajax = null)
 	{	
-        $this->check_login(); 
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
         
@@ -26,7 +26,12 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view->filter_nome = ($this->request->post('nome') != "") ? $this->request->post('nome') : "";
         $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
 			
-        $this->template->content = $view;		
+        if($ajax == null){
+            $this->template->content = $view;             
+        }else{
+            $this->auto_render = false;
+            echo $view;
+        }  	
 	} 
         
 	/*

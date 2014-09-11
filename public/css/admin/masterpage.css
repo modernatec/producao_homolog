@@ -343,15 +343,15 @@ a{
     float: left;
     position: relative;
     border-right: 1px dotted #008fc7;
+    padding-right: 5px;
 }
 
 
 #direita{
-	padding: 0 5px;
-    
     overflow:hidden;
     float: left;
     position: relative;
+    padding-left: 5px;
 }
 
 

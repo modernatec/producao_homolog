@@ -1,8 +1,4 @@
-<div class="content">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/materias" class="bar_button round">Voltar</a>
-	</div>
-    <form name="frmCreateMaterias" id="frmCreateMaterias" method="post" class="form" enctype="multipart/form-data">
+    <form name="frmCreateMaterias" id="frmCreateMaterias" action="<?=URL::base();?>admin/materias/edit/<?=@$materiaVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
 	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
 	  <dl>
         <dd>
@@ -14,4 +10,3 @@
 	    </dd>
 	  </dl>
 	</form>
-</div>

@@ -1,3 +1,4 @@
+/*
 function aniversariantes()
 {
     $.get(base_url + 'users/aniversariantes/',function(data)
@@ -17,6 +18,7 @@ function aniversariantes()
         });
     });
 }
+
 
 function excluirTemporario(id)
 {
@@ -38,7 +40,7 @@ function excluirTemporario(id)
                if(mimeType == mimeUploads[i]){
                    mimeUploads[i] = 'empty';
                }
-           }*/
+           }*
            $('#'+id).remove();
            $('#filesUploads').val(filesUploads.join(','));
            $('#mimeUploads').val(mimeUploads.join(','));
@@ -48,7 +50,7 @@ function excluirTemporario(id)
        }
     });
 }
-
+*/
 function checkUpload(form){
 	console.log("chamou " + form);
 	
@@ -140,39 +142,9 @@ $(document).ready(function()
         {
             $.jGrowl(msgs[i],{ theme:'aniversariantes', position:'bottom-right',}); 
         } 
-    }
+    }    
 
     
-
-    $('.tabs a').unbind('click').bind('click', function(e){
-        e.preventDefault();
-        $('.tabs li').removeClass('selected');
-        $('.content_hide').each(function(index, element){            
-            if($(this).hasClass('content_show')){
-                $(this).removeClass('content_show');
-            }
-        });
-
-        if($(this).hasClass('ajax')){
-            loadContent($(this).attr('href'), '#tabs_content');
-        }else{
-            $($(this).attr('href')).addClass('content_show');
-        }
-
-        $.removeCookie("producao");
-        $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
-        $(this).parent().addClass('selected');
-    })
-    
-    var tab = $.cookie("producao");
-    
-    setTimeout(function(){
-        if($(tab).length > 0){
-            $(tab).click(); 
-        }else{
-            $('#tab_1').click(); 
-        }
-    }, 100);
     
 
     /*alert para novas tarefas!*/
@@ -206,14 +178,17 @@ $(document).ready(function()
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
 
     $('#head').css({height:$( window ).height()});
-    $('#esquerda, #direita').css({height:$(window).height()- ($('#esquerda').offset().top + 5)});
-    $('#esquerda, #direita').css({width: ($(window).width() / 2) - ($('#esquerda').offset().left / 2) - 5}); 
-    //$('#direita').css({left:$('#esquerda').width() + $('#esquerda').offset().left}); 
 
-    $('.scrollable_content').css({height:$( window ).height() - $('.scrollable_content').offset().top});
+    if($('#esquerda').length != 0){
+        $('#esquerda, #direita').css({height:$(window).height()- ($('#esquerda').offset().top + 5)});
+        $('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
+        //$('#direita').css({left:$('#esquerda').width() + $('#esquerda').offset().left}); 
+    }
+
+    
     //$('.list_body').css({height:$( window ).height()- $('.list_body').offset().top});
 
-    setupScroll();
+    
     setupAjax('#esquerda');
 });
 
@@ -225,33 +200,16 @@ function setupScroll(){
     });
 }
 
-function loadContent(url, container){
-    $(container).fadeOut(); 
-    $('#dialog, ui-dialog').remove();
-    console.log('chamou loadContent = ' + url);
-    $(container + " .mCSB_container").load(url, function() {
-        $(container).fadeIn();  
-        setupAjax(container);       
-    });
-    
-}
-
-function reloadContent(data, container){
-
-    $('#dialog, ui-dialog').remove();
-    $(container).fadeOut(function(){
-        $(container + " .mCSB_container").html( data );
-        $(container).slideDown(function(){
-            setupAjax(container);
-        });  
-               
-    }); 
-
-    
-}
 
 function setupAjax(container){
     validateAjax(); 
+    $(container + " .scrollable_content").mCustomScrollbar("update");
+
+    if($('.scrollable_content').length != 0){
+        $('.scrollable_content').css({height:$( window ).height() - $('.scrollable_content').offset().top});
+    }
+
+    setupScroll();
 
     $(".populate").change(function(ui) {
         populateSelect(ui);
@@ -299,7 +257,7 @@ function setupAjax(container){
 
     $("a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        console.log("chamou")
+        $('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
     });
 
@@ -341,15 +299,13 @@ function setupAjax(container){
             resizable:false,
             buttons: [
                 {text: "OK", click: function() {
-                    //window.location.href = $(btExcluir).attr('href');   
                     $.ajax({
                         type: "POST",
                         url: $(btExcluir).attr('href'),
+                        dataType : "json",
                         //data: $(form).serialize(),
-                        success: function(retorno) {
-                            console.log($(btExcluir).data('panel'));
-                            console.log(retorno);
-                            loadContent(retorno, $(btExcluir).data('panel'));
+                        success: function(data) {
+                            setDataPanels(data);
                         },
                         error: function(e) {
                             console.log(e);
@@ -403,7 +359,136 @@ function setupAjax(container){
         //prevent the browser to follow the link
         return false;
     });
+
+
+    $('.tabs a').unbind('click').bind('click', function(e){
+        e.preventDefault();
+        link = $(this).attr('href');
+        if(link != lastURL){
+            $('.tabs li').removeClass('selected');
+            $('.content_hide').each(function(index, element){            
+                if($(this).hasClass('content_show')){
+                    $(this).removeClass('content_show');
+                }
+            });            
+
+            if($(this).hasClass('ajax')){
+                loadContent(link, '#tabs_content');
+            }else{
+                $($(this).attr('href')).addClass('content_show');
+            }
+
+            $.removeCookie("producao");
+            $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
+            $(this).parent().addClass('selected');
+        }
+    })
+    
+    var tab = $.cookie("producao");
+    
+    setTimeout(function(){
+        if($(container + ' ' + tab).length > 0){
+            $(container + ' ' + tab).click(); 
+        }else{
+            $(container + ' #tab_1').click(); 
+        }
+    }, 100);    
 }
+
+
+function ajaxPost(form){
+    $.ajax({
+        type: "POST",
+        url: $(form).attr('action'),
+        data: $(form).serialize(),
+        timeout: 10000,
+        dataType : "json",
+        success: function(data) {
+            setDataPanels(data);
+            //
+            //$('input[type=submit]').prop("disabled", null );
+        },
+        error: function(e) {
+            console.log(e);
+            alert("ocorreu um erro.");
+        }
+    });    
+}
+
+lastURL = "";
+
+function loadContent(url, container){
+
+    console.log('loadContent = ' + url);
+    lastURL = url;
+    $(container).fadeOut(); 
+    $('#dialog, ui-dialog').remove();
+
+    if($(container + " .mCSB_container").length > 0){
+        holder = container + " .mCSB_container";
+    }else{
+        holder = container;
+    }
+
+    $(holder).load(url, function() {
+        $(container).fadeIn(200, function(){
+            console.log("terminou -> " + $(container).attr('id'));
+            setupAjax(container);   
+        });  
+        //    
+    });
+    
+}
+
+function setDataPanels(data){
+    console.log("setDataPanels = " + data);
+    if(data.esquerda){
+        loadContent(data.esquerda, '#esquerda');
+    }else{
+        $('#esquerda').fadeOut();
+    }
+    
+    if(data.direita){
+        loadContent(data.direita, '#direita');
+    }else{
+        $('#direita').fadeOut();
+    }
+
+    if(data.msg){
+        $.jGrowl(data.msg,{ theme:'aniversariantes', position:'top-right',});
+    } 
+}
+
+function reloadContent(data, container){
+    $('#dialog, ui-dialog').remove();
+    $(container).fadeOut(function(){
+        $(container + " .mCSB_container").html( data );
+        $(container).slideDown(function(){
+            setupAjax();
+        });         
+    });    
+}
+
+function ajaxReload(form){    
+    //console.log('chamou reload')
+    $.ajax({
+        type: "POST",
+        url: $(form).attr('action'),
+        data: $(form).serialize(),
+        timeout: 10000, 
+        success: function(retorno) {
+            reloadContent(retorno, $(form).data('panel'));
+            $('input[type=submit]').prop("disabled", null );
+        },
+        error: function(e) {
+            console.log(e);
+            alert("ocorreu um erro.");
+        }
+    });    
+}
+
+
+
 
 $.validator.addMethod('date',
     function (value, element) {

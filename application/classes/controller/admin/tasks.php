@@ -9,11 +9,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response); 
-		$this->check_login();	               
+		parent::__construct($request, $response);                
 	}
 
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$this->setRefresh();
 		$view = View::factory('admin/tasks/list');
@@ -49,7 +48,12 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	  	Session::instance()->set('total_tarefas', $view->totalTasks);
 
-	  	$this->template->content = $view;
+	  	if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}   
 
 		/*
 	  	$rs = ORM::factory('task')->where('task_id', '=', '0')->find_all();
@@ -306,7 +310,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
     /********************************/
     public function action_getTasks(){
-    	$this->check_login();	
         $this->auto_render = false;
         $view = View::factory('admin/tasks/table');
         $view->current_auth = $this->current_auth;
@@ -338,7 +341,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
     }  
 
     public function action_ongoing(){
-    	$this->check_login();	
         $this->auto_render = false;
         $view = View::factory('admin/tasks/table');
         $view->current_auth = $this->current_auth;

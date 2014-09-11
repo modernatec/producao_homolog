@@ -8,21 +8,21 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	public function __construct(Request $request, Response $response)
 	{
 		parent::__construct($request, $response);	
-		$this->check_login();
 	}
 	
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/relatorios/view')
 			->bind('message', $message);
 		
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-		$this->template->content = $view;  
 		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{
-			$this->generate($this->request->post());
-		}           
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}   		         
 	} 
 
 	public function action_relatorioLink(){
@@ -31,12 +31,14 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		return false;
 	}
 
-	public function generate($post){
+	public function action_generate(){
+		$this->auto_render = false;
 		ini_set('max_execution_time', 300); //max. response para 5 minutos
 
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
-					->where('project_id', '=', $post['project_id'])
-					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $post['project_id']))
+					->where('project_id', '=', $this->request->post('project_id'))
+					->where('status_id', '!=', '8')
+					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $this->request->post('project_id')))
 					->order_by('collection_name', 'ASC')
 					->find_all();
 

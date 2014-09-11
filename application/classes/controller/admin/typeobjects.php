@@ -9,15 +9,22 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/typeobjects/list')
 			->bind('message', $message);
 		
 		$view->typeObjectsjsList = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
-		$this->template->content = $view;             
+		
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}           
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/typeobjects/create')
@@ -34,28 +41,34 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			$this->salvar();
 		}
 	}
+	*/
 
 	public function action_edit($id)
-    {      
-		$view = View::factory('admin/typeobjects/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-			
-		$this->addValidateJs("public/js/admin/validateTypeObjects.js");
-		$view->isUpdate = true; 
-
-		$typeObject = ORM::factory('typeobject', $id);
-		$view->typeObjectVO = $this->setVO('typeobject', $typeObject);   
-		$this->template->content = $view;	
-
-		if (HTTP_Request::POST == $this->request->method()) 
+    {    
+    	 
+    	if (HTTP_Request::POST == $this->request->method()) 
 		{                                              
 			$this->salvar($id);
-		}    
+		}else{
+			$this->auto_render = false;
+			$view = View::factory('admin/typeobjects/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+				
+			//$this->addValidateJs("public/js/admin/validateTypeObjects.js");
+			$view->isUpdate = true; 
+
+			$typeObject = ORM::factory('typeobject', $id);
+			$view->typeObjectVO = $this->setVO('typeobject', $typeObject);   
+			//$this->template->content = $view;	
+
+			echo $view;
+		} 
 	}
 
 	protected function salvar($id = null)
 	{
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
@@ -68,8 +81,9 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			$objeto->save();
 			$db->commit();
 			
-			Utils_Helper::mensagens('add','Tipo de objeto '.$objeto->name.' salvo com sucesso.');
-			Request::current()->redirect('admin/typeobjects');
+			$msg = "cadastro efetuado com sucesso.";
+			//Utils_Helper::mensagens('add','Tipo de objeto '.$objeto->name.' salvo com sucesso.');
+			//Request::current()->redirect('admin/typeobjects');
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -77,29 +91,44 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);    
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/typeobjects/index/ajax',				
+			'msg' => "Segmento salvo com sucesso.",
+		));
 	}
 	
 	public function action_delete($id)
 	{	
+		$this->auto_render = false;
 		try 
 		{            
 			$objeto = ORM::factory('typeobject', $id);
 			$objeto->delete();
-			Utils_Helper::mensagens('add','Tipo de objeto excluído com sucesso.'); 
+			//Utils_Helper::mensagens('add',''); 
+			$msg = "tipo de objeto excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+			//Utils_Helper::mensagens('add',''); 
 			$errors = $e->errors('models');
+			$msg = "houveram alguns erros na exclusão dos dados.";
 		}
 		
-		Request::current()->redirect('admin/typeobjects');
+		//Request::current()->redirect('admin/typeobjects');
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'esquerda' => URL::base().'admin/typeobjects/index/ajax',				
+			'msg' => $msg,
+		));
 	}
 }

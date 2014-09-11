@@ -1,5 +1,3 @@
-<div class="content">
-	
 	<?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
 		<div class="clear" id='topo'>
 			<div class="left">
@@ -25,7 +23,6 @@
 		</div>
 	<?}?>   
 	<div class="clear"> 
-	    <div id="esquerda">
 	        <div class="fixed clear">
 	            <div class="clear left">
 	                <ul class="tabs">
@@ -40,10 +37,4 @@
 	                
 	            </div>
 	        </div>
-	        
-	    </div>
-	    <div id="direita">
-	        
-	    </div>
 	</div>
-</div>

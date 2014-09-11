@@ -15,17 +15,21 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	public function __construct(Request $request, Response $response)
 	{
 		parent::__construct($request, $response);
-		$this->check_login();	
 	}
 	        
-	public function action_index($fase = null)
+	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/objects/list')
 			->bind('message', $message);
 
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 
-		$this->template->content = $view;             
+		if($ajax == null){
+			$this->template->content = $view;             
+		}else{
+			$this->auto_render = false;
+			echo $view;
+		}           
 	} 
 
 	public function action_redirect(){
