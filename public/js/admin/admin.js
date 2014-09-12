@@ -188,6 +188,11 @@ $(document).ready(function()
     
     //$('.list_body').css({height:$( window ).height()- $('.list_body').offset().top});
 
+    //loadContent($(this).attr("href"), $(this).data("panel"));
+    //window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
+    if(window.location.hash != ""){
+        loadContent(base_url + '/admin/' + window.location.hash.replace('#', '') + '/index/ajax' , '#esquerda');
+    }
     
     setupAjax('#esquerda');
 });
@@ -259,6 +264,7 @@ function setupAjax(container){
         e.preventDefault();
         $('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
+        window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
     });
 
     $(".collapse").unbind('click').bind('click', function () {
