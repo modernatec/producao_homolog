@@ -333,8 +333,8 @@ a{
 	display: block;
 }
 
-#topo{
-	padding: 0 0 8px 0;
+#top{
+	padding: 10px 0;
 	overflow: auto;
 }
 
@@ -786,13 +786,13 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .badge{
-	position: relative;
+	position: absolute;
 	display: block;
 	float: left;
-	top: -35px;
-	left: -8px;
 	padding: 2px;
 	font-size: 12px;
+	left: 20px;
+	top: -10px;
 
 	-o-border-radius: 7px;
     -moz-border-radius: 7px;

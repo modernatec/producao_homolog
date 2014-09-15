@@ -18,7 +18,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 		
 		if($ajax == null){
-			$this->template->content = $view;             
+			$this->template->content = $view;
 		}else{
 			$this->auto_render = false;
 			echo $view;

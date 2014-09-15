@@ -264,7 +264,11 @@ function setupAjax(container){
         e.preventDefault();
         $('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
-        window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
+        console.log($(this).data("refresh") );
+
+        if($(this).data("refresh") != undefined){
+            window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
+        }
     });
 
     $(".collapse").unbind('click').bind('click', function () {
@@ -445,6 +449,7 @@ function loadContent(url, container){
     });
     
 }
+
 
 function setDataPanels(data){
     console.log("setDataPanels = " + data);

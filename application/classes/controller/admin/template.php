@@ -142,6 +142,7 @@ class Controller_Admin_Template extends Controller_Template {
 			$this->template->menu->menuList = $menuList;
         }
 
+
         $this->template->mensagens = Utils_Helper::mensagens('print');
         parent::after();
     }

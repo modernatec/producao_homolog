@@ -9,12 +9,12 @@
 	<div id="menu">
 		<ul >
 			<?foreach($menuList as $key=>$menuItem){?>
-				<li class="round"><a rel="load-content" data-panel="#esquerda" href="<?=URL::base();?><?=$menuItem['link']?>/index/ajax" ><?=$menuItem['display']?></a></li>
+				<li class="round"><a rel="load-content" data-panel="#esquerda" data-refresh="true" href="<?=URL::base();?><?=$menuItem['link']?>/index/ajax" ><?=$menuItem['display']?></a></li>
                 <?if(isset($menuItem['sub'])){?>
                 	<ul class="submenu">
                 	<?
 						foreach($menuItem['sub'] as $menuSubItem){?>
-                    	<li class="round"><a rel="load-content" data-panel="#esquerda" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
+                    	<li class="round"><a rel="load-content" data-panel="#esquerda" data-refresh="true" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
 	                <?}?>
 					</ul>
 				<?}?>
