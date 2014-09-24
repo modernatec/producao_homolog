@@ -16,18 +16,13 @@
         <link rel="shortcut icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
 	</head>
 	<body>
-    <div id="nav">
-        <?//$lightbox?>
-    	<?=$menu;?>
-    	<div class="content">
-    		<div id="esquerda">
-    			<?=$content;?>
-    		</div>
-    		<div id="direita"></div>
-    	</div>
-    </div>
-    
-	<?php foreach ($scripts as $file) echo HTML::script($file), PHP_EOL ?>
-	<script>var msgs = <?=($mensagens)?($mensagens):('[]')?>;</script>   
+	    <div id="nav">
+	    	<?=$menu;?>
+	    	<div id="content" class="content">
+	    		<?=$content;?>
+	    	</div>
+	    </div>	    
+		<?php foreach ($scripts as $file) echo HTML::script($file), PHP_EOL ?>
+		<script>var msgs = <?=($mensagens)?($mensagens):('[]')?>;</script>   
 	</body>
 </html>

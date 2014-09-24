@@ -57,7 +57,7 @@ a.link{ background: transparent url(../../image/admin/download.png) no-repeat 0 
 a.link:hover{color:#666; text-decoration: underline;}
 
 
-.tab-loading{
+.loading{
 	 background: transparent url(../../image/admin/ajax-loader.gif) no-repeat center center;
 	 text-indent: -5000px;
 	 display: block;
@@ -333,13 +333,13 @@ a{
 	display: block;
 }
 
-#top{
+#topo{
 	padding: 10px 0;
 	overflow: auto;
 }
 
 #esquerda{
-    overflow:auto;
+    overflow:hidden;
     float: left;
     position: relative;
     border-right: 1px dotted #008fc7;
@@ -356,7 +356,7 @@ a{
 
 
 .scrollable_content{
-	position: relative;
+	position: relative;	
     overflow:auto;
     width: 560px;
 }
@@ -636,11 +636,7 @@ label
 }
 
 
-.filters{
-	height: 30px;
-	padding-top: 5px;
-	position: relative;
-}
+
 
 #filelist div{ 
 	border:1px outset #eee; 
@@ -888,7 +884,7 @@ a.green{
 	padding: 8px;
 	border: 1px solid #008fc7;
 	width: 512px;	
-	position: fixed;
+	position: relative;
 	z-index: 1;
 }
 
@@ -977,16 +973,22 @@ a.green{
 	border-bottom: 1px #ccc solid;	
 }
 
-
+.filters{
+	padding-top: 10px;
+	position: relative;
+	height: 60px;
+}
 
 .filter{
+	padding-top: 10px;
+	float: left;
 	color:#008fc7;
 	display: block;
 	cursor: pointer;
+	position: relative;
 }
 
 .filter ul li{
-	float:left;
 	position: relative;
 	padding: 5px;
 	margin-left: 5px;
