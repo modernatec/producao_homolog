@@ -85,14 +85,10 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			                
 			$segmento->save();
 			$db->commit();
+
+			$msg = "Segmento salvo com sucesso.";
 			//Utils_Helper::mensagens('add','Segmento '.$segmento->name.' salvo com sucesso.');
 			//Request::current()->redirect('admin/segmentos');
-
-			header('Content-Type: application/json');
-			echo json_encode(array(
-				'esquerda' => URL::base().'admin/segmentos/index/ajax',				
-				'msg' => "Segmento salvo com sucesso.",
-			));
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -100,15 +96,20 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'content' => URL::base().'admin/segmentos/index/ajax',				
+			'msg' => $msg,
+		));
 		
 		return false;	
 	}
@@ -131,7 +132,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/segmentos/index/ajax',				
+			'content' => URL::base().'admin/segmentos/index/ajax',				
 			'msg' => $msg,
 		));
 		//Request::current()->redirect('admin/segmentos');

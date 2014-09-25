@@ -24,10 +24,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		{
 			$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '6')->find_all();
 			if(count($task_ini) > 0){
-				$message = "Tarefa já foi iniciada ".$this->request->post('task_id'); 
-			
-				Utils_Helper::mensagens('add',$message);
-            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
+				$msg = "Tarefa já foi iniciada ".$this->request->post('task_id'); 
 			}else{
 				$db = Database::instance();
 		        $db->begin();
@@ -49,31 +46,28 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            
 		            $db->commit();
 					
-		            $message = "Tarefa iniciada com sucesso."; 
-					
-					Utils_Helper::mensagens('add',$message);
-		            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
-
-		            echo URL::base().'admin/objects/view/'.$task->object_id;
-		            
+		            $msg = "Tarefa iniciada com sucesso."; 
 		        } catch (ORM_Validation_Exception $e) {
 		            $errors = $e->errors('models');
 					$erroList = '';
 					foreach($errors as $erro){
 						$erroList.= $erro.'<br/>';	
 					}
-		            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-				    Utils_Helper::mensagens('add',$message);  
 		            $db->rollback();
+		            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 		        } catch (Database_Exception $e) {
-		            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-					Utils_Helper::mensagens('add',$message);
 		            $db->rollback();
+		            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 		        }
-
-		        return false;
 			}
+
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),				
+				'msg' => $msg,
+			));
+
+			return false;
 		}
 	}	
 
@@ -86,10 +80,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		{
 			$task_end = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
 			if(count($task_end) > 0){
-				$message = "Tarefa já finalizada";
-			
-				Utils_Helper::mensagens('add',$message);
-            	Request::current()->redirect('admin/objects/view/'.$this->request->post('object_id'));
+				$msg = "Tarefa já finalizada";
 			}else{
 				$db = Database::instance();
 		        $db->begin();
@@ -161,30 +152,29 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            
 		            $db->commit();
 					
-		            $message = "Tarefa finalizada com sucesso."; 
-					
-					Utils_Helper::mensagens('add',$message);
-		            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
-		            echo URL::base().'admin/objects/view/'.$task->object_id;
-		            
+		            $msg = "Tarefa finalizada com sucesso."; 
 		        } catch (ORM_Validation_Exception $e) {
 		            $errors = $e->errors('models');
 					$erroList = '';
 					foreach($errors as $erro){
 						$erroList.= $erro.'<br/>';	
 					}
-		            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-				    Utils_Helper::mensagens('add',$message);  
 		            $db->rollback();
+		            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 		        } catch (Database_Exception $e) {
-		            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-					Utils_Helper::mensagens('add',$message);
 		            $db->rollback();
+		            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+		            
 		        }
-
-		        return false;
 			}
+
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),				
+				'msg' => $msg,
+			));
+
+			return false;
 		}
 	}
 
@@ -197,36 +187,33 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			$db = Database::instance();
 	        $db->begin();
 			
+			$task_status = ORM::factory('tasks_statu', $id);
+			$task = ORM::factory('task', $task_status->task_id);
 			try {
-				$task_status = ORM::factory('tasks_statu', $id);
+				
 				$task_status->description = $this->request->post('description');
 				$task_status->save();
 
-				$task = ORM::factory('task', $task_status->task_id);
-
 	            $db->commit();
-				
-	            $message = "status editado com sucesso."; 
-				
-				Utils_Helper::mensagens('add',$message);
-	            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
-	            echo URL::base().'admin/objects/view/'.$task->object_id;
-	            
+	            $msg = "status editado com sucesso."; 
 	        } catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
 				foreach($errors as $erro){
 					$erroList.= $erro.'<br/>';	
 				}
-	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-			    Utils_Helper::mensagens('add',$message);  
 	            $db->rollback();
+	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 	        } catch (Database_Exception $e) {
-	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-				Utils_Helper::mensagens('add',$message);
 	            $db->rollback();
+	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
+
+	        header('Content-Type: application/json');
+			echo json_encode(array(
+				'direita' => URL::base().'admin/objects/view/'.$task->object_id,				
+				'msg' => $msg,
+			));
 
 	        return false;
 		}

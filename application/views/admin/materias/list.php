@@ -1,3 +1,4 @@
+<div id="esquerda">
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/materias/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar matéria</a>
 	</div>
@@ -14,3 +15,5 @@
 		</li>
 		<?}?>
 	</ul>
+</div>
+<div id="direita"></div>

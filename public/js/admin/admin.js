@@ -291,6 +291,8 @@ function setupAjax(container){
 
         var element = $(this).data("show");
         $('#' + element).slideToggle();
+
+
     });
 
     $('.fade').unbind('click').bind('click', function() {
@@ -454,17 +456,23 @@ function loadContent(url, container){
 
 
 function setDataPanels(data){
-    console.log("setDataPanels = " + data);
-    if(data.esquerda){
-        loadContent(data.esquerda, '#esquerda');
-    }else{
-        $('#esquerda').fadeOut();
-    }
+    console.log(data);
     
-    if(data.direita){
-        loadContent(data.direita, '#direita');
+    if(data.content){
+        console.log("content *********")
+        loadContent(data.content, '#content');
     }else{
-        $('#direita').fadeOut();
+        if(data.esquerda){
+            loadContent(data.esquerda, '#esquerda');
+        }else{
+            //$('#esquerda').fadeOut();
+        }
+        
+        if(data.direita){
+            loadContent(data.direita, '#direita');
+        }else{
+            //$('#direita').fadeOut();
+        }
     }
 
     if(data.msg){

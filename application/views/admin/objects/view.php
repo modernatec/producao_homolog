@@ -129,7 +129,7 @@
                                         </div>
                                         <div class="replies replies_<?=$task->id;?>">
                                              <? if($task->status_id == '5'){?>
-                                                <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" data-panel="#direita" method="post" class="form">
+                                                <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
                                                     <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                     <input type="submit" class="bar_button round" value="iniciar">
@@ -149,7 +149,7 @@
                                                     <?}?>
                                                     <div class="options">
                                                         <? if($task->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
-                                                            <form id="formEndTask" name="formEndTask" data-panel="#direita" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
+                                                            <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
                                                                 <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                                 <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                                 <input type="hidden" name='next_step' id="next_step" value="0" />

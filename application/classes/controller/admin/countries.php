@@ -109,7 +109,7 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/countries/index/ajax',				
+			'content' => URL::base().'admin/countries/index/ajax',				
 			'msg' => $msg,
 		));
 
@@ -133,7 +133,7 @@ class Controller_Admin_Countries extends Controller_Admin_Template {
 
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/countries/index/ajax',				
+			'content' => URL::base().'admin/countries/index/ajax',				
 			'msg' => $msg,
 		));
 		

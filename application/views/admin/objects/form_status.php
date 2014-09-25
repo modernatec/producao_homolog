@@ -1,6 +1,6 @@
 <div class="boxwired round hide" id="form_status" style="overflow:auto;">
 	<label><b>alterar status</b></label><hr/>
-	<form name="frmAlteraStatus" id="frmAlteraStatus"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus" method="post" class="form" enctype="multipart/form-data">
+	<form name="frmAlteraStatus" id="frmAlteraStatus" action="<?=URL::base();?>admin/objects/updateStatus" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$obj->id?>">
 		<dl>
 			<div class="left">

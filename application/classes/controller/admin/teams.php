@@ -89,7 +89,7 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			$team->save();
 			$db->commit();
 			
-			$msg = "Equipe '{$team->name}' salva com sucesso.";
+			$msg = "time salvo com sucesso.";
 			//Utils_Helper::mensagens('add',$message);
 			//Request::current()->redirect('admin/teams');
 			
@@ -111,7 +111,7 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/teams/index/ajax',				
+			'content' => URL::base().'admin/teams/index/ajax',				
 			'msg' => $msg,
 		));
 

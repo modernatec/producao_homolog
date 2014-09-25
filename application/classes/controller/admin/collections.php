@@ -93,14 +93,9 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$colecao->save();
 			
 			$db->commit();
+			$msg = "coleção salva com sucesso.";
 			//Utils_Helper::mensagens('add','Coleção '.$colecao->name.' salvo com sucesso.');
 			//Request::current()->redirect('admin/collections');
-
-			header('Content-Type: application/json');
-			echo json_encode(array(
-				'esquerda' => URL::base().'admin/collections/index/ajax',				
-				'msg' => "coleção salva com sucesso.",
-			));
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -108,15 +103,20 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'content' => URL::base().'admin/collections/index/ajax',				
+			'msg' => $msg,
+		));
 
         return false;
 	}
@@ -138,7 +138,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/collections/index/ajax',				
+			'content' => URL::base().'admin/collections/index/ajax',				
 			'msg' => $msg,
 		));
 		//Request::current()->redirect('admin/collections');

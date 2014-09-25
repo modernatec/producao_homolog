@@ -103,7 +103,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/typeobjects/index/ajax',				
+			'content' => URL::base().'admin/typeobjects/index/ajax',				
 			'msg' => "Segmento salvo com sucesso.",
 		));
 	}
@@ -127,7 +127,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/typeobjects/index/ajax',				
+			'content' => URL::base().'admin/typeobjects/index/ajax',				
 			'msg' => $msg,
 		));
 	}

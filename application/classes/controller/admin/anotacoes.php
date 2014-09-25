@@ -70,27 +70,25 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 			
 			$db->commit();
 
-			$message = "Anotação salva com sucesso.";
-			Utils_Helper::mensagens('add',$message);
-			//Request::current()->redirect('admin/objects/view/'.);
-
-			echo URL::base().'admin/objects/view/'.$this->request->post('object_id');
-
+			$msg = "anotação salva com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),				
+			'msg' => $msg,
+		));
 
         return false;
 	}
@@ -98,22 +96,28 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 	public function action_delete($id)
 	{
 		$this->auto_render = false;
-		try 
-		{            
-			$anotacao = ORM::factory('anotacoes_object', $id);
-			$object_id = $anotacao->object_id;
-			$anotacao->delete();
-			$message = "anotação excluída com sucesso.";
-		
-			Utils_Helper::mensagens('add',$message); 
-			//Request::current()->redirect('admin/objects/view/'.$object_id);
 
-			echo URL::base().'admin/objects/view/'.$object_id;
+		$anotacao = ORM::factory('anotacoes_object', $id);
+		$object_id = $anotacao->object_id;
+		try 
+		{          
+			$anotacao->delete();
+			$msg = "anotação excluída com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			$message = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros<br/><br/>'.$erroList;
+            $db->rollback();
 		}
-		Utils_Helper::mensagens('add',$message); 
+
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'direita' => URL::base().'admin/objects/view/'.$object_id,				
+			'msg' => $msg,
+		));
 	}
 
 

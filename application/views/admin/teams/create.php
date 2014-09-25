@@ -1,4 +1,4 @@
-<form name="frmTeam" id="frmTeam" method="post" class="form" enctype="multipart/form-data">
+<form name="frmTeam" id="frmTeam" method="post" class="form" action="<?=URL::base();?>admin/teams/edit/<?=@$teamVO["id"]?>" enctype="multipart/form-data">
   <dl>
     <dt>
       <label for="name">Equipe</label>
@@ -19,7 +19,7 @@
       <span class='error'><?=Arr::get($errors, 'userInfo');?></span>
     </dd>	    
     <dd>
-      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
+        <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
     </dd>
   </dl>
 </form>

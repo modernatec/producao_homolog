@@ -4,8 +4,9 @@
 			<?=count($objectsList)?> objetos encontrados 
 			<a class="bar_button round green" href='<?=URL::base();?>admin/objects/getObjects/<?=$reset?>' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
 		</div>
+		<div class="filters">
 		<form action='<?=URL::base();?>admin/objects/getObjects/<?=$action?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
-			<div class="filters">
+			
 				<div>
 					<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="<?=$filter_taxonomia?>" >
 	       			<input type="submit" class="round bar_button left" value="OK"> 
@@ -128,8 +129,9 @@
 				        </li>
 				    </ul>
 				</div>
-			</div>
+			
 		</form>	
+		</div>
 	</div>
 	<div class="scrollable_content list_body">
 	    <? 

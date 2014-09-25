@@ -158,7 +158,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/projects/index/ajax',				
+			'content' => URL::base().'admin/projects/index/ajax',				
 			'msg' => $msg,
 		));
 

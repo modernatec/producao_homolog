@@ -884,6 +884,7 @@ a.green{
 	padding: 8px;
 	border: 1px solid #008fc7;
 	width: 512px;	
+	display: inline-block;
 	position: relative;
 	z-index: 1;
 }
@@ -974,9 +975,9 @@ a.green{
 }
 
 .filters{
-	padding-top: 10px;
+	padding-top: 8px;
 	position: relative;
-	height: 60px;
+	z-index: 2;
 }
 
 .filter{
@@ -986,6 +987,7 @@ a.green{
 	display: block;
 	cursor: pointer;
 	position: relative;
+
 }
 
 .filter ul li{

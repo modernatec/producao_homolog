@@ -50,7 +50,7 @@ function validateAjax(){
             crono_date: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
-            console.log('validate frmStatus');
+            //console.log('validate frmStatus');
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form);
             return false;       
@@ -250,6 +250,14 @@ function validateAjax(){
     
 
     $("#formEndTask").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form);
+            return false;       
+        }
+    });
+
+    $("#frmTeam").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form);

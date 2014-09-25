@@ -14,7 +14,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	public function action_index($ajax = null)
 	{	
-		$this->setRefresh();
+		//$this->setRefresh();
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 
@@ -174,10 +174,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	        $db = Database::instance();
 	        $db->begin();
 			
-			try {  
-				
-				$task = ORM::factory('task', $id);
-				
+			$task = ORM::factory('task', $id);
+			$object_id = $task->object_id;
+			try {  						
 				$task->values($this->request->post(), array(
 					'object_id',
 					'object_status_id',
@@ -194,6 +193,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	            }
 
 	            $task->save();  
+	            $object_id = $task->object_id;
 
 	            if(empty($id)){
 	            	/*
@@ -232,28 +232,25 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	            $db->commit();
 
-	            $message = "Tarefa salva com sucesso."; 
-				
-				Utils_Helper::mensagens('add',$message);
-	            //Request::current()->redirect('admin/objects/view/'.$task->object_id);
-	            echo URL::base().'admin/objects/view/'.$task->object_id;
-
+	            $msg = "Tarefa salva com sucesso."; 
 	        } catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
 				foreach($errors as $erro){
 					$erroList.= $erro.'<br/>';	
 				}
-	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-			    Utils_Helper::mensagens('add',$message);  
 	            $db->rollback();
+	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 	        } catch (Database_Exception $e) {
-	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-				Utils_Helper::mensagens('add',$message);
 	            $db->rollback();
+	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
 
+	        header('Content-Type: application/json');
+			echo json_encode(array(
+				'direita' => URL::base().'admin/objects/view/'.$object_id,				
+				'msg' => $msg,
+			));
 	        
 	        return false;
 	    }
@@ -261,15 +258,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	
 	public function action_delete($id){    
 		$this->auto_render = false;
-
 		$db = Database::instance();
         $db->begin();
 		
-		try {  
-			
-			$task = ORM::factory('task', $id);
-			$object_id = $task->object_id;
-			
+		$task = ORM::factory('task', $id);
+		$object_id = $task->object_id;
+
+		try {  	
 			$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $id)->find_all();
 			foreach($task_status as $status){
 				$status->delete();
@@ -279,28 +274,26 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
             $db->commit();
 
-            $message = "Tarefa excluída com sucesso."; 
-			
-			Utils_Helper::mensagens('add',$message);
-            //Request::current()->redirect('admin/objects/view/'.$object_id);
-            echo URL::base().'admin/objects/view/'.$object_id;
-            
+            $msg = "Tarefa excluída com sucesso."; 
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    Utils_Helper::mensagens('add',$message);  
             $db->rollback();
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			Utils_Helper::mensagens('add',$message);
             $db->rollback();
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
         }
 
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'direita' => URL::base().'admin/objects/view/'.$object_id,				
+			'msg' => $msg,
+		));
         
         return false;	        
 	}

@@ -1,38 +1,40 @@
-<div class="list_header round">
-	<div class="table_info round">
-		<?=count($suppliersList)?> objetos encontrados 
-		<a class="bar_button round green" href='<?=URL::base();?>admin/suppliers/getSuppliers' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
-	</div>
-	<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
-		<div class="filters">
-			<div class="left">
-				<input type="text" class="round left" style="width:135px" placeholder="empresa" name="empresa" value="<?=$filter_empresa?>" >
-       		</div>
-			<div class="left">
-				<input type="text" class="round left" style="width:135px" placeholder="contato" name="contato" value="<?=$filter_contato?>" >
-       			<input type="submit" class="round bar_button left" value="OK"> 
-       		</div>
+<div class="fixed clear">
+	<div class="list_header round">
+		<div class="table_info round">
+			<?=count($suppliersList)?> objetos encontrados 
+			<a class="bar_button round green" href='<?=URL::base();?>admin/suppliers/getSuppliers' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
 		</div>
-	</form>	
-</div>
-<div class="list_body">
-    <? 
-	if(count($suppliersList) <= 0){
-		echo '<span class="list_alert round">nenhum registro encontrado</span>';	
-	}else{
-	?>
-	<ul class="list_item">
-		<? foreach($suppliersList as $supplier){?>
-		<li>
-			<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
-				<div>
-					<p><span class="<?=$supplier->team->color?> round list_faixa"><?=$supplier->team->name?></span> <b><?=$supplier->empresa?></b></p>					
-					<p><?=$supplier->contato->nome?> &bull; <?=$supplier->contato->telefone?></p>
-					<p><?=$supplier->contato->email?></p>
-				</div>
-			</a>
-		</li>
+		<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
+			<div class="filters">
+				<div class="left">
+					<input type="text" class="round left" style="width:135px" placeholder="empresa" name="empresa" value="<?=$filter_empresa?>" >
+	       		</div>
+				<div class="left">
+					<input type="text" class="round left" style="width:135px" placeholder="contato" name="contato" value="<?=$filter_contato?>" >
+	       			<input type="submit" class="round bar_button left" value="OK"> 
+	       		</div>
+			</div>
+		</form>	
+	</div>
+	<div class="list_body scrollable_content">
+	    <? 
+		if(count($suppliersList) <= 0){
+			echo '<span class="list_alert round">nenhum registro encontrado</span>';	
+		}else{
+		?>
+		<ul class="list_item">
+			<? foreach($suppliersList as $supplier){?>
+			<li>
+				<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
+					<div>
+						<p><span class="<?=$supplier->team->color?> round list_faixa"><?=$supplier->team->name?></span> <b><?=$supplier->empresa?></b></p>					
+						<p><?=$supplier->contato->nome?> &bull; <?=$supplier->contato->telefone?></p>
+						<p><?=$supplier->contato->email?></p>
+					</div>
+				</a>
+			</li>
+			<?}?>
+		</ul>
 		<?}?>
-	</ul>
-	<?}?>
+	</div>
 </div>

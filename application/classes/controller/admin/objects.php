@@ -240,10 +240,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			$db = Database::instance();
 	        $db->begin();
-			
+
+			$object = ORM::factory('objects_statu', $id);
 			try 
 			{ 
-				$object = ORM::factory('objects_statu', $id)->values($this->request->post(), array( 
+				$object->values($this->request->post(), array( 
 		                    'object_id', 
 		                    'status_id',
 		                    'prova',
@@ -256,25 +257,25 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				
 				$object->save();				
 				$db->commit();
-				//Request::current()->redirect('admin/objects/view/'.$object->object_id);
-				Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
-				echo URL::base().'admin/objects/view/'.$object->object_id;
-
+				$msg = 'objeto salvo com sucesso.';
 			} catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
 				foreach($errors as $erro){
 					$erroList.= $erro.'<br/>';	
 				}
-	            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-			    Utils_Helper::mensagens('add',$message);    
 	            $db->rollback();
+	            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
 	        } catch (Database_Exception $e) {
-	            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	            Utils_Helper::mensagens('add',$message);
 	            $db->rollback();
+	            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
+
+	        header('Content-Type: application/json');
+			echo json_encode(array(
+				'direita' => URL::base().'admin/objects/view/'.$object->object_id,				
+				'msg' => $msg,
+			));
 
 	        return false;	
 	    }
@@ -286,11 +287,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$db = Database::instance();
         $db->begin();
 		
+		$object_status = ORM::factory('objects_statu', $id);
+		$object_id = $object_status->object_id;
 		try {  
-			
-			$object_status = ORM::factory('objects_statu', $id);
-			$object_id = $object_status->object_id;
-			
 			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
 			foreach($tasks as $task){
 				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
@@ -305,11 +304,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
             $db->commit();
 
-            $message = "Status excluído com sucesso."; 
+            $msg = "Status excluído com sucesso."; 
 			
-			Utils_Helper::mensagens('add',$message);
+			//Utils_Helper::mensagens('add',$message);
             //Request::current()->redirect('admin/objects/view/'.$object_id);
-            echo URL::base().'admin/objects/view/'.$object_id;
+            //echo URL::base().'admin/objects/view/'.$object_id;
 
             
         } catch (ORM_Validation_Exception $e) {
@@ -318,16 +317,20 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);  
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+		    //Utils_Helper::mensagens('add',$message);  
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+			//Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'direita' => URL::base().'admin/objects/view/'.$object_id,				
+			'msg' => $msg,
+		));
         
         return false;	        
 	}
@@ -340,9 +343,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$db = Database::instance();
         $db->begin();
 		
+		$object = ORM::factory('object', $id);
 		try 
 		{            
-			$object = ORM::factory('object', $id)->values($this->request->post(), array( 
+			$object->values($this->request->post(), array( 
                     'title', 
                     'taxonomia', 
                     'typeobject_id', 
@@ -390,26 +394,26 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->save();
 			}
 
-			Utils_Helper::mensagens('add','Objeto salvo com sucesso.');
+			$msg = 'Objeto salvo com sucesso.';
 			$db->commit();
-			//Request::current()->redirect('admin/objects');
-			echo URL::base().'admin/objects/view/'.$object->id;
-
 		}  catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'direita' => URL::base().'admin/objects/view/'.$object->id,				
+			'msg' => $msg,
+		));
 
         return false;
 	}

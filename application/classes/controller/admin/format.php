@@ -110,7 +110,7 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/format/index/ajax',				
+			'content' => URL::base().'admin/format/index/ajax',				
 			'msg' => "formato salvo com sucesso.",
 		));
 
@@ -133,7 +133,7 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/format/index/ajax',				
+			'content' => URL::base().'admin/format/index/ajax',				
 			'msg' => $msg,
 		));
 		

@@ -88,12 +88,7 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			$db->commit();
 			//Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
 			//Request::current()->redirect('admin/materias');
-
-			header('Content-Type: application/json');
-			echo json_encode(array(
-				'esquerda' => URL::base().'admin/materias/index/ajax',				
-				'msg' => "matéria salva com sucesso.",
-			));
+			$msg = "matéria salva com sucesso.";		
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -101,15 +96,20 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
+            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
+		    ///Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+		echo json_encode(array(
+			'content' => URL::base().'admin/materias/index/ajax',				
+			'msg' => $msg,
+		));
 
         return false;
 	}
@@ -132,7 +132,7 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 		//Request::current()->redirect('admin/materias');
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/materias/index/ajax',				
+			'content' => URL::base().'admin/materias/index/ajax',				
 			'msg' => $msg,
 		));
 	}
