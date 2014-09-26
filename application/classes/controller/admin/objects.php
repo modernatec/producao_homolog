@@ -441,23 +441,34 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->project_id = $project_id;
 		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
 
-		$filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
-		$filter_collection = ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : json_encode(array());
-
 		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
 		$status_arr = array();
 		foreach ($status_init as $status) {
 			array_push($status_arr, $status->id);
 		}
 
-		$filter_status = ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : json_encode($status_arr);
-		$filter_supplier = ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : json_encode(array());
-		$filter_taxonomia = ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : "";
-		
-		$filter_origem = ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : json_encode(array());		
-		$filter_materia = ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : json_encode(array());
+		/*filtros*/
+		$kaizen_arr = array(
+			"filtros" => array(
+				"filter_tipo" => ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : Session::instance()->get('kaizen')['filtros']["filter_tipo"],
+				"filter_collection" => ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : Session::instance()->get('kaizen')['filtros']["filter_collection"],
+				"filter_status" => ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : Session::instance()->get('kaizen')['filtros']["filter_status"],
+				"filter_supplier" => ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : Session::instance()->get('kaizen')['filtros']["filter_supplier"],
+				"filter_taxonomia" => ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : Session::instance()->get('kaizen')['filtros']["filter_taxonomia"],
+				"filter_origem" => ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : Session::instance()->get('kaizen')['filtros']["filter_origem"],	
+				"filter_materia" => ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : Session::instance()->get('kaizen')['filtros']["filter_materia"],
+			),
+			"model" => "objects",
+		);
+  		Session::instance()->set('kaizen', $kaizen_arr);
 
-		
+		$filter_tipo = Session::instance()->get('kaizen')['filtros']["filter_tipo"];
+		$filter_collection = Session::instance()->get('kaizen')['filtros']["filter_collection"];
+		$filter_status = Session::instance()->get('kaizen')['filtros']["filter_status"];
+		$filter_supplier = Session::instance()->get('kaizen')['filtros']["filter_supplier"];
+		$filter_taxonomia = Session::instance()->get('kaizen')['filtros']["filter_taxonomia"];		
+		$filter_origem = Session::instance()->get('kaizen')['filtros']["filter_origem"];
+		$filter_materia = Session::instance()->get('kaizen')['filtros']["filter_materia"];
 
 		$view->action = $project_id.'?fase='.$view->fase
 						.'&tipo='.$filter_tipo
