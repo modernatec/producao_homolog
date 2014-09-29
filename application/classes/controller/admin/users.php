@@ -272,7 +272,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             // If successful, redirect user
             if ($user) 
             {
-				Request::current()->redirect('admin/tasks');
+				Request::current()->redirect('admin/tasks/#tasks');
             } 
             else
             {

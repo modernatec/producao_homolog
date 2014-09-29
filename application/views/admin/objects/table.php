@@ -1,12 +1,17 @@
 <div class="fixed clear">
 	<div class="list_header round">
 		<div class="table_info round">
-			<?=count($objectsList)?> objetos encontrados 
-			<a class="bar_button round green" href='<?=URL::base();?>admin/objects/getObjects/<?=$reset?>' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
+			<div class="left"><?=count($objectsList)?> objetos encontrados</div>
+			<div class="left">
+				<form action='<?=URL::base();?>admin/objects/getObjects/<?=$project_id?>' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
+					<input type="hidden" name="reset_form" value="true">
+					<input type="submit" class="bar_button round green" value="limpar filtros" />
+				</form>
+			</div>
 		</div>
-		<div class="filters">
-		<form action='<?=URL::base();?>admin/objects/getObjects/<?=$action?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
-			
+		<div class="filters clear">
+		<form action='<?=URL::base();?>admin/objects/getObjects/<?=$project_id?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
+				<input type="hidden" name="project_id" value="<?=$project_id?>">
 				<div>
 					<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="<?=$filter_taxonomia?>" >
 	       			<input type="submit" class="round bar_button left" value="OK"> 

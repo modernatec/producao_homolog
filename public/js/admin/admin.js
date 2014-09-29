@@ -189,6 +189,14 @@ $(document).ready(function()
     if(window.location.hash != ""){
         loadContent(base_url + '/admin/' + window.location.hash.replace('#', '') + '/index/ajax' , '#content');
     }
+
+    if($('#login').length != 0){
+        $('#login').css({
+            "margin-top": ($(window).height() / 2),
+            "margin-left": ($(window).width() / 2) - ($('#login').css('width').replace('px', '') / 2) - 130,
+        }); 
+    }
+
     
     //setupAjax('#content');
 });
@@ -422,8 +430,25 @@ function ajaxPost(form){
         dataType : "json",
         success: function(data) {
             setDataPanels(data);
-            //
-            //$('input[type=submit]').prop("disabled", null );
+            $('input[type=submit]').prop("disabled", '' );
+        },
+        error: function(e) {
+            console.log(e);
+            alert("ocorreu um erro.");
+        }
+    });    
+}
+
+function ajaxReload(form){    
+    //console.log('chamou reload')
+    $.ajax({
+        type: "POST",
+        url: $(form).attr('action'),
+        data: $(form).serialize(),
+        timeout: 10000, 
+        success: function(retorno) {
+            reloadContent(retorno, $(form).data('panel'));
+            $('input[type=submit]').prop("disabled", '' );
         },
         error: function(e) {
             console.log(e);
@@ -473,6 +498,12 @@ function setDataPanels(data){
         }else{
             //$('#direita').fadeOut();
         }
+
+        if(data.tabs_content){
+            loadContent(data.tabs_content, '#tabs_content');
+        }else{
+            //$('#direita').fadeOut();
+        }
     }
 
     if(data.msg){
@@ -481,32 +512,33 @@ function setDataPanels(data){
 }
 
 function reloadContent(data, container){
+    $(container).html("<div class='loading'>loading...</div>"); 
     $('#dialog, ui-dialog').remove();
+
+    if($(container + " .mCSB_container").length > 0){
+        holder = container + " .mCSB_container";
+    }else{
+        holder = container;
+    }
+
+    
+    $(holder).hide(400, function(){
+        $(holder).html( data );
+    }).fadeIn(500, function(){
+        setupAjax(container);   
+    });  
+
+    /*
     $(container).fadeOut(function(){
         $(container + " .mCSB_container").html( data );
         $(container).slideDown(function(){
             setupAjax();
         });         
-    });    
+    });
+    */    
 }
 
-function ajaxReload(form){    
-    //console.log('chamou reload')
-    $.ajax({
-        type: "POST",
-        url: $(form).attr('action'),
-        data: $(form).serialize(),
-        timeout: 10000, 
-        success: function(retorno) {
-            reloadContent(retorno, $(form).data('panel'));
-            $('input[type=submit]').prop("disabled", null );
-        },
-        error: function(e) {
-            console.log(e);
-            alert("ocorreu um erro.");
-        }
-    });    
-}
+
 
 
 

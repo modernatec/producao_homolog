@@ -92,7 +92,9 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/css/admin/nested.css' => 'screen',
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/common/jquery.jgrowl.css' => 'screen',
+
 				'public/css/admin/masterpage.css' => 'screen',
+				'public/css/admin/login.css' => 'screen',
 
             );
 

@@ -1,6 +1,7 @@
 <div id='login'>
+
 	<form action="<?=URL::base();?>login/" name="frmAcesso" id="frmAcesso" method="post">
-	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
+	  
 	  <dl>
 	    <dt>
 	      <label for="strUsuario">Usuário: </label>

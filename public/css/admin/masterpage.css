@@ -256,7 +256,6 @@ a{
 
 .content{
 	position: relative;
-	float: left;
 	left: 135px;
 	padding: 4px 8px;
 	overflow: hidden;
@@ -1136,6 +1135,8 @@ a.green{
 	background: #f3f3f3;
 	border-bottom: 1px dotted #eee;
 	padding: 8px;
+	overflow: auto;
+	line-height: 25px;
 }
 
 

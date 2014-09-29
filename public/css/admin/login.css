@@ -1,10 +1,9 @@
 #login{
-	min-height: 400px;
+	height: 200px;
 	padding: 5px;
-	top: 50%;
-	left: 50%;
-    -moz-box-sizing: border-box;
+    display: inline-block;
 }
+
 
 #login dd, #login dt{
 	float:left;
@@ -27,6 +26,7 @@
 #login input[type='submit']{
 	margin-left: 10px;
 }
+
 
 /*
 h1.logo{

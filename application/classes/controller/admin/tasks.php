@@ -248,7 +248,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	        header('Content-Type: application/json');
 			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$object_id,				
+				'direita' => URL::base().'admin/objects/view/'.$object_id,	
+				'tabs_content' => URL::base().'admin/objects/getObjects/',				
 				'msg' => $msg,
 			));
 	        
@@ -291,7 +292,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,				
+			'direita' => URL::base().'admin/objects/view/'.$object_id,	
+			'tabs_content' => URL::base().'admin/objects/getObjects/',				
 			'msg' => $msg,
 		));
         
