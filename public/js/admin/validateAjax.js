@@ -281,6 +281,16 @@ function validateAjax(){
         }
     });
 
+    $("#frm_reset_suppliers").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
+
+    
+
     
 
     $("#frm_suppliers").validate({

@@ -451,8 +451,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($status_arr, $status->id);
 		}
 
-		if(Session::instance()->get('kaizen')['filtros']["filter_tipo"] == "" || $this->request->post('reset_form') != ""){
-			
+		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "objects"){		
 			$kaizen_arr = array(
 				"filtros" => array(
 					"filter_tipo" => json_encode(array()),
