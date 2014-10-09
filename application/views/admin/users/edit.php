@@ -1,9 +1,4 @@
-<div class="content">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/users" class="bar_button round">Voltar</a>
-	</div>
-    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
-	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
+    <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/edit/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
 	  	<div class="left">	
 		    <img class="foto_form" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />		    
@@ -32,21 +27,7 @@
 		      <span class='error'><?=Arr::get($errors, 'email');?></span>
 		    </dd>  
 		</div>  	
-		<div class="left">   
-		    <dt>
-		      <label for="team">equipe</label>
-		    </dt>
-		    <dd>
-	        	<input type="hidden" name="team" id="team" value="<?=$userInfoVO["team_id"]?>" />
-				<?
-	            	foreach($teamsList as $team){
-						if($userInfoVO["team_id"] == $team->id){
-							echo $team->name;	
-						}
-					}
-	            ?>
-		    </dd>
-		</div>
+		
 	    <div class="clear left">
 		    <dt>
 				<label for="telefone">Telefone</label>
@@ -78,6 +59,21 @@
 				<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
 		    </dd>
 	    </div>
+	    <div class="clear left">   
+		    <dt>
+		      <label for="team">equipe</label>
+		    </dt>
+		    <dd>
+	        	<input type="hidden" name="team" id="team" value="<?=$userInfoVO["team_id"]?>" />
+				<?
+	            	foreach($teamsList as $team){
+						if($userInfoVO["team_id"] == $team->id){
+							echo $team->name;	
+						}
+					}
+	            ?>
+		    </dd>
+		</div>
 	    <div class="clear">	    
 	        <dt>
 		      <label for="username">Username</label>
@@ -90,11 +86,10 @@
 		    </dd>  
   		</div>
         <dt>
-	      <a href="<?=URL::base();?>users/editPass" class="bar_button round">Alterar senha</a>
+	      <a href="<?=URL::base();?>users/editPass" rel="load-content" data-panel="#direita" class="bar_button round">Alterar senha</a>
 	    </dt>              
 	    <dd>
 			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<?=(@$isUpdate) ? "Salvar" : "Criar"?>" />
 	    </dd>	
 	  </dl>
 	</form>
-</div>

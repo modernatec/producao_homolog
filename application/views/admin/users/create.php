@@ -2,8 +2,7 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/users" class="bar_button round">voltar</a>
 	</div>
-    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
-	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
+    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" action="<?=URL::base();?>admin/users/edit/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
 	  	<div class="left">	    
 		    <div class="foto_form" style="background: url('<?=URL::base();?><?=@$userInfoVO["foto"]?>') no-repeat;"></div> 	

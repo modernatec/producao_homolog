@@ -82,8 +82,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			array_push($formats_arr, $value->format_id);
 		}
 		$view->formats_arr = $formats_arr;
-		
-
 
 		//ORM::factory('supplier', $id);	
 		$view->current_auth = $this->current_auth;
@@ -196,7 +194,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'esquerda' => URL::base().'admin/suppliers/index/ajax',				
+			'content' => URL::base().'admin/suppliers/index/ajax',				
 			'msg' => $msg,
 		));
 

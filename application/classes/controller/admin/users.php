@@ -37,16 +37,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	/*
     * Editar usuarios *
     */
-	public function action_edit($userInfo_id, $view = NULL)
+	public function action_edit($userInfo_id)
     {
         if (HTTP_Request::POST == $this->request->method())
         {                                              
             $this->salvar($userInfo_id);
         }else{
     		$this->auto_render = false;
-            if(!$view)
-    			$view = View::factory('admin/users/create');
-        	            
+   			$view = View::factory('admin/users/edit');        	            
     		$view->bind('errors', $errors)
                 ->bind('message', $message);
     		
@@ -86,7 +84,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-        $this->addValidateJs("public/js/admin/validateUsers.js");
+        //$this->addValidateJs("public/js/admin/validateUsers.js");
         $view->teamsList    = ORM::factory('team')->find_all();
         $view->rolesList    = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
         $view->userInfoVO   = $this->setVO('userInfo');
@@ -110,34 +108,45 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	* Alterar senha *
 	*/
 	public function action_editPass(){
-		$view = View::factory('admin/users/edit_login');
-		
-		$view->bind('errors', $errors)
-            ->bind('message', $message);
-		
-		$view->userInfoVO = $this->setVO('user', $this->current_user);
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
+        $this->auto_render = false;
+        if (HTTP_Request::POST == $this->request->method()) 
         {                                              
-           	/* Atualizando usuários */
-			if($this->request->post('password')!== ''){				
-				$this->current_user->values($this->request->post(), array(
-					'username',
-					'password'          
-				))->save();
-				
-				Utils_Helper::mensagens('add',"Senha alterada com sucesso.");
-			}
-			
-			Request::current()->redirect('admin');
-        }             
-		
+            /* Atualizando usuários */
+            if($this->request->post('password')!== ''){             
+                $this->current_user->values($this->request->post(), array(
+                    'username',
+                    'password'          
+                ))->save();
+                
+                $msg = "senha alterada com sucesso.";
+            }else{
+                $msg = "ocorreu um erro";
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'content' => URL::base().'admin/users/index/ajax',              
+                'msg' => $msg,
+            ));
+
+        }else{
+    		$view = View::factory('admin/users/edit_login');
+    		
+    		$view->bind('errors', $errors)
+                ->bind('message', $message);
+    		
+    		$view->userInfoVO = $this->setVO('user', $this->current_user);
+    		echo $view;
+        }
+
+
+        return false;		
 	}
       
 
     protected function salvar($userInfo_id = null)
     {
+        $this->auto_render = false;
         $db = Database::instance();
         $db->begin();
 		
@@ -185,34 +194,32 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             }
             
 			$db->commit();
-            Utils_Helper::mensagens('add',"Usuário salvo com sucesso.");       
-            
-            if($this->current_auth == "assistente"){
-	            Request::current()->redirect('admin');
-			}else{
-	            Request::current()->redirect('admin/users');
-			}
-			
-
+            $msg = "Usuário salvo com sucesso.";
         } catch (ORM_Validation_Exception $e) {
-            $message = 'Houveram alguns erros';
+            $msg = 'Houveram alguns erros';
             $errors = $e->errors('models');
 
             if($errors['username']){
-                $message .= '<br/><br/>'.$errors['username'];
+                $msg .= '<br/><br/>'.$errors['username'];
             }
             if($errors['_external']){
                 if($errors['_external']['password']){
-                    $message .= '<br/><br/>'.$errors['_external']['password'];
+                    $msg .= '<br/><br/>'.$errors['_external']['password'];
                 }
             }
-            Utils_Helper::mensagens('add',$message);    
+            
             $db->rollback();
         } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
+            $msg = 'Houveram alguns erros <br/><br/>'.$e->getMessage();
+            
             $db->rollback();
         }
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'content' => URL::base().'admin/users/index/ajax',              
+            'msg' => $msg,
+        ));
 
         return false;
     }

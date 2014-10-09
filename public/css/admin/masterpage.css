@@ -848,6 +848,11 @@ a.green{
 	color: #fff;
 }
 
+.text_blue{
+	background: none;
+	color: #008fc7;
+}
+
 .stepList{
 	display: inline-table;
 	width: 70px;

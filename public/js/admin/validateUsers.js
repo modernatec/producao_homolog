@@ -1,4 +1,5 @@
 $(document).ready(function() {
+        /*
         $("#frmCreateUsers").validate({            
             ignore: ".ignore",
             rules: {
@@ -15,7 +16,7 @@ $(document).ready(function() {
                 email: {
                     required:true,
                     email:true
-                }*/
+                }*
             },
             messages: {
                 username: { required:"Digite o username."},
@@ -31,10 +32,11 @@ $(document).ready(function() {
                 email: {
                     required:"Digite o e-mail.",
                     email:"Digite um e-mail válido."
-                }*/
+                }*
             },
             submitHandler: function(form){
               checkUpload(form);
             }
-        })        
+        })   
+        */     
 });
