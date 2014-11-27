@@ -212,8 +212,8 @@ function setupScroll(){
 
 function setupAjax(container){   
     if($('#direita').length != 0){
-        $('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
-        $('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
+        //$('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
+        //$('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
     }
 
     //$('.list_body').css('padding-top', $('.list_header').height() + 20);

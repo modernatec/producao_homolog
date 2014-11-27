@@ -1,28 +1,30 @@
 <?if($current_auth != "assistente" || $current_auth == "coordenador" || $current_auth == "admin"){?>
-	<div class="clear" id='topo'>
-		<div class="left">
-			<div class="round_imgDetail blue">
-				<a href="<?=URL::base();?>admin/tasks/">
-					<img class="round_imgList" src="<?=URL::base();?>public/image/admin/default.png" height="20" style="float:left" alt="produção">
-					<div class="badge orange"><?=$totalTasks?></div>
-					<span>produção</span>				
-				</a>
+	<div class="topo">
+		<div style="padding-top:14px;">
+			<div class="left">
+				<div class="round_imgDetail blue">
+					<a href="<?=URL::base();?>admin/tasks/">
+						<img class="round_imgList" src="<?=URL::base();?>public/image/admin/default.png" height="20" style="float:left" alt="produção">
+						<div class="badge orange"><?=$totalTasks?></div>
+						<span>produção</span>				
+					</a>
+				</div>
+				
 			</div>
-			
-		</div>
-		<?foreach ($has_task as $user_task) {?>
-		<div class="left">
+			<?foreach ($has_task as $user_task) {?>
+			<div class="left">
 
-			<div class="round_imgDetail <?=$user_task->to->team->color?>">
-				<a href="<?=URL::base();?>admin/tasks/?to=<?=$user_task->to->id?>">
-					<img class='round_imgList' src='<?=URL::base();?><?=($user_task->to->foto)?($user_task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($user_task->to->nome);?>" />
-					<div class="badge orange"><?=$user_task->getUserTasks($user_task->task_to)?></div>
-					<span><?$nome = explode(" ", $user_task->to->nome); echo $nome[0];?></span>				
-				</a>
+				<div class="round_imgDetail <?=$user_task->to->team->color?>">
+					<a href="<?=URL::base();?>admin/tasks/?to=<?=$user_task->to->id?>">
+						<img class='round_imgList' src='<?=URL::base();?><?=($user_task->to->foto)?($user_task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($user_task->to->nome);?>" />
+						<div class="badge orange"><?=$user_task->getUserTasks($user_task->task_to)?></div>
+						<span><?$nome = explode(" ", $user_task->to->nome); echo $nome[0];?></span>				
+					</a>
+				</div>
+				
 			</div>
-			
+			<?}?>
 		</div>
-		<?}?>
 	</div>
 <?}?> 
 <div id="esquerda">

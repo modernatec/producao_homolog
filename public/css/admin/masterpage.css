@@ -9,7 +9,7 @@
 }
 
 body{
-	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
+	/*background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;*/
 	/*background: #f1f2f7;*/
 	/*color: #767676;*/
 }
@@ -18,15 +18,52 @@ body{
 	overflow: hidden;
 }
 
-#head{
-	position: fixed;
-	width: 136px;
-	color: #fff;
-	float: left;
-	background: #22262e;
-	box-shadow: 0 0 5px 1px rgba(0,0,0, .8);
+#lateral{
+	width: 150px;
+	position: absolute;
+	height: auto;
+	top:0;
+	bottom: 0;
+	color: #000;
+	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
+	/*border-right: 1px solid #f1f1f1;*/
+	border-right: 1px dotted #008fc7;
+	/*box-shadow: 0 0 5px 1px rgba(0,0,0, .8);*/
 
 }
+
+.topo{
+	padding: 0 5px;
+	height: 46px;
+	overflow: auto;
+	background: #f1f1f1;
+	position: absolute;
+	right: 0;
+	left: 151px;	
+}
+
+
+#esquerda{
+    overflow:hidden;
+    position: absolute;
+    min-width: 420px;
+    top:46px;
+    bottom: 0;
+    left: 151px;
+    border-right: 1px dotted #008fc7;
+    padding: 5px;
+}
+
+
+#direita{
+    overflow:hidden;
+    position: absolute;
+    top:46px;
+    bottom: 0;
+    left: 590px;
+    right: 0;
+}
+
 
 .wordwrap {
     white-space: pre-wrap; /* css-3 */
@@ -117,7 +154,6 @@ a.link:hover{color:#666; text-decoration: underline;}
 	color:#FFF;
 	overflow:hidden;
 	padding: 8px;
-	width: 120px;
 	height: 30px;
 }
 
@@ -170,27 +206,24 @@ a{
 
 #menu{
 	/*background: -webkit-linear-gradient(top, #008fc7, #06608d, #06608d);*/
-	width: 120px;
 	
 	padding:8px;
 	color:#FFF;
     /*box-shadow:0 2px 6px 2px rgba(0,0,0, .4);*/
 }
 
-#menu ul li{
-	padding:5px 4px;
-}
-
-#menu ul li:hover{
-	background: #008fc7;
-}
-
 #menu ul li a{
+	padding:5px 4px;
 	display: block;
+	color: #000;
+}
+
+#menu ul li a:hover{
+	background: #008fc7;
 	color: #fff;
 }
 
-.submenu li a{
+.submenu li{
 	padding-left: 15px;
 }
 /*
@@ -255,10 +288,11 @@ a{
 
 
 .content{
-	position: relative;
-	left: 135px;
-	padding: 4px 8px;
+	/*position: relative;*/
 	overflow: hidden;
+	/*background: #fafafa;*/
+	/*left: 138px;
+	padding: 4px 8px;*/
 }
 
 /*Content itens*/
@@ -268,9 +302,7 @@ a{
 .header{
 	padding:10px 0;
 	display:block;
-	font-weight:bold;
-	color: #008fc7;
-	border-bottom: 1px dotted #008fc7;
+	color: #333;
 }
 
 
@@ -332,26 +364,7 @@ a{
 	display: block;
 }
 
-#topo{
-	padding: 10px 0;
-	overflow: auto;
-}
 
-#esquerda{
-    overflow:hidden;
-    float: left;
-    position: relative;
-    border-right: 1px dotted #008fc7;
-    padding-right: 5px;
-}
-
-
-#direita{
-    overflow:hidden;
-    float: left;
-    position: relative;
-    padding-left: 5px;
-}
 
 
 .scrollable_content{
@@ -359,6 +372,11 @@ a{
     overflow:auto;
     width: 560px;
 }
+
+#esquerda .scrollable_content{
+    width: 418px;
+}
+
 
 
 .fixed{
@@ -887,7 +905,7 @@ a.green{
 	background: #fff;
 	padding: 8px;
 	border: 1px solid #008fc7;
-	width: 512px;	
+	width: 400px;	
 	display: inline-block;
 	position: relative;
 	z-index: 1;
@@ -916,7 +934,7 @@ a.green{
 	background: #fff; 
 	overflow: auto;
 	border: 1px #ddd solid;
-	min-width: 480px;
+	min-width: 370px;
 
 	-o-border-radius: 4px;
     -moz-border-radius: 4px;
