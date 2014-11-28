@@ -42,6 +42,10 @@ body{
 	left: 151px;	
 }
 
+.topo .tabs{
+	margin-top: 18px;
+}
+
 
 #esquerda{
     overflow:hidden;
@@ -51,6 +55,7 @@ body{
     bottom: 0;
     left: 151px;
     border-right: 1px dotted #008fc7;
+    /*box-shadow: 2px 2px 2px 1px rgba(0,0,0, .2);*/
     padding: 5px;
 }
 
@@ -62,7 +67,10 @@ body{
     bottom: 0;
     left: 590px;
     right: 0;
+    padding-right: 10px;
 }
+
+
 
 
 .wordwrap {
@@ -370,7 +378,7 @@ a{
 .scrollable_content{
 	position: relative;	
     overflow:auto;
-    width: 560px;
+    width: 100%;
 }
 
 #esquerda .scrollable_content{

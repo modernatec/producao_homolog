@@ -1,4 +1,4 @@
-<div class="fixed clear">
+<div class="clear">
 <div class="bar">
 	<a href="<?=URL::base();?>admin/objects/view/<?=@$objVO["id"]?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 </div>

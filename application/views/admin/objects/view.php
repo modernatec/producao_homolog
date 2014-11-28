@@ -1,4 +1,4 @@
-<div class="fixed clear">
+<div class="clear">
     <div class="bar">
     <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" class="bar_button round">editar OED</a>       
