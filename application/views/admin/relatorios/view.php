@@ -1,3 +1,6 @@
+<div class="topo" >
+    <span class="header">relatórios</span>
+</div>
 <div id="esquerda">
     <span class="header">relatórios</span>
     <form action="<?=URL::base();?>admin/relatorios/generate" method="post" class="form">

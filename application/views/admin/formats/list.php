@@ -1,3 +1,6 @@
+<div class="topo" >
+	<span class="header">formatos</span>
+</div>
 <div id="esquerda">
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a>

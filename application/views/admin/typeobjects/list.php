@@ -1,3 +1,6 @@
+<div class="topo" >
+	<span class="header">tipos de objetos</span>
+</div>
 <div id="esquerda">
 	<div class="fixed clear">
 		<div class="bar">

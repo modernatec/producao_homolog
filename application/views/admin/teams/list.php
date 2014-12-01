@@ -1,8 +1,10 @@
+<div class="topo" >
+	<span class="header">times</span>
+</div>
 <div id="esquerda">
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/teams/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar time</a>
 	</div>
-	<span class="header">equipes</span>
 	<ul class="list_item">
 		<? foreach($teamsList as $teams){?>
 		<li>

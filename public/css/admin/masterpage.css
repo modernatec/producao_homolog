@@ -67,7 +67,7 @@ body{
     bottom: 0;
     left: 590px;
     right: 0;
-    padding-right: 10px;
+    padding: 5px 10px 5px 0;
 }
 
 
@@ -912,6 +912,7 @@ a.green{
 .list_header{
 	background: #fff;
 	padding: 8px;
+	margin-bottom: 5px;
 	border: 1px solid #008fc7;
 	width: 400px;	
 	display: inline-block;
@@ -933,7 +934,6 @@ a.green{
 	color: #fff;
 	margin: 5px 0;
 	padding: 5px;
-	width: 520px;
 }
 
 .list_item li, .dd-item{
