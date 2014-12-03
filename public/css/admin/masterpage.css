@@ -37,6 +37,7 @@ body{
 	height: 46px;
 	overflow: auto;
 	background: #f1f1f1;
+
 	position: absolute;
 	right: 0;
 	left: 151px;	
@@ -226,10 +227,11 @@ a{
 	color: #000;
 }
 
-#menu ul li a:hover{
+#menu ul li a:hover, #menu a.selected{
 	background: #008fc7;
 	color: #fff;
 }
+
 
 .submenu li{
 	padding-left: 15px;
@@ -310,7 +312,7 @@ a{
 .header{
 	padding:10px 0;
 	display:block;
-	color: #333;
+	color: #008fc7;
 }
 
 
@@ -938,10 +940,9 @@ a.green{
 
 .list_item li, .dd-item{
 	margin: 5px 0;
-	padding: 5px;
 	background: #fff; 
 	overflow: auto;
-	border: 1px #ddd solid;
+	
 	min-width: 370px;
 
 	-o-border-radius: 4px;
@@ -951,6 +952,7 @@ a.green{
     border-radius: 4px;
 }
 
+
 .list_item li p, .list_body-list li p{
 	line-height: 20px;
 }
@@ -959,13 +961,33 @@ a.green{
 	float: left;
 }
 
-.list_item li, .dd-list li{ 
-	background: #f3f3f3; 
+.list_item li{ 
+	background: #f6f6f6; 
+}
+
+.load{
+	overflow: auto;
 }
 
 .list_item a{
+	padding: 5px;
 	color: #000;
+	display: block;
+	border: 1px #ddd solid;
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
 }
+
+.list_item a.selected{
+	background: #dfe9f3 !important;
+	border: 1px #008fc7 solid;
+}
+
+
 
 .list_order{
 	text-align: center;

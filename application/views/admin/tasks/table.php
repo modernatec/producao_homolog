@@ -20,6 +20,12 @@
             <li class="dd-item" id="item-<?=$task->id?>">
                 <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>" rel="load-content" data-panel="#direita" title="+ informações">
                 <!--div class="list_order left"><?=$key+1?></div-->
+                    <div class="left" style="width:350px;">
+                        <p><span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span> &bull; <?=$task->object->taxonomia;?>
+                        </p>
+                        <p>por: <?=$task->userInfo->nome?> em: <?=Utils_Helper::data($task->created_at, "d/m/Y - H:i")?></p>
+                        
+                    </div>
                     <div class="left" style="width:100px;">           
                         <? 
                             if($task->task_to != "0"){
@@ -31,12 +37,7 @@
                                     </div>
                             <?}else{ echo "&nbsp;";}?>
                     </div>
-                    <div class="left" style="width:350px;">
-                        <p><span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span> &bull; <?=$task->object->taxonomia;?>
-                        </p>
-                        <p>por: <?=$task->userInfo->nome?> em: <?=Utils_Helper::data($task->created_at, "d/m/Y - H:i")?></p>
-                        
-                    </div>
+                    
                     <div class="left">
                         <p class="<?=$task->status->class?> round list_faixa">para: <?=Utils_Helper::data($task->crono_date)?> &bull; <?=$task->status->status;?></p>
                     </div>

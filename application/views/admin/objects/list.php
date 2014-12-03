@@ -2,7 +2,7 @@
     <div class="clear left">
         <ul class="tabs">
             <? foreach($projectList as $key=>$project){?>
-            <li class="round"><a class="ajax" id='tab_<?=$key+1;?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
+            <li class="round"><a class="ajax" data-clear="#direita" id='tab_<?=$key+1;?>' href='<?=URL::base();?>admin/objects/getObjects/<?=$project->id?>' ><?=$project->name?></a></li>
             <?}?>
         </ul>  
     </div>

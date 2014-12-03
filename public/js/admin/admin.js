@@ -68,6 +68,7 @@ function checkUpload(form){
 
 $(function (){
         $('a.ajax').click(function() {
+
             var url = this.href;
             // show a spinner or something via css
             var dialog = $('<div style="display:none" id="dialog" class="loading"></div>').appendTo('body');
@@ -142,10 +143,7 @@ $(document).ready(function()
         {
             $.jGrowl(msgs[i],{ theme:'aniversariantes', position:'bottom-right',}); 
         } 
-    }    
-
-    
-    
+    }       
 
     /*alert para novas tarefas!*/
     old_title = document.title;
@@ -187,7 +185,9 @@ $(document).ready(function()
     //loadContent($(this).attr("href"), $(this).data("panel"));
     //window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
     if(window.location.hash != ""){
-        loadContent(base_url + '/admin/' + window.location.hash.replace('#', '') + '/index/ajax' , '#content');
+        id = window.location.hash.replace('#', '');
+        loadContent(base_url + '/admin/' + id + '/index/ajax' , '#content');
+        $('#' + id).addClass('selected');
     }
 
     if($('#login').length != 0){
@@ -278,6 +278,16 @@ function setupAjax(container){
         $('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
         console.log($(this).data("refresh") );
+
+        if($(this).hasClass('menu')){
+            $('#menu li a').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        if($(this).hasClass('load')){
+            $('.list_item li a').removeClass('selected');
+            $(this).addClass('selected');
+        }    
 
         if($(this).data("refresh") != undefined){
             window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
@@ -399,6 +409,13 @@ function setupAjax(container){
 
             if($(this).hasClass('ajax')){
                 loadContent(link, '#tabs_content');
+                
+                if($(this).attr('data-clear')){
+                    
+                    $($(this).attr('data-clear')).html(" ");
+                }
+                
+
             }else{
                 $($(this).attr('href')).addClass('content_show');
             }
@@ -474,7 +491,9 @@ function loadContent(url, container){
     $(holder).load(url, function() {
         $(holder).hide().fadeIn(500, function(){
             //console.log("terminou -> " + $(container).attr('id'));
-            setupAjax(container);   
+            setupAjax(container);  
+
+
         });      
     });
 }

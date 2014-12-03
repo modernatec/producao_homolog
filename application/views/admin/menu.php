@@ -8,13 +8,21 @@
 	</div>
 	<div id="menu">
 		<ul >
-			<?foreach($menuList as $key=>$menuItem){?>
-				<li ><a class="round" rel="load-content" data-panel="#content" data-refresh="true" href="<?=URL::base();?><?=$menuItem['link']?>/index/ajax" ><?=$menuItem['display']?></a></li>
+			<?foreach($menuList as $key=>$menuItem){
+				$link = explode("/", $menuItem['link']);
+				$link_id = end($link);
+				
+			?>
+				<li ><a class="round menu" rel="load-content" data-panel="#content" data-refresh="true" id="<?=$link_id?>"  href="<?=URL::base();?><?=$menuItem['link']?>/index/ajax" ><?=$menuItem['display']?></a></li>
                 <?if(isset($menuItem['sub'])){?>
                 	<ul class="submenu">
                 	<?
-						foreach($menuItem['sub'] as $menuSubItem){?>
-                    	<li ><a  class="round" rel="load-content" data-panel="#content" data-refresh="true" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
+						foreach($menuItem['sub'] as $menuSubItem){
+							$subLink = explode("/", $menuSubItem['link']);
+							$subLink_id = end($subLink);
+					?>
+
+                    	<li ><a  class="round menu" rel="load-content" data-panel="#content" id="<?=$subLink_id?>" data-refresh="true" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
 	                <?}?>
 					</ul>
 				<?}?>
