@@ -1,6 +1,10 @@
 function validateAjax(){
     //console.log("chamou validate")
-    $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
+    //$(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
+
+    $('.date').live('focus', function () {
+        $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
+    });
 
     $("#frmCreateTask").validate({
         rules: {

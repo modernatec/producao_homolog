@@ -272,11 +272,20 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	        }
 
 	        header('Content-Type: application/json');
-			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$object->object_id,	
-				'tabs_content' => URL::base().'admin/objects/getObjects/',			
-				'msg' => $msg,
-			));
+
+	        if($this->request->post('from') == 'objects'){
+	        	echo json_encode(array(
+					'direita' => URL::base().'admin/objects/view/'.$object->object_id,	
+					'tabs_content' => URL::base().'admin/objects/getObjects/',	
+					'msg' => $msg,
+				));
+	        }else{
+	        	echo json_encode(array(
+					'direita' => URL::base().'admin/objects/view/'.$object->object_id,								
+					'msg' => $msg,
+				));
+	        }
+
 
 	        return false;	
 	    }
@@ -330,9 +339,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         header('Content-Type: application/json');
 		echo json_encode(array(
 			'direita' => URL::base().'admin/objects/view/'.$object_id,	
-			'tabs_content' => URL::base().'admin/objects/getObjects/',			
+						
 			'msg' => $msg,
 		));
+		//'tabs_content' => URL::base().'admin/objects/getObjects/',
         
         return false;	        
 	}
@@ -414,10 +424,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         header('Content-Type: application/json');
 		echo json_encode(array(
 			'direita' => URL::base().'admin/objects/view/'.$object->id,	
-			'tabs_content' => URL::base().'admin/objects/getObjects/',			
+						
 			'msg' => $msg,
 		));
-
+		//'tabs_content' => URL::base().'admin/objects/getObjects/',
         return false;
 	}
 

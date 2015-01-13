@@ -175,19 +175,17 @@ $(document).ready(function()
 
     $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
 
-    //$('#head').css({height:$( window ).height()});
 
-    
+    /*
+    $('.date').live('focus', function () {
+        $(this).not('.hasDatePicker').datepicker();
+    });
+    */
 
-    
-    //$('.list_body').css({height:$( window ).height()- $('.list_body').offset().top});
-
-    //loadContent($(this).attr("href"), $(this).data("panel"));
-    //window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
     if(window.location.hash != ""){
-        id = window.location.hash.replace('#', '');
-        loadContent(base_url + '/admin/' + id + '/index/ajax' , '#content');
-        $('#' + id).addClass('selected');
+        var hash_id = window.location.hash.replace('#', '');
+        loadContent(base_url + '/admin/' + hash_id + '/index/ajax' , '#content');
+        $('#' + hash_id).addClass('selected');
     }
 
     if($('#login').length != 0){
@@ -275,7 +273,7 @@ function setupAjax(container){
 
     $("a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        $('#direita').fadeOut();
+        //$('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
         console.log($(this).data("refresh") );
 
@@ -372,8 +370,6 @@ function setupAjax(container){
 
             maxWidth: 600,
             maxHeight: 600,
-            //width: $(window).width()-180,
-            //height: $(window).height()-180,
         });
 
         // load remote content
@@ -435,14 +431,23 @@ function setupAjax(container){
             $(container + ' #tab_1').click(); 
         }
     }, 100);    
+
+    $('.date').live('focus', function () {
+        $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
+    });
+
+
 }
 
 
 function ajaxPost(form){
+    var data_post = $(form).serializeArray();
+    data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
+
     $.ajax({
         type: "POST",
         url: $(form).attr('action'),
-        data: $(form).serialize(),
+        data: data_post,
         timeout: 10000,
         dataType : "json",
         success: function(data) {
@@ -457,11 +462,13 @@ function ajaxPost(form){
 }
 
 function ajaxReload(form){    
-    //console.log('chamou reload')
+    var data_post = $(form).serializeArray();
+    data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
+
     $.ajax({
         type: "POST",
         url: $(form).attr('action'),
-        data: $(form).serialize(),
+        data: data_post,
         timeout: 10000, 
         success: function(retorno) {
             reloadContent(retorno, $(form).data('panel'));
@@ -557,24 +564,17 @@ function reloadContent(data, container){
     */    
 }
 
-
-
-
-
-
 $.validator.addMethod('date',
-    function (value, element) {
-        if (this.optional(element)) {
-            return true;
-        }
-        var ok = true;
-        try {
-            $.datepicker.parseDate('dd/mm/yy', value);
-        }
-        catch (err) {
-            ok = false;
-        }
-        return ok;
-});
-
-
+function (value, element) {
+    if (this.optional(element)) {
+        return true;
+    }
+    var ok = true;
+    try {
+        $.datepicker.parseDate('dd/mm/yy', value);
+    }
+    catch (err) {
+        ok = false;
+    }
+    return ok;
+}); 
