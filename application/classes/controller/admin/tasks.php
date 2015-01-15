@@ -147,7 +147,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$task = ORM::factory('task', $id);
-		$view->taskVO = $this->setVO('task', $task);
+		$taskVO = $this->setVO('task', $task);
+
+		if($id == ""){
+			$taskVO['object_id'] = $this->request->query('object_id');
+			$taskVO['object_status_id'] = $this->request->query('object_status_id');
+		}		
+
+		$view->taskVO = $taskVO;
+
 		$view->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all(); 
 		$view->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
 
@@ -248,10 +256,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	        header('Content-Type: application/json');
 			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$object_id,	
-				'tabs_content' => URL::base().'admin/objects/getObjects/',				
+				'direita' => URL::base().'admin/objects/view/'.$object_id,				
 				'msg' => $msg,
 			));
+			//'tabs_content' => URL::base().'admin/objects/getObjects/',				
 	        
 	        return false;
 	    }
@@ -293,9 +301,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         header('Content-Type: application/json');
 		echo json_encode(array(
 			'direita' => URL::base().'admin/objects/view/'.$object_id,	
-			'tabs_content' => URL::base().'admin/objects/getObjects/',				
+							
 			'msg' => $msg,
 		));
+		//'tabs_content' => URL::base().'admin/objects/getObjects/',
         
         return false;	        
 	}

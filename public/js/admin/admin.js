@@ -203,7 +203,8 @@ $(document).ready(function()
 function setupScroll(){
     $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
         theme:"dark-3",
-        axis:"y"
+        axis:"y",
+        scrollInertia: 0,
     });
 }
 

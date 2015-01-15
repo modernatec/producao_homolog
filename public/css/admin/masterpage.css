@@ -296,6 +296,21 @@ a{
 	cursor: pointer;
 }
 
+.note {
+	background: url('../../image/admin/note.png') no-repeat;	
+	width: 20px;
+	cursor: pointer;
+	text-indent: -500px;
+	display: block;
+	overflow: hidden;
+}
+
+.task_icon{
+	background: url('../../image/admin/task_ico.png') no-repeat;
+	padding-left: 20px;
+	color: #000;	
+}
+
 
 .content{
 	/*position: relative;*/
@@ -631,6 +646,7 @@ label
 	border: 1px solid #008fc7;
 	padding: 10px;
 	margin-top: 5px;
+	margin-bottom: 5px;
 	background: #fff;
 }
 
@@ -974,12 +990,18 @@ a.green{
 	color: #000;
 	display: block;
 	border: 1px #ddd solid;
+	overflow: auto;
 
 	-o-border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     -khtml-border-radius: 4px;
     border-radius: 4px;
+}
+
+.clean, a.clean{
+	border: none;
+	display: inherit !important;
 }
 
 .list_item a.selected{

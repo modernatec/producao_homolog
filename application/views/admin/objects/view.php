@@ -8,10 +8,9 @@
     <?}?>
 
     <?if($current_auth != "assistente"){?>
-        <a data-show="form_assign" class="bar_button round show">criar tarefa</a> 
-        <a data-show="form_status" class="bar_button round show">alterar status</a>                           
+        <!--a href="<?=URL::base();?>admin/tasks/update/" class="popup bar_button round">criar tarefa</a--> 
+        <a href="<?=URL::base();?>admin/objects/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
-    <a data-show="form_anotacoes" class="bar_button round show">criar anotação</a>
     <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
     </div>  
     <div class="boxwired round" >
@@ -23,10 +22,6 @@
         &bullet; <?=@$obj->supplier->empresa?>
         <br/>
         <b>fechamento:</b> <?=Utils_Helper::data($obj->collection->fechamento,'d/m/Y')?><br/>
-    </div>
-     
-    <div class="clear" style="padding:4px 0;">
-        <?=@$form_status?>
     </div>
 
 <div  class="scrollable_content clear">             
@@ -44,7 +39,17 @@
                                     <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$status_task->id?>" title="excluir" data-panel="#direita">Excluir</a>
                                 </div>
                             <?}?>
-                            
+
+                            <div class="right">
+                                <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$status_task->id?>" title="criar anotações" class="popup note">anotacao</a>
+                            </div> 
+                            <? if($count == 0){?>
+                                <div class="right">
+                                    <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$status_task->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
+                                </div>
+                            <?  $count++;
+                            }?>
+                                                       
                             <div class='line_bottom'>
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
@@ -53,11 +58,8 @@
                                 
                                 retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
                             </div>
-                            <? if($count == 0){
-                                echo @$assign_form;
-                                echo @$anotacoes_form;
-                                $count++;
-                            }?>
+
+                            
                             <?if(!empty($status_task->description)){ ?>
                                 <span class="wordwrap description"><?=$status_task->description;?></span>
                             <?}?>

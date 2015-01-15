@@ -105,7 +105,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				->bind('message', $message)
 				->set('values', $this->request->post());
 	                
-	        $this->addValidateJs('public/js/admin/validateObjects.js');
+	        //$this->addValidateJs('public/js/admin/validateObjects.js');
 
 			$objeto = ORM::factory('object', $id);
 	        $view->objVO = $this->setVO('object', $objeto);
@@ -227,8 +227,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
 		
-		$objStatus = ORM::factory('objects_statu', $id);
-		$view->objVO = $this->setVO('objects_statu', $objStatus);
+		$objStatus = ORM::factory('objects_statu', $id);	
+		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
+
+		if($id == ""){
+			$arr_objstatus['object_id'] = $this->request->query('object_id');
+		}
+
+		$view->objVO = $arr_objstatus;
 
 		echo $view;
 	}

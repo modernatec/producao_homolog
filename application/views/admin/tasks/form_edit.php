@@ -3,6 +3,7 @@
 	
 	<input type="hidden" name="object_id" value="<?=@$taskVO['object_id']?>">
 	<input type="hidden" name="status_id" value="5">
+    <input type="hidden" name="object_status_id" value="<?=@$taskVO['object_status_id']?>">
 	<dl>
 		<div class="left">
 			<dt>
