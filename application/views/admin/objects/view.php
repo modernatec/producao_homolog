@@ -43,12 +43,16 @@
                             <div class="right">
                                 <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$status_task->id?>" title="criar anotações" class="popup note">anotacao</a>
                             </div> 
-                            <? if($count == 0){?>
-                                <div class="right">
-                                    <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$status_task->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
-                                </div>
-                            <?  $count++;
-                            }?>
+                            <? if($count == 0){
+                                    if($current_auth != "assistente"){?>
+                                        <div class="right">
+                                            <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$status_task->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
+                                        </div>
+                            <?      
+                                    }
+                                    $count++;
+                                }
+                            ?>
                                                        
                             <div class='line_bottom'>
                                 <?if($current_auth != "assistente"){?>

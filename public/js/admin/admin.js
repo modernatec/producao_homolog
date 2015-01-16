@@ -166,6 +166,8 @@ $(document).ready(function()
         );
     }
     
+    
+
 
     /*ativa a última aba selecionada*/
     //var tab = $.cookie("producao");
@@ -228,6 +230,8 @@ function setupAjax(container){
 
     setupScroll();
 
+
+
     $(".populate").change(function(ui) {
         populateSelect(ui);
     });
@@ -287,6 +291,10 @@ function setupAjax(container){
             $('.list_item li a').removeClass('selected');
             $(this).addClass('selected');
         }    
+
+        $("li").removeClass("blueSelection");
+        $(this).closest("li").addClass("blueSelection");
+    
 
         if($(this).data("refresh") != undefined){
             window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
@@ -396,6 +404,7 @@ function setupAjax(container){
     $('.tabs a').unbind('click').bind('click', function(e){
         e.preventDefault();
         link = $(this).attr('href');
+
         if(link != lastURL){
             $('.tabs li').removeClass('selected');
             $('.content_hide').each(function(index, element){            
@@ -407,8 +416,7 @@ function setupAjax(container){
             if($(this).hasClass('ajax')){
                 loadContent(link, '#tabs_content');
                 
-                if($(this).attr('data-clear')){
-                    
+                if($(this).attr('data-clear')){                    
                     $($(this).attr('data-clear')).html(" ");
                 }
                 
@@ -422,6 +430,9 @@ function setupAjax(container){
             $(this).parent().addClass('selected');
         }
     })
+
+
+
     
     var tab = $.cookie("producao");
     
@@ -436,6 +447,8 @@ function setupAjax(container){
     $('.date').live('focus', function () {
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
+
+
 
 
 }
