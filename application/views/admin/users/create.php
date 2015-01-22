@@ -75,7 +75,7 @@
 		    </dt>
 		    <dd>
 				<?foreach($rolesList as $roleObj){?>
-					<input type="checkbox" name="role_id[]" id="role_<?=$roleObj->id?>" value="<?=$roleObj->id?>" <?=(in_array($roleObj->id, $userInfoVO["role_id"])) ? 'checked' :''?> /><label for="role_<?=$roleObj->id?>"><?=ucfirst($roleObj->name)?></label>
+					<input type="checkbox" name="role_id[]" id="role_<?=$roleObj->id?>" value="<?=$roleObj->id?>"  /><label for="role_<?=$roleObj->id?>"><?=ucfirst($roleObj->name)?></label>
 				<? }?>
 				<span class='error'><?=Arr::get($errors, 'role_id');?></span>
 		    </dd>

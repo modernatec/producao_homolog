@@ -80,6 +80,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     */   
     public function action_create()
     {
+        $this->auto_render = false;
         $view = View::factory('admin/users/create')
             ->bind('errors', $errors)
             ->bind('message', $message);
@@ -88,11 +89,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view->teamsList    = ORM::factory('team')->find_all();
         $view->rolesList    = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
         $view->userInfoVO   = $this->setVO('userInfo');
-        $this->template->content = $view;
+        $view->anexosView = View::factory('admin/files/anexos');
+        //$this->template->content = $view;
+
+        echo $view;
 
         if (HTTP_Request::POST == $this->request->method()) 
         {                                              
-            $this->salvar(); 
+            //$this->salvar(); 
         }             
     }
 	

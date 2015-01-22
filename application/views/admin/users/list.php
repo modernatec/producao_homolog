@@ -4,7 +4,7 @@
 <div id="esquerda">
     <div class="fixed clear">
         <div class="bar">
-            <a href="<?=URL::base();?>admin/users/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar usuário</a>
+            <a href="<?=URL::base();?>admin/users/create" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar usuário</a>
         </div>    
         <div class="clear left">
             <ul class="tabs">
