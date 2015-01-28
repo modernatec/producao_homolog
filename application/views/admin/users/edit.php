@@ -59,6 +59,19 @@
 				<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
 		    </dd>
 	    </div>
+	    <div class="clear left"> 
+		    <dt>
+				<label for="status">status</label>
+		    </dt>
+		    <dd>
+	            <select name="status" id="status">
+					<option value="">Selecione</option>
+					<option value="0" <?=((@$userInfoVO["status"] == '0')?('selected'):(''))?> >inativo</option>
+					<option value="1" <?=((@$userInfoVO["status"] == '1')?('selected'):(''))?> >ativo</option>
+				</select>
+				<span class='error'><?=Arr::get($errors, 'status');?></span>
+		    </dd>
+	    </div>
 	    <div class="clear left">   
 		    <dt>
 		      <label for="team">equipe</label>
@@ -74,6 +87,7 @@
 	            ?>
 		    </dd>
 		</div>
+
 	    <div class="clear">	    
 	        <dt>
 		      <label for="username">Username</label>

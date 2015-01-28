@@ -8,7 +8,8 @@
         </div>    
         <div class="clear left">
             <ul class="tabs">
-                <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/?nome=<?=$filter_nome?>&email=<?=$filter_email?>'>usuários</a></li>
+                <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/1'>ativos</a></li>
+                <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/0'>inativos</a></li>
             </ul>  
         </div>
         <div id="tabs_content" class="scrollable_content clear">

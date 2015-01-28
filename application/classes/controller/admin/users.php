@@ -162,7 +162,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 				'data_aniversario',
 				'team_id',
 				'ramal',
-				'telefone'
+				'telefone',
+                'status',
 			));		
 			
 			$user = ORM::factory('user', $userinfo->user_id);	
@@ -342,15 +343,45 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     } 
 
     /********************************/
-    public function action_getUsers(){
+    public function action_getUsers($status_id){
         $this->auto_render = false;
         $view = View::factory('admin/users/table');
+
+        $status_id = ($status_id != "") ? $status_id : Session::instance()->get('kaizen')['parameters'];
+
+
+        if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "users"){       
+            $kaizen_arr = array(
+                "filtros" => array(
+                    "filter_nome" => "",
+                    "filter_email" => "",
+                ),
+                "parameters" => $status_id,
+                "model" => "users",
+            );
+
+        }else{
+            /*filtros*/
+            $kaizen_arr = array(
+                "filtros" => array(
+                    "filter_nome" => ($this->request->post('nome') != "") ? $this->request->post('nome') : Session::instance()->get('kaizen')['filtros']["filter_nome"],
+                    "filter_email" => ($this->request->post('email') != "") ? $this->request->post('email') : Session::instance()->get('kaizen')['filtros']["filter_email"],
+                ),
+                "parameters" => $status_id,
+                "model" => "users",
+            );
+        }
+
+        Session::instance()->set('kaizen', $kaizen_arr);    
 
         //$this->startProfilling();
 
         //$view->filter_tipo = json_decode($this->request->query('tipo'));
-        $view->filter_nome = $this->request->post('nome');  
-        $view->filter_email = $this->request->post('email');   
+        $filter_nome = Session::instance()->get('kaizen')['filtros']["filter_nome"];
+        $filter_email = Session::instance()->get('kaizen')['filtros']["filter_email"];
+
+        $view->filter_nome = $filter_nome;  
+        $view->filter_email = $filter_email;   
 
 
         $query = ORM::factory('userInfo');
@@ -360,7 +391,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         (!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
         (!empty($view->filter_email)) ? $query->where('email', 'LIKE', '%'.$view->filter_email.'%') : '';
 
-        $view->userinfosList = $query->order_by('nome','ASC')->find_all();
+        $view->userinfosList = $query->where('status', '=', $status_id)->order_by('nome','ASC')->find_all();
         
         // $this->endProfilling();
         echo $view;

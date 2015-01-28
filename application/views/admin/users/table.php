@@ -1,8 +1,13 @@
 <div class="fixed clear">
 	<div class="list_header round">
 		<div class="table_info round">
-			<?=count($userinfosList)?> usuários encontrados 
-			<a class="bar_button round green" href='<?=URL::base();?>admin/users/getUsers' rel="load-content" data-panel="#tabs_content">limpar filtros</a>
+			<div class="left"><?=count($userinfosList)?> usuários encontrados</div>
+			<div class="left">
+				<form action='<?=URL::base();?>admin/users/getUsers' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
+					<input type="hidden" name="reset_form" value="true">
+					<input type="submit" class="bar_button round green" value="limpar filtros" />
+				</form>
+			</div>
 		</div>
 		<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
 			<div class="filters">
