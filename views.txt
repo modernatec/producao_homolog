@@ -1,3 +1,7 @@
+http://www.ibm.com/developerworks/br/library/x-googledata1/
+https://github.com/JustLikeIcarus/kohana-gdata
+
+
 SELECT 
 	`obj`.`id` AS `id`,
 	`obj`.`title` AS `title`,

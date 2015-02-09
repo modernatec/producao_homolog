@@ -21,6 +21,57 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/segmentos/list')
 			->bind('message', $message);
+
+
+		// load Zend Gdata libraries
+	    //require_once 'Zend/Loader.php';
+	    //Zend_Loader::loadClass('Zend_Gdata_Spreadsheets');
+	    //Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
+		
+		$zend_data = new Zend_Gdata();
+		
+		// set credentials for ClientLogin authentication
+	    $user = "moderna.tec@gmail.com";
+	    $pass = "moderna@01";
+
+	    try {  
+			// connect to API
+			$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
+			$client = Zend_Gdata_ClientLogin::getHttpClient($user, $pass, $service);
+			$service = new Zend_Gdata_Spreadsheets($client);
+
+	    	// get spreadsheet entry
+	      	$ssEntry = $service->getSpreadsheetEntry(
+	        'https://spreadsheets.google.com/feeds/spreadsheets/private/full/tJpx-Ep4xiJ22IEK9mtUjng');
+	      
+	      	// get worksheets in this spreadsheet
+	      	$wsFeed = $ssEntry->getWorksheets();
+	    } catch (Exception $e) {
+	      die('ERROR: ' . $e->getMessage());
+	    }
+	  
+	    echo "<h2>".$ssEntry->title."</h2>"; 
+	    
+	    
+	    echo "<ul>";
+		foreach($wsFeed as $wsEntry){
+			echo "<div class='sheet'>";
+      		echo "<div class='name'>Worksheet:";
+        	echo $wsEntry->getTitle()."</div>";
+
+      		$rows = $wsEntry->getContentsAsRows();
+      		echo "<table>";
+      		foreach ($rows as $row){
+        		echo "<tr>";
+          		foreach($row as $key => $value){
+          			echo "<td>".$value."</td>";
+          		}
+        	echo "</tr>";
+      		}
+      		echo "</table>";
+    		echo "</div>";
+    	}
+		echo "</ul>";
 		
 		$view->segmentosList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		
@@ -30,6 +81,10 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			$this->auto_render = false;
 			echo $view;
 		}
+
+
+
+
 	} 
 
 	/*
