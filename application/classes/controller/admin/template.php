@@ -117,7 +117,10 @@ class Controller_Admin_Template extends Controller_Template {
         }
 
         $this->template->title = " - ".ucfirst($this->request->controller());
+        /*rever*/
         $this->template->menu = ($this->current_user) ? View::factory('admin/menu') : '';
+        $this->template->bar = ($this->current_user) ? View::factory('admin/bar') : '';
+
 
         if($this->current_user){	
 			$this->template->user = $this->current_user;
@@ -142,6 +145,13 @@ class Controller_Admin_Template extends Controller_Template {
 			}
 
 			$this->template->menu->menuList = $menuList;
+			/*rever*/
+			$this->template->bar->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
+			$this->template->bar->has_task = ORM::factory('taskView')
+        						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
+        						->where('ended', '=', '0')
+        						->where('task_to', '!=', '0')->group_by('task_to')
+        						->order_by('nome', 'ASC')->find_all();
         }
 
 
