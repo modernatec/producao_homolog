@@ -148,6 +148,7 @@
 			<?foreach($objectsList as $objeto){
 				$status = "";
 	    		$tag = "";
+	    		$task_to = "";
 				
 				switch($objeto->status_id){
 	    			case 1:
@@ -171,6 +172,7 @@
 	        				$class_obj 	= $objeto->statu_class.$mod;
 	        			}
 
+	        			
 
 	        			if(is_object($objeto->getStatus($objeto->object_status_id))){
 			    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
@@ -182,6 +184,14 @@
 					    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
 				    			$tag = '<span class="round list_faixa '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
 				    		}
+
+				    		if($obj_taskView->task_to != 0){
+				    			$nome = explode(" ", $obj_taskView->to->nome); 
+				    			$img = ($obj_taskView->to->foto)?($obj_taskView->to->foto):('public/image/admin/default.png');
+				    			$task_to = "<div class='round_imgDetail' ".$obj_taskView->to->team->color.">
+                                        <img class='round_imgList' src='".URL::base().$img."' height='20' style='float:left' alt='".$nome[0]."' />
+                                        <span>".$nome[0]."</span></div>";
+                            }
 			    		}
 	   				
 	    				break;
@@ -203,13 +213,16 @@
 				<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div>
 						<p><b><?=$objeto->taxonomia?></b></p>
-						<p><?=$objeto->title?></p>
 						<hr style="margin:8px 0;" />
 						<p><img src="<?=URL::base()?>/public/image/admin/calendar.png" height="16"> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?> - <?=$objeto->supplier_empresa?></p>
 						<p>
 							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
-							<?=$tag;?>
-							<?=$status;?>
+							<div>
+								<?=$task_to;?>
+								<?=$tag;?> 
+								<?=$status;?> 
+								
+							</div>
 						</p>
 					</div>
 				</a>

@@ -76,7 +76,7 @@ body{
     bottom: 0;
     left: 590px;
     right: 0;
-    width: 500px;
+    width: 530px;
     padding: 5px 10px 5px 0;
 }
 
@@ -822,6 +822,7 @@ input[type='text']:focus, input[type='password']:focus{
     position: relative;
     float: left;
     min-width: 100px;
+    margin-right: 3px;
 
 }
 
