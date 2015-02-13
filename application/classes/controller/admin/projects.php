@@ -105,6 +105,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				'segmento_id',
 				'description',
 				'status',
+				'ssid',
 			));
 			                
 			if(!$id)

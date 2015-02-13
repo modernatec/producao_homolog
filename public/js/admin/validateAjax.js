@@ -246,9 +246,16 @@ function validateAjax(){
             ajaxPost(form);
             return false;    
         }
-    })
+    });
 
     
+    $("#sync_gdocs").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
 
        
     

@@ -33,6 +33,14 @@
             <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
 	    </dd>
 	    <dt>
+	      <label for="ssid">ssid (gdocs)</label>
+	    </dt>
+	    <dd>
+	      <input type="text" class="text round" name="ssid" id="ssid" style="width:500px;" value="<?=@$projectVO['ssid'];?>"/>
+	      <span class='error'><?=Arr::get($errors, 'ssid');?></span>
+	    </dd>
+
+	    <dt>
 	      <label for="description">descrição</label>
 	    </dt>	    
 	    <dd>

@@ -31,6 +31,64 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		return false;
 	}
 
+	public function action_updateGdocs()
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/relatorios/sync');
+		$zend_data = new Zend_Gdata();
+		
+		// set credentials for ClientLogin authentication
+	    $user = "moderna.tec@gmail.com";
+	    $pass = "moderna@01";
+
+	    $project = ORM::factory('project', $this->request->post('project_id'));
+	    $view->project = $project;
+
+	    try {  
+			// connect to API
+			$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
+			$client = Zend_Gdata_ClientLogin::getHttpClient($user, $pass, $service);
+			$service = new Zend_Gdata_Spreadsheets($client);
+
+	    	// get spreadsheet entry
+	    	// https://spreadsheets.google.com/feeds/spreadsheets/private/full
+	      	$ssEntry = $service->getSpreadsheetEntry($project->ssid);
+	      
+	      	// get worksheets in this spreadsheet
+	      	$view->wsFeed = $ssEntry->getWorksheets();
+	    } catch (Exception $e) {
+	      die('ERROR: ' . $e->getMessage());
+	    }
+	  
+	    echo "<h2>".$ssEntry->title."</h2>"; 
+	    
+	    
+	    echo "<ul>";
+		foreach($wsFeed as $wsEntry){
+			echo "<div class='sheet'>";
+      		echo "<div class='name'>Worksheet:";
+        	echo $wsEntry->getTitle()."</div>";
+
+      		$rows = $wsEntry->getContentsAsRows();
+      		echo "<table>";
+      		foreach ($rows as $row){
+        		echo "<tr>";
+          		foreach($row as $key => $value){
+          			echo "<td>".$value."</td>";
+          		}
+        	echo "</tr>";
+      		}
+      		echo "</table>";
+    		echo "</div>";
+    	}
+		echo "</ul>";
+		*/
+		echo $view;
+
+		return false;
+	}
+
+
 	public function action_generate(){
 		$this->auto_render = false;
 		ini_set('max_execution_time', 300); //max. response para 5 minutos

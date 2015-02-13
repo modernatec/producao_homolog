@@ -447,10 +447,6 @@ function setupAjax(container){
     $('.date').live('focus', function () {
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
-
-
-
-
 }
 
 
@@ -560,10 +556,9 @@ function reloadContent(data, container){
     }else{
         holder = container;
     }
-
     
     $(holder).hide(400, function(){
-        $(holder).html( data );
+        $(holder).html(data);
     }).fadeIn(500, function(){
         setupAjax(container);   
     });  
