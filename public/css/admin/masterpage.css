@@ -32,13 +32,14 @@ body{
 }
 
 #bar{
+	text-align: center;
+	width: 60px;
 	right: 0;
 	border-left: 1px dotted #008fc7;
+	border-right: none;
 }
 
-.task_bar_item{
-	padding: 25px 10px;
-}
+
 
 .topo{
 	padding: 0 5px;
@@ -47,7 +48,7 @@ body{
 	background: #f1f1f1;
 
 	position: absolute;
-	right: 150px;
+	right: 60px;
 	left: 151px;	
 }
 
@@ -75,8 +76,8 @@ body{
     top:46px;
     bottom: 0;
     left: 590px;
-    right: 0;
-    width: 530px;
+    right: 60px;
+    /*width: 515px;*/
     padding: 5px 10px 5px 0;
 }
 
@@ -831,6 +832,24 @@ input[type='text']:focus, input[type='password']:focus{
 	padding: 5px;
 	left: -2px;
 	position: relative;
+}
+
+.icon_team{
+	position: relative;
+}
+
+.icon_team .round_imgList{
+	border: 2px solid #ccc !important;
+}
+
+.icon_team .round_imgList span{
+	display: block;
+	margin-top: 5px;
+	font-weight: bold;
+}
+
+.task_bar_item{
+	padding: 20px 15px;
 }
 
 .badge{
