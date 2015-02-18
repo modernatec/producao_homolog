@@ -197,9 +197,15 @@ $(document).ready(function()
         }); 
     }
 
-    
+    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar');
     //setupAjax('#content');
 });
+
+setInterval(function() {
+    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar');
+      // Do something every 2 seconds
+}, 120000);
+
 
 
 function setupScroll(){
@@ -230,7 +236,18 @@ function setupAjax(container){
 
     setupScroll();
 
-
+    $('.checkAll').click(function(event) {  //on click 
+        if(this.checked) { // check select status
+            $('.'+this.id).each(function() { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"               
+            });
+        }else{
+            $('.'+this.id).each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+            });         
+        }
+    });
+    
 
     $(".populate").change(function(ui) {
         populateSelect(ui);
@@ -479,7 +496,7 @@ function ajaxReload(form){
         type: "POST",
         url: $(form).attr('action'),
         data: data_post,
-        timeout: 10000, 
+        timeout: 20000, 
         success: function(retorno) {
             reloadContent(retorno, $(form).data('panel'));
             $('input[type=submit]').prop("disabled", '' );
@@ -540,6 +557,13 @@ function setDataPanels(data){
         }else{
             //$('#direita').fadeOut();
         }
+
+        if(data.taskBar){
+            loadContent(data.taskBar, '#taskBar');
+        }else{
+            //$('#direita').fadeOut();
+        }
+
     }
 
     if(data.msg){

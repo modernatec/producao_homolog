@@ -13,23 +13,28 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Loader
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @package    Zend_Gdata
+ * @subpackage Analytics
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id$
  */
 
 /**
- * @see Zend_Exception
+ * @see Zend_Gdata_Extension_Metric
  */
-require_once 'Zend/Exception.php';
+require_once 'Zend/Gdata/Analytics/Extension/Metric.php';
 
 /**
  * @category   Zend
- * @package    Zend_Loader
- * @uses       Zend_Exception
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @package    Zend_Gdata
+ * @subpackage Analytics
  */
-class Zend_Loader_Exception extends Zend_Exception
-{}
+class Zend_Gdata_Analytics_Extension_Dimension 
+    extends Zend_Gdata_Analytics_Extension_Metric
+{
+    protected $_rootNamespace = 'ga';
+    protected $_rootElement = 'dimension';
+    protected $_value = null;
+    protected $_name = null;
+}

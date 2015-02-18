@@ -15,6 +15,7 @@ class Model_Object extends ORM {
 		'collection' => array('foreign_key' => 'collection_id'),		
 		'supplier' =>  array('foreign_key' => 'supplier_id'),
 		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
+		'objectStatus' => array('model' => 'objectStatu', 'through' => 'objectstatus', 'foreign_key' => 'id'),
 	);
 
 

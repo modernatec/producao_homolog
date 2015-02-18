@@ -18,7 +18,7 @@ body{
 	overflow: hidden;
 }
 
-#lateral, #bar{
+#lateral, #taskBar{
 	width: 150px;
 	position: absolute;
 	height: auto;
@@ -31,7 +31,7 @@ body{
 	/*box-shadow: 0 0 5px 1px rgba(0,0,0, .8);*/
 }
 
-#bar{
+#taskBar{
 	text-align: center;
 	width: 60px;
 	right: 0;
@@ -122,9 +122,16 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 .logout{
 	color:#FFF; 
-	background: #ff0000;
-	width: 200px;
+	background: #ccc;
 	padding: 8px;
+	display: block;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.logout:hover{
+	color:#FFF; 
+	background: #ff0000 !important;
 }
 
 .floatNone{ float: none !important; display: inline-block;}
@@ -229,6 +236,10 @@ a{
 	padding:8px;
 	color:#FFF;
     /*box-shadow:0 2px 6px 2px rgba(0,0,0, .4);*/
+}
+
+#menu ul li{
+	margin: 2px 0;
 }
 
 #menu ul li a{
@@ -354,6 +365,14 @@ a{
 	position: relative;
 	cursor: pointer;
 	/*box-shadow:#999 2px 2px 2px;*/
+}
+
+.bar_button label{
+	color: #fff;
+}
+
+.bar_button:hover{
+	background: #008fc7 !important;
 }
 
 .tabs{
@@ -796,6 +815,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 .step{
 	margin-bottom: 5px;
+	background: #dfe9f3;
 }
 
 .round_imgList{
@@ -886,8 +906,20 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #37bc9b;
 }
 
+.step_blue{
+	border-left:5px solid #008fc7;
+}
+
+.step_roxo{
+	border-left:5px solid #9972b5;
+}
+
+.step_green{
+	border-left:5px solid #8cc152;
+}
+
 .blue{
-	background: #008fc7;
+	background: #008fc7 !important;
 	color: #fff;
 }
 
@@ -907,14 +939,11 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .green{
-	background: #8cc152;
+	background: #8cc152 !important;
 	color: #fff;
 	border: none !important;
 }
 
-.step{
-	background: #dfe9f3;
-}
 
 a.green{
 	color: #fff;

@@ -22,12 +22,12 @@
 							$subLink_id = end($subLink);
 					?>
 
-                    	<li ><a  class="round menu" rel="load-content" data-panel="#content" id="<?=$subLink_id?>" data-refresh="true" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
+                    	<li ><a class="round menu" rel="load-content" data-panel="#content" id="<?=$subLink_id?>" data-refresh="true" href="<?=URL::base();?><?=$menuSubItem['link']?>/index/ajax" ><?=$menuSubItem['display']?></a></li>
 	                <?}?>
 					</ul>
 				<?}?>
 			<?}?>
-			<li class="round"><a href="<?=URL::base();?>logout/" title="Logout">logout</a></li>
+			<li class="round"><a href="<?=URL::base();?>logout/" class="logout round" title="Logout">logout</a></li>
 		</ul>
 	</div>
 	

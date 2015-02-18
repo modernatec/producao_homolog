@@ -256,7 +256,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	        header('Content-Type: application/json');
 			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$object_id,				
+				'direita' => URL::base().'admin/objects/view/'.$object_id,	
+				'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',	
+
 				'msg' => $msg,
 			));
 			//'tabs_content' => URL::base().'admin/objects/getObjects/',				
@@ -300,7 +302,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,	
+			'direita' => URL::base().'admin/objects/view/'.$object_id,
+			'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',	
 							
 			'msg' => $msg,
 		));
@@ -326,7 +329,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         $query = ORM::factory('taskView');
 
         /***Filtros***/
-        (isset($view->filter_status)) ? $query->where('status_id', '=', $view->filter_status) : '';
+        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $view->filter_status) : '';
         //(isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id) : '';
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
@@ -364,4 +367,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         $arr = array('total'=>$taskList->count());
         print $callback.json_encode($arr);        
     } 
+
+    
 }

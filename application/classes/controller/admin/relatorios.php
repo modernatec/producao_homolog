@@ -35,7 +35,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	{
 		$this->auto_render = false;
 		$view = View::factory('admin/relatorios/sync');
-		$zend_data = new Zend_Gdata();
+		//$zend_data = new Zend_Gdata();
 		
 		// set credentials for ClientLogin authentication
 	    $user = "moderna.tec@gmail.com";
@@ -44,6 +44,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 	    $project = ORM::factory('project', $this->request->post('project_id'));
 	    $view->project = $project;
 
+	    /*
 	    try {  
 			// connect to API
 			$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
@@ -52,14 +53,80 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 	    	// get spreadsheet entry
 	    	// https://spreadsheets.google.com/feeds/spreadsheets/private/full
-	      	$ssEntry = $service->getSpreadsheetEntry($project->ssid);
+	      	$ssEntry = $service->getSpreadsheetEntry('https://spreadsheets.google.com/feeds/spreadsheets/tJpx-Ep4xiJ22IEK9mtUjng');
 	      
 	      	// get worksheets in this spreadsheet
-	      	$view->wsFeed = $ssEntry->getWorksheets();
+	      	$wsFeed = $ssEntry->getWorksheets();
+
+	      	$view->ssEntry = $ssEntry;
+	      	$view->wsFeed = $wsFeed;
+
+	      	echo $view;
 	    } catch (Exception $e) {
 	      die('ERROR: ' . $e->getMessage());
 	    }
-	  
+	    */
+	    /*
+	    try {  
+	      // connect to API
+	      $service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
+	      $client = Zend_Gdata_ClientLogin::getHttpClient($user, $pass, $service);
+	      $service = new Zend_Gdata_Spreadsheets($client);
+
+	      // get list of available spreadsheets
+	      $feed = $service->getSpreadsheetFeed();
+
+	      $view->feed = $feed;
+	      echo $view;
+
+	    } catch (Exception $e) {
+	      die('ERROR: ' . $e->getMessage());
+	    }
+	    */
+
+	    try {  
+	      // connect to API
+	    	$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
+	      	$client = Zend_Gdata_ClientLogin::getHttpClient($user, $pass, $service);
+			$spreadsheetService = new Zend_Gdata_Spreadsheets($client);
+			//$feed = $spreadsheetService->getSpreadsheetFeed();
+
+			$spreadsheetKey = 't8CFGjJfbijPdUJoIEAH92g';
+			$worksheetId = 'https://spreadsheets.google.com/feeds/worksheets/1NHU_3aTivSGMV4AVoKX5W_r7zB0ZTJH62ox8S_ni6CI/private/full/od6';
+
+			//$query = new Zend_Gdata_Spreadsheets_ListQuery();
+			//$query->setSpreadsheetKey($spreadsheetKey);
+			//$query->setWorksheetId($worksheetId);
+			//$listFeed = $spreadsheetService->getListFeed($query);
+			
+			$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
+			$query->setSpreadsheetKey($spreadsheetKey);
+			$listFeed = $spreadsheetService->getWorksheetFeed($query);
+
+
+			
+
+			$view->listFeed = $listFeed;
+			/*
+	      	// get spreadsheet entry
+	      	$ssEntry = $service->getSpreadsheetEntry(
+	        'https://spreadsheets.google.com/feeds/spreadsheets/tJpx-Ep4xiJ22IEK9mtUjng');
+	      
+	      	// get worksheets in this spreadsheet
+	      	$wsFeed = $ssEntry->getWorksheets();
+	      	
+		    $view->service = $service;
+		    $view->ssEntry = $ssEntry;
+		    $view->wsFeed = $wsFeed;
+		    */
+
+		    echo $view;
+	    } catch (Exception $e) {
+	    	echo '<pre>';
+	    	var_dump($e);
+	      die('ERROR: ' . $e->getMessage());
+	    }    
+	  	/*
 	    echo "<h2>".$ssEntry->title."</h2>"; 
 	    
 	    
@@ -82,8 +149,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
     		echo "</div>";
     	}
 		echo "</ul>";
+		
+		//
 		*/
-		echo $view;
 
 		return false;
 	}

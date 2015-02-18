@@ -30,8 +30,8 @@
             foreach($taskflows as $status_task){
                 ?>                          
                     <div style='clear:both' >
-                        <div class='hist round step'>
-                            <div style='width:30px; float:left; margin:5px'>
+                        <div class='hist round step step_<?=$status_task->status->team->color?>' >
+                            <div style='width:30px; height:60px; float:left; margin:5px; margin-top:0'>
                                 <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
                             </div>
                             <?if($current_auth != "assistente"){?>
@@ -58,9 +58,9 @@
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                 <?}?>
-                                <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a> - <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?> <br/>
-                                
-                                retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?>
+                                <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a><br/><br/>
+                                <p>iniciado: <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?></p>
+                                <p>retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?></p>
                             </div>
 
                             
@@ -138,7 +138,17 @@
                                                 <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
                                                     <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                    <input type="submit" class="bar_button round" value="iniciar">
+                                                    <?  if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                            $start = false;
+                                                        }else{
+                                                            $start = true;
+                                                        }
+
+                                                        if($start){
+                                                    ?>
+                                                            <input type="submit" class="bar_button round" value="iniciar">
+                                                    <?}?>
+
                                                 </form>
                                             <?}?>
                                             <?foreach ($task->getReplies($task->id) as $taskReply) {?>

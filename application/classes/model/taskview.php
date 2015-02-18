@@ -11,6 +11,7 @@ class Model_TaskView extends ORM {
     	'task' => array('model' => 'task', 'foreign_key' => 'task_id'),
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
     	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
+    	'objectStatu' => array('model' => 'objectStatu', 'foreign_key' => 'object_status_id'),
 	);	
 
 	public function getReplies($id){

@@ -21,10 +21,11 @@
 				    <ul>
 				        <li class="round" >
 				            <span class="round" id="colecao">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" style="width:400px;" >
+				            <ul class="round" style="width:400px;">
+				                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_collection" checked /><label for="filter_collection">selecionar tudo</label></li>
 				                <? foreach ($collectionList as $json_collection) { $collection = json_decode($json_collection);?>
 				                	<li>
-				                		<input type="checkbox" name="collection[]" value="<?=$collection->collection_id?>" id="col_<?=$collection->collection_id?>" <?=(in_array($collection->collection_id, $filter_collection)) ? "checked" : ""?> />
+				                		<input class="filter_collection" type="checkbox" name="collection[]" value="<?=$collection->collection_id?>" id="col_<?=$collection->collection_id?>" <?if(empty($filter_collection)){ echo "checked"; }?> <?=(in_array($collection->collection_id, $filter_collection)) ? "checked" : ""?> />
 				                		<label for="col_<?=$collection->collection_id?>"><?=$collection->collection_name?></label>
 				                	</li>
 				                <?}?>
@@ -42,9 +43,11 @@
 				        <li class="round" >
 				            <span class="round" id="colecao">matéria <?=(!empty($filter_materia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
+					                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_materia" checked /><label for="filter_materia">selecionar tudo</label></li>
+
 					                <?foreach ($materiasList as $json_materia) { $materia = json_decode($json_materia);?>
 					                	<li>
-					                		<input type="checkbox" name="materia[]" value="<?=$materia->materia_id?>" id="mat_<?=$materia->materia_id?>" <?=(in_array($materia->materia_id, $filter_materia)) ? "checked" : ""?> />
+					                		<input class="filter_materia" type="checkbox" name="materia[]" value="<?=$materia->materia_id?>" id="mat_<?=$materia->materia_id?>" <?if(empty($filter_materia)){ echo "checked"; }?> <?=(in_array($materia->materia_id, $filter_materia)) ? "checked" : ""?> />
 					                		<label for="mat_<?=$materia->materia_id?>"><?=$materia->materia_name?></label>
 					                	</li>
 					                <?}?>
@@ -64,9 +67,10 @@
 				        <li class="round" >
 				            <span class="round" id="status">status <?=(!empty($filter_status) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
+				            	<li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_status" checked /><label for="filter_status">selecionar tudo</label></li>
 				                <? foreach ($statusList as $json_status) { $status = json_decode($json_status);?>
 				                	<li>
-				                		<input type="checkbox" name="status[]" value="<?=$status->status_id?>" id="sta_<?=$status->status_id?>" <?=(in_array($status->status_id, $filter_status)) ? "checked" : ""?> />
+				                		<input type="checkbox" class="filter_status" name="status[]" value="<?=$status->status_id?>" id="sta_<?=$status->status_id?>" <?if(empty($filter_status)){ echo "checked"; }?> <?=(in_array($status->status_id, $filter_status)) ? "checked" : ""?> />
 				                		<label for="sta_<?=$status->status_id?>" ><?=$status->statu_status?></label>
 				                	</li>
 				                <?}?>
@@ -84,9 +88,10 @@
 				        <li class="round" >
 				            <span id="supplier">produtora <?=(!empty($filter_supplier) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
+				            	<li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_supplier" checked /><label for="filter_supplier">selecionar tudo</label></li>
 				                <? foreach ($suppliersList as $json_supplier) { $supplier = json_decode($json_supplier);?>
 				                <li>
-				                	<input type="checkbox" name="supplier[]" value="<?=$supplier->supplier_id?>" id="s_<?=$supplier->supplier_id?>" <?=(in_array($supplier->supplier_id, $filter_supplier)) ? "checked" : ""?> />
+				                	<input class="filter_supplier" type="checkbox" name="supplier[]" value="<?=$supplier->supplier_id?>" id="s_<?=$supplier->supplier_id?>" <?if(empty($filter_supplier)){ echo "checked"; }?> <?=(in_array($supplier->supplier_id, $filter_supplier)) ? "checked" : ""?> />
 				                	<label for="s_<?=$supplier->supplier_id?>"><?=$supplier->supplier_empresa?></label>
 				                </li>
 				                <?}?>
@@ -99,15 +104,17 @@
 				    </ul>
 				</div>
 
-				<div class="filter" >
+				<div class="clear filter" >
 				    <ul>
 				        <li class="round" >
 				        	<span id="tipo">tipo <?=(!empty($filter_tipo) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >				            	
+				            <ul class="round" >	
+					            	<li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_tipo" checked /><label for="filter_tipo">selecionar tudo</label></li>
+
 					                <? foreach ($typeObjectsList as $json_typeobject) {
 					                	$typeobject = json_decode($json_typeobject);
 					                ?>
-					                	<li><input type="checkbox" name="tipo[]" value="<?=$typeobject->typeobject_id?>" id="t_<?=$typeobject->typeobject_id?>" <?=(in_array($typeobject->typeobject_id, $filter_tipo)) ? "checked" : ""?>><label for="t_<?=$typeobject->typeobject_id?>"><?=$typeobject->typeobject_name?></label></li>
+					                	<li><input class="filter_tipo" type="checkbox" name="tipo[]" value="<?=$typeobject->typeobject_id?>" id="t_<?=$typeobject->typeobject_id?>" <?if(empty($filter_tipo)){ echo "checked"; }?> <?=(in_array($typeobject->typeobject_id, $filter_tipo)) ? "checked" : ""?>><label for="t_<?=$typeobject->typeobject_id?>"><?=$typeobject->typeobject_name?></label></li>
 					                <?}?>
 					                <p>
 						                <input type="submit" class="round bar_button" value="OK" /> 
@@ -123,8 +130,10 @@
 				        <li class="round" >
 				            <span id="reaproveitamento">origem <?=(!empty($filter_origem) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 				            <ul class="round" >
-				                <li><input type="checkbox" name="origem[]" value="0" id="o_0" <?=(in_array("0", $filter_origem)) ? "checked" : ""?>><label for="o_0">novo</label></li>
-				                <li><input type="checkbox" name="origem[]" value="1" id="o_1" <?=(in_array("1", $filter_origem)) ? "checked" : ""?>><label for="o_1">reap.</label></li>
+				            	<li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_origem" checked /><label for="filter_origem">selecionar tudo</label></li>
+
+				                <li><input type="checkbox" class="filter_origem" name="origem[]" value="0" id="o_0" <?if(empty($filter_origem)){ echo "checked"; }?> <?=(in_array("0", $filter_origem)) ? "checked" : ""?>><label for="o_0">novo</label></li>
+				                <li><input type="checkbox" class="filter_origem" name="origem[]" value="1" id="o_1" <?if(empty($filter_origem)){ echo "checked"; }?> <?=(in_array("1", $filter_origem)) ? "checked" : ""?>><label for="o_1">reap.</label></li>
 				                
 				                <p>
 					                <input type="submit" class="round bar_button" value="OK" /> 

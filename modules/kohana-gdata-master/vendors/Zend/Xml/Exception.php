@@ -13,27 +13,24 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Loader
- * @subpackage PluginLoader
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @package    Zend_Xml
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id$
  */
 
-/**
- * @see Zend_Loader_Exception
- */
-require_once 'Zend/Loader/Exception.php';
 
 /**
- * Plugin class loader exceptions
- *
+ * @see Zend_Exception
+ */
+require_once 'Zend/Exception.php';
+
+
+/**
  * @category   Zend
- * @package    Zend_Loader
- * @subpackage PluginLoader
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @package    Zend_Xml
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Loader_PluginLoader_Exception extends Zend_Loader_Exception
-{
-}
+class Zend_Xml_Exception extends Zend_Exception
+{}

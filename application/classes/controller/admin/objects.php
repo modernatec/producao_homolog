@@ -104,8 +104,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				->bind('errors', $errors)
 				->bind('message', $message)
 				->set('values', $this->request->post());
-	                
-	        //$this->addValidateJs('public/js/admin/validateObjects.js');
 
 			$objeto = ORM::factory('object', $id);
 	        $view->objVO = $this->setVO('object', $objeto);
@@ -134,9 +132,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
-
-
-		//$this->addValidateJs('public/js/admin/validateAjax.js');
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
@@ -461,11 +456,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->project_id = $project_id;
 		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
 
-		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
+		//diferente de "finalizado" e "nao iniciado"
+		$status_init = ORM::factory('statu')
+			->where('type', '=', 'object')
+			->where('id', 'NOT IN', array('1', '8'))->find_all(); 
+		
+		
 		$status_arr = array();
 		foreach ($status_init as $status) {
 			array_push($status_arr, $status->id);
 		}
+		
 
 		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "objects"){		
 			$kaizen_arr = array(
@@ -544,13 +545,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->filter_taxonomia = $filter_taxonomia;
 
 		
+		
+		//$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
+		
+		//$status_arr = array();
+		//foreach ($status_init as $status) {
+		//	array_push($status_arr, $status->id);
+		//}
+		
 
-
-		$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
-		$status_arr = array();
-		foreach ($status_init as $status) {
-			array_push($status_arr, $status->id);
-		}
 		$view->reset_filter_status = json_encode($status_arr);
 
 		//$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
@@ -594,8 +597,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$materiasList_arr = array();
 		$materiasList_index = array();
 
-		$query_filters = DB::select('*')->from('objectStatus')->where('fase', '=', $view->fase)
-						->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id))->execute();
+		$query_filters = DB::select('*')->from('objectStatus')
+							->where('fase', '=', $view->fase)
+							->where('project_id', '=', $project_id)
+							->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
+							->where('project_id', '=', $project_id))
+							->execute();
 
 		foreach ($query_filters as $object) {
 			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));

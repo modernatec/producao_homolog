@@ -21,7 +21,7 @@
 	    	<div id="content" class="content">
 	    		<?=$content;?>
 	    	</div>
-	    	<?=$bar;?>
+	    	<?=$bar?>
 	    </div>	    
 		<?php foreach ($scripts as $file) echo HTML::script($file), PHP_EOL ?>
 		<script>var msgs = <?=($mensagens)?($mensagens):('[]')?>;</script>   
