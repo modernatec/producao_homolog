@@ -31,7 +31,7 @@
                 ?>                          
                     <div style='clear:both' >
                         <div class='hist round step step_<?=$status_task->status->team->color?>' >
-                            <div style='width:30px; height:60px; float:left; margin:5px; margin-top:0'>
+                            <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
                                 <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
                             </div>
                             <?if($current_auth != "assistente"){?>
@@ -58,7 +58,9 @@
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                 <?}?>
-                                <b><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></b></a><br/><br/>
+                                <span class="list_faixa <?=$status_task->status->team->color?> round"><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></span></a>
+
+                                
                                 <p>iniciado: <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?></p>
                                 <p>retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?></p>
                             </div>

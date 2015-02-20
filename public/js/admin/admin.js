@@ -297,7 +297,7 @@ function setupAjax(container){
         e.preventDefault();
         //$('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
-        console.log($(this).data("refresh") );
+        //console.log($(this).data("refresh") );
 
         if($(this).hasClass('menu')){
             $('#menu li a').removeClass('selected');
@@ -314,7 +314,19 @@ function setupAjax(container){
     
 
         if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("href").replace(base_url + 'admin/', '').replace('/index/ajax', '');
+            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+        }
+    });
+
+    $("a[rel='task_bar']").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        loadContent($(this).attr("href"), $(this).data("panel"));
+    
+        $('#menu li a').removeClass('selected');
+        $('#tasks').addClass('selected');
+
+        if($(this).data("refresh") != undefined){
+            window.location.hash = '#tasks';
         }
     });
 

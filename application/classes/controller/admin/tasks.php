@@ -29,6 +29,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$nome = explode(" ", $tasks_of->nome);
         	$view->title = "tarefas - ".$nome[0];
         	$view->filter = "?to=".$tasks_of->id;
+
+        	//$this->action_getTasks();
         }else{
         	$view->title = "tarefas - equipe";
         	$view->filter = "?status=".json_encode(array("5"));
