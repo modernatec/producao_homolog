@@ -203,8 +203,7 @@ $(document).ready(function()
 
 setInterval(function() {
     loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar');
-      // Do something every 2 seconds
-}, 120000);
+}, 240000);
 
 
 
@@ -226,7 +225,7 @@ function setupAjax(container){
     //$('.list_body').css('padding-top', $('.list_header').height() + 20);
 
     if($(container + ' .scrollable_content').length != 0){
-        console.log($(container + ' .scrollable_content').offset().top, $( window ).height())
+        //console.log($(container + ' .scrollable_content').offset().top, $( window ).height())
         $(container + ' .scrollable_content').css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
     }
 
@@ -253,9 +252,7 @@ function setupAjax(container){
         populateSelect(ui);
     });
 
-    $(".fone").mask("(99) 9999-9999");
-
-    
+    $(".fone").mask("(99) 9999-9999");   
 
     $(".filter span").unbind('click').bind("click", function(e) {
         if($(this).parent().children('ul').css('display') == 'none'){
@@ -295,9 +292,7 @@ function setupAjax(container){
 
     $("a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        //$('#direita').fadeOut();
         loadContent($(this).attr("href"), $(this).data("panel"));
-        //console.log($(this).data("refresh") );
 
         if($(this).hasClass('menu')){
             $('#menu li a').removeClass('selected');
@@ -345,8 +340,6 @@ function setupAjax(container){
 
         var element = $(this).data("show");
         $('#' + element).slideToggle();
-
-
     });
 
     $('.fade').unbind('click').bind('click', function() {
@@ -459,9 +452,6 @@ function setupAjax(container){
             $(this).parent().addClass('selected');
         }
     })
-
-
-
     
     var tab = $.cookie("producao");
     
@@ -538,8 +528,6 @@ function loadContent(url, container){
         $(holder).hide().fadeIn(500, function(){
             //console.log("terminou -> " + $(container).attr('id'));
             setupAjax(container);  
-
-
         });      
     });
 }

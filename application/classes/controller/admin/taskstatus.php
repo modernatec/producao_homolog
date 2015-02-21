@@ -228,6 +228,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	}
 
 	public static function sendMail($arg){
+		/*
 		$object = ORM::factory('object', $arg['post']['object_id']);    	
 		$linkTask = URL::base().'admin/objects/view/'.$arg['post']['object_id'];
 		$email = new Email_Helper();
@@ -296,7 +297,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 					<b>Entregue por:</b> '.$arg['user']->nome.'<br/>
 					<b>Observações:</b> <pre>'.$arg['post']['description'].'</pre><br/>
 					<b>Link:</b> <a href="'.$linkTask.'" title="Ir para a tarefa">'.$linkTask.'</a></font>';
-				*/		
+				*	
 			break;
 		} 
 
@@ -309,6 +310,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			$email->mensagem = $template;
 			$email->enviaEmail();
 		}
+		*/
 	}
 
 	public function action_updateTasksBar(){

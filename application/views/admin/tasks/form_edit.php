@@ -51,7 +51,7 @@
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>
-        <input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label>
+        <!--input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label-->
         <dd>
           <input type="submit" class="round green" value="salvar" />             
         </dd>	    

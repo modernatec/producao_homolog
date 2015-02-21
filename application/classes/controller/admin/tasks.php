@@ -227,17 +227,20 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$type = "atualiza_tarefa";
 				}
 				
+				/*
 				if($this->request->post('sendmail') || empty($id)){
 					/*
 		            * envia email de tarefa para o usuário
 		            */
+		            /*
 					Controller_Admin_Taskstatus::sendMail(array(
 															'type' => $type,
 															'subject'=> $task->tag->tag,
 															'post' => $this->request->post(), 
             												'user' => $this->current_user->userInfos));	
 				}
-				
+				*/
+
 				//var_dump($this->request->post('sendmail'));
 
 	            $db->commit();
