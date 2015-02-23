@@ -92,7 +92,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			//$feed = $spreadsheetService->getSpreadsheetFeed();
 
 			$spreadsheetKey = 'tJpx-Ep4xiJ22IEK9mtUjng';
-			$worksheetId = 'od6';
+			//$worksheetId = 'od6';
 
 			//$query = new Zend_Gdata_Spreadsheets_ListQuery();
 			//$query->setSpreadsheetKey($spreadsheetKey);
@@ -120,12 +120,6 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 
 			//FUNCIONA
-			$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
-			$query->setSpreadsheetKey($spreadsheetKey);
-			$feed = $spreadsheetService->getWorksheetFeed($query);
-			$entries = $feed->entries[0]->getContentsAsRows();
-			$view->entries = $entries;
-
 			$searchFor = array(
 				"Taxonomia do arquivo", 
 				"Envio para a produtora",
@@ -135,6 +129,11 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 				"Prova 2",
 				"Prova 2 Relatório consolidado de conteúdo",
 				"Prova 2 Relatório de erros",
+				"Prova 3",
+				"Prova 3 Relatório consolidado de conteúdo",
+				"Prova 3 Relatório de erros",
+				"Prova 4",
+				"OK",
 			);
 
 			$arrayKeyDb = array(
@@ -146,101 +145,102 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 				"p2",
 				"rt2",
 				"r2",
-			);
+				"p3",
+				"rt3",
+				"r3",
+				"p4",
+				"fechamento",
+			);			
 
+			$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
+			$query->setSpreadsheetKey($spreadsheetKey);
+			$feed = $spreadsheetService->getWorksheetFeed($query);
+			//$colunas = $feed->entries[0]->getContentsAsRows();
+			//$view->entries = $entries;
+			/*
 			$searchKeys = array();
-			foreach($entries[1] as $key => $value){
+			foreach($colunas[1] as $key => $value){
 				if(!in_array($value, $searchFor)){
 					array_push($searchKeys, $key);
 				}	
 			}
-			//var_dump($searchKeys);
+			*/
 
 			$db = Database::instance();
         	$db->begin();
 
-			foreach ($entries as $key => $value) {
-				foreach ($searchKeys as $arraykey) {
-					unset($value[$arraykey]);
+        	$r = array();
+        	echo "<pre>";
+        	$i = 0;
+			foreach ($feed as $entry) {
+				$searchKeys = array();
+				$entries = $entry->getContentsAsRows();
+				
+				$colunas = $feed->entries[$i]->getContentsAsRows();
+				foreach($colunas as $key => $value){
+					if(!in_array($value, $searchFor)){
+						array_push($searchKeys, $key);
+					}	
 				}
-
-				if(count($value) == count($searchFor)){
-					$c = array_combine($arrayKeyDb, $value);
-					echo "<pre>";
-					var_dump($c);	
-					if($c['taxonomia'] != 'Taxonomia do arquivo'){
-						try {
-							$gdocs_item = ORM::factory('gdoc');
-							$gdocs_item->values($c, $arrayKeyDb); 
-
-							$object = ORM::factory('object')->where('taxonomia', '=', $c['taxonomia'])->find();
-							$gdocs_item->object_id = $object->id;
-
-							$gdocs_item->save();
-							
-							$db->commit();	
-							$msg = $c;	
-						}catch (ORM_Validation_Exception $e) {
-				            $errors = $e->errors('models');
-							$erroList = '';
-							foreach($errors as $erro){
-								$erroList.= $erro.'<br/>';	
-							}
-				            $db->rollback();
-				            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-				        } catch (Database_Exception $e) {
-				            $db->rollback();
-				            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-				        }	
-				        var_dump($msg);
-					}			        
-				}
-			}
-
-			/*
-			$db = Database::instance();
-	        $db->begin();
-			try {
-
-				$i = 0;
+				
+				var_dump($searchKeys);
+				/*
 				foreach ($entries as $key => $value) {
 					foreach ($searchKeys as $arraykey) {
 						unset($value[$arraykey]);
 					}
+					//var_dump($value);
+					$count1 = count($value);
+					$count2 = count($searchFor);
 
+					//array_push($r, $value);
 					if(count($value) == count($searchFor)){
-						$c = array_combine($searchFor, $value);
-						//var_dump($c);		
+						$c = array_combine($arrayKeyDb, $value);
+						array_push($r, $c);
 					}
-					if($i > 0){
-						$gdocs_item = ORM::factory('gdocs');
+					/*
+						$c = array_combine($arrayKeyDb, $value);
+						echo "<pre>";
+						var_dump($c);	
+						/*
+						if($c['taxonomia'] != 'Taxonomia do arquivo'){
+						 	try {
+								$gdocs_item = ORM::factory('gdoc');
+								$gdocs_item->values($c, $arrayKeyDb); 
 
-						foreach ($c as $key => $value) {
-							$gdocs_item->coluna = $key;
-							$gdocs_item->valor = $value;
+								$object = ORM::factory('object')->where('taxonomia', '=', $c['taxonomia'])->find();
+								$gdocs_item->object_id = $object->id;
+								$gdocs_item->project_id = $project->id;
+
+								$gdocs_item->save();
+								
+								$db->commit();	
+								$msg = $c;	
+							}catch (ORM_Validation_Exception $e) {
+					            $errors = $e->errors('models');
+								$erroList = '';
+								foreach($errors as $erro){
+									$erroList.= $erro.'<br/>';	
+								}
+					            $db->rollback();
+					            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+					        } catch (Database_Exception $e) {
+					            $db->rollback();
+					            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+					        }	
+					        var_dump($msg);
 						}
-						$gdocs_item->save();				
-					}
+						*			        
+					
+					*/
+				/*}				*/
+				$i++;
+			}
 
-					$i++;
-				}
-	            $db->commit();
 
-	            $msg = "Tarefa salva com sucesso."; 
-	        } catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $db->rollback();
-	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-	        } catch (Database_Exception $e) {
-	            $db->rollback();
-	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	        }	
-	        */
+			
 
+			
 
 			/*
 	      	// get spreadsheet entry
@@ -254,7 +254,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		    $view->ssEntry = $ssEntry;
 		    $view->wsFeed = $wsFeed;
 		    */
-
+		    $view->r = $r;
 		    echo $view;
 	    } catch (Exception $e) {
 	    	echo '<pre>';

@@ -84,7 +84,9 @@ foreach ($entries as $value) {
 
 var_dump($a);
 */
-
+$count = count($r);
+echo $count;
+var_dump($r);
 ?>
 OK
 </div>
