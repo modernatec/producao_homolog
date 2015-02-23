@@ -229,6 +229,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$arr_objstatus['object_id'] = $this->request->query('object_id');
 		}
 
+		$view->obj = ORM::factory('object', $arr_objstatus['object_id']);
+
 		$view->objVO = $arr_objstatus;
 
 		echo $view;

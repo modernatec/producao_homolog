@@ -1,4 +1,16 @@
-<label><b>editar status</b></label><hr/>
+<label><b>editar status - <?=$obj->taxonomia;?></b></label><hr/>
+	<div class="round table_info">
+        <div>
+            P1 = <?=Utils_Helper::data(@$obj->gdoc->p1,'d/m/Y')?> &bullet;
+            RT1 = <?=Utils_Helper::data(@$obj->gdoc->rt1,'d/m/Y')?>&bullet;
+            R1 = <?=Utils_Helper::data(@$obj->gdoc->r1,'d/m/Y')?>
+        </div>
+        <div>
+            P2 = <?=Utils_Helper::data(@$obj->gdoc->p2,'d/m/Y')?> &bullet;
+            RT2 = <?=Utils_Helper::data(@$obj->gdoc->rt2,'d/m/Y')?>&bullet;
+            R2 = <?=Utils_Helper::data(@$obj->gdoc->r2,'d/m/Y')?>
+        </div>
+    </div>
 	<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
 		<dl>
@@ -45,7 +57,7 @@
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text round" name="description" id="description" style="width:600px; height:70px;"><?=$objVO['description']?></textarea>
+                  <textarea class="text round" name="description" id="description" style="width:700px; height:200px;"><?=$objVO['description']?></textarea>
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
             <dd>

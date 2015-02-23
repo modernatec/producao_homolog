@@ -22,6 +22,7 @@
         &bullet; <?=@$obj->supplier->empresa?>
         <br/>
         <b>fechamento:</b> <?=Utils_Helper::data($obj->collection->fechamento,'d/m/Y')?><br/>
+        
     </div>
 
 <div  class="scrollable_content clear">             

@@ -91,22 +91,157 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			$spreadsheetService = new Zend_Gdata_Spreadsheets($client);
 			//$feed = $spreadsheetService->getSpreadsheetFeed();
 
-			$spreadsheetKey = 't8CFGjJfbijPdUJoIEAH92g';
-			//$worksheetId = 'https://spreadsheets.google.com/feeds/worksheets/1NHU_3aTivSGMV4AVoKX5W_r7zB0ZTJH62ox8S_ni6CI/private/full/od6';
+			$spreadsheetKey = 'tJpx-Ep4xiJ22IEK9mtUjng';
+			$worksheetId = 'od6';
 
 			//$query = new Zend_Gdata_Spreadsheets_ListQuery();
 			//$query->setSpreadsheetKey($spreadsheetKey);
 			//$query->setWorksheetId($worksheetId);
 			//$listFeed = $spreadsheetService->getListFeed($query);
 			
+			//$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
+			//$query->setSpreadsheetKey($spreadsheetKey);
+			//$listFeed = $spreadsheetService->getWorksheetFeed($query);
+			//$view->listFeed = $listFeed;
+
+			/*
+			$query = new Zend_Gdata_Spreadsheets_CellQuery();
+			$query->setSpreadsheetKey($spreadsheetKey);
+			$feed = $spreadsheetService->getCellFeed($query);
+			$columnCount = $feed->getColumnCount()->getText();
+			$columns = array();
+			for ($i = 0; $i < $columnCount; $i++) {
+			    $columnName = $feed->entries[$i]->getCell()->getText();
+			    $columns[$i] = strtolower(str_replace(' ', '', $columnName));
+			}
+			$view->columns = $columns;
+			$view->columnCount = $columnCount;
+			*/
+
+
+			//FUNCIONA
 			$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
 			$query->setSpreadsheetKey($spreadsheetKey);
-			$listFeed = $spreadsheetService->getWorksheetFeed($query);
+			$feed = $spreadsheetService->getWorksheetFeed($query);
+			$entries = $feed->entries[0]->getContentsAsRows();
+			$view->entries = $entries;
+
+			$searchFor = array(
+				"Taxonomia do arquivo", 
+				"Envio para a produtora",
+				"Prova 1",
+				"Prova 1 Relatório consolidado de conteúdo",
+				"Prova 1 Relatório de erros",
+				"Prova 2",
+				"Prova 2 Relatório consolidado de conteúdo",
+				"Prova 2 Relatório de erros",
+			);
+
+			$arrayKeyDb = array(
+				"taxonomia",
+				"envio_produtora",
+				"p1",
+				"rt1",
+				"r1",
+				"p2",
+				"rt2",
+				"r2",
+			);
+
+			$searchKeys = array();
+			foreach($entries[1] as $key => $value){
+				if(!in_array($value, $searchFor)){
+					array_push($searchKeys, $key);
+				}	
+			}
+			//var_dump($searchKeys);
+
+			$db = Database::instance();
+        	$db->begin();
+
+			foreach ($entries as $key => $value) {
+				foreach ($searchKeys as $arraykey) {
+					unset($value[$arraykey]);
+				}
+
+				if(count($value) == count($searchFor)){
+					$c = array_combine($arrayKeyDb, $value);
+					echo "<pre>";
+					var_dump($c);	
+					if($c['taxonomia'] != 'Taxonomia do arquivo'){
+						try {
+							$gdocs_item = ORM::factory('gdoc');
+							$gdocs_item->values($c, $arrayKeyDb); 
+
+							$object = ORM::factory('object')->where('taxonomia', '=', $c['taxonomia'])->find();
+							$gdocs_item->object_id = $object->id;
+
+							$gdocs_item->save();
+							
+							$db->commit();	
+							$msg = $c;	
+						}catch (ORM_Validation_Exception $e) {
+				            $errors = $e->errors('models');
+							$erroList = '';
+							foreach($errors as $erro){
+								$erroList.= $erro.'<br/>';	
+							}
+				            $db->rollback();
+				            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+				        } catch (Database_Exception $e) {
+				            $db->rollback();
+				            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+				        }	
+				        var_dump($msg);
+					}			        
+				}
+			}
+
+			/*
+			$db = Database::instance();
+	        $db->begin();
+			try {
+
+				$i = 0;
+				foreach ($entries as $key => $value) {
+					foreach ($searchKeys as $arraykey) {
+						unset($value[$arraykey]);
+					}
+
+					if(count($value) == count($searchFor)){
+						$c = array_combine($searchFor, $value);
+						//var_dump($c);		
+					}
+					if($i > 0){
+						$gdocs_item = ORM::factory('gdocs');
+
+						foreach ($c as $key => $value) {
+							$gdocs_item->coluna = $key;
+							$gdocs_item->valor = $value;
+						}
+						$gdocs_item->save();				
+					}
+
+					$i++;
+				}
+	            $db->commit();
+
+	            $msg = "Tarefa salva com sucesso."; 
+	        } catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $db->rollback();
+	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	        } catch (Database_Exception $e) {
+	            $db->rollback();
+	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	        }	
+	        */
 
 
-			
-
-			$view->listFeed = $listFeed;
 			/*
 	      	// get spreadsheet entry
 	      	$ssEntry = $service->getSpreadsheetEntry(

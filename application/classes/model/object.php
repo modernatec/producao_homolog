@@ -6,7 +6,10 @@ class Model_Object extends ORM {
 		'sfwprods'       => array('model' => 'sfwprod', 'through' => 'objects_sfwprods'),		
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_id'),
 		'statu' => array('model' => 'status_type', 'foreign_key' => 'status_id'),
+	);
 
+	protected $_has_one = array(
+		'gdoc' => array('model' => 'gdoc', 'foreign_key' => 'object_id')
 	);
         
 	protected $_belongs_to  = array(

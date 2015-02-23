@@ -35,8 +35,12 @@ class Utils_Helper
     
     public static function data($dt,$format='d/m/Y')
     {
-        $data = new DateTime($dt);
-        return date_format($data,$format);
+        if($dt != ""){
+            $data = new DateTime($dt);
+            return date_format($data,$format);
+        }else{
+            return "-";
+        }
     }
 
     public static function money_format($number, $format = '%n'){
