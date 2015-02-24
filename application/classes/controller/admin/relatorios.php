@@ -120,6 +120,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 
 			//FUNCIONA
+			/*
 			$searchFor = array(
 				"Taxonomia do arquivo", 
 				"Envio para a produtora",
@@ -134,6 +135,23 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 				"Prova 3 Relatório de erros",
 				"Prova 4",
 				"OK",
+			);
+			*/
+
+			$searchFor = array(
+				"taxonomiadoarquivo", 
+				"envioparaaprodutora",
+				"prova1",
+				"prova1relatórioconsolidadodeconteúdo",
+				"prova1relatóriodeerros",
+				"prova2",
+				"prova2relatórioconsolidadodeconteúdo",
+				"prova2relatóriodeerros",
+				"prova3",
+				"prova3relatóriodeconteúdo",
+				"prova3relatóriodeerros",
+				"prova4",
+				"ok",
 			);
 
 			$arrayKeyDb = array(
@@ -170,34 +188,67 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
         	$db->begin();
 
         	$r = array();
-        	echo "<pre>";
-        	$i = 0;
+        	//echo "<pre>";
 			foreach ($feed as $entry) {
-				$searchKeys = array();
 				$entries = $entry->getContentsAsRows();
-				
-				$colunas = $feed->entries[$i]->getContentsAsRows();
-				foreach($colunas as $key => $value){
-					if(!in_array($value, $searchFor)){
-						array_push($searchKeys, $key);
-					}	
-				}
-				
-				var_dump($searchKeys);
-				/*
-				foreach ($entries as $key => $value) {
-					foreach ($searchKeys as $arraykey) {
-						unset($value[$arraykey]);
+				//$entries = $feed->entries[0]->getContentsAsRows();
+								
+				foreach ($entries as $value) {
+					foreach ($value as $key => $nv) {
+						if(!in_array($key, $searchFor)){
+							unset($value[$key]);	
+						}						
 					}
-					//var_dump($value);
-					$count1 = count($value);
-					$count2 = count($searchFor);
+					
+					//var_dump(empty($value['taxonomiadoarquivo']));
+					if(!empty($value['taxonomiadoarquivo'])){
+						$c = array_combine($arrayKeyDb, $value);
+						//
 
+						try {
+							$gdocs_item = ORM::factory('gdoc');
+							$gdocs_item->values($c, $arrayKeyDb); 
+
+							$object = ORM::factory('object')->where('taxonomia', '=', $c['taxonomia'])->find();
+							$gdocs_item->object_id = $object->id;
+							$gdocs_item->project_id = $project->id;
+
+							$gdocs_item->save();
+							
+							$db->commit();	
+							$msg = $c;	
+						}catch (ORM_Validation_Exception $e) {
+				            $errors = $e->errors('models');
+							$erroList = '';
+							foreach($errors as $erro){
+								$erroList.= $erro.'<br/>';	
+							}
+				            $db->rollback();
+				            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+				        } catch (Database_Exception $e) {
+				            $db->rollback();
+				            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+				        }	
+
+				        array_push($r, $c);
+					}
+
+
+
+					//echo "-------------\n";
+					//var_dump($value);
+					//echo "-------------\n";
+
+					//var_dump($value);
+					//$count1 = count($value);
+					//$count2 = count($searchFor);
+					/*
 					//array_push($r, $value);
 					if(count($value) == count($searchFor)){
 						$c = array_combine($arrayKeyDb, $value);
 						array_push($r, $c);
 					}
+					*/
 					/*
 						$c = array_combine($arrayKeyDb, $value);
 						echo "<pre>";
@@ -233,8 +284,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						*			        
 					
 					*/
-				/*}				*/
-				$i++;
+				}
 			}
 
 
