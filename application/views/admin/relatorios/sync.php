@@ -85,8 +85,10 @@ foreach ($entries as $value) {
 var_dump($a);
 */
 $count = count($r);
-echo $count;
-var_dump($r);
+echo $count. " objetos encontrados. <br/>";
+foreach ($r as $key => $msg) {
+	echo "<div>".$msg."</div>";
+}
+//var_dump($r);
 ?>
-OK
 </div>

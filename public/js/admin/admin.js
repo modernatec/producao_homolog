@@ -197,13 +197,13 @@ $(document).ready(function()
         }); 
     }
 
-    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar');
+    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
     //setupAjax('#content');
 });
 
 setInterval(function() {
-    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar');
-}, 240000);
+    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
+}, 120000);
 
 
 
@@ -512,11 +512,16 @@ function ajaxReload(form){
 
 lastURL = "";
 
-function loadContent(url, container){
-    console.log('loadContent = ' + url);
+function loadContent(url, container, removeDialog){
+    d = new Date();
+    //console.log('loadContent = ' + url + "&c=" + d.getTime());
     lastURL = url;
     $(container).html("<div class='loading'>loading...</div>"); 
-    $('#dialog, ui-dialog').remove();
+    //console.log(removeDialog);
+
+    if(removeDialog != true){
+        $('#dialog, ui-dialog').remove();
+    }
 
     if($(container + " .mCSB_container").length > 0){
         holder = container + " .mCSB_container";

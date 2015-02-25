@@ -21,7 +21,8 @@
         &bullet; <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?>
         &bullet; <?=@$obj->supplier->empresa?>
         <br/>
-        <b>fechamento:</b> <?=Utils_Helper::data($obj->collection->fechamento,'d/m/Y')?><br/>
+        <b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?><br/>
+        <b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?><br/>
         
     </div>
 
@@ -51,7 +52,7 @@
                                         </div>
                             <?      
                                     }
-                                    $count++;
+                                    //$count++;
                                 }
                             ?>
                                                        
@@ -70,6 +71,51 @@
                             <?if(!empty($status_task->description)){ ?>
                                 <span class="wordwrap description"><?=$status_task->description;?></span>
                             <?}?>
+
+                            <? if($count == 0){
+                                    if($current_auth != "assistente"){?>
+
+                                        <div class="table_info">
+                                            <table>
+                                                <thead>
+                                                    <th>&nbsp;</th>
+                                                    <th>envio</th>
+                                                    <th>retorno RT</th>
+                                                    <th>rel. correções</th>
+                                                </thead>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 1</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 2</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 3</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 4</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </table>
+                                            <p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p>
+                                        </div>
+
+                            <?      
+                                    }
+                                    $count++;
+                                }
+                            ?>
 
 
                             <?foreach ($status_task->getHistory($status_task->id) as $task) {?> 

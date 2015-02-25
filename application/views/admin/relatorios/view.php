@@ -2,8 +2,8 @@
     <span class="header">relatórios</span>
 </div>
 <div id="esquerda">
-    <span class="header">relatórios</span>
-    <form action="<?=URL::base();?>admin/relatorios/generate" method="post" class="form">
+    <span class="header">gerar relatórios</span>
+    <form action="<?=URL::base();?>admin/relatorios/generateStatus" method="post" class="form">
         <div >
             <dd>
                 <select class="required round" name="project_id" id="project_id">
@@ -19,7 +19,7 @@
             <input type="submit" class="round bar_button" value="gerar relatório"> 
         </div>
     </form>
-
+    <span class="header">sincronizar infos com gdocs</span>
     <form name="sync_gdocs" id="sync_gdocs" data-panel="#direita" action="<?=URL::base();?>admin/relatorios/updateGdocs" method="post" class="form">
         <div >
             <dd>

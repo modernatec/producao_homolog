@@ -32,6 +32,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}           
 	} 
 
+	public function action_limpaString(){
+		$this->auto_render = false;
+		$objects = ORM::factory('object')->find_all(); 
+		foreach ($objects as $object) {
+			$object->taxonomia = trim($object->taxonomia);
+			$object->title = trim($object->title);
+			$object->save();
+		}
+		echo "ok";
+	}
+
 	public function action_redirect(){
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/redirect');

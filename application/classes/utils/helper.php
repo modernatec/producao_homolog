@@ -38,6 +38,19 @@ class Utils_Helper
         if($dt != ""){
             $data = new DateTime($dt);
             return date_format($data,$format);
+        }
+    }
+
+    public static function dataGdocs($dt,$format='d/m/Y')
+    {
+        if($dt != ""){
+            $pos = strpos($dt, "/");
+            if($pos !== false){
+                $data = new DateTime($dt);
+                return date_format($data,$format);
+            }else{
+                return $dt." *";
+            }
         }else{
             return "-";
         }

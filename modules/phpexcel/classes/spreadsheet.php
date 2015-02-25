@@ -69,36 +69,189 @@ class Spreadsheet
 	}
 
 	public function setSheetData( array $data, PHPExcel_Worksheet $Sheet )
-	{
-		$styleArray1 = array(
-	    	'font'  => array(
+	{	
+		/*
+		'font'  => array(
 	        	'color' => array('rgb' => '000000'),
-	    	)
+	    	),
+		*/
+		$header = array(	
+			'font'  => array(
+	        	'color' => array('rgb' => 'ffffff'),
+	        	'bold'  => true,
+	    	),    	
+	    	'alignment' => array(
+	            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+	            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	        ),
+	    	'fill' => array(
+	            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	            'color' => array('rgb' => '000000')
+	        ),
+			'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+			),
+
 	    );
 
-	    $styleArray2 = array(
+		$linhaPar = array(
+	    	'fill' => array(
+	            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	            'color' => array('rgb' => 'ffffff')
+	        ),
+	        'alignment' => array(
+	            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	        ),
+			'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+			),
+
+	    );
+
+	    $linhaImpar = array(
+	    	
+	    	'fill' => array(
+	            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	            'color' => array('rgb' => 'c1c1c1')
+	        ),
+	        'alignment' => array(
+	            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	        ),
+			'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+			),
+
+	    );
+
+	    $atrasoPar = array(
 	    	'font'  => array(
-	       		'color' => array('rgb' => 'FF0000'),
-	    	)
+	        	'color' => array('rgb' => 'ff0000'),
+	    	),
+	    	'alignment' => array(
+	            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	        ),
+	    	'fill' => array(
+	            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	            'color' => array('rgb' => 'ffffff')
+	        ),
+			'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+			),
+
 	    );
 
+	    $atrasoImpar = array(
+	    	'font'  => array(
+	        	'color' => array('rgb' => 'ff0000'),
+	    	),
+	    	'alignment' => array(
+	            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	        ),
+	    	'fill' => array(
+	            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	            'color' => array('rgb' => 'c1c1c1')
+	        ),
+			'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+					'color' => array('rgb' => '000000'),
+				),
+			),
+
+	    );
+
+
+
+	    /*
 	    $styleArray3 = array(
 	    	'font'  => array(
 	        	'color' => array('rgb' => '0eaa19'),
-	    		)
+	    	),
+	    	'borders' => array(
+				'top' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+				),
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+				),
+				'vertical' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN,
+				),
+			),
 	    );
+	    */
 
 	    $letters = range('A','Z');
 	    $rows_filter = 0;
 
 		foreach ( $data as $row => $columns ){
 			$col = 0;
-			$cor = $styleArray1;
+
+			if ($rows_filter % 2 == 0) { 
+				$cor = $linhaPar;
+			}else{
+				$cor = $linhaImpar;
+			}
+
+			
 			echo '<pre>';
 			foreach ( $columns as $column => $value ){								
 				//$Sheet->setCellValueByColumnAndRow($col, $row, $value);
 				$Sheet->setCellValueByColumnAndRow($col, $row, html_entity_decode($value,ENT_QUOTES,'UTF-8'));
 				$Sheet->getColumnDimensionByColumn($col)->setAutoSize(true);
+				
 				switch ($column) {
 					case 'taxonomia':
 							$new_value = explode("|", $value);
@@ -114,7 +267,11 @@ class Spreadsheet
         PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 						break;	
 					case 'data_retorno':
-						$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
+						$atraso = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? true : false;
+						if($atraso){
+							$cor = ($rows_filter % 2 == 0) ? $atrasoPar : $atrasoImpar;
+						}
+
 						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
         PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 						break;
@@ -123,16 +280,25 @@ class Spreadsheet
 						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
         PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 						break;
-
+					case 'fechamento_colecao':
+						//$cor = ($value < PHPExcel_Shared_Date::FormattedPHPToExcel(date('Y'), date('m'), date('d'))) ? $styleArray2 : $cor;
+						$Sheet->getStyleByColumnAndRow($col, $row)->getNumberFormat()->setFormatCode(
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+						break;
 					case 'anotacoes':
+						$Sheet->getColumnDimensionByColumn($col)->setAutoSize(false);
+						$Sheet->getColumnDimensionByColumn($col)->setWidth(50);
 						$Sheet->getStyleByColumnAndRow($col, $row)->getAlignment()->setWrapText(true);
 						break;
 
 					case 'status':
-						$cor = ($value == 'finalizado') ? $styleArray3 : $cor;
+						//$cor = ($value == 'finalizado') ? $finalizado : $cor;
 						break;						
 				}
 
+				/*
+				* Estilo das linhas
+				*/
 				$Sheet->getStyle('A'.$row.':'.$letters[$col].$row)->applyFromArray($cor);
 				$col++;
 			}
@@ -140,8 +306,14 @@ class Spreadsheet
 		}
 		//exit();
 
+		/*
+		* Estilo do Header
+		*/
 		$Sheet->setAutoFilter('A1:'.$letters[$col-1].$rows_filter);
-		$Sheet->getStyle('A1:'.$letters[$col].'1')->applyFromArray($styleArray1);
+		$Sheet->getStyle('A1:'.$letters[$col-1].'1')->applyFromArray($header);
+		$Sheet->getRowDimension(1)->setRowHeight(20);
+		
+		
 	}
 
 	/*

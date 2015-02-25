@@ -18,13 +18,20 @@ class Model_ObjectStatu extends ORM {
 
 	public function getAnotacoes($object_id){
 		$anotacoes = "";
-		$rs = ORM::factory('anotacoes_object')->where('object_id', '=', $object_id)->order_by('id', 'DESC')->find_all();
+		$rs = ORM::factory('anotacoes_object')->where('object_id', '=', $object_id)->order_by('id', 'DESC')->limit('1')->find_all();
 		foreach ($rs as $anotacao) {
 			$anotacoes.= $anotacao->anotacao."\n-------------------\n";
 		}
 
 		return $anotacoes;
 	}
+
+	public function getGdocs($object_id){
+		$rs = ORM::factory('gdoc')->where('object_id', '=', $object_id)->find();
+		return $rs;
+	}
+
+	
 
 	public function getStatus($objId){
 		$status = ORM::factory('taskview')->where('object_status_id', '=', $objId)->order_by("id", 'DESC')->find();
