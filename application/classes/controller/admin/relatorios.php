@@ -2,7 +2,7 @@
  
 class Controller_Admin_Relatorios extends Controller_Admin_Template {
  
-	public $auth_required		= array('login'); //Auth is required to access this controller
+	public $auth_required = array('login'); //Auth is required to access this controller
  
 					 
 	public function __construct(Request $request, Response $response)
@@ -93,6 +93,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 				"prova3relatóriodeerros",
 				"prova4",
 				"ok",
+				"observações"
 			);
 
 			$arrayKeyDb = array(
@@ -109,6 +110,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 				"r3",
 				"p4",
 				"fechamento",
+				"observacoes",
 			);			
 
 			$query = new Zend_Gdata_Spreadsheets_DocumentQuery();

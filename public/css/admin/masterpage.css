@@ -818,7 +818,7 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #dfe9f3;
 }
 
-.round_imgList{
+.round_imgList, .round_imgListblue, .round_imgListgreen{
 	-o-border-radius: 25px;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
@@ -858,9 +858,7 @@ input[type='text']:focus, input[type='password']:focus{
 	position: relative;
 }
 
-.icon_team .round_imgList{
-	border: 2px solid #ccc !important;
-}
+
 
 .icon_team .round_imgList span{
 	display: block;
@@ -943,6 +941,16 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #fff;
 	border: none !important;
 }
+
+
+.icon_team .round_imgListblue{
+	border: 2px solid #008fc7 !important;
+}
+
+.icon_team .round_imgListgreen{
+	border: 2px solid #8cc152 !important;
+}
+
 
 
 a.green{
@@ -1064,7 +1072,16 @@ a.green{
 }
 
 
-
+.observacoes_gdocs{
+	width: 240px;
+	height: 190px;
+	padding-left: 5px;
+	border-left: 1px dotted #008fc7;
+	margin-right: 0;
+	text-align: top;
+	overflow-y: auto;
+	overflow-x: none;
+}
 
 
 

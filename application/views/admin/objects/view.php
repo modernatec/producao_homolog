@@ -17,13 +17,12 @@
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
-        <?=@$obj->typeobject->name;?> 
-        &bullet; <?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?>
-        &bullet; <?=@$obj->supplier->empresa?>
+        <span class="list_faixa blue round"><?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?>
+        &bullet; <?=@$obj->supplier->empresa?></span> - <?=@$obj->typeobject->name;?>
         <br/>
         <b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?><br/>
         <b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?><br/>
-        
+        <b>fechamento da coleção:</b> <?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?><br/>        
     </div>
 
 <div  class="scrollable_content clear">             
@@ -74,41 +73,45 @@
 
                             <? if($count == 0){
                                     if($current_auth != "assistente"){?>
-
-                                        <div class="table_info">
-                                            <table>
-                                                <thead>
-                                                    <th>&nbsp;</th>
-                                                    <th>envio</th>
-                                                    <th>retorno RT</th>
-                                                    <th>rel. correções</th>
-                                                </thead>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 1</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 2</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 3</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 4</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
-                                                    <td>-</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </table>
-                                            <p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p>
+                                        <a class="down_button fade" data-show="replies_gdocs"><img src="<?=URL::base();?>public/image/admin/down.png" title="abrir tabela" /></a>
+                                        <div class="table_info replies replies_gdocs" style="margin-top:5px;">
+                                            <div class="left">
+                                                <table>
+                                                    <thead>
+                                                        <th><b>gdocs</b></th>
+                                                        <th><b>envio</b></th>
+                                                        <th><b>retorno RT</b></th>
+                                                        <th><b>consolidação</b></th>
+                                                    </thead>
+                                                    <tr>
+                                                        <td><span class="text_blue">prova 1</span></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text_blue">prova 2</span></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text_blue">prova 3</span></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text_blue">prova 4</span></td>
+                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                </table>
+                                                <p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p>
+                                            </div>
+                                            <div class="observacoes_gdocs wordwrap left"><b>observações:</b><br/><?=@$obj->gdoc->observacoes;?>
+                                            </div>
                                         </div>
 
                             <?      
@@ -187,7 +190,8 @@
                                                 <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
                                                     <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                    <?  if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                    <?  
+                                                        if($task->tag_id == '7' && $current_auth == "assistente"){
                                                             $start = false;
                                                         }else{
                                                             $start = true;
