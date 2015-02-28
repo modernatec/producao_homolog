@@ -42,6 +42,14 @@ class Model_Object extends ORM {
 		return array(
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
+			),
+
+			'title' => array(
+				array(array($this, 'limpaString'))
+			),
+
+			'taxonomia' => array(
+				array(array($this, 'limpaString'))
 			)
 		);
 	}
@@ -49,6 +57,10 @@ class Model_Object extends ORM {
 	public function setup_date($value)
 	{
 		return  date('Y-m-d', strtotime(str_replace('/', '-', $value)));
+    }
+
+    public function limpaString($value){
+    	return trim($value);
     }
 
 	public function labels()

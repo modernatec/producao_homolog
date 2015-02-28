@@ -190,8 +190,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 					->where('project_id', '=', $this->request->post('project_id'))
 					->where('status_id', '!=', '8')
 					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $this->request->post('project_id')))
+					
 					->order_by('collection_fechamento', 'ASC')
-					//->order_by('fechamento', 'ASC')
+					->order_by('collection_name', 'ASC')
 					->find_all();
 
 		$arr = array(0 => array());
