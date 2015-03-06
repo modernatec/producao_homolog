@@ -11,7 +11,10 @@
 		<?=@$refresh?>
 		<title>Kaizen<?php echo $title; ?></title>
 	    <?php foreach ($styles as $file => $type) echo HTML::style($file, array('media' => $type)), PHP_EOL ?>
-        <script>var base_url = "<?=URL::base();?>"</script>  
+        <script>
+        	var base_url = "<?=URL::base();?>"
+        	var logged_in = <?=Auth::instance()->logged_in();?>
+        </script>  
         <link rel="icon" type="image/vnd.microsoft.icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
         <link rel="shortcut icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
 	</head>

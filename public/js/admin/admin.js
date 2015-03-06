@@ -183,7 +183,7 @@ $(document).ready(function()
         $(this).not('.hasDatePicker').datepicker();
     });
     */
-
+    //logged_in = 0;
     if(window.location.hash != ""){
         var hash_id = window.location.hash.replace('#', '');
         loadContent(base_url + '/admin/' + hash_id + '/index/ajax' , '#content');
@@ -513,28 +513,32 @@ function ajaxReload(form){
 lastURL = "";
 
 function loadContent(url, container, removeDialog){
-    d = new Date();
-    //console.log('loadContent = ' + url + "&c=" + d.getTime());
-    lastURL = url;
-    $(container).html("<div class='loading'>loading...</div>"); 
-    //console.log(removeDialog);
+    if(logged_in != false){
+        d = new Date();
+        //console.log('loadContent = ' + url + "&c=" + d.getTime());
+        lastURL = url;
+        $(container).html("<div class='loading'>loading...</div>"); 
+        //console.log(removeDialog);
 
-    if(removeDialog != true){
-        $('#dialog, ui-dialog').remove();
-    }
+        if(removeDialog != true){
+            $('#dialog, ui-dialog').remove();
+        }
 
-    if($(container + " .mCSB_container").length > 0){
-        holder = container + " .mCSB_container";
+        if($(container + " .mCSB_container").length > 0){
+            holder = container + " .mCSB_container";
+        }else{
+            holder = container;
+        }
+
+        $(holder).load(url, function() {
+            $(holder).hide().fadeIn(500, function(){
+                //console.log("terminou -> " + $(container).attr('id'));
+                setupAjax(container);  
+            });      
+        });
     }else{
-        holder = container;
+        alert("sessão expirada!");
     }
-
-    $(holder).load(url, function() {
-        $(holder).hide().fadeIn(500, function(){
-            //console.log("terminou -> " + $(container).attr('id'));
-            setupAjax(container);  
-        });      
-    });
 }
 
 
