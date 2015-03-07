@@ -219,8 +219,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			$datas = explode("-", $object->retorno);
 			$datas_e = explode("-", $object->envio);
 			$gdocs_fechamento = $object->getGdocs($object->id);
-
+			var_dump($object->taxonomia);
 			$datas_f = (!is_null($gdocs_fechamento)) ? explode("/", $gdocs_fechamento->fechamento) : null;
+
 			$datas_fc = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 			$line = array(
 						'title' => $object->title, 
@@ -237,7 +238,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
 						'prova' => $object->prova, 
 						'status' => $object->statu_status, 
-						'fechamento' => ($datas_f[0] != "") ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
+						'fechamento' => ($datas_f[0] != "" && count($datas_f) > 1) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
 						'fechamento_colecao' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_fc[0], $datas_fc[1], $datas_fc[2]) : "-",
 						'anotacoes' => ($object->status_id != '8') ? $object->getAnotacoes($object->id) : '',
 					);

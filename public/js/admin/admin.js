@@ -52,7 +52,6 @@ function excluirTemporario(id)
 }
 */
 function checkUpload(form){
-	console.log("chamou " + form);
 	
 	if($('.delFiles').size() > 0){
 		if(filesUploads.length <= 0){
@@ -204,8 +203,6 @@ $(document).ready(function()
 setInterval(function() {
     loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
 }, 120000);
-
-
 
 function setupScroll(){
     $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
@@ -543,10 +540,10 @@ function loadContent(url, container, removeDialog){
 
 
 function setDataPanels(data){
-    console.log(data);
+    //console.log(data);
     
     if(data.content){
-        console.log("content *********")
+        //console.log("content *********")
         loadContent(data.content, '#content');
     }else{
         if(data.esquerda){
