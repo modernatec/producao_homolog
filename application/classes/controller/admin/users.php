@@ -48,7 +48,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     		$view->bind('errors', $errors)
                 ->bind('message', $message);
     		
-            //$this->addValidateJs("public/js/admin/validateUsersEdit.js");
     		$userInfo = ORM::factory('userInfo', $userInfo_id);
     		$view->teamsList = ORM::factory('team')->find_all();
     		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
@@ -104,8 +103,15 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	* Alterar infos cadastrais do user logado *
 	*/
 	public function action_editInfo(){
-		$view = View::factory('admin/users/edit');
-		$this->action_edit($userInfo_id = $this->current_user->userInfos->id, $view);
+        $this->auto_render = false;
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'content' => URL::base().'admin/users/index/ajax',              
+            'direita' => URL::base().'admin/users/edit/'.$this->current_user->userInfos->id, 
+        ));
+		//$view = View::factory('admin/users/edit');
+		//$this->action_edit($userInfo_id = $this->current_user->userInfos->id, $view);
 	}
 	
 	/*

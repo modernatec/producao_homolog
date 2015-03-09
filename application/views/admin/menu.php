@@ -1,6 +1,6 @@
 <div id="lateral">
 	<div id="user_info" >
-		<a href="<?=URL::base();?>admin/users/editInfo" style="float:left;">
+		<a href="<?=URL::base();?>admin/users/editInfo" rel="load-panel" data-panel="#content" style="float:left;">
 			<img class="foto" src="<?=URL::base();?><?=$user->userInfos->foto?>" />
 			
 	        <span><?$nome = explode(" ", $user->userInfos->nome); echo ucfirst($nome[0]);?></span>

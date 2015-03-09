@@ -196,12 +196,12 @@ $(document).ready(function()
         }); 
     }
 
-    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
+    updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
     //setupAjax('#content');
 });
 
 setInterval(function() {
-    loadContent(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
+    updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
 }, 120000);
 
 function setupScroll(){
@@ -304,6 +304,30 @@ function setupAjax(container){
         $("li").removeClass("blueSelection");
         $(this).closest("li").addClass("blueSelection");
     
+
+        if($(this).data("refresh") != undefined){
+            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+        }
+    });
+
+    $("a[rel='load-panel']").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        //loadContent($(this).attr("href"), $(this).data("panel")); 
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('href'),
+            dataType : "json",
+            //data: $(form).serialize(),
+            success: function(data) {
+                setDataPanels(data);
+            },
+            error: function(e) {
+                console.log(e);
+                alert("ocorreu um erro.");
+            }
+        });  
+
 
         if($(this).data("refresh") != undefined){
             window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
@@ -538,39 +562,58 @@ function loadContent(url, container, removeDialog){
     }
 }
 
+function updateBar(url, container, removeDialog){
+    if(logged_in != false){
+        d = new Date();
+
+        lastURL = url;
+        $(container).html("<div class='loading'>loading...</div>"); 
+
+        if(removeDialog != true){
+            $('#dialog, ui-dialog').remove();
+        }
+
+        if($(container + " .mCSB_container").length > 0){
+            holder = container + " .mCSB_container";
+        }else{
+            holder = container;
+        }
+
+        $(holder).load(url, function() {
+            $(holder).hide().fadeIn(500, function(){
+                //console.log("terminou -> " + $(container).attr('id'));
+                setupAjax(container);  
+            });      
+        });
+    }else{
+        alert("sessão expirada!");
+    }
+}
+
 
 function setDataPanels(data){
-    //console.log(data);
-    
     if(data.content){
-        //console.log("content *********")
         loadContent(data.content, '#content');
-    }else{
+    }
+
+    setTimeout(function() {
         if(data.esquerda){
             loadContent(data.esquerda, '#esquerda');
-        }else{
-            //$('#esquerda').fadeOut();
         }
         
         if(data.direita){
             loadContent(data.direita, '#direita');
-        }else{
-            //$('#direita').fadeOut();
         }
 
         if(data.tabs_content){
             loadContent(data.tabs_content, '#tabs_content');
-        }else{
-            //$('#direita').fadeOut();
         }
 
         if(data.taskBar){
             loadContent(data.taskBar, '#taskBar');
-        }else{
-            //$('#direita').fadeOut();
         }
 
-    }
+    }, 500);
 
     if(data.msg){
         $.jGrowl(data.msg,{ theme:'aniversariantes', position:'top-right',});

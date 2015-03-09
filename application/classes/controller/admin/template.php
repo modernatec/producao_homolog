@@ -203,7 +203,6 @@ class Controller_Admin_Template extends Controller_Template {
 		}
 		array_push($validateArr, $js);	
 		
-		$this->template->scripts = array_merge($validateArr, $this->template->scripts);
-		
+		$this->template->scripts = array_merge($validateArr, $this->template->scripts);		
 	}
 }
