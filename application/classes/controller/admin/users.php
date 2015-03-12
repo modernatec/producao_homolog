@@ -6,7 +6,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
  	
 	public $secure_actions     	= array(
                                     'index' => array('login'),
-									'edit' => array('login', 'coordenador'),
+									'edit' => array('login'),
 									'delete' => array('login', 'admin'),
 									'create' => array('login', 'admin'),	
                                     'inativate'	=> array('login', 'admin'),  									
@@ -43,33 +43,37 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         {                                              
             $this->salvar($userInfo_id);
         }else{
-    		$this->auto_render = false;
-   			$view = View::factory('admin/users/edit');        	            
-    		$view->bind('errors', $errors)
-                ->bind('message', $message);
-    		
-    		$userInfo = ORM::factory('userInfo', $userInfo_id);
-    		$view->teamsList = ORM::factory('team')->find_all();
-    		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
-    		
-            $view->anexosView = View::factory('admin/files/anexos');
-    				
-    		
-    		$roles = $userInfo->user->roles->find_all();
-            $roles_arr = array();
-    		foreach($roles as $roleObj){
-                if($roleObj->id != '1'){
-        			array_push($roles_arr, $roleObj->id);
-                }
-    		}	
-    		
-    		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
-    		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
-            $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
-    		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
+            $this->auto_render = false;
+            if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
+                echo "Você não tem permissão para alterar as infos deste usuário.";
+            }else{	
+       			$view = View::factory('admin/users/edit');        	            
+        		$view->bind('errors', $errors)
+                    ->bind('message', $message);
+        		
+                $userInfo = ORM::factory('userInfo', $userInfo_id);
+        		$view->teamsList = ORM::factory('team')->find_all();
+        		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
+        		
+                $view->anexosView = View::factory('admin/files/anexos');
+        				
+        		
+        		$roles = $userInfo->user->roles->find_all();
+                $roles_arr = array();
+        		foreach($roles as $roleObj){
+                    if($roleObj->id != '1'){
+            			array_push($roles_arr, $roleObj->id);
+                    }
+        		}	
+        		
+        		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
+        		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
+                $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
+        		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
 
-            //$this->template->content = $view;   
-            echo $view;
+                //$this->template->content = $view;   
+                echo $view;
+            }
 		}
 		
     }

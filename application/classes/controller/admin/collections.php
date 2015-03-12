@@ -38,8 +38,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs("public/js/admin/validateCollections.js");
-		$view->isUpdate = false;
+		//$this->addValidateJs("public/js/admin/validateCollections.js");
+		//$view->isUpdate = false;
 		
 		$view->projectVO = $this->setVO('collection');		
 		$view->materiaList = ORM::factory('materia')->find_all();
@@ -63,11 +63,13 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 					->bind('message', $message);
 		
 			//$this->addValidateJs("public/js/admin/validateCollections.js");
-			$view->isUpdate = true;
+			//$view->isUpdate = true;
 					
 			$collection = ORM::factory('collection', $id);
 			$view->collectionVO = $this->setVO('collection', $collection);
 			$view->materiaList = ORM::factory('materia')->find_all();
+			$view->segmentoList = ORM::factory('segmento')->find_all();
+
 			//$this->template->content = $view;	
 			echo $view;		   
 		}
@@ -85,8 +87,10 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				'name',
 				'op',
 				'materia_id',
+				'segmento_id',
 				'ano',
 				'fechamento',
+				'repositorio',
 			));
 			               
 			
@@ -149,7 +153,45 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	public function action_getList($ano){
 		$this->auto_render = false;
 		$view = View::factory('admin/collections/table');
-		$view->collectionsList = ORM::factory('collection')->where('ano', '=', $ano)->order_by('name','ASC')->find_all();
+		$view->ano = $ano;
+
+		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "collections"){		
+			$kaizen_arr = array(
+				"filtros" => array(
+					"filter_segmento" => json_encode(array()),
+					"filter_name" => "",
+				),
+				"parameters" => "",
+				"model" => "collections",
+			);
+		}else{
+			/*filtros*/
+			$kaizen_arr = array(
+				"filtros" => array(
+					"filter_segmento" => ($this->request->post('segmento') != "") ? json_encode($this->request->post('segmento')) : Session::instance()->get('kaizen')['filtros']["filter_segmento"],
+					"filter_name" => ($this->request->post('name') != "") ? $this->request->post('name') : Session::instance()->get('kaizen')['filtros']["filter_name"],
+				),
+				"parameters" => "",
+				"model" => "collections",
+			);
+		}
+
+  		Session::instance()->set('kaizen', $kaizen_arr);
+  		//var_dump( Session::instance()->get('kaizen'));
+
+		$filter_segmento = Session::instance()->get('kaizen')['filtros']["filter_segmento"];
+		$filter_name = Session::instance()->get('kaizen')['filtros']["filter_name"];	
+
+		$view->filter_segmento = json_decode($filter_segmento);
+		$view->filter_name = $filter_name;
+
+		$query = ORM::factory('collection')->where('ano', '=', $ano);
+
+		(count($view->filter_segmento) > 0) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(!empty($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
+		
+		$view->collectionsList = $query->order_by('name','ASC')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		echo $view;
 	}
 	
@@ -165,6 +207,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			array_push($collectionsArr, $collection->collection_id);
 		}
 		$view->collectionsArr = $collectionsArr;
+
 		$view->collectionsList = ORM::factory('collection')->where('ano', '=', $ano)->order_by('name','ASC')->find_all();
 		echo $view;
 	}

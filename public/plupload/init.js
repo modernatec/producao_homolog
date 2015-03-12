@@ -20,10 +20,12 @@ var filesUploads = [];
 var mimeUploads = [];
 var formUp;
 
+uploader.unbind('Init');
 uploader.bind('Init', function(up, params) {
 	formUp = $('form');
 });
 
+uploader.unbind('FilesAdded');
 uploader.bind('FilesAdded', function(up, files) {
 	for (var i in files) {
 		$('#filelist').append('<div id="' + files[i].id + '" class="delFiles">'+
@@ -32,6 +34,7 @@ uploader.bind('FilesAdded', function(up, files) {
 	}
 });
 
+uploader.unbind('FileUploaded');
 uploader.bind('FileUploaded', function(up, file, info) {
     var php = JSON.parse(info.response);    
     var r = php.result.split("@");
@@ -41,10 +44,12 @@ uploader.bind('FileUploaded', function(up, file, info) {
     $('#'+file.id+' b').replaceWith('<a class="active" title="Upload OK">Upload OK</a>');
 });
 
+uploader.unbind('UploadProgress');
 uploader.bind('UploadProgress', function(up, file) {
     $('#'+file.id+' b').html(file.percent+"%"); 
 });
 
+uploader.unbind('UploadComplete');
 uploader.bind('UploadComplete', function(up, file) {    
     if (up.files.length === (up.total.uploaded + up.total.failed)) {
         $('#filesUploads').val(filesUploads.join(','));
@@ -73,7 +78,7 @@ $('#excluirTodos').click(function() {
     }
 });
 
-uploader.init();
+//uploader.init();
 
 
 /***melhorar***

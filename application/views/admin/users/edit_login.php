@@ -1,7 +1,7 @@
 <div class="bar">
 	<a href="<?=URL::base();?>/admin/users/edit/<?=$userInfoVO['id']?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 </div>
-<form name="frmEditPass" id="frmEditPass" method="post" class="form" enctype="multipart/form-data" autocomplete="off">
+<form name="frmEditPass" id="frmEditPass" method="post" action="<?=URL::base();?>/admin/users/editPass" class="form" enctype="multipart/form-data" autocomplete="off">
   <dl>
     <dt>
       <label for="username">Username</label>

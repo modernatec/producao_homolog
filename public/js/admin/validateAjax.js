@@ -161,10 +161,18 @@ function validateAjax(){
 
     $("#frmCreateCollection").validate({
         rules: {
-            name: {required:true}
+            name: {required:true},
+            materia_id: {required:true},
+            segmento_id: {required:true},
+            ano: {required:true},
+            fechamento: {required:true},
         },
         messages: {
-            name: { required:'Campo não pode ser vazio'}
+            name: { required:'Campo não pode ser vazio'},
+            materia_id: {required:'Campo não pode ser vazio'},
+            segmento_id: {required:'Campo não pode ser vazio'},
+            ano: {required:'Campo não pode ser vazio'},
+            fechamento: {required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
@@ -252,7 +260,7 @@ function validateAjax(){
     $("#sync_gdocs").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form);
+            ajaxReload(form, "#direita");
             return false;       
         }
     });
@@ -441,10 +449,34 @@ function validateAjax(){
         },
         submitHandler: function(form){
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxPost(form);
+            checkUpload(form);
             return false; 
         }
-    })  
+    });
+
+    $("#frmEditPass").validate({            
+            ignore: ".ignore",
+            rules: {
+                username: {required:true},
+                password: {required:true},
+                password_confirm: {
+                    required:true,
+                    equalTo: "#password"
+                },
+                
+            },
+            messages: {
+                username: { required:"Digite o username."},
+                password: { required: "Digite a senha." },
+                password_confirm: {
+                    required:"Confirme a senha.",
+                    equalTo:"As senhas não conhecidem."
+                },
+            },
+            submitHandler: function(form){
+                ajaxPost(form);
+            }
+        })   
 
             
 }

@@ -57,10 +57,12 @@ function checkUpload(form){
 		if(filesUploads.length <= 0){
 			uploader.start();
 		}else{
-			form.submit();
+			ajaxReload(form);
+            //form.submit();
 		}
 	}else{
-		form.submit();
+		//form.submit();
+        ajaxReload(form);
 	}
 		
 }
@@ -212,7 +214,7 @@ function setupScroll(){
     });
 }
 
-
+var upload = false;
 function setupAjax(container){   
     if($('#direita').length != 0){
         //$('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
@@ -227,6 +229,11 @@ function setupAjax(container){
     }
 
     validateAjax(); 
+
+    if($("#pickfiles").size() == 1 && upload == false){
+       uploader.init();
+       upload = true;
+    }
 
     $(container + " .scrollable_content").mCustomScrollbar("update");
 
@@ -511,9 +518,13 @@ function ajaxPost(form){
     });    
 }
 
-function ajaxReload(form){    
+function ajaxReload(form, container){    
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
+    
+    if(container != undefined){
+        $(container).html("<div class='loading'>loading...</div>"); 
+    }
 
     $.ajax({
         type: "POST",
