@@ -260,7 +260,7 @@ function validateAjax(){
     $("#sync_gdocs").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, "#direita");
+            ajaxReload(form, $(form).data("panel"));
             return false;       
         }
     });

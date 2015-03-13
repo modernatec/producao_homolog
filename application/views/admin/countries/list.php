@@ -5,7 +5,6 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/countries/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar país</a>
 	</div>
-	<span class="header">países</span>
 	<ul class="list_item">
 		<? foreach($countriesjsList as $country){?>
 		<li>

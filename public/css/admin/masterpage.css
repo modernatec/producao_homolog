@@ -81,6 +81,17 @@ body{
     padding: 5px 10px 5px 0;
 }
 
+#page{
+    overflow:hidden;
+    position: absolute;
+    background: #ccc;
+    top:46px;
+    bottom: 0;
+    left: 151px;
+    right: 60px;
+    padding: 5px;
+}
+
 
 
 
@@ -103,7 +114,12 @@ hr {
 }
 
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; margin:0 5px; display: block;}
-a.excluir{ background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; width: 20px; height: 20px; text-align: center;}
+a.excluir{ 
+	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
+	width: 20px; height: 20px; 
+	padding: 0 !important;
+	position: relative;
+}
 a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
 a.active{ background: transparent url(../../image/admin/active.png) no-repeat 0 0; }
 a.preview{ background: transparent url(../../image/admin/preview.png) no-repeat 0 0; width: 16px; height: 16px; }
@@ -1045,6 +1061,7 @@ a.green{
 .list_item li{ 
 	background: #f6f6f6; 
 	border: 1px #ddd solid;
+	padding: 5px;
 }
 
 .list_item li.blueSelection{
@@ -1058,7 +1075,6 @@ a.green{
 }
 
 .list_item a{
-	padding: 5px;
 	color: #000;
 	display: block;
 	/*border: 1px #ddd solid;*/

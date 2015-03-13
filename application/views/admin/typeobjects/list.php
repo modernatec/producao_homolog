@@ -4,9 +4,8 @@
 <div id="esquerda">
 	<div class="fixed clear">
 		<div class="bar">
-			<a href="<?=URL::base();?>admin/typeobjects/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar tipos de objeto</a>
+			<a href="<?=URL::base();?>admin/typeobjects/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar tipo de objeto</a>
 		</div>
-		<span class="header">tipos de objetos</span>
 		<div id="tabs_content" class="scrollable_content clear">
 			<ul class="list_item">
 				<? foreach($typeObjectsjsList as $tipoObj){?>

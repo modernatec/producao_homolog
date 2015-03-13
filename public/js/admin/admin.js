@@ -207,7 +207,7 @@ setInterval(function() {
 }, 120000);
 
 function setupScroll(){
-    $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
+    $(".scrollable, .scrollable_content, #esquerda, #direita").mCustomScrollbar({
         theme:"dark-3",
         axis:"y",
         scrollInertia: 0,
@@ -236,6 +236,7 @@ function setupAjax(container){
     }
 
     $(container + " .scrollable_content").mCustomScrollbar("update");
+    $(container + " .scrollable").mCustomScrollbar("update");
 
     setupScroll();
 
@@ -521,7 +522,7 @@ function ajaxPost(form){
 function ajaxReload(form, container){    
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
-    
+    console.log(container);
     if(container != undefined){
         $(container).html("<div class='loading'>loading...</div>"); 
     }
