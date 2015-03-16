@@ -84,7 +84,6 @@ body{
 #page{
     overflow:hidden;
     position: absolute;
-    background: #ccc;
     top:46px;
     bottom: 0;
     left: 151px;

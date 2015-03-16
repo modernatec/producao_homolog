@@ -207,7 +207,7 @@ setInterval(function() {
 }, 120000);
 
 function setupScroll(){
-    $(".scrollable, .scrollable_content, #esquerda, #direita").mCustomScrollbar({
+    $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
         theme:"dark-3",
         axis:"y",
         scrollInertia: 0,
@@ -215,17 +215,83 @@ function setupScroll(){
 }
 
 var upload = false;
+var chart = false;
+
+function setupChartData(data){
+    for(k in data){
+        data[k] = parseInt(data[k]);
+    }
+    return data;
+}
+
 function setupAjax(container){   
     if($('#direita').length != 0){
         //$('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
         //$('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
     }
 
-    //$('.list_body').css('padding-top', $('.list_header').height() + 20);
+
+    //*********
+    if($('#r').length != 0 && chart == false){
+        var r = Raphael("r", 340, 200);
+        var pie = r.piechart(100, 100, 80, setupChartData($('#r').data("chart").split(",")), 
+            {donut : true, legend: ["Chrome", "Firefox", "Internet Explorer", "Safari", "Other"], legendpos: "east"});
+
+        //r.text(320, 100, "Interactive Donut Chart").attr({ font: "20px sans-serif" });
+        pie.hover(
+            // mouse over
+            function () {
+            var that = this.sector;
+            this.sector.stop();
+            this.sector.scale(1.1, 1.1, this.cx, this.cy);
+
+            pie.each(function() {
+               if(this.sector.id === that.id) {
+                //console.log(pie)
+                   tooltip = r.text(100, 100, this.sector.value.value).attr({"font-size": 35, "fill":"#000"});
+               }
+            });
+
+            if (this.label) {
+                this.label[0].stop();
+                this.label[0].attr({ r: 7.5 });
+                this.label[1].attr({ "font-weight": 800 });
+            }
+        }, 
+
+        // mouse out
+        function () {
+            this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, "bounce");
+            tooltip.remove();
+
+            if (this.label) {
+                this.label[0].animate({ r: 5 }, 500, "bounce");
+                this.label[1].attr({ "font-weight": 400 });
+            }
+        });
+        //var r2 = Raphael("r", 320, 240);
+        //r2.piechart(160, 120, 100, [55, 20, 13, 32, 5, 1, 2]);
+
+        chart = true;
+        /*
+        var r = Raphael("r");
+        var pie = r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2, 10],{ 
+                legend: ["%%.%%"], legendpos: "west" });
+                   
+        r.text(320, 100, "Example").attr({ font: "20px sans-serif" });
+        */
+    }
+    //var r = Raphael("r", 640, 480);
+    // Creates pie chart at with center at 320, 200,
+    // radius 100 and data: [55, 20, 13, 32, 5, 1, 2]
+    //r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2]);
+    //*********
+    
 
     if($(container + ' .scrollable_content').length != 0){
-        //console.log($(container + ' .scrollable_content').offset().top, $( window ).height())
-        $(container + ' .scrollable_content').css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
+        if($(container).data("bottom") == undefined){
+            $(container + ' .scrollable_content').css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
+        }
     }
 
     validateAjax(); 
@@ -236,7 +302,7 @@ function setupAjax(container){
     }
 
     $(container + " .scrollable_content").mCustomScrollbar("update");
-    $(container + " .scrollable").mCustomScrollbar("update");
+    
 
     setupScroll();
 

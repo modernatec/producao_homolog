@@ -16,6 +16,19 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
+		$tasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
+		->join('tags', 'INNER')
+		->on('taskviews.tag_id', '=', 'tags.id')
+		->where('ended', '=', '0')->group_by('tag_id')->as_object()->execute();
+		//ORM::factory('taskview')->where('ended', '=', '0')->count_all();
+
+		$result = "";
+		foreach ($tasks as $task) {
+			$result.= $task->qtd.',';
+		}
+		$view->r = rtrim($result, ",");
+
 		
 		if($ajax == null){
 			$this->template->content = $view;
