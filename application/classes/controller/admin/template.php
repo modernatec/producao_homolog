@@ -109,9 +109,7 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/admin/jquery.mCustomScrollbar.concat.min.js',
 				'public/js/common/jquery/jquery.easing.min.js',
 
-				'public/js/common/graphael/raphael-min.js',
-				'public/js/common/graphael/g.raphael.js',
-				'public/js/common/graphael/g.pie.js',				
+				'https://www.google.com/jsapi',				
 
 				"public/plupload/js/plupload.js",
 				"public/plupload/js/plupload.html5.js",

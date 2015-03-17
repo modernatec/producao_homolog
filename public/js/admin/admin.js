@@ -215,14 +215,44 @@ function setupScroll(){
 }
 
 var upload = false;
-var chart = false;
 
 function setupChartData(data){
     for(k in data){
-        data[k] = parseInt(data[k]);
+        data[k] = $.parseJSON(data[k]);
+        for(i in data[k]){
+            if(isNaN(data[k][i]) == false){
+                data[k][i] = parseInt(data[k][i]);
+            };
+        }
     }
+
     return data;
 }
+
+var chartContainer = [];
+var drawCharts = function drawChart() {
+    if(chartContainer[0]){
+        var array = setupChartData($('#'+chartContainer[0]).data('chart'));
+        console.log(array);
+        var data = google.visualization.arrayToDataTable(array);
+
+        var options = {
+          title: $('#'+chartContainer[0]).data('title'),
+          pieHole: 0.5,
+          chartArea:{left:0,top:30,width:'100%',height:'80%'},
+          'width':340,
+          'height':250,
+          legend: {position: 'left'},
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById(chartContainer[0]));
+        chart.draw(data, options);    
+
+        chartContainer.splice(0, 1);
+        drawChart();
+    }
+}
+
 
 function setupAjax(container){   
     if($('#direita').length != 0){
@@ -230,63 +260,25 @@ function setupAjax(container){
         //$('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
     }
 
-
     //*********
-    if($('#r').length != 0 && chart == false){
-        var r = Raphael("r", 340, 200);
-        var pie = r.piechart(100, 100, 80, setupChartData($('#r').data("chart").split(",")), 
-            {donut : true, legend: ["Chrome", "Firefox", "Internet Explorer", "Safari", "Other"], legendpos: "east"});
-
-        //r.text(320, 100, "Interactive Donut Chart").attr({ font: "20px sans-serif" });
-        pie.hover(
-            // mouse over
-            function () {
-            var that = this.sector;
-            this.sector.stop();
-            this.sector.scale(1.1, 1.1, this.cx, this.cy);
-
-            pie.each(function() {
-               if(this.sector.id === that.id) {
-                //console.log(pie)
-                   tooltip = r.text(100, 100, this.sector.value.value).attr({"font-size": 35, "fill":"#000"});
-               }
-            });
-
-            if (this.label) {
-                this.label[0].stop();
-                this.label[0].attr({ r: 7.5 });
-                this.label[1].attr({ "font-weight": 800 });
-            }
-        }, 
-
-        // mouse out
-        function () {
-            this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, "bounce");
-            tooltip.remove();
-
-            if (this.label) {
-                this.label[0].animate({ r: 5 }, 500, "bounce");
-                this.label[1].attr({ "font-weight": 400 });
-            }
+    if($('.grafico').length != 0 && container == '#content'){
+        $('.grafico').each(function(index, el) {
+            chartContainer.push($(el).attr('id'));
         });
-        //var r2 = Raphael("r", 320, 240);
-        //r2.piechart(160, 120, 100, [55, 20, 13, 32, 5, 1, 2]);
-
-        chart = true;
-        /*
-        var r = Raphael("r");
-        var pie = r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2, 10],{ 
-                legend: ["%%.%%"], legendpos: "west" });
-                   
-        r.text(320, 100, "Example").attr({ font: "20px sans-serif" });
-        */
+        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
     }
-    //var r = Raphael("r", 640, 480);
-    // Creates pie chart at with center at 320, 200,
-    // radius 100 and data: [55, 20, 13, 32, 5, 1, 2]
-    //r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2]);
-    //*********
-    
+    /*
+    if($('#tagQtd').length != 0 && container == '#content'){
+        chartContainer = 'tagQtd';
+        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
+    }
+
+    if($('#statusQtd').length != 0 && container == '#content'){
+        chartContainer = 'statusQtd';
+        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
+    }
+    */
+
 
     if($(container + ' .scrollable_content').length != 0){
         if($(container).data("bottom") == undefined){

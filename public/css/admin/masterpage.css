@@ -153,8 +153,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 .line_bottom{
 	display:block;
-	border-bottom:1px #CCC dotted;
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 }
 
 .line_up{
@@ -617,23 +616,22 @@ label
 
 .hist{
     padding:5px;
-    background: #fff;
+
 }
 
-.hist_reply{
-	/*width:480px;*/
-    padding:10px;
-    margin-top: -5px;
-    margin-bottom: 5px;
-    color: #585858;
-    /*border-bottom: 1px dotted #ccc;*/
-    background: #f3f3f3;
+.task{
+	border: 1px solid #008fc7;
+	margin-left: 35px;
+	padding: 5px;
+	background: #fff;
+}
 
-    /*
-    -moz-box-shadow: 2px 2px 5px #ccc;
-	-webkit-box-shadow: 2px 0 5px #ccc;
-	box-shadow: 2px 2px 5px #ccc;
-	*/
+.task_reply{
+	border: 1px solid #ccc;
+	margin-right: 40px;
+	padding: 5px;
+	background: #f3f3f3;
+	color: #585858;
 }
 
 .hist img, .hist_reply img{
@@ -641,15 +639,7 @@ label
     border:1px solid #999;
 }
 
-.task{
-	border: 1px solid #CCC;
-	margin: 10px 0 5px 0;
-	/*
-	-moz-box-shadow: 2px 2px 8px #ccc;
-	-webkit-box-shadow: 2px 2px 8px #ccc;
-	box-shadow: 2px 2px 8px #ccc;
-	*/
-}
+
 
 .anotacoes{
 	background: #a0d0d4;
@@ -687,7 +677,7 @@ label
 
 .boxwired{
 	border: 1px solid #008fc7;
-	padding: 10px;
+	padding: 5px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	background: #fff;
@@ -1280,7 +1270,7 @@ a.green{
 .description{
 	padding: 10px 0;
 	display: block;
-	border-bottom: 1px dotted #CCC;
+	border-top: 1px dotted #CCC;
 }
 
 .down_button{

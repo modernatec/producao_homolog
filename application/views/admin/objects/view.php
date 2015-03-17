@@ -148,96 +148,106 @@
                                     </div>
                                 <?}else{?>
                                     <div style='clear:both'>
-                                        <div class='hist task round'>
-                                            <?if($current_auth != "assistente"){?>
-                                                <div class="right">
-                                                    <a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
-                                                </div>
-                                            <?}?>
-                                            <div class='line_bottom'>
-                                                <div class="left">
-                                                    <?if($current_auth != "assistente"){?>
-                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
-                                                    <?}?>
-                                                    <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
-                                                </div>
-                                                <? if($task->task_to != "0"){?>
-                                                    
-                                                    <div class="round_imgDetail <?=$task->to->team->color?>">
-                                                        <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
-                                                        <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
+                                        <div class='hist'>
+                                            <img class='round_imgList left' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
+                                            <div class="task round">
+                                                <?if($current_auth != "assistente"){?>
+                                                    <div class="right">
+                                                        <a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
                                                     </div>
                                                 <?}?>
-                                                <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span>
-                                                <div class="clear" style="padding-top:5px;">
-                                                    por: <?=$task->userInfo->nome?><br/>
-                                                    solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
-                                                    <br/>
-                                                    retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
-                                                </div>                                                    
-                                            </div>
-                                            <?if(!empty($task->description)){ ?>
-                                                <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
-                                            <?}?>
-                                            <div class="options">
-                                                <? if($task->status_id != '5'){?>
-                                                    <a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
+                                                <div class='line_bottom'>
+                                                    <div class="left">
+                                                        <?if($current_auth != "assistente"){?>
+                                                            <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
+                                                        <?}?>
+                                                        <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
+                                                    </div>
+                                                    <? if($task->task_to != "0"){?>
+                                                        
+                                                        <div class="round_imgDetail <?=$task->to->team->color?>">
+                                                            <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
+                                                            <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
+                                                        </div>
+                                                    <?}?>
+                                                    <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span>
+                                                    <div class="clear" style="padding-top:5px;">
+                                                        por: <?=$task->userInfo->nome?><br/>
+                                                        solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
+                                                        <br/>
+                                                        retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
+                                                    </div>                                                    
+                                                </div>
+                                                <?if(!empty($task->description)){ ?>
+                                                    <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
+                                                <div class="options">
+                                                    <? if($task->status_id != '5'){?>
+                                                        <a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
+                                                    <?}?>
+                                                </div>
                                             </div>  
                                         </div>
                                         <div class="replies replies_<?=$task->id;?>">
-                                             <? if($task->status_id == '5'){?>
-                                                <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
-                                                    <input type="hidden" name='task_id' value="<?=$task->id?>" />
-                                                    <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                    <?  
-                                                        if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                            $start = false;
-                                                        }else{
-                                                            $start = true;
-                                                        }
 
-                                                        if($start){
-                                                    ?>
-                                                            <input type="submit" class="bar_button round" value="iniciar">
-                                                    <?}?>
-
-                                                </form>
-                                            <?}?>
-                                            <?foreach ($task->getReplies($task->id) as $taskReply) {?>
+                                             
                                             <div style='clear:both'>
-                                                <div class='hist_reply round'>
-                                                    <div class='line_bottom'>
-                                                        <? if($current_auth != "assistente"){?>
-                                                            <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
-                                                        <?}?>
-                                                        <?=$taskReply->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
-                                                    </div>
-                                                    <?if(!empty($taskReply->description)){ ?>
-                                                        <span class="wordwrap description"><?=$taskReply->description;?></span>
-                                                    <?}?>
-                                                    <div class="options">
-                                                        <? if($task->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
-                                                            <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
+                                                <div class='hist'>
+                                                    <img class='round_imgList right' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" alt="<?=ucfirst($task->to->nome);?>" />
+                                                    <div class="task_reply round"> 
+                                                        <? if($task->status_id == '5'){?>
+                                                            <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
                                                                 <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                                 <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                                <input type="hidden" name='next_step' id="next_step" value="0" />
-                                                                <dd>
-                                                                    <textarea placeholder="observações" class="text round" name="description" id="description" style="width:480px; height:50px;"></textarea>
-                                                                    <span class='error'><?=Arr::get($errors, 'description');?></span>
-                                                                </dd>
-                                                                <? if($task->tag_id == '1'){?>
-                                                                    <input type="submit" value="liberar" id="submit_btn" class="green round" />
-                                                                    <!--a href='#' class="bar_button round red" id="correcao" >solicitar correção</a-->
-                                                                <?}else{?>
-                                                                    <input type="submit" value="entregar" class="green round" />
+                                                                <?  
+                                                                    if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                                        $start = false;
+                                                                    }else{
+                                                                        $start = true;
+                                                                    }
+
+                                                                    if($start){
+                                                                ?>
+                                                                        <input type="submit" class="bar_button round" value="iniciar">
                                                                 <?}?>
+
                                                             </form>
                                                         <?}?>
-                                                    </div>  
+
+
+                                                    <?foreach ($task->getReplies($task->id) as $taskReply) {?>
+                                                        <div class='line_bottom'>
+                                                            <? if($current_auth != "assistente"){?>
+                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
+                                                            <?}?>
+                                                            <?=$taskReply->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
+                                                        </div>
+                                                        <?if(!empty($taskReply->description)){ ?>
+                                                            <span class="wordwrap description"><?=$taskReply->description;?></span>
+                                                        <?}?>
+                                                        <div class="options">
+                                                            <? if($task->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
+                                                                <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
+                                                                    <input type="hidden" name='task_id' value="<?=$task->id?>" />
+                                                                    <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
+                                                                    <input type="hidden" name='next_step' id="next_step" value="0" />
+                                                                    <dd>
+                                                                        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:480px; height:50px;"></textarea>
+                                                                        <span class='error'><?=Arr::get($errors, 'description');?></span>
+                                                                    </dd>
+                                                                    <? if($task->tag_id == '1'){?>
+                                                                        <input type="submit" value="liberar" id="submit_btn" class="green round" />
+                                                                        <!--a href='#' class="bar_button round red" id="correcao" >solicitar correção</a-->
+                                                                    <?}else{?>
+                                                                        <input type="submit" value="entregar" class="green round" />
+                                                                    <?}?>
+                                                                </form>
+                                                            <?}?>
+                                                        </div>
+                                                    <?}?>
+                                                    </div> 
                                                 </div>
                                             </div>  
-                                            <?}?>
                                         </div>                                    
                                     </div>
                             <?}}?>

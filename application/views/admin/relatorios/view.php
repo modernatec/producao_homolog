@@ -46,8 +46,9 @@
         </div>
     </div>
     <div class="left">
-        <div class="boxwired round" style="overflow:auto" id="r" data-chart="<?=$r?>">
-        </div>
+        <div class="left boxwired round grafico" style="overflow:auto" id="tagQtd" data-chart='<?=$tagQtd?>' data-title='<?=$tagQtdTitle?>'></div>
+        <div class="left boxwired round grafico" style="overflow:auto" id="statusQtd" data-chart='<?=$statusQtd?>' data-title='<?=$statusQtdTitle?>'></div>
+
     </div>
 </div>
 <!--div id="esquerda">
