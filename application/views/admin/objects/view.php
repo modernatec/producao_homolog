@@ -24,7 +24,9 @@
         <b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?><br/>
         <b>fechamento da coleção:</b> <?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?><br/>        
     </div>
+<?
 
+?>
 <div  class="scrollable_content clear">             
     <?if(isset($taskflows)){
             $count = 0;
@@ -33,7 +35,8 @@
                     <div style='clear:both' >
                         <div class='hist round step step_<?=$status_task->status->team->color?>' >
                             <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
-                                <img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /> 
+                                <div class="left"><?=Utils_Helper::getUserImage($status_task->userInfo)?></div>
+                                <!--img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /--> 
                             </div>
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
@@ -126,10 +129,8 @@
                                     <div style='clear:both'>
                                         <div class="hist anotacoes round"> 
                                             <div class="left">
-                                                <div class="round_imgDetail <?=$task->to->team->color?>">
-                                                    <img class='round_imgList' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
-                                                    <span><?$nome = explode(" ", $task->userInfo->nome); echo $nome[0];?></span>
-                                                </div>
+                                                <?=Utils_Helper::getUserImage($task->userInfo)?>
+                                                <!--img class='round_imgList<?=$task->userInfo->team->color?>' src='<?=Utils_Helper::getUserImage($task->userInfo)?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" /-->
                                             </div>
                                             <div class="left">
                                                 <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>&status_id=<?=$status_task->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
@@ -149,7 +150,8 @@
                                 <?}else{?>
                                     <div style='clear:both'>
                                         <div class='hist'>
-                                            <img class='round_imgList left' src='<?=URL::base();?><?=($task->userInfo->foto)?($task->userInfo->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" />
+                                            <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
+                                            <!--img class='round_imgList<?=$task->userInfo->team->color?> left' src='<?=Utils_Helper::getUserImage($task->userInfo)?>' height="20" alt="<?=ucfirst($task->userInfo->nome);?>" /-->
                                             <div class="task round">
                                                 <?if($current_auth != "assistente"){?>
                                                     <div class="right">
@@ -164,15 +166,11 @@
                                                         <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
                                                     </div>
                                                     <? if($task->task_to != "0"){?>
-                                                        
-                                                        <div class="round_imgDetail <?=$task->to->team->color?>">
-                                                            <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
-                                                            <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
-                                                        </div>
+                                                        <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                        <!--img class='round_imgList<?=$task->to->team->color?>' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <?}?>
                                                     <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span>
                                                     <div class="clear" style="padding-top:5px;">
-                                                        por: <?=$task->userInfo->nome?><br/>
                                                         solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
                                                         <br/>
                                                         retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
@@ -183,7 +181,7 @@
                                                 <?}?>
                                                 <div class="options">
                                                     <? if($task->status_id != '5'){?>
-                                                        <a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a>                          
+                                                        <!--a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a-->                          
                                                     <?}?>
                                                 </div>
                                             </div>  
@@ -193,7 +191,8 @@
                                              
                                             <div style='clear:both'>
                                                 <div class='hist'>
-                                                    <img class='round_imgList right' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" alt="<?=ucfirst($task->to->nome);?>" />
+                                                    <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                    <!--img class='round_imgList<?=$task->to->team->color?> right' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <div class="task_reply round"> 
                                                         <? if($task->status_id == '5'){?>
                                                             <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">

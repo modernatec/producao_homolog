@@ -23,25 +23,21 @@
                     <div >
                         <b><?=$task->object->taxonomia;?></b>
                         <hr style="margin:8px 0;" />
-                        <p><span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> &bull; <?=$task->object->supplier->empresa?>
-                        </p>
-                        <p>por: <?=$task->userInfo->nome?> em: <?=Utils_Helper::data($task->created_at, "d/m/Y - H:i")?></p>
+                        <!--p>&bull; <?=$task->object->supplier->empresa?>
+                        </p-->
+                        <!--p>por: <?=$task->userInfo->nome?> em: <?=Utils_Helper::data($task->created_at, "d/m/Y - H:i")?></p-->
                         
                     </div>
-                    <div class="left" style="width:100px;">           
+                    <div class="left" style="width:25px;">           
                         <? 
-                            if($task->task_to != "0"){
-                                $nome = explode(" ", $task->to->nome);?>
-                                    <div class="round_imgDetail <?=$task->to->team->color?>">
-                                        <img class='round_imgList' src='<?=URL::base();?><?=($task->to->foto)?($task->to->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" />
-                                        <span><?$nome = explode(" ", $task->to->nome); echo $nome[0];?></span>
-                                        
-                                    </div>
+                            if($task->task_to != "0"){?>
+                                <?=Utils_Helper::getUserImage($task->to)?>
+                                <!--img class='round_imgList<?=$task->to->team->color?>' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" style='float:left' alt="<?=ucfirst($task->to->nome);?>" /-->
                             <?}else{ echo "&nbsp;";}?>
                     </div>
                     
                     <div class="left">
-                        <p class="<?=$task->status->class?> round list_faixa">para: <?=Utils_Helper::data($task->crono_date)?> &bull; <?=$task->status->status;?></p>
+                        <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> <span class="<?=$task->status->class?> round list_faixa"><?=$task->status->status;?></span><span class="red round list_faixa"><img src="<?=URL::base()?>/public/image/admin/calendar2.png" height="16" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span> 
                     </div>
                 </a>
             </li>

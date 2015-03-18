@@ -834,7 +834,6 @@ input[type='text']:focus, input[type='password']:focus{
     width: 25px;
     height: 25px;
     position: relative;
-    left: -1px;
 }
 
 .round_imgDetail{
@@ -864,10 +863,10 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-
-.icon_team .round_imgList span{
+.round_imgList span, .round_imgListblue span, .round_imgListgreen span{
 	display: block;
-	margin-top: 5px;
+	text-align: center;
+	padding-top: 5px;
 	font-weight: bold;
 }
 
@@ -893,7 +892,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .red{
-	background: #ff4747;
+	background: #ff0000;
 	color: #fff;
 }
 
@@ -948,11 +947,11 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-.icon_team .round_imgListblue{
+.round_imgListblue{
 	border: 2px solid #008fc7 !important;
 }
 
-.icon_team .round_imgListgreen{
+.round_imgListgreen{
 	border: 2px solid #8cc152 !important;
 }
 
@@ -1030,6 +1029,7 @@ a.green{
 	overflow: auto;
 	
 	min-width: 370px;
+	line-height: normal !important;
 
 	-o-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -1040,8 +1040,9 @@ a.green{
 
 
 .list_item li p, .list_body-list li p{
-	line-height: 20px;
+	/*line-height: 20px;*/
 }
+
 
 .list_colum{
 	float: left;

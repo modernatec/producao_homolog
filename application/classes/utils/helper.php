@@ -41,6 +41,25 @@ class Utils_Helper
         }
     }
 
+    public static function getUserImage($user = null)
+    {
+        if($user != null){
+            if(file_exists($user->foto)){    
+                return "<img class='round_imgList".$user->team->color." ' src='".URL::base().$user->foto."' height='20' alt='".ucfirst($user->nome)."' />";            
+            }else{
+                $nomes = explode(" ", $user->nome);
+                $nome = substr($nomes[0], 0, 1);
+                if(count($nomes) > 1){
+                    $nome.=substr($nomes[1], 0, 1);
+                }            
+                return "<p class='round_imgList".$user->team->color." ".$user->team->color."' ><span>".$nome."</span></p>";
+                //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' alt='".ucfirst($user->nome)."' />";
+            }
+        }else{
+            return URL::base().'public/image/admin/default.png';
+        }
+    }
+
     public static function dataGdocs($dt,$format='d/m/Y')
     {
         if($dt != ""){

@@ -197,9 +197,7 @@
 				    		if($obj_taskView->task_to != 0){
 				    			$nome = explode(" ", $obj_taskView->to->nome); 
 				    			$img = ($obj_taskView->to->foto)?($obj_taskView->to->foto):('public/image/admin/default.png');
-				    			$task_to = "<div class='round_imgDetail' ".$obj_taskView->to->team->color.">
-                                        <img class='round_imgList' src='".URL::base().$img."' height='20' style='float:left' alt='".$nome[0]."' />
-                                        <span>".$nome[0]."</span></div>";
+				    			$task_to = ($status != '') ? Utils_Helper::getUserImage($obj_taskView->to) : '';
                             }
 			    		}
 	   				
@@ -223,11 +221,13 @@
 					<div>
 						<p><b><?=$objeto->taxonomia?></b></p>
 						<hr style="margin:8px 0;" />
-						<p><img src="<?=URL::base()?>/public/image/admin/calendar.png" height="16"> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?> - <?=$objeto->supplier_empresa?></p>
+						<?if($objeto->supplier_id != 10){ //moderna(interno)?>
+							<p><span class="light_blue round list_faixa"><?=$objeto->supplier_empresa?></span></p>
+						<?}?>
 						<p>
-							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
+							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span> <span class="red round list_faixa"><img src="<?=URL::base()?>/public/image/admin/calendar2.png" height="16" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
 							<div>
-								<?=$task_to;?>
+								<div class='left' style="width:25px;"><?=$task_to;?></div>
 								<?=$tag;?> 
 								<?=$status;?> 
 								
