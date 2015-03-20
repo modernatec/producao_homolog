@@ -1,13 +1,12 @@
 <div class="topo" >
-    <span class="header">usuários</span>
+    <span class="header">
+    <?if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>
+        <a href="<?=URL::base();?>admin/users/create" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar usuário</a>
+    <?}?> 
+    </span>
 </div>
 <div id="esquerda">
     <div class="fixed clear">
-        <?if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>
-        <div class="bar">
-            <a href="<?=URL::base();?>admin/users/create" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar usuário</a>
-        </div>   
-        <?}?> 
         <div class="clear left">
             <ul class="tabs">
                 <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/1'>ativos</a></li>

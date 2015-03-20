@@ -366,7 +366,8 @@ a{
 
 
 .header{
-	padding:10px 0;
+	padding:5px 0;
+	line-height: 35px;
 	display:block;
 	color: #008fc7;
 }
@@ -1319,8 +1320,8 @@ a.green{
 
 #charts{
 	display: block;
-	height: 300px;
-	overflow: hidden;
+	width: 400px;
+	overflow: auto;
 }
 /*
 .ui-widget-content{

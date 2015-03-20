@@ -1,10 +1,7 @@
 <div class="topo" >
-	<span class="header">times</span>
+	<span class="header"><a href="<?=URL::base();?>admin/teams/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar time</a></span>
 </div>
 <div id="esquerda">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/teams/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar time</a>
-	</div>
 	<ul class="list_item">
 		<? foreach($teamsList as $teams){?>
 		<li>

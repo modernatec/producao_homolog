@@ -235,14 +235,15 @@ var drawCharts = function drawChart() {
     if(chartContainer[0]){
         var array = setupChartData($('#'+chartContainer[0]).data('chart'));
         var data = google.visualization.arrayToDataTable(array);
-
+        
         var options = {
           title: $('#'+chartContainer[0]).data('title'),
           pieHole: 0.5,
           chartArea:{left:0,top:30,width:'80%',height:'80%'},
           'width':450,
           'height':260,
-          legend: {position: 'left'},
+          legend: {position: 'right'},
+          
         };
 
         var chart = new google.visualization.PieChart(document.getElementById(chartContainer[0]));
@@ -285,34 +286,23 @@ function setupAjax(container){
     $("#generateStatus").unbind('click').bind('click', function(e){
         e.preventDefault();
         var project_id = $('#relatorios_project_id').val();
-        $('#relatorio_project_id').val(project_id);
-        $('#form_relatorio').submit();
+        if(project_id != ''){
+            $('#relatorio_project_id').val(project_id);
+            $('#form_relatorio').submit();
+        }else{
+            alert('selecione um projeto');  
+        }
     });
 
     $("#updateGdocs").unbind('click').bind('click', function(e){
         e.preventDefault();
         var project_id = $('#relatorios_project_id').val();
-        //var form = $('#sync_gdocs');
-        $('#gdocs_project_id').val(project_id);
-        $('#sync_gdocs').submit();
-        //ajaxReload(form, $(form).data("panel"));
-        /*
         if(project_id != ''){
-            $.ajax({
-                type: "POST",
-                url: $(this).attr('href') + '/' + project_id,
-                //dataType : "json",
-                //data: $(form).serialize(),
-                success: function(data) {
-                    reloadContent(data, '#results');
-                },
-                error: function(e) {
-                    console.log(e);
-                    alert("ocorreu um erro.");
-                }
-            });  
+            $('#gdocs_project_id').val(project_id);
+            $('#sync_gdocs').submit();
+        }else{
+            alert('selecione um projeto');            
         }
-        */
     });
 
 

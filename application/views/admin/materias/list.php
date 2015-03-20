@@ -1,11 +1,8 @@
 <div class="topo" >
-	<span class="header">matérias</span>
+	<span class="header"><a href="<?=URL::base();?>admin/materias/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar matéria</a></span>
 </div>
 <div id="esquerda">
 	<div class="fixed clear">
-		<div class="bar">
-			<a href="<?=URL::base();?>admin/materias/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar matéria</a>
-		</div>
 		<div id="tabs_content" class="scrollable_content clear">
 			<ul class="list_item">
 				<? foreach($materiasList as $materia){?>

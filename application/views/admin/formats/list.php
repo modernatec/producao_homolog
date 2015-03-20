@@ -1,11 +1,7 @@
 <div class="topo" >
-	<span class="header">formatos</span>
+	<span class="header"><a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a></span>
 </div>
 <div id="esquerda">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a>
-	</div>
-	<span class="header">formatos</span>
 	<ul class="list_item">
 		<? foreach($sfwprodsList as $sfwprod){?>
 		<li>

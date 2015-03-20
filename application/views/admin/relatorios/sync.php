@@ -1,7 +1,6 @@
-<div class="scrollable_content clear" style="height:360px;">
+<div class="scrollable_content clear" style="height:500px;">
+<span class='list_alert round'><?=count($r);?> objetos encontrados.</span>
 <?
-$count = count($r);
-echo $count. " objetos encontrados. <br/>";
 foreach ($r as $key => $msg) {
 	echo "<div>".$msg."</div>";
 }

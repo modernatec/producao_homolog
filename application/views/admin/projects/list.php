@@ -1,12 +1,8 @@
 <div class="topo" >
-	<span class="header">projetos</span>
+	<span class="header"><a href="<?=URL::base();?>admin/projects/edit" rel="load-content" data-panel="#direita" class="bar_button round">Criar Projeto</a></span>
 </div>
 <div>
 	<div id="esquerda">
-		<div class="bar">
-			<a href="<?=URL::base();?>admin/projects/edit" rel="load-content" data-panel="#direita" class="bar_button round">Criar Projeto</a>
-		</div>
-		
 		<div class="list_body">
 			<ul class="list_item">
 				<? foreach($projectsList as $projeto){?>

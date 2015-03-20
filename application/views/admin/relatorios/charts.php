@@ -1,2 +1,2 @@
-<div class="left boxwired round grafico" style="overflow:auto" id="tagQtd" data-chart='<?=$tagQtd?>' data-title='<?=$tagQtdTitle?>'></div>
-<div class="left boxwired round grafico" style="overflow:auto" id="statusQtd" data-chart='<?=$statusQtd?>' data-title='<?=$statusQtdTitle?>'></div>
+<div class="round grafico" style="overflow:hidden" id="tagQtd" data-chart='<?=$tagQtd?>' data-title='<?=$tagQtdTitle?>'></div>
+<div class="round grafico" style="overflow:hidden" id="statusQtd" data-chart='<?=$statusQtd?>' data-title='<?=$statusQtdTitle?>'></div>

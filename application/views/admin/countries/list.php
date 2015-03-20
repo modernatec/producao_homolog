@@ -1,10 +1,7 @@
 <div class="topo" >
-	<span class="header">países</span>
+	<span class="header"><a href="<?=URL::base();?>admin/countries/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar país</a></span>
 </div>
 <div id="esquerda">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/countries/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar país</a>
-	</div>
 	<ul class="list_item">
 		<? foreach($countriesjsList as $country){?>
 		<li>

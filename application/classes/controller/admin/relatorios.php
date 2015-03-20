@@ -17,7 +17,15 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 		
 		$view->graficos = $this->action_geraGraficos('init');
-		
+
+		$view->collections = DB::select('name, count("objectstatus.status_id") qtd, fechamento')->from('collections')
+		->join('objectstatus', 'INNER')
+		->on('objectstatus.collection_id', '=', 'collections.id')
+		->where('objectstatus.status_id', '!=', '8')
+		->and_where('objectstatus.fase', '!=', '2')
+		->and_where('objectstatus.project_status', '!=', '0')
+		->group_by('collections.id')->as_object()->execute();
+
 		if($ajax == null){
 			$this->template->content = $view;
 		}else{
@@ -31,8 +39,13 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$view = View::factory('admin/relatorios/charts')
 			->bind('message', $message);
 
+		$project_title = ' (projetos em andamento)';
+		if($id != 'init' && $id != ''){
+			$project = ORM::factory('project', $id);
+			$project_title = ' ('.$project->name.')';
+		}
+
 		//grafico 1 tag X qtd
-		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
 		$dbTasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
 		->join('tags', 'INNER')
 		->on('taskviews.tag_id', '=', 'tags.id')
@@ -49,11 +62,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		}
 
 		$view->tagQtd = json_encode($tagQtd);
-		$view->tagQtdTitle = 'distribuição de tarefas';
-
+		$view->tagQtdTitle = 'distribuição de tarefas'.$project_title;
 
 		//grafico 2 status X object
-		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
 		$objectDbStatus = DB::select('status, count("status_id") qtd')->from('objectstatus')
 		->join('status', 'INNER')
 		->on('objectstatus.status_id', '=', 'status.id');
@@ -70,7 +81,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		}
 
 		$view->statusQtd = json_encode($statusQtd);
-		$view->statusQtdTitle = 'distribuição de objetos';
+		$view->statusQtdTitle = 'distribuição de objetos'.$project_title;
 
 		if($id != 'init'){
 			echo $view;
@@ -201,9 +212,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 							$db->commit();	
 
 							if($object->id == ""){
-								$msg = "<span class='list_faixa red round' >".$gdocs_item->taxonomia. " - não encontrado </span>";
+								$msg = "<span class='list_faixa red round' >".$gdocs_item->taxonomia."</span>";
 							}else{
-								$msg = "<span class='list_faixa blue round' >".$gdocs_item->taxonomia. " - OK </span>";
+								$msg = '';//"<span class='list_faixa blue round' >".$gdocs_item->taxonomia. " - OK </span>";
 							}
 						}catch (ORM_Validation_Exception $e) {
 				            $errors = $e->errors('models');
