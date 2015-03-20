@@ -25,7 +25,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         //$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
         $view->filter_nome = ($this->request->post('nome') != "") ? $this->request->post('nome') : "";
         $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
-			
+		$view->current_auth = $this->current_auth;    
+
         if($ajax == null){
             $this->template->content = $view;             
         }else{
@@ -45,7 +46,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         }else{
             $this->auto_render = false;
             if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
-                echo "Você não tem permissão para alterar as infos deste usuário.";
+                echo "<span class='list_alert round'>Você não tem permissão para alterar as infos deste usuário.</span>";
             }else{	
        			$view = View::factory('admin/users/edit');        	            
         		$view->bind('errors', $errors)

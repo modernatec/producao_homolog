@@ -7,6 +7,10 @@
 	outline: 0;
 	text-rendering:optimizeLegibility;
 }
+/*
+visitar
+http://flatuicolors.com/
+*/
 
 body{
 	/*background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;*/
@@ -189,22 +193,24 @@ a.link:hover{color:#666; text-decoration: underline;}
     border-bottom-right-radius: 4px;
 }
 
-#user_info{
-	background:#008fc7;
+/*
+#
+
+#user_info table tbody tr:nth-child(odd){
+    background-color:transparent;
+}
+*/
+.user_info{
 	color:#FFF;
+	background: #3498db;
+
 	overflow:hidden;
 	padding: 8px;
 	height: 30px;
 }
 
-#user_info table tbody tr:nth-child(odd){
-    background-color:transparent;
-}
-
-#user_info span{
+.line{
 	line-height: 30px;
-	margin-left: 40px;
-	color: #fff;
 }
 
 a{
@@ -212,7 +218,7 @@ a{
 	color: #fff;
 }
 
-
+/*
 #user_info .foto{
 	-o-border-radius: 30px;
     -moz-border-radius: 30px;
@@ -223,11 +229,12 @@ a{
 	width:30px;
 	height: 30px;
 	border:2px #FFF solid;
-	/*box-shadow: 0 0 10px 1px rgba(0,0,0, .8);*/
+	/*box-shadow: 0 0 10px 1px rgba(0,0,0, .8);*
 	top:4px;
 	left:4px;
 	background: #fff;
 }
+*/
 
 .foto_form{
 	-o-border-radius: 100px;
@@ -823,7 +830,7 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #dfe9f3;
 }
 
-.round_imgList, .round_imgListblue, .round_imgListgreen{
+.round_imgList, .round_imgListblue, .round_imgListgreen, .round_imgListroxo, .round_imgListyellow, .round_imgListwhite{
 	-o-border-radius: 25px;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
@@ -863,11 +870,12 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-.round_imgList span, .round_imgListblue span, .round_imgListgreen span{
+.round_imgList span, .round_imgListblue span, .round_imgListgreen span, .round_imgListroxo span, .round_imgListyellow span, .round_imgListwhite span{
 	display: block;
 	text-align: center;
 	padding-top: 5px;
 	font-weight: bold;
+	color: #fff;
 }
 
 .task_bar_item{
@@ -946,6 +954,9 @@ input[type='text']:focus, input[type='password']:focus{
 	border: none !important;
 }
 
+.round_imgListwhite{
+	border: 2px solid #fff !important;
+}
 
 .round_imgListblue{
 	border: 2px solid #008fc7 !important;
@@ -955,6 +966,13 @@ input[type='text']:focus, input[type='password']:focus{
 	border: 2px solid #8cc152 !important;
 }
 
+.round_imgListroxo{
+	border: 2px solid #9972b5 !important;
+}
+
+.round_imgListyellow{
+	border: 2px solid #f6bb42 !important;
+}
 
 
 a.green{

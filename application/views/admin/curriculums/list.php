@@ -1,4 +1,10 @@
-<div class="content">
+<div class="topo" >
+    <span class="header">curriculum</span>
+</div>
+<div id="page">
+	<span class='list_alert round'>página em construção.</span>
+</div>
+<!--div class="content">
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/curriculums/create" class="bar_button round">Cadastrar curriculum</a>
 	</div>
@@ -11,16 +17,16 @@
 			<th>ação</th>
 		</thead>
 		<tbody>
-            <? foreach($curriculumsList as $curriculums){?>
+            < foreach($curriculumsList as $curriculums){?>
             <tr>
-				<td><a style='display:block' href="<?=URL::base().'admin/curriculums/edit/'.$curriculums->id;?>" title="Editar"><?=$curriculums->name?></a></td>	
-                <td><?=$curriculums->objective?></td>
-                <td><?=($curriculums->formado) ? 'Sim' : 'Não';?></td>				
+				<td><a style='display:block' href="< =URL::base().'admin/curriculums/edit/'.$curriculums->id;?>" title="Editar"><=$curriculums->name?></a></td>	
+                <td><=$curriculums->objective?></td>
+                <td><=($curriculums->formado) ? 'Sim' : 'Não';?></td>				
 				<td class="acao">
-                    <a class="excluir" href="<?=URL::base().'admin/curriculums/delete/'.$curriculums->id;?>" title="Excluir">Excluir</a>
+                    <a class="excluir" href="<=URL::base().'admin/curriculums/delete/'.$curriculums->id;?>" title="Excluir">Excluir</a>
                 </td>
 			</tr>
-            <?}?>
+            <}?>
 		</tbody>
 	</table>
-</div>
+</div-->

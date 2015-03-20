@@ -179,7 +179,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 							$db->commit();	
 
 							if($object->id == ""){
-								$msg = "<span class='list_faixa red round' >".$gdocs_item->taxonomia. " - não encontrado no kaizen </span>";
+								$msg = "<span class='list_faixa red round' >".$gdocs_item->taxonomia. " - não encontrado </span>";
 							}else{
 								$msg = "<span class='list_faixa blue round' >".$gdocs_item->taxonomia. " - OK </span>";
 							}

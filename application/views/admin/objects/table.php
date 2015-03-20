@@ -158,6 +158,7 @@
 				$status = "";
 	    		$tag = "";
 	    		$task_to = "";
+	    		$calendar = URL::base().'/public/image/admin/calendar2.png';
 				
 				switch($objeto->status_id){
 	    			case 1:
@@ -165,6 +166,7 @@
 	            			$class_obj = "object_late";
 	            		}else{
 	        				$class_obj 	= $objeto->statu_class;
+	            			$calendar = URL::base().'/public/image/admin/calendar.png';
 	        			}
 	    				break;
 	    			case 2:
@@ -179,6 +181,7 @@
 	            			$class_obj = "object_late";
 	            		}else{
 	        				$class_obj 	= $objeto->statu_class.$mod;
+	            			$calendar = URL::base().'/public/image/admin/calendar.png';
 	        			}
 
 	        			
@@ -205,12 +208,15 @@
 	    			case 8://finalizado
 	    				$class_obj 	= $objeto->statu_class;
 	    				$class 		= $objeto->statu_class;
+
 	    				break;	
 	    			default:
 	    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
 	            			$class_obj = "object_late";
 	            		}else{
 	        				$class_obj 	= $objeto->statu_class;
+	            			$calendar = URL::base().'/public/image/admin/calendar.png';
+
 	        			}
 	    		}
 	    		//href="
@@ -225,7 +231,7 @@
 							<p><span class="light_blue round list_faixa"><?=$objeto->supplier_empresa?></span></p>
 						<?}?>
 						<p>
-							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span> <span class="red round list_faixa"><img src="<?=URL::base()?>/public/image/admin/calendar2.png" height="16" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
+							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span> <span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="16" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
 							<div>
 								<div class='left' style="width:25px;"><?=$task_to;?></div>
 								<?=$tag;?> 

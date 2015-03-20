@@ -1,7 +1,7 @@
 <div class="task_bar_item">
 	<div class="icon_team">
 		<a class="load"  href="<?=URL::base();?>admin/tasks/index/ajax/?status=5" rel="task_bar" data-panel="#content" data-refresh="true" title="tarefas produção">
-			<p class="round_imgList blue" style="float:left"><span>P</span></p>
+			<p class="round_imgListblue blue" style="float:left"><span>P</span></p>
 			<!--img class="round_imgList" src="<?=URL::base();?>public/image/admin/default.png" height="20" style="float:left" alt="produção"-->
 			<div class="badge orange"><?=$totalTasks?></div>				
 		</a>

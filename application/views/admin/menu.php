@@ -1,9 +1,9 @@
 <div id="lateral">
-	<div id="user_info" >
+	<div class="user_info"  >
 		<a href="<?=URL::base();?>admin/users/editInfo" rel="load-panel" data-panel="#content" style="float:left;">
-			<img class="foto" src="<?=URL::base();?><?=$user->userInfos->foto?>" />
-			
-	        <span><?$nome = explode(" ", $user->userInfos->nome); echo ucfirst($nome[0]);?></span>
+			<!--img class="foto" src="<?=URL::base();?><?=$user->userInfos->foto?>" /-->
+			<div class='left'><?=Utils_Helper::getUserImage($user->userInfos)?></div>			
+	        <div class='left line'><?$nome = explode(" ", $user->userInfos->nome); echo ucfirst($nome[0]);?></div>
 	    </a>
 	</div>
 	<div id="menu">

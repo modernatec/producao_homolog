@@ -31,13 +31,15 @@
 			<? foreach($userinfosList as $usuario){?>
 			<li>
 				<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
-					<div class="round_imgDetail <?=$usuario->team->color?>">
+					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
+					<span class='round list_faixa <?=$usuario->team->color?>'><?=$usuario->nome?></span> <span class='round list_faixa <?=$usuario->team->color?>'><?=$usuario->team->name?></span>
+					<!--div class="round_imgDetail <?=$usuario->team->color?>">
 						<img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" />
 	                    <span><?=$usuario->nome?></span>
-	                </div>
+	                </div-->
 					<div class="clear">
-						<p><?=$usuario->team->name?></p>
-						<p><?=$usuario->email?></p>
+						
+						<p>e-mail: <?=$usuario->email?></p>
 						<p>ramal: <?=$usuario->ramal?></p>
 					</div>
 				</a>

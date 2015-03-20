@@ -56,7 +56,7 @@ class Utils_Helper
                 //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' alt='".ucfirst($user->nome)."' />";
             }
         }else{
-            return URL::base().'public/image/admin/default.png';
+            return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' />";
         }
     }
 

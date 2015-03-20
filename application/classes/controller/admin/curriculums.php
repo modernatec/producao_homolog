@@ -15,12 +15,24 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
         
-	public function action_index()
+	public function action_index($ajax = null)
 	{	
+		$view = View::factory('admin/curriculums/list')
+            ->bind('message', $message);
+            
+		if($ajax == null){
+            $this->template->content = $view;             
+        }else{
+            $this->auto_render = false;
+            echo $view;
+        }  	
+
+		/*
 		$view = View::factory('admin/curriculums/list')
 			->bind('message', $message);
 		$view->curriculumsList = ORM::factory('curriculum')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;             
+		*/
 	} 
 
 	public function action_create()
