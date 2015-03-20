@@ -15,39 +15,8 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$view = View::factory('admin/relatorios/view')
 			->bind('message', $message);
 		
-		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-		
-		//grafico 1 tag X qtd
-		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
-		$tasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
-		->join('tags', 'INNER')
-		->on('taskviews.tag_id', '=', 'tags.id')
-		->where('ended', '=', '0')->group_by('tag_id')->as_object()->execute();
-		
-		$tagQtd = array(json_encode(array('tag', 'qtd')));
-		foreach ($tasks as $task) {
-			$r = array('('.$task->qtd.') '.$task->tag, $task->qtd);
-			array_push($tagQtd, json_encode($r));
-		}
-		$view->tagQtd = json_encode($tagQtd);
-		$view->tagQtdTitle = 'distribuição de tarefas';
-
-
-		//grafico 2 status X object
-		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
-		$objectStatus = DB::select('status, count("status_id") qtd')->from('objectstatus')
-		->join('status', 'INNER')
-		->on('objectstatus.status_id', '=', 'status.id')
-		->group_by('status_id')->as_object()->execute();
-		
-		$statusQtd = array(json_encode(array('status', 'qtd')));
-		foreach ($objectStatus as $status) {
-			$r = array('('.$status->qtd.') '.$status->status, $status->qtd);
-			array_push($statusQtd, json_encode($r));
-		}
-		$view->statusQtd = json_encode($statusQtd);
-		$view->statusQtdTitle = 'distribuição de objetos';
-
+		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 		
+		$view->graficos = $this->action_geraGraficos('init');
 		
 		if($ajax == null){
 			$this->template->content = $view;
@@ -56,6 +25,59 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			echo $view;
 		}   		         
 	} 
+
+	public function action_geraGraficos($id = null){
+		$this->auto_render = false;
+		$view = View::factory('admin/relatorios/charts')
+			->bind('message', $message);
+
+		//grafico 1 tag X qtd
+		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
+		$dbTasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
+		->join('tags', 'INNER')
+		->on('taskviews.tag_id', '=', 'tags.id')
+		->where('ended', '=', '0');
+		if($id != 'init' && $id != ''){
+			$dbTasks->where('project_id', '=', $id);
+		}
+		$tasks = $dbTasks->group_by('tag_id')->as_object()->execute();
+		
+		$tagQtd = array(json_encode(array('tag', 'qtd')));
+		foreach ($tasks as $task) {
+			$r = array('('.$task->qtd.') '.$task->tag, $task->qtd);
+			array_push($tagQtd, json_encode($r));
+		}
+
+		$view->tagQtd = json_encode($tagQtd);
+		$view->tagQtdTitle = 'distribuição de tarefas';
+
+
+		//grafico 2 status X object
+		//$view->totalTasks = ORM::factory('taskview')->where('ended', '=', '0')->count_all();
+		$objectDbStatus = DB::select('status, count("status_id") qtd')->from('objectstatus')
+		->join('status', 'INNER')
+		->on('objectstatus.status_id', '=', 'status.id');
+		if($id != 'init' && $id != ''){
+			$objectDbStatus->where('project_id', '=', $id);
+		}
+
+		$objectStatus = $objectDbStatus->group_by('status_id')->as_object()->execute();
+		
+		$statusQtd = array(json_encode(array('status', 'qtd')));
+		foreach ($objectStatus as $status) {
+			$r = array('('.$status->qtd.') '.$status->status, $status->qtd);
+			array_push($statusQtd, json_encode($r));
+		}
+
+		$view->statusQtd = json_encode($statusQtd);
+		$view->statusQtdTitle = 'distribuição de objetos';
+
+		if($id != 'init'){
+			echo $view;
+		}else{
+			return $view;
+		}
+	}
 
 	public function action_relatorioLink(){
 		$this->auto_render = false;

@@ -215,6 +215,7 @@ function setupScroll(){
 }
 
 var upload = false;
+var googleLoaded = false;
 
 function setupChartData(data){
     for(k in data){
@@ -233,15 +234,14 @@ var chartContainer = [];
 var drawCharts = function drawChart() {
     if(chartContainer[0]){
         var array = setupChartData($('#'+chartContainer[0]).data('chart'));
-        console.log(array);
         var data = google.visualization.arrayToDataTable(array);
 
         var options = {
           title: $('#'+chartContainer[0]).data('title'),
           pieHole: 0.5,
-          chartArea:{left:0,top:30,width:'100%',height:'80%'},
-          'width':340,
-          'height':250,
+          chartArea:{left:0,top:30,width:'80%',height:'80%'},
+          'width':450,
+          'height':260,
           legend: {position: 'left'},
         };
 
@@ -260,13 +260,63 @@ function setupAjax(container){
         //$('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
     }
 
-    //*********
+    //******Relatorios*******//
+    if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
+        $('.grafico').each(function(index, el) {
+            chartContainer.push($(el).attr('id'));
+        });
+        drawCharts();
+    }
+
     if($('.grafico').length != 0 && container == '#content'){
         $('.grafico').each(function(index, el) {
             chartContainer.push($(el).attr('id'));
         });
         google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
+        googleLoaded = true;
+    }    
+
+    if($('#relatorios_project_id').length != 0 && container == '#content'){
+        $('#relatorios_project_id').on('change', function() {
+            loadContent($('#' + this.id).data('url') + '/' + this.value, $('#' + this.id).data('panel'));
+        });
     }
+
+    $("#generateStatus").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        var project_id = $('#relatorios_project_id').val();
+        $('#relatorio_project_id').val(project_id);
+        $('#form_relatorio').submit();
+    });
+
+    $("#updateGdocs").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        var project_id = $('#relatorios_project_id').val();
+        //var form = $('#sync_gdocs');
+        $('#gdocs_project_id').val(project_id);
+        $('#sync_gdocs').submit();
+        //ajaxReload(form, $(form).data("panel"));
+        /*
+        if(project_id != ''){
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('href') + '/' + project_id,
+                //dataType : "json",
+                //data: $(form).serialize(),
+                success: function(data) {
+                    reloadContent(data, '#results');
+                },
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
+            });  
+        }
+        */
+    });
+
+
+    //*******************************//
     /*
     if($('#tagQtd').length != 0 && container == '#content'){
         chartContainer = 'tagQtd';

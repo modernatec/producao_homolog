@@ -1316,6 +1316,12 @@ a.green{
 .ui-widget-overlay{
 	background: #333;
 }
+
+#charts{
+	display: block;
+	height: 300px;
+	overflow: hidden;
+}
 /*
 .ui-widget-content{
 	background: none;
