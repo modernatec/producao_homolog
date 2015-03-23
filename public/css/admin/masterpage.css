@@ -1047,7 +1047,7 @@ a.green{
 	background: #fff; 
 	overflow: auto;
 	
-	min-width: 370px;
+	/*min-width: 370px;*/
 	line-height: normal !important;
 
 	-o-border-radius: 4px;

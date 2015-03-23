@@ -24,7 +24,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		->where('objectstatus.status_id', '!=', '8')
 		->and_where('objectstatus.fase', '!=', '2')
 		->and_where('objectstatus.project_status', '!=', '0')
-		->group_by('collections.id')->as_object()->execute();
+		->group_by('collections.id')
+		->order_by('collections.fechamento', 'ASC')
+		->as_object()->execute();
 
 		if($ajax == null){
 			$this->template->content = $view;

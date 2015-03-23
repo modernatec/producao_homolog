@@ -27,7 +27,7 @@
 <?
 
 ?>
-<div  class="scrollable_content clear">             
+<div class="scrollable_content clear">             
     <?if(isset($taskflows)){
             $count = 0;
             foreach($taskflows as $status_task){

@@ -321,9 +321,11 @@ function setupAjax(container){
 
 
     if($(container + ' .scrollable_content').length != 0){
-        if($(container).data("bottom") == undefined){
-            $(container + ' .scrollable_content').css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
-        }
+        $(container + ' .scrollable_content').each(function(index, el){
+            if($(el).data('bottom') == undefined){
+                $(el).css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
+            }
+        });
     }
 
     validateAjax(); 

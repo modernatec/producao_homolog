@@ -22,21 +22,24 @@
                 <form name="sync_gdocs" id="sync_gdocs" data-panel="#results" action="<?=URL::base();?>admin/relatorios/updateGdocs" method="post">
                     <input type="hidden" name='project_id' id='gdocs_project_id' />
                 </form>   
-                <div id="results" data-bottom="false">
+                <div id="results">
                     <span class='list_alert round'>resultados da sincronia com o google docs</span>
                 </div>     
             </div>
         </div>
         <div class="left">     
-            <div class="boxwired round" data-bottom="false" style="overflow:hidden; width:300px; height:500px;" >
-                <div class="scrollable_content" style="height:500px;">
-                <span class='list_alert round'>objetos encontrados.</span>
-                <?foreach ($collections as $col) {?>
-                    <div><?=$col->name?></div>;
-                <?}?>
+            <div class="list_body boxwired round" style="overflow:hidden; width:300px; height:500px;" >
+                <span class='list_alert round'>fechamento por coleção</span>
+                <div class="scrollable_content" data-bottom="false" style="height:460px;">
+                    <ul class="list_item">
+                    <?foreach ($collections as $col) {?>
+                        <li class="dd-item">
+                            <p><?=$col->name?></p>
+                            <p><span class="list_faixa red round"><?=Utils_Helper::data(@$col->fechamento,'d/m/Y')?></span> <span class="list_faixa red round"><?=$col->qtd?> objetos em aberto</span></p>
+                        </li>
+                    <?}?>
+                    </ul>
                 </div>
-
-
             </div>
         </div>
         <div id='charts' class="left">
