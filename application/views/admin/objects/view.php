@@ -30,6 +30,7 @@
         <br/>
         <b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?><br/>
         <b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?><br/>
+        <b>coleção:</b> <?=@$obj->collection->name?><br/>        
         <b>fechamento da coleção:</b> <?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?><br/>        
     </div>
 <?

@@ -300,6 +300,22 @@ function validateAjax(){
         }
     });
 
+    $("#frm_acervo").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
+
+    $("#frm_reset_acervo").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxReload(form);
+            return false;       
+        }
+    });
+
     $("#frm_reset_suppliers").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');

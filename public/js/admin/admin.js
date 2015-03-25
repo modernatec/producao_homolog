@@ -265,8 +265,6 @@ function setupAjax(container){
         
     }
 
-
-
     //******Relatorios*******//
     if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
         $('.grafico').each(function(index, el) {
@@ -426,7 +424,6 @@ function setupAjax(container){
 
     $("a[rel='load-panel']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        //loadContent($(this).attr("href"), $(this).data("panel")); 
 
         $.ajax({
             type: "POST",
@@ -442,6 +439,29 @@ function setupAjax(container){
             }
         });  
 
+        if($(this).data("refresh") != undefined){
+            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+        }
+    });
+
+    $("a[rel='reload-panel']").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        var panel = $(this).data('panel');
+        console.log(panel)
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('href'),
+            dataType : "html",
+            //data: $(form).serialize(),
+            success: function(data) {
+                
+                reloadContent(data, panel);
+            },
+            error: function(e) {
+                console.log(e);
+                alert("ocorreu um erro. rel");
+            }
+        });  
 
         if($(this).data("refresh") != undefined){
             window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');

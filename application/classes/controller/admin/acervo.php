@@ -38,109 +38,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			echo $view;
 		}           
 	} 
-
-	/*
-	public function action_limpaString(){
-		$this->auto_render = false;
-		$objects = ORM::factory('object')->find_all(); 
-		foreach ($objects as $object) {
-			$object->taxonomia = trim($object->taxonomia);
-			$object->title = trim($object->title);
-			$object->save();
-		}
-		echo "ok";
-	}
-	*/
-
-	public function action_redirect(){
-		$this->auto_render = false;
-		$view = View::factory('admin/objects/redirect');
-
-		$view->bind('errors', $errors)
-			->bind('message', $message);
-			
-		echo $view;
-	}
-
-	public function action_acervo()
-	{	
-		$this->action_index(2);           
-	} 	
-    
-    /*
-	public function action_create($id){ 	
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-            $this->salvar($id);
-        }else{  	
-	        $view = View::factory('admin/objects/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
-			
-			$view->isUpdate = false; 
-			//$this->addValidateJs('public/js/admin/validateObjects.js');
-			$view->objVO = $this->setVO('object');
-	        
-	        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-	        $view->countries = ORM::factory('country')->find_all();
-	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
-	        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
-	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-			       
-	        $this->template->content = $view;                     
-	    }
-	}
-	*/
-      
-	public function action_delete($id)
-	{
-		/*
-		$view = View::factory('admin/objects/list')
-			->bind('errors', $errors)
-			->bind('message', $message);
-		
-		try 
-		{            
-			$objeto = ORM::factory('object', $id);
-			$objeto->delete();
-			Utils_Helper::mensagens('add','Objeto excluído com sucesso.'); 
-		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
-			$errors = $e->errors('models');
-		}
-		
-		Request::current()->redirect('admin/objects');
-		*/
-	}
-
-	public function action_edit($id)
-    {    
-    	if (HTTP_Request::POST == $this->request->method()){                                              
-            $this->salvar($id);
-        }else{
-	    	$this->auto_render = false;       
-			$view = View::factory('admin/objects/create')
-				->bind('errors', $errors)
-				->bind('message', $message)
-				->set('values', $this->request->post());
-
-			$objeto = ORM::factory('object', $id);
-	        $view->objVO = $this->setVO('object', $objeto);
-			$view->isUpdate = true;                             
-	                
-			$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-	        $view->countries = ORM::factory('country')->find_all();
-	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-	        $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
-	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
-	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-	                
-	        //$this->template->content = $view;
-	        echo $view;
-	    }
-	}
-
+     
 	public function action_view($id, $task_id = null)
     {       
     	$this->auto_render = false;
@@ -187,52 +85,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	    }
 	}
     
-    /*    
-    public function action_view($id, $task_id = null)
-    {       
-    	//$this->startProfilling();
-        
-        $view = View::factory('admin/objects/view')
-            ->bind('errors', $errors)
-            ->bind('message', $message);
-
-
-		$this->addValidateJs('public/js/admin/validateTasks.js');
-
-		$objeto = ORM::factory('object', $id);
-        $view->obj = $objeto;   
-        $view->user = $this->current_user->userInfos;                          
-		
-
-        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
-
-        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
-        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->taskflows[0];
-
-        $view->assign_form = View::factory('admin/tasks/form_assign');
-        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
-        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
-        $view->assign_form->obj = $objeto; 
-        $view->assign_form->object_status = $last_status;
-
-        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
-        $view->anotacoes_form->obj = $objeto; 
-        $view->anotacoes_form->object_status = $last_status;
-
-        $view->form_status = View::factory('admin/objects/form_status');
-        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
-        $view->form_status->obj = $objeto; 
- 		$view->current_auth = $this->current_auth;
-        
-        $this->template->content = $view;
-        
-        //$this->endProfilling();
-        return true;
-	}
-	*/
-
 	public function action_update($id){
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/edit');
@@ -254,203 +106,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$view->objVO = $arr_objstatus;
 
 		echo $view;
-	}
-
-	public function action_updateStatus($id = null){
-		$this->auto_render = false;
-		if (HTTP_Request::POST == $this->request->method()) 
-		{ 
-
-			$db = Database::instance();
-	        $db->begin();
-
-			$object = ORM::factory('objects_statu', $id);
-			try 
-			{ 
-				$object->values($this->request->post(), array( 
-		                    'object_id', 
-		                    'status_id',
-		                    'prova',
-		                    'description',
-		                    'crono_date',
-							));
-
-				
-				$object->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object->userInfo_id;	
-				
-				$object->save();				
-				$db->commit();
-				$msg = 'objeto salvo com sucesso.';
-			} catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $db->rollback();
-	            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
-	        } catch (Database_Exception $e) {
-	            $db->rollback();
-	            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	        }
-
-	        header('Content-Type: application/json');
-
-	        if($this->request->post('from') == 'objects'){
-	        	echo json_encode(array(
-					'direita' => URL::base().'admin/objects/view/'.$object->object_id,	
-					'tabs_content' => URL::base().'admin/objects/getObjects/',	
-					'msg' => $msg,
-				));
-	        }else{
-	        	echo json_encode(array(
-					'direita' => URL::base().'admin/objects/view/'.$object->object_id,								
-					'msg' => $msg,
-				));
-	        }
-
-
-	        return false;	
-	    }
-	}
-
-
-	public function action_deleteStatus($id){   
-		$this->auto_render = false; 
-		$db = Database::instance();
-        $db->begin();
-		
-		$object_status = ORM::factory('objects_statu', $id);
-		$object_id = $object_status->object_id;
-		try {  
-			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
-			foreach($tasks as $task){
-				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
-				foreach($task_status as $status){
-					$status->delete();
-				}
-
-				$task->delete();
-			}
-
-			$object_status->delete();
-
-            $db->commit();
-
-            $msg = "Status excluído com sucesso."; 
-			
-			//Utils_Helper::mensagens('add',$message);
-            //Request::current()->redirect('admin/objects/view/'.$object_id);
-            //echo URL::base().'admin/objects/view/'.$object_id;
-
-            
-        } catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-		    //Utils_Helper::mensagens('add',$message);  
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			//Utils_Helper::mensagens('add',$message);
-            $db->rollback();
-        }
-
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,							
-			'msg' => $msg,
-		));
-		//'tabs_content' => URL::base().'admin/objects/getObjects/',
-        
-        return false;	        
-	}
-
-   
-
-	protected function salvar($id = null)
-	{
-		$this->auto_render = false;
-		$db = Database::instance();
-        $db->begin();
-		
-		$object = ORM::factory('object', $id);
-		try 
-		{            
-			$object->values($this->request->post(), array( 
-                    'title', 
-                    'taxonomia', 
-                    'typeobject_id', 
-                    'project_id',
-                    'collection_id', 
-                    'supplier_id', 
-                    'audiosupplier_id',
-                    'country_id',
-                    'format_id',
-                    'reaproveitamento', 
-                    'interatividade',
-                    'fase', 
-                    'obs', 
-                    'uni', 
-                    'cap', 
-                    'pagina',
-                    'status',
-                    'tamanho',
-                    'duracao',
-                    'cessao',
-                    'sinopse',
-                    'taxonomia_reap',
-                    'arq_aberto',
-                    'speaker',
-
-                     ));
-
-			
-			if($this->request->post('taxonomia_reap') != ""){
-				$object_source = ORM::factory('object')->where('taxonomia', '=', $this->request->post('taxonomia_reap'))->find();
-				
-				$object->object_id = $object_source->id;	
-			}else{
-				$object->object_id = null;
-			}
-			
-			$object->save();
-
-			if(is_null($id) || $id == ""){
-				$objectStatus = ORM::factory('objects_statu');
-		        $objectStatus->object_id = $object->id;
-		        $objectStatus->status_id = '1';
-		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
-				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
-				$objectStatus->save();
-			}
-
-			$msg = 'Objeto salvo com sucesso.';
-			$db->commit();
-		}  catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            $db->rollback();
-        }
-
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object->id,	
-						
-			'msg' => $msg,
-		));
-		//'tabs_content' => URL::base().'admin/objects/getObjects/',
-        return false;
 	}
 
     /********************************/
@@ -478,18 +133,20 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
     	print json_encode($result);
     }
 
-    public function action_getObjects($project_id){
+    public function action_getObjects($page){
     	//$this->startProfilling();
 
-    	$project_id = ($project_id != "") ? $project_id : Session::instance()->get('kaizen')['parameters'];
+    	$project_id = "";//($project_id != "") ? $project_id : Session::instance()->get('kaizen')['parameters'];
 
 		$this->auto_render = false;
-		$view = View::factory('admin/objects/table');
+		$view = View::factory('admin/acervo/table');
 		
 		$view->project_id = $project_id;
 		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
 
+		$status_arr = array();
 		//diferente de "finalizado" e "nao iniciado"
+		/*
 		$status_init = ORM::factory('statu')
 			->where('type', '=', 'object')
 			->where('id', 'NOT IN', array('1', '8'))->find_all(); 
@@ -499,9 +156,10 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		foreach ($status_init as $status) {
 			array_push($status_arr, $status->id);
 		}
+		*/
 		
 
-		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "objects"){		
+		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "acervo"){		
 			$kaizen_arr = array(
 				"filtros" => array(
 					"filter_tipo" => json_encode(array()),
@@ -512,8 +170,8 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 					"filter_origem" => json_encode(array()),
 					"filter_materia" => json_encode(array()),
 				),
-				"parameters" => $project_id,
-				"model" => "objects",
+				"parameters" => '',
+				"model" => "acervo",
 			);
 
 		}else{
@@ -528,8 +186,8 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 					"filter_origem" => ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : Session::instance()->get('kaizen')['filtros']["filter_origem"],	
 					"filter_materia" => ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : Session::instance()->get('kaizen')['filtros']["filter_materia"],
 				),
-				"parameters" => $project_id,
-				"model" => "objects",
+				"parameters" => '',
+				"model" => "acervo",
 			);
 		}
 
@@ -544,6 +202,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$filter_origem = Session::instance()->get('kaizen')['filtros']["filter_origem"];
 		$filter_materia = Session::instance()->get('kaizen')['filtros']["filter_materia"];
 
+		/*
 		$view->action = $project_id.'?fase='.$view->fase
 						.'&tipo='.$filter_tipo
 						.'&collection='.$filter_collection
@@ -552,8 +211,9 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 						.'&taxonomia='.$filter_taxonomia
 						.'&origem='.$filter_origem
 						.'&materia='.$filter_materia;	
-
+		
 		$view->reset = 	$project_id.'?fase='.$view->fase;
+		*/
 
 		//$this->startProfilling();
 		/*
@@ -589,11 +249,32 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		$view->reset_filter_status = json_encode($status_arr);
 
-		//$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
 		$query = ORM::factory('objectStatu')->where('fase', '=', $view->fase);
+		/************************/
+
+		// count number of users
+		$total_objects = $query->count_all();
+		$view->total_objects = $total_objects;
+
+		// set-up the pagination
+		$pagination = Pagination::factory(array(
+		    'total_items' => $total_objects,
+		    'items_per_page' => 50, // this will override the default set in your config
+		));
+
+		// get users using the pagination limit/offset
+		//$users = ORM::factory('User')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
+
+		// pass the users & pagination to the view
+		//$this->view->bind('pagination', $pagination);
+		//$this->view->bind('users', $users);
+
+
+		
 
 
 		/***Filtros***/
+		/*
 		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
 		(count($view->filter_status ) > 0) ? $query->where('objectStatus.status_id', 'IN', $view->filter_status) : '';
 		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
@@ -601,12 +282,15 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
 		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
+		*/
 
-
+		/*
 		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
 			->where('project_id', '=', $project_id))
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
-		
+		*/
+		$view->objectsList = $query->order_by('taxonomia', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
+		$view->pagination = $pagination;
 
 		/****Filtros*****/
 

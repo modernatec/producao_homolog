@@ -1,6 +1,6 @@
 <div class="topo form" >
     <div class="filters clear">
-        <form action='<?=URL::base();?>admin/objects/getObjects/' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
+        <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_acervo" data-panel="#tabs_content" method="post" class="form">
             <input type="hidden" name="project_id" value="">
             <div class="left filter">
                 <input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="" >                
@@ -122,7 +122,7 @@
             </div>
         </form> 
         <div class="left filter">
-            <form action='<?=URL::base();?>admin/objects/getObjects/' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
+            <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_reset_acervo" data-panel="#tabs_content" method="post" class="form">
                 <input type="hidden" name="reset_form" value="true">
                 <input type="submit" class="bar_button round green" value="limpar filtros" />
             </form>
