@@ -199,12 +199,13 @@
                 </dd>
             </div>  
             <div class="clear left"> 
-                <dt><label for="reaproveitamento">reaproveitamento</label></dt>
+                <dt><label for="reaproveitamento">origem</label></dt>
                 <dd>
                     <select class="required round" name="reaproveitamento" id="reaproveitamento" style="width:100px;">
                         <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['reaproveitamento'] == '0')?('selected="selected"'):(''))?>>Não</option>
-                        <option value='1' <?=(($objVO['reaproveitamento'] == '1')?('selected="selected"'):(''))?>>Sim</option>
+                        <option value='0' <?=(($objVO['reaproveitamento'] == '0')?('selected="selected"'):(''))?>>novo</option>
+                        <option value='1' <?=(($objVO['reaproveitamento'] == '1')?('selected="selected"'):(''))?>>reap.</option>
+                        <option value='2' <?=(($objVO['reaproveitamento'] == '2')?('selected="selected"'):(''))?>>reap. integral</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'reaproveitamento');?></span>
                 </dd> 

@@ -17,7 +17,15 @@
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
-        <span class="list_faixa blue round"><?=($obj->reaproveitamento == 0) ? "Novo" : "Reaproveitamento" ?>
+        <span class="list_faixa blue round">
+            <? if($obj->reaproveitamento == 0){ 
+                echo"Novo";
+            }elseif($obj->reaproveitamento == 1){
+                echo "Reap.";
+            }else{
+                echo "Reap. integral";
+            }?>
+            
         &bullet; <?=@$obj->supplier->empresa?></span> - <?=@$obj->typeobject->name;?>
         <br/>
         <b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?><br/>
@@ -113,7 +121,7 @@
                                                 </table>
                                                 <p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p>
                                             </div>
-                                            <div class="observacoes_gdocs wordwrap left"><b>observações:</b><br/><?=@$obj->gdoc->observacoes;?>
+                                            <div class="observacoes_gdocs scrollable_content wordwrap left" data-bottom="false"><b>observações:</b><br/><?=@$obj->gdoc->observacoes;?>
                                             </div>
                                         </div>
 

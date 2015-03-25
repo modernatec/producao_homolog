@@ -18,16 +18,6 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 		
 		$view->graficos = $this->action_geraGraficos('init');
 
-		$view->collections = DB::select('name, count("objectstatus.status_id") qtd, fechamento')->from('collections')
-		->join('objectstatus', 'INNER')
-		->on('objectstatus.collection_id', '=', 'collections.id')
-		->where('objectstatus.status_id', '!=', '8')
-		->and_where('objectstatus.fase', '!=', '2')
-		->and_where('objectstatus.project_status', '!=', '0')
-		->group_by('collections.id')
-		->order_by('collections.fechamento', 'ASC')
-		->as_object()->execute();
-
 		if($ajax == null){
 			$this->template->content = $view;
 		}else{
@@ -44,8 +34,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$project_title = ' (projetos em andamento)';
 		if($id != 'init' && $id != ''){
 			$project = ORM::factory('project', $id);
-			$project_title = ' ('.$project->name.')';
+			$project_title = '('.$project->name.')';
 		}
+		$view->project_title = $project_title;
 
 		//grafico 1 tag X qtd
 		$dbTasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
@@ -64,7 +55,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		}
 
 		$view->tagQtd = json_encode($tagQtd);
-		$view->tagQtdTitle = 'distribuição de tarefas'.$project_title;
+		
 
 		//grafico 2 status X object
 		$objectDbStatus = DB::select('status, count("status_id") qtd')->from('objectstatus')
@@ -83,7 +74,22 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		}
 
 		$view->statusQtd = json_encode($statusQtd);
-		$view->statusQtdTitle = 'distribuição de objetos'.$project_title;
+
+		/*lista de fechamentos*/
+		$lista = DB::select('name, count("objectstatus.status_id") qtd, fechamento')->from('collections')
+		->join('objectstatus', 'INNER')
+		->on('objectstatus.collection_id', '=', 'collections.id')
+		->where('objectstatus.status_id', '!=', '8')
+		->and_where('objectstatus.fase', '!=', '2')
+		->and_where('objectstatus.project_status', '!=', '0');
+
+		if($id != 'init' && $id != ''){
+			$lista->where('project_id', '=', $id);
+		}
+
+		$view->collections = $lista->group_by('collections.id')
+		->order_by('collections.fechamento', 'ASC')
+		->as_object()->execute();
 
 		if($id != 'init'){
 			echo $view;
@@ -290,6 +296,15 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			$datas_f = (!is_null($gdocs_fechamento)) ? explode("/", $gdocs_fechamento->fechamento) : null;
 
 			$datas_fc = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
+
+			if($object->reaproveitamento == '0'){
+				$reap = 'novo';
+			}elseif($object->reaproveitamento == '1'){ 
+				$reap = 'reap.';
+			}else{
+				$reap = 'reap. integral';
+			}
+
 			$line = array(
 						'title' => $object->title, 
 						'taxonomia' => $object->taxonomia, 
@@ -299,7 +314,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'materia' => $object->materia_name, 
 						'typeobject' => $object->typeobject_name,
 						
-						'reaproveitamento' => ($object->reaproveitamento == '0') ? 'Novo' : 'Reap.',  
+						'reaproveitamento' => $reap,  
 						'fornecedor' => $object->supplier_empresa, 
 						'data_envio' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas_e[0], $datas_e[1], $datas_e[2]),
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),

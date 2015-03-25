@@ -2,14 +2,14 @@
  
 class Controller_Admin_Objects extends Controller_Admin_Template {
  
-	//public $auth_required = array('login'); //Auth is required to access this controller
- 	/*
+	public $auth_required = array('login'); //Auth is required to access this controller
+ 	
 	public $secure_actions = array(
                                     'create' => array('login', 'assistente 2'),
                                     'edit' => array('login', 'assistente 2'),
                                     'delete' => array('login', 'coordenador'),
                                  );
-    */                             
+                                 
     const ITENS_POR_PAGINA = 20;
 					 
 	public function __construct(Request $request, Response $response)
@@ -32,6 +32,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}           
 	} 
 
+	/*
 	public function action_limpaString(){
 		$this->auto_render = false;
 		$objects = ORM::factory('object')->find_all(); 
@@ -42,6 +43,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}
 		echo "ok";
 	}
+	*/
 
 	public function action_redirect(){
 		$this->auto_render = false;
@@ -352,8 +354,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
         header('Content-Type: application/json');
 		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,	
-						
+			'direita' => URL::base().'admin/objects/view/'.$object_id,							
 			'msg' => $msg,
 		));
 		//'tabs_content' => URL::base().'admin/objects/getObjects/',

@@ -48,8 +48,8 @@ body{
 .topo{
 	padding: 0 5px;
 	height: 46px;
-	overflow: auto;
 	background: #f1f1f1;
+	display: inline-block;
 
 	position: absolute;
 	right: 60px;
@@ -95,15 +95,13 @@ body{
     padding: 5px;
 }
 
-
-
-
 .wordwrap {
     white-space: pre-wrap; /* css-3 */
     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */ 
+    margin-right: 8px;
 }
 
 hr { 
@@ -545,7 +543,7 @@ table tbody td table tbody tr:hover {
 .form input[type='text'], .form input[type='password'], input[type='submit'],input[type='button'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
-    box-shadow:#ccc 1px 1px 3px;
+    box-shadow:#ccc .5px .5px 1px;
 }
 
 input[type='submit'], input[type='button']{
@@ -586,7 +584,7 @@ label
 
 .left{
 	float:left;
-	margin-right:10px;
+	margin-right:5px;
 }
 
 .clear{
@@ -1017,10 +1015,11 @@ a.green{
 
 .list_header{
 	background: #fff;
-	padding: 8px;
+	padding: 5px;
 	margin-bottom: 5px;
 	border: 1px solid #008fc7;
-	width: 400px;	
+	min-width: 400px;	
+	width: auto;
 	display: inline-block;
 	position: relative;
 	z-index: 1;
@@ -1146,15 +1145,16 @@ a.green{
 	padding: 5px 0;
 	border-bottom: 1px #ccc solid;	
 }
-
+/*
 .filters{
 	padding-top: 8px;
 	position: relative;
 	z-index: 2;
 }
+*/
 
 .filter{
-	padding-top: 10px;
+	padding-top: 2px;
 	float: left;
 	color:#008fc7;
 	display: block;
@@ -1163,14 +1163,41 @@ a.green{
 
 }
 
-.filter ul li{
-	position: relative;
+.filter_panel{
+	position: absolute;
+	z-index: 10000;
+	background: #ccc;
+	display: none;
+	left: 0;
+	margin-top: 2px;
 	padding: 5px;
-	margin-left: 5px;
+	
+	width: auto !important;
+	min-width: 180px;
+
+	height: auto;
+	max-height: 330px;
+
+	overflow-y: auto;
+	overflow-x: hidden; 
+	z-index: 20000;
+}
+
+.filter ul li{
+	margin: 2px 0;
+	padding: 5px;
+	margin-right: 5px;
+
+
+	-o-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .filter ul li:hover{
-	background: #f3f3f3;
+	background: #ccc;
 
 }
 
@@ -1181,7 +1208,7 @@ a.green{
 }
 */
 
-
+/*
 .filter ul li > ul{
 	position: absolute;
 	z-index: 10000;
@@ -1192,6 +1219,7 @@ a.green{
 	padding: 5px;
 	width: 150px;
 }
+*/
 
 .filter ul li > ul li{	
 	display: block;
@@ -1308,7 +1336,8 @@ a.green{
 	color: #008fc7;
 	background: #f3f3f3;
 	border-bottom: 1px dotted #eee;
-	padding: 8px;
+	padding: 4px;
+	margin-bottom: 5px;
 	overflow: auto;
 	line-height: 25px;
 }
@@ -1320,7 +1349,7 @@ a.green{
 
 #charts{
 	display: block;
-	width: 400px;
+	width: 702px;
 	overflow: auto;
 }
 /*

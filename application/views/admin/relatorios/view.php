@@ -27,24 +27,10 @@
                 </div>     
             </div>
         </div>
-        <div class="left">     
-            <div class="list_body boxwired round" style="overflow:hidden; width:300px; height:500px;" >
-                <span class='list_alert round'>fechamento por coleção</span>
-                <div class="scrollable_content" data-bottom="false" style="height:460px;">
-                    <ul class="list_item">
-                    <?foreach ($collections as $col) {?>
-                        <li class="dd-item">
-                            <p><?=$col->name?></p>
-                            <p><span class="list_faixa red round"><?=Utils_Helper::data(@$col->fechamento,'d/m/Y')?></span> <span class="list_faixa red round"><?=$col->qtd?> objetos em aberto</span></p>
-                        </li>
-                    <?}?>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div id='charts' class="left">
             <?=$graficos?>
         </div> 
+        
 
     </div>
 </div>

@@ -112,7 +112,7 @@ $(function () {
 
 function closeFilterPanel(){
     $('.filter ul li').css({'background': ''});
-    $('.filter ul li ul').css({'display': 'none'});
+    $('.filter_panel').css({'display': 'none'});
 }
 
 function populateSelect(ui)
@@ -323,7 +323,7 @@ function setupAjax(container){
     if($(container + ' .scrollable_content').length != 0){
         $(container + ' .scrollable_content').each(function(index, el){
             if($(el).data('bottom') == undefined){
-                $(el).css({height:$( window ).height() - $(container + ' .scrollable_content').offset().top - 5});
+                $(el).css({height:$( window ).height() - $(el).offset().top - 5});
             }
         });
     }
@@ -360,11 +360,11 @@ function setupAjax(container){
     $(".fone").mask("(99) 9999-9999");   
 
     $(".filter span").unbind('click').bind("click", function(e) {
-        if($(this).parent().children('ul').css('display') == 'none'){
+        if($(this).parent().children('.filter_panel').css('display') == 'none'){
             closeFilterPanel();
         }
-        $(this).parent().children('ul').fadeToggle(function(){
-            if($(this).parent().children('ul').css('display') == 'none'){
+        $(this).parent().children('.filter_panel').fadeToggle(function(){
+            if($(this).parent().children('.filter_panel').css('display') == 'none'){
                 $(this).parent().parent().children('li').css({'background': ''});
             }
         });
@@ -622,7 +622,7 @@ function ajaxPost(form){
 function ajaxReload(form, container){    
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
-    console.log(container);
+    //console.log(container);
     if(container != undefined){
         $(container).html("<div class='loading'>loading...</div>"); 
     }

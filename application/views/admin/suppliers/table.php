@@ -19,21 +19,24 @@
 	       		</div>
 
 	       		<div class="clear filter" >
+
 				    <ul>
 				        <li class="round" >
 				            <span class="round" id="team">time <?=(!empty($filter_team) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-				            <ul class="round" >
-				                <? foreach ($teams as $time) {?>
-				                	<li>
-				                		<input type="checkbox" name="team[]" value="<?=$time->id?>" id="time_<?=$time->id?>" <?=(in_array($time->id, $filter_team)) ? "checked" : ""?> />
-				                		<label for="time_<?=$time->id?>" ><?=$time->name?></label>
-				                	</li>
-				                <?}?>
-				                <p>
-					                <input type="submit" class="round bar_button" value="OK" /> 
-					                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-					            </p> 
-				            </ul>
+				            <div class="filter_panel round scrollable_content" data-bottom="false">
+					            <ul>
+					                <? foreach ($teams as $time) {?>
+					                	<li>
+					                		<input type="checkbox" name="team[]" value="<?=$time->id?>" id="time_<?=$time->id?>" <?=(in_array($time->id, $filter_team)) ? "checked" : ""?> />
+					                		<label for="time_<?=$time->id?>" ><?=$time->name?></label>
+					                	</li>
+					                <?}?>
+					                <p>
+						                <input type="submit" class="round bar_button" value="OK" /> 
+						                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
+						            </p> 
+					            </ul>
+					        </div>
 				        </li>
 				    </ul>
 				</div>
