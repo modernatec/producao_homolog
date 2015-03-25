@@ -47,9 +47,9 @@ body{
 
 .topo{
 	padding: 0 5px;
-	height: 46px;
+	min-height: 46px;
 	background: #f1f1f1;
-	display: inline-block;
+	/*display: inline-block;*/
 
 	position: absolute;
 	right: 60px;
@@ -65,6 +65,7 @@ body{
     overflow:hidden;
     position: absolute;
     min-width: 420px;
+    display: none;
     top:46px;
     bottom: 0;
     left: 151px;
@@ -77,6 +78,7 @@ body{
 #direita{
     overflow:hidden;
     position: absolute;
+    display: none;
     top:46px;
     bottom: 0;
     left: 590px;
@@ -1145,13 +1147,11 @@ a.green{
 	padding: 5px 0;
 	border-bottom: 1px #ccc solid;	
 }
-/*
-.filters{
+
+.topo .filters{
 	padding-top: 8px;
-	position: relative;
-	z-index: 2;
 }
-*/
+
 
 .filter{
 	padding-top: 2px;
@@ -1175,19 +1175,21 @@ a.green{
 	width: auto !important;
 	min-width: 180px;
 
-	height: auto;
-	max-height: 330px;
-
+	
 	overflow-y: auto;
 	overflow-x: hidden; 
 	z-index: 20000;
+}
+
+.filter .scrollable_content{
+	height: auto;
+	max-height: 330px;
 }
 
 .filter ul li{
 	margin: 2px 0;
 	padding: 5px;
 	margin-right: 5px;
-
 
 	-o-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -1197,8 +1199,7 @@ a.green{
 }
 
 .filter ul li:hover{
-	background: #ccc;
-
+	background: #fff;
 }
 
 /*

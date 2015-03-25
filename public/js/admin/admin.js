@@ -255,11 +255,17 @@ var drawCharts = function drawChart() {
 }
 
 
-function setupAjax(container){   
-    if($('#direita').length != 0){
+function setupAjax(container){ 
+    if($('.topo').length != 0 && container == '#content'){
+        //$('#esquerda, #direita').fadeOut(function(){
+            $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});
+            $('#esquerda, #direita').fadeIn(1000);
+        //});
         //$('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
-        //$('#esquerda, #direita').css({height:$(window).height() - ($('#esquerda').offset().top + 5)});
+        
     }
+
+
 
     //******Relatorios*******//
     if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
