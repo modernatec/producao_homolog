@@ -375,18 +375,25 @@ a{
 
 .bar{
 	overflow:hidden;
-	padding: 8px 0;
 	margin: 0;
+}
+
+.bar a{
+	float: left;
 }
 
 .bar_button{
 	background:#008fc7;
 	padding:5px;
 	margin-right:5px;
-	color:#FFF;
+	color:#FFF !important;
 	position: relative;
 	cursor: pointer;
 	/*box-shadow:#999 2px 2px 2px;*/
+}
+
+.pagination .bar_button{
+	margin: 0 !important;
 }
 
 .bar_button label{
@@ -786,18 +793,8 @@ label
 }
 
 .pagination{
-    padding:10px 0;
     color:#008fc7;
     text-align: center;
-    font-size: 15px;
-}
-.pagination a{
-    color:#008fc7;
-    font-size: 15px;
-}
-.pagination strong{
-    font-weight: bold;
-    font-size: 15px;
 }
 
 input[type='submit'], input[type='button']{
@@ -913,6 +910,11 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #e9573f;
 }
 
+.blue2{
+	background: #6fc1d2;
+	color: #fff;
+}
+
 .light_green{
 	background: #37bc9b;
 }
@@ -931,7 +933,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 .blue{
 	background: #008fc7 !important;
-	color: #fff;
+	color: #fff !important;
 }
 
 .roxo{
@@ -1028,18 +1030,16 @@ a.green{
 }
 
 .list_faixa{
-	margin: 8px 0;
+	margin: 0 2px 2px 0;
 	padding: 5px;
-	display: inline;
-	line-height: 30px !important
+	display: inline-block;
+	/*line-height: 30px !important*/
 }
 
 .list_alert{
 	display: block;
 	text-align: center;
-	background: #49c5bf;
-	color: #fff;
-	margin: 5px 0;
+	margin-bottom: 5px;
 	padding: 5px;
 }
 
@@ -1184,6 +1184,9 @@ a.green{
 .filter .scrollable_content{
 	height: auto;
 	max-height: 330px;
+
+	width: auto !important;
+	min-width: 180px;
 }
 
 .filter ul li{

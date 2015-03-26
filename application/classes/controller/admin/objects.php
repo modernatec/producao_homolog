@@ -54,11 +54,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 		echo $view;
 	}
-
-	public function action_acervo()
-	{	
-		$this->action_index(2);           
-	} 	
     
     /*
 	public function action_create($id){ 	
@@ -459,6 +454,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	print json_encode($result);
     }
 
+    
+
     public function action_getObjects($project_id){
     	//$this->startProfilling();
 
@@ -468,7 +465,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view = View::factory('admin/objects/table');
 		
 		$view->project_id = $project_id;
-		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
 
 		//diferente de "finalizado" e "nao iniciado"
 		$status_init = ORM::factory('statu')
@@ -481,114 +477,38 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($status_arr, $status->id);
 		}
 		
-
-		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "objects"){		
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_tipo" => json_encode(array()),
-					"filter_collection" => json_encode(array()),
-					"filter_status" => json_encode($status_arr),
-					"filter_supplier" => json_encode(array()),
-					"filter_taxonomia" => "",
-					"filter_origem" => json_encode(array()),
-					"filter_materia" => json_encode(array()),
-				),
-				"parameters" => $project_id,
-				"model" => "objects",
-			);
-
+		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'objects'){
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $project_id, "objects");
 		}else{
-			/*filtros*/
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_tipo" => ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : Session::instance()->get('kaizen')['filtros']["filter_tipo"],
-					"filter_collection" => ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : Session::instance()->get('kaizen')['filtros']["filter_collection"],
-					"filter_status" => ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : Session::instance()->get('kaizen')['filtros']["filter_status"],
-					"filter_supplier" => ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : Session::instance()->get('kaizen')['filtros']["filter_supplier"],
-					"filter_taxonomia" => ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : Session::instance()->get('kaizen')['filtros']["filter_taxonomia"],
-					"filter_origem" => ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : Session::instance()->get('kaizen')['filtros']["filter_origem"],	
-					"filter_materia" => ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : Session::instance()->get('kaizen')['filtros']["filter_materia"],
-				),
-				"parameters" => $project_id,
-				"model" => "objects",
-			);
+			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
-  		//var_dump( Session::instance()->get('kaizen'));
 
-		$filter_tipo = Session::instance()->get('kaizen')['filtros']["filter_tipo"];
-		$filter_collection = Session::instance()->get('kaizen')['filtros']["filter_collection"];
-		$filter_status = Session::instance()->get('kaizen')['filtros']["filter_status"];
-		$filter_supplier = Session::instance()->get('kaizen')['filtros']["filter_supplier"];
-		$filter_taxonomia = Session::instance()->get('kaizen')['filtros']["filter_taxonomia"];		
-		$filter_origem = Session::instance()->get('kaizen')['filtros']["filter_origem"];
-		$filter_materia = Session::instance()->get('kaizen')['filtros']["filter_materia"];
+  		$filtros = Session::instance()->get('kaizen')['filtros'];
+  		foreach ($filtros as $key => $value) {
+  			$view->$key = json_decode($value);
+  		}
 
-		$view->action = $project_id.'?fase='.$view->fase
-						.'&tipo='.$filter_tipo
-						.'&collection='.$filter_collection
-						.'&status='.$filter_status
-						.'&supplier='.$filter_supplier
-						.'&taxonomia='.$filter_taxonomia
-						.'&origem='.$filter_origem
-						.'&materia='.$filter_materia;	
+  		if(!isset($view->filter_status)){
+  			$view->filter_status = json_decode(json_encode($status_arr));
+  		}
 
-		$view->reset = 	$project_id.'?fase='.$view->fase;
-
-		//$this->startProfilling();
-		/*
-		$filter = "?fase=".$this->request->query('fase');
-		$filter.= "&tipo=".$this->request->query('tipo');
-		$filter.= "&collection=".$this->request->query('collectionstion');
-		$filter.= "&status=".$this->request->query('status');
-		$filter.= "&supplier=".$this->request->query('supplier');
-		$filter.= "&taxonomia=".$this->request->query('taxonomia');
-		$filter.= "&origem=".$this->request->query('origem');
-		$filter.= "&materia=".$this->request->query('materia');
-
-		$view->filter = $filter;
-		*/
-
-		$view->filter_tipo = json_decode($filter_tipo);
-		$view->filter_status = json_decode($filter_status);
-		$view->filter_collection  = json_decode($filter_collection);
-		$view->filter_supplier  = json_decode($filter_supplier);
-		$view->filter_origem  = json_decode($filter_origem);
-		$view->filter_materia  = json_decode($filter_materia);					
-		$view->filter_taxonomia = $filter_taxonomia;
-
-		
-		
-		//$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
-		
-		//$status_arr = array();
-		//foreach ($status_init as $status) {
-		//	array_push($status_arr, $status->id);
-		//}
-		
-
-		$view->reset_filter_status = json_encode($status_arr);
-
-		//$query = DB::select('*')->from('objectStatus')->where('fase', '=', $this->request->query('fase'));
-		$query = ORM::factory('objectStatu')->where('fase', '=', $view->fase);
-
+		$query = ORM::factory('objectStatu')->where('fase', '=', '1');
 
 		/***Filtros***/
-		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		(count($view->filter_status ) > 0) ? $query->where('objectStatus.status_id', 'IN', $view->filter_status) : '';
-		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
-		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
-		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
-		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
-
-
+		(isset($view->filter_tipo)) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
+		(isset($view->filter_status)) ? $query->where('objectStatus.status_id', 'IN', $view->filter_status) : '';
+		(isset($view->filter_collection)) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
+		(isset($view->filter_supplier)) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
+		(isset($view->filter_origem)) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
+		(isset($view->filter_materia)) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
+		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
+		
 		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
 			->where('project_id', '=', $project_id))
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
-
 		/****Filtros*****/
 
 		$typeObjectsList = array();
@@ -612,7 +532,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$materiasList_index = array();
 
 		$query_filters = DB::select('*')->from('objectStatus')
-							->where('fase', '=', $view->fase)
+							->where('fase', '=', '1')
 							->where('project_id', '=', $project_id)
 							->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
 							->where('project_id', '=', $project_id))

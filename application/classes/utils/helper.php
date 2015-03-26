@@ -60,6 +60,20 @@ class Utils_Helper
         }
     }
 
+    public static function setFilters($postList, $parameters, $model){
+        $result = array();
+        $result['filtros'] = array();
+        foreach ($postList as $key => $item) {
+            if($item != ''){
+                $result['filtros']['filter_'.$key] = json_encode($item);
+            }           
+        }
+        $result['parameters'] = $parameters;
+        $result['model'] = $model;
+
+        return $result;
+    }
+
     public static function dataGdocs($dt,$format='d/m/Y')
     {
         if($dt != ""){

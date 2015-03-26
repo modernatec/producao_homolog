@@ -23,7 +23,7 @@
                     <input type="hidden" name='project_id' id='gdocs_project_id' />
                 </form>   
                 <div id="results">
-                    <span class='list_alert round'>resultados da sincronia com o google docs</span>
+                    <span class='list_alert light_blue round'>resultados da sincronia com o google docs</span>
                 </div>     
             </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="left">     
     <div class="list_body boxwired round" style="overflow:hidden; width:300px; height:500px;" >
-        <span class='list_alert round'>fechamento por coleção <?=$project_title?></span>
+        <span class='list_alert light_blue round'>fechamento por coleção <?=$project_title?></span>
         <div class="scrollable_content" data-bottom="false" style="height:460px;">
             <ul class="list_item">
             <?foreach ($collections as $col) {?>

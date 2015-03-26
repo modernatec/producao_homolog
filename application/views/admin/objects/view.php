@@ -8,30 +8,30 @@
     <?}?>
 
     <?if($current_auth != "assistente"){?>
-        <!--a href="<?=URL::base();?>admin/tasks/update/" class="popup bar_button round">criar tarefa</a--> 
         <a href="<?=URL::base();?>admin/objects/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
-    <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
+        <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
     </div>  
     <div class="boxwired round" >
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
-        <span class="list_faixa blue round">
-            <? if($obj->reaproveitamento == 0){ 
-                echo"Novo";
-            }elseif($obj->reaproveitamento == 1){
-                echo "Reap.";
-            }else{
-                echo "Reap. integral";
-            }?>
-            
-        &bullet; <?=@$obj->supplier->empresa?></span> - <?=@$obj->typeobject->name;?>
-        <br/>
-        <b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?><br/>
-        <b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?><br/>
-        <b>coleção:</b> <?=@$obj->collection->name?><br/>        
-        <b>fechamento da coleção:</b> <?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?><br/>        
+        <span class="list_faixa light_blue round left"><?=@$obj->collection->name?></span>
+        <span class="list_faixa red round"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
+        <?if($obj->reaproveitamento == 0){ 
+            $origem = "novo";
+        }elseif($obj->reaproveitamento == 1){
+            $origem = "reap.";
+        }else{
+            $origem = "reap. integral";
+        }?>
+        <div class="clear">
+            <span class="list_faixa light_blue round left"><?=$origem?></span>
+            <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
+            <span class="list_faixa cyan round"><?=@$obj->supplier->empresa?></span>
+            <p><b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?></p>
+            <p><b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?></p>
+        </div>
     </div>
 <?
 

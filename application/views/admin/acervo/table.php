@@ -1,16 +1,14 @@
 <div class="fixed clear">
 	<div class="list_header round">
-		<div class="table_info round">
-			<div class="left"><span class="list_faixa blue round"><?=$total_objects?> objetos encontrados</span></div>
-			<div class="clear">
-				<?=$pagination?>
-			</div>
+		<span class='list_alert light_blue round'><?=$total_objects?> objetos encontrados</span>
+		<div class="clear">
+			<?=$pagination?>
 		</div>
 	</div>
 	<div class="scrollable_content list_body">
 	    <? 
 		if(count($objectsList) <= 0){
-			echo '<span class="list_alert round">nenhum registro encontrado</span>';	
+			echo '<span class="list_alert blue round">nenhum registro encontrado</span>';	
 		}else{
 		?>
 		<ul class="list_item">
@@ -53,8 +51,8 @@
 			    				$status = "";
 			    				$tag = "";
 					    	}else{
-					    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa">'.$obj_taskView->status->status.'</span>';
-				    			$tag = '<span class="round list_faixa '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
+					    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
+				    			$tag = '<span class="round list_faixa left '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
 				    		}
 
 				    		if($obj_taskView->task_to != 0){
@@ -68,6 +66,7 @@
 	    			case 8://finalizado
 	    				$class_obj 	= $objeto->statu_class;
 	    				$class 		= $objeto->statu_class;
+	    				$calendar = URL::base().'/public/image/admin/calendar.png';
 
 	    				break;	
 	    			default:
@@ -88,10 +87,11 @@
 						<p><b><?=$objeto->taxonomia?></b></p>
 						<hr style="margin:8px 0;" />
 						<?if($objeto->supplier_id != 10){ //moderna(interno)?>
-							<p><span class="light_blue round list_faixa"><?=$objeto->supplier_empresa?></span></p>
+							<p><span class="cyan round list_faixa"><?=$objeto->supplier_empresa?></span></p>
 						<?}?>
 						<p>
-							<span class="<?=$class_obj?> round list_faixa"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span> <span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="16" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
+							<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
+							<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
 							<div>
 								<div class='left' style="width:25px;"><?=$task_to;?></div>
 								<?=$tag;?> 

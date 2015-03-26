@@ -136,123 +136,38 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
     public function action_getObjects($page){
     	//$this->startProfilling();
 
-    	$project_id = "";//($project_id != "") ? $project_id : Session::instance()->get('kaizen')['parameters'];
+    	$page = ($page != "") ? $page : Session::instance()->get('kaizen')['parameters'];
 
 		$this->auto_render = false;
 		$view = View::factory('admin/acervo/table');
-		
-		$view->project_id = $project_id;
-		$view->fase = (empty($fase)) ? '1' : $this->request->query('fase');
 
-		$status_arr = array();
-		//diferente de "finalizado" e "nao iniciado"
-		/*
-		$status_init = ORM::factory('statu')
-			->where('type', '=', 'object')
-			->where('id', 'NOT IN', array('1', '8'))->find_all(); 
-		
-		
-		$status_arr = array();
-		foreach ($status_init as $status) {
-			array_push($status_arr, $status->id);
-		}
-		*/
-		
-
-		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "acervo"){		
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_tipo" => json_encode(array()),
-					"filter_collection" => json_encode(array()),
-					"filter_status" => json_encode($status_arr),
-					"filter_supplier" => json_encode(array()),
-					"filter_taxonomia" => "",
-					"filter_origem" => json_encode(array()),
-					"filter_materia" => json_encode(array()),
-				),
-				"parameters" => '',
-				"model" => "acervo",
-			);
-
+		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $page, "acervo");
 		}else{
-			/*filtros*/
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_tipo" => ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : Session::instance()->get('kaizen')['filtros']["filter_tipo"],
-					"filter_collection" => ($this->request->post('collection') != "") ? json_encode($this->request->post('collection')) : Session::instance()->get('kaizen')['filtros']["filter_collection"],
-					"filter_status" => ($this->request->post('status') != "") ? json_encode($this->request->post('status')) : Session::instance()->get('kaizen')['filtros']["filter_status"],
-					"filter_supplier" => ($this->request->post('supplier') != "") ? json_encode($this->request->post('supplier')) : Session::instance()->get('kaizen')['filtros']["filter_supplier"],
-					"filter_taxonomia" => ($this->request->post('taxonomia') != "") ? $this->request->post('taxonomia') : Session::instance()->get('kaizen')['filtros']["filter_taxonomia"],
-					"filter_origem" => ($this->request->post('origem') != "") ? json_encode($this->request->post('origem')) : Session::instance()->get('kaizen')['filtros']["filter_origem"],	
-					"filter_materia" => ($this->request->post('materia') != "") ? json_encode($this->request->post('materia')) : Session::instance()->get('kaizen')['filtros']["filter_materia"],
-				),
-				"parameters" => '',
-				"model" => "acervo",
-			);
+			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
   		//var_dump( Session::instance()->get('kaizen'));
 
-		$filter_tipo = Session::instance()->get('kaizen')['filtros']["filter_tipo"];
-		$filter_collection = Session::instance()->get('kaizen')['filtros']["filter_collection"];
-		$filter_status = Session::instance()->get('kaizen')['filtros']["filter_status"];
-		$filter_supplier = Session::instance()->get('kaizen')['filtros']["filter_supplier"];
-		$filter_taxonomia = Session::instance()->get('kaizen')['filtros']["filter_taxonomia"];		
-		$filter_origem = Session::instance()->get('kaizen')['filtros']["filter_origem"];
-		$filter_materia = Session::instance()->get('kaizen')['filtros']["filter_materia"];
+  		$filtros = Session::instance()->get('kaizen')['filtros'];
+  		foreach ($filtros as $key => $value) {
+  			$view->$key = json_decode($value);
+  		}
 
-		/*
-		$view->action = $project_id.'?fase='.$view->fase
-						.'&tipo='.$filter_tipo
-						.'&collection='.$filter_collection
-						.'&status='.$filter_status
-						.'&supplier='.$filter_supplier
-						.'&taxonomia='.$filter_taxonomia
-						.'&origem='.$filter_origem
-						.'&materia='.$filter_materia;	
-		
-		$view->reset = 	$project_id.'?fase='.$view->fase;
-		*/
-
-		//$this->startProfilling();
-		/*
-		$filter = "?fase=".$this->request->query('fase');
-		$filter.= "&tipo=".$this->request->query('tipo');
-		$filter.= "&collection=".$this->request->query('collectionstion');
-		$filter.= "&status=".$this->request->query('status');
-		$filter.= "&supplier=".$this->request->query('supplier');
-		$filter.= "&taxonomia=".$this->request->query('taxonomia');
-		$filter.= "&origem=".$this->request->query('origem');
-		$filter.= "&materia=".$this->request->query('materia');
-
-		$view->filter = $filter;
-		*/
-
-		$view->filter_tipo = json_decode($filter_tipo);
-		$view->filter_status = json_decode($filter_status);
-		$view->filter_collection  = json_decode($filter_collection);
-		$view->filter_supplier  = json_decode($filter_supplier);
-		$view->filter_origem  = json_decode($filter_origem);
-		$view->filter_materia  = json_decode($filter_materia);					
-		$view->filter_taxonomia = $filter_taxonomia;
-
-		
-		
-		//$status_init = ORM::factory('statu')->where('type', '=', 'object')->where('status', '!=', 'finalizado')->find_all(); 
-		
-		//$status_arr = array();
-		//foreach ($status_init as $status) {
-		//	array_push($status_arr, $status->id);
-		//}
-		
-
-		$view->reset_filter_status = json_encode($status_arr);
-
-		$query = ORM::factory('objectStatu')->where('fase', '=', $view->fase);
+		$query = ORM::factory('objectStatu')
+		->where('fase', '=', '1')
+		->and_where('status_id', '=', '8');
 		/************************/
 
-		// count number of users
+		/***Filtros***/
+		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
+		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
+		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
+		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
+		
+		// count number of objects
 		$total_objects = $query->count_all();
 		$view->total_objects = $total_objects;
 
@@ -262,114 +177,23 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		    'items_per_page' => 50, // this will override the default set in your config
 		));
 
-		// get users using the pagination limit/offset
-		//$users = ORM::factory('User')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
-
-		// pass the users & pagination to the view
-		//$this->view->bind('pagination', $pagination);
-		//$this->view->bind('users', $users);
-
-
-		
-
+		/**estranho*/
+		$query = ORM::factory('objectStatu')
+		->where('fase', '=', '1')
+		->and_where('status_id', '=', '8');
 
 		/***Filtros***/
-		/*
-		(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		(count($view->filter_status ) > 0) ? $query->where('objectStatus.status_id', 'IN', $view->filter_status) : '';
-		(count($view->filter_collection ) > 0) ? $query->where('collection_id', 'IN', $view->filter_collection ) : '';
-		(count($view->filter_supplier) > 0) ? $query->where('supplier_id', 'IN', $view->filter_supplier) : '';
-		(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		(count($view->filter_materia) > 0) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
-		(!empty($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
-		*/
+		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
+		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
+		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
+		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
+		
 
-		/*
-		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-			->where('project_id', '=', $project_id))
-			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
-		*/
-		$view->objectsList = $query->order_by('taxonomia', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
+		$view->objectsList = $query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
 		$view->pagination = $pagination;
 
-		/****Filtros*****/
-
-		$typeObjectsList = array();
-		$typeObjectsList_arr = array();
-		$typeObjectsList_index = array();
-
-		$statusList = array();
-		$statusList_arr = array();
-		$statusList_index = array();
-
-		$collectionList = array();
-		$collectionList_arr = array();
-		$collectionList_index = array();
-
-		$suppliersList = array();
-		$suppliersList_arr = array();
-		$suppliersList_index = array();
-
-		$materiasList = array();
-		$materiasList_arr = array();
-		$materiasList_index = array();
-
-		$query_filters = DB::select('*')->from('objectStatus')
-							->where('fase', '=', $view->fase)
-							->where('project_id', '=', $project_id)
-							->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-							->where('project_id', '=', $project_id))
-							->execute();
-
-		foreach ($query_filters as $object) {
-			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
-			array_push($typeObjectsList_index, $object['typeobject_name']);
-
-			array_push($statusList_arr, array('status_id' => $object['status_id'], 'statu_status' => $object['statu_status']));
-			array_push($statusList_index, $object['statu_status']);
-
-			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
-			array_push($collectionList_index, $object['collection_name']);
-
-			array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
-			array_push($suppliersList_index, $object['supplier_empresa']);
-
-			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
-			array_push($materiasList_index, $object['materia_name']);
-		}
-
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $typeObjectsList_arr);
-		array_multisort($statusList_index, SORT_ASC, SORT_STRING, $statusList_arr);
-		array_multisort($collectionList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
-		array_multisort($suppliersList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
-		array_multisort($materiasList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
-
-		foreach ($typeObjectsList_arr as $typeObject) {
-			array_push($typeObjectsList, json_encode($typeObject));
-		}
-
-		foreach ($statusList_arr as $status) {
-			array_push($statusList, json_encode($status));
-		}
-
-		foreach ($collectionList_arr as $collection) {
-			array_push($collectionList, json_encode($collection));
-		}
-
-		foreach ($suppliersList_arr as $supplier) {
-			array_push($suppliersList, json_encode($supplier));
-		}
-
-		foreach ($materiasList_arr as $materia) {
-			array_push($materiasList, json_encode($materia));
-		}
-
-		$view->typeObjectsList = array_unique($typeObjectsList);
-		$view->statusList = array_unique($statusList);
-		$view->collectionList = array_unique($collectionList);
-		$view->suppliersList = array_unique($suppliersList);
-		$view->materiasList = array_unique($materiasList);
-
+		
 		//$this->endProfilling();
 		echo $view;
 	}    

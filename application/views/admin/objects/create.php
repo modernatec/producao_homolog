@@ -58,8 +58,7 @@
                         <option value=''>Selecione</option>
                         <option value='0' <?=(($objVO['fase']== '0')?('selected="selected"'):(''))?>>Concept</option>
                         <option value='1' <?=(($objVO['fase']== '1')?('selected="selected"'):(''))?>>Produção</option>
-                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>Acervo</option>
-                        <option value='2' <?=(($objVO['fase']== '3')?('selected="selected"'):(''))?>>Caiu</option>
+                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>Caiu</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'fase');?></span>
                 </dd>  

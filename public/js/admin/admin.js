@@ -310,7 +310,27 @@ function setupAjax(container){
     });
 
 
-    //*******************************//
+    //**************Acervo*****************//
+
+    if($('#pagination').length != 0 && container == '#tabs_content'){
+        $('#pagination').on('change', function() {
+            var panel = $(this).data('panel');
+            $.ajax({
+                type: "POST",
+                url: $(this).val(),
+                dataType : "html",
+                success: function(data) {
+                    reloadContent(data, panel);
+                },
+                error: function(e) {
+                    console.log(e);
+                    alert("ocorreu um erro.");
+                }
+            });  
+
+        });
+    }
+
     /*
     if($('#tagQtd').length != 0 && container == '#content'){
         chartContainer = 'tagQtd';

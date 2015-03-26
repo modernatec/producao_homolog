@@ -12,10 +12,10 @@
                         <span class="round" id="segmento">segmento <?=(!empty($filter_segmento) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round scrollable_content" data-bottom="false">
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" checked /><label for="filter_segmento">selecionar tudo</label></li>
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>
                                 <? foreach ($segmentoList as $segmento) {?>
                                     <li>
-                                        <input class="filter_segmento" type="checkbox" name="ssegmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(empty($filter_segmento)){ echo "checked"; }?> <?=(in_array($segmento->id, $filter_segmento)) ? "checked" : ""?> />
+                                        <input class="filter_segmento" type="checkbox" name="segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?=(in_array($segmento->id, $filter_segmento)) ? "checked" : ""?> />
                                         <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
                                     </li>
                                 <?}?>
@@ -33,16 +33,16 @@
                 <ul>
                     <li class="round" >
                         <span class="round" id="collection">coleção <?=(!empty($filter_segmento) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-                        <div class="filter_panel round" data-bottom="false">
+                        <div class="filter_panel round">
                             <ul style="width:310px;">
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_collection" checked /><label for="filter_collection">selecionar tudo</label></li>
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_collection" /><label for="filter_collection">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 
                                 <ul style="width:310px;">
                                     <? foreach ($collectionList as $collection) {?>
                                         <li>
-                                            <input class="filter_collection" type="checkbox" name="collection[]" value="<?=$collection->id?>" id="col_<?=$collection->id?>" <?if(empty($filter_collection)){ echo "checked"; }?> <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?> />
+                                            <input class="filter_collection" type="checkbox" name="collection[]" value="<?=$collection->id?>" id="col_<?=$collection->id?>" <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?> />
                                             <label for="col_<?=$collection->id?>"><?=$collection->name?></label>
                                         </li>
                                     <?}?>
@@ -64,14 +64,14 @@
                         <span class="round" id="project">projetos <?=(!empty($filter_project) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round" >
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_project" checked /><label for="filter_project">selecionar tudo</label></li>
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_project" /><label for="filter_project">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul >
                                     
                                     <? foreach ($projectList as $project) {?>
                                         <li>
-                                            <input class="filter_project" type="checkbox" name="collection[]" value="<?=$project->id?>" id="proj_<?=$project->id?>" <?if(empty($filter_project)){ echo "checked"; }?> <?=(in_array($project->id, $filter_project)) ? "checked" : ""?> />
+                                            <input class="filter_project" type="checkbox" name="project[]" value="<?=$project->id?>" id="proj_<?=$project->id?>" <?=(in_array($project->id, $filter_project)) ? "checked" : ""?> />
                                             <label for="proj_<?=$project->id?>"><?=$project->name?></label>
                                         </li>
                                     <?}?>
@@ -93,7 +93,7 @@
                         <span class="round" id="typeobject">tipos de OED's <?=(!empty($filter_typeobject) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round " >                        
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_typeobject" checked /><label for="filter_typeobject" style="color:#fff">selecionar tudo</label></li>
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" style="color:#fff">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul >
@@ -101,7 +101,7 @@
                                     
                                     <? foreach ($typeList as $typeobject) {?>
                                         <li>
-                                            <input class="filter_typeobject" type="checkbox" name="collection[]" value="<?=$typeobject->id?>" id="type_<?=$typeobject->id?>" <?if(empty($filter_typeobject)){ echo "checked"; }?> <?=(in_array($typeobject->id, $filter_typeobject)) ? "checked" : ""?> />
+                                            <input class="filter_typeobject" type="checkbox" name="tipo[]" value="<?=$typeobject->id?>" id="type_<?=$typeobject->id?>" <?=(in_array($typeobject->id, $filter_typeobject)) ? "checked" : ""?> />
                                             <label for="type_<?=$typeobject->id?>"><?=$typeobject->name?></label>
                                         </li>
                                     <?}?>

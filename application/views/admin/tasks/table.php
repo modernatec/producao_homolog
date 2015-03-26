@@ -46,7 +46,9 @@
                             $calendar = URL::base().'/public/image/admin/calendar.png';
                         }
                     ?>
-                        <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> <span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="16" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span> <span class="<?=$task->status->class?> round list_faixa"><?=$task->status->status;?></span>
+                        <span class="<?=$task->tag->class?> round list_faixa left"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> 
+                        <span class="<?=$class_obj?> round list_faixa left"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
+                        <span class="<?=$task->status->class?> round list_faixa"><?=$task->status->status;?></span>
                     </div>
                 </a>
             </li>
