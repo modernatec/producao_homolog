@@ -28,7 +28,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
+	        //URL::base().'admin/objects/view/'.$object->id,	
 		}           
 	} 
 
@@ -104,97 +112,48 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	public function action_edit($id)
     {    
-    	if (HTTP_Request::POST == $this->request->method()){                                              
-            $this->salvar($id);
-        }else{
-	    	$this->auto_render = false;       
-			$view = View::factory('admin/objects/create')
-				->bind('errors', $errors)
-				->bind('message', $message)
-				->set('values', $this->request->post());
+    	//if (HTTP_Request::POST == $this->request->method()){                                              
+        //    $this->salvar($id);
+        //}else{
+    	$this->auto_render = false;       
+		$view = View::factory('admin/objects/create')
+			->bind('errors', $errors)
+			->bind('message', $message)
+			->set('values', $this->request->post());
 
-			$objeto = ORM::factory('object', $id);
-	        $view->objVO = $this->setVO('object', $objeto);
-			$view->isUpdate = true;                             
-	                
-			$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-	        $view->countries = ORM::factory('country')->find_all();
-	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-	        $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
-	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
-	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-	                
-	        //$this->template->content = $view;
-	        echo $view;
-	    }
+		$objeto = ORM::factory('object', $id);
+        $view->objVO = $this->setVO('object', $objeto);
+		$view->isUpdate = true;                             
+                
+		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
+        $view->countries = ORM::factory('country')->find_all();
+        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+        $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
+        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
+        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+                
+        //$this->template->content = $view;
+        header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
+	    //}
 	}
 
 	public function action_view($id, $task_id = null)
     {       
     	$this->auto_render = false;
-        echo $this->action_window($id, true);
-        return true;
-	}
-
-	public function action_window($id, $ajax = false){
-		$view = View::factory('admin/objects/view')
-            ->bind('errors', $errors)
-            ->bind('message', $message);
-
-		$objeto = ORM::factory('object', $id);
-        $view->obj = $objeto;   
-        $view->user = $this->current_user->userInfos;                          
-		
-
-        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
-
-        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
-        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->taskflows[0];
-
-        $view->assign_form = View::factory('admin/tasks/form_assign');
-        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
-        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
-        $view->assign_form->obj = $objeto; 
-        $view->assign_form->object_status = $last_status;
-
-        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
-        $view->anotacoes_form->obj = $objeto; 
-        $view->anotacoes_form->object_status = $last_status;
-
-        $view->form_status = View::factory('admin/objects/form_status');
-        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
-        $view->form_status->obj = $objeto; 
- 		$view->current_auth = $this->current_auth;
-        
-        if($ajax){
-        	return $view;
-        }else{
-	        $this->template->content = '<div class="content"><div id="esquerda"></div><div id="direita">'.$view.'</div></div>';
-	    }
-	}
-    
-    /*    
-    public function action_view($id, $task_id = null)
-    {       
-    	//$this->startProfilling();
-        
         $view = View::factory('admin/objects/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-
-		$this->addValidateJs('public/js/admin/validateTasks.js');
-
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
         $view->user = $this->current_user->userInfos;                          
 		
-
-        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
-
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
         $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
         $last_status = $view->taskflows[0];
@@ -213,13 +172,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
-        
-        $this->template->content = $view;
-        
-        //$this->endProfilling();
-        return true;
+
+        header('Content-Type: application/json');		
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
 	}
-	*/
 
 	public function action_update($id){
 		$this->auto_render = false;
@@ -285,18 +246,21 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	        header('Content-Type: application/json');
 
 	        if($this->request->post('from') == 'objects'){
-	        	echo json_encode(array(
-					'direita' => URL::base().'admin/objects/view/'.$object->object_id,	
-					'tabs_content' => URL::base().'admin/objects/getObjects/',	
-					'msg' => $msg,
-				));
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object->object_id),
+						array('container' => '#tabs_content', 'type'=>'url', 'content'=>  URL::base().'admin/objects/getObjects/'),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);	
 	        }else{
-	        	echo json_encode(array(
-					'direita' => URL::base().'admin/objects/view/'.$object->object_id,								
-					'msg' => $msg,
-				));
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object->object_id),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);		       
 	        }
-
 
 	        return false;	
 	    }
@@ -348,18 +312,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         }
 
         header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,							
-			'msg' => $msg,
-		));
-		//'tabs_content' => URL::base().'admin/objects/getObjects/',
-        
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object_id),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+       
         return false;	        
 	}
 
    
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -430,14 +395,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
-
+        
         header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object->id,	
-						
-			'msg' => $msg,
-		));
-		//'tabs_content' => URL::base().'admin/objects/getObjects/',
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object->id),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+       
         return false;
 	}
 
@@ -463,8 +429,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/table');
+		$viewFiltros = View::factory('admin/objects/filtros');
 		
 		$view->project_id = $project_id;
+		$viewFiltros->project_id = $project_id;
 
 		//diferente de "finalizado" e "nao iniciado"
 		$status_init = ORM::factory('statu')
@@ -488,10 +456,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   		$filtros = Session::instance()->get('kaizen')['filtros'];
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
+  			$viewFiltros->$key = json_decode($value);
   		}
 
   		if(!isset($view->filter_status)){
   			$view->filter_status = json_decode(json_encode($status_arr));
+  			$viewFiltros->filter_status = json_decode(json_encode($status_arr));
   		}
 
 		$query = ORM::factory('objectStatu')->where('fase', '=', '1');
@@ -510,6 +480,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
 		/****Filtros*****/
+
+		
 
 		$typeObjectsList = array();
 		$typeObjectsList_arr = array();
@@ -587,7 +559,23 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->suppliersList = array_unique($suppliersList);
 		$view->materiasList = array_unique($materiasList);
 
+		$viewFiltros->typeObjectsList = array_unique($typeObjectsList);
+		$viewFiltros->statusList = array_unique($statusList);
+		$viewFiltros->collectionList = array_unique($collectionList);
+		$viewFiltros->suppliersList = array_unique($suppliersList);
+		$viewFiltros->materiasList = array_unique($materiasList);
+
 		//$this->endProfilling();
-		echo $view;
+		//echo $view;
+
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+       
+        return false;
 	}    
 }

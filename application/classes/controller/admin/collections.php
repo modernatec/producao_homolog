@@ -28,7 +28,13 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}   
 	} 
 
@@ -52,30 +58,28 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	}
 
 	public function action_edit($id)
-    {   
-    	if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id); 
-		}else{      
-	    	$this->auto_render = false;
-			$view = View::factory('admin/collections/create')
-					->bind('errors', $errors)
-					->bind('message', $message);
-		
-			//$this->addValidateJs("public/js/admin/validateCollections.js");
-			//$view->isUpdate = true;
-					
-			$collection = ORM::factory('collection', $id);
-			$view->collectionVO = $this->setVO('collection', $collection);
-			$view->materiaList = ORM::factory('materia')->find_all();
-			$view->segmentoList = ORM::factory('segmento')->find_all();
+    {       	      
+    	$this->auto_render = false;
+		$view = View::factory('admin/collections/create')
+				->bind('errors', $errors)
+				->bind('message', $message);
+				
+		$collection = ORM::factory('collection', $id);
+		$view->collectionVO = $this->setVO('collection', $collection);
+		$view->materiaList = ORM::factory('materia')->find_all();
+		$view->segmentoList = ORM::factory('segmento')->find_all();
 
-			//$this->template->content = $view;	
-			echo $view;		   
-		}
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;	   
+		
 	}
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -116,11 +120,13 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
             $db->rollback();
         }
 
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/collections/index/ajax',				
-			'msg' => $msg,
-		));
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/collections/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 
         return false;
 	}
@@ -192,7 +198,13 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		
 		$view->collectionsList = $query->order_by('name','ASC')->find_all();
 		$view->segmentoList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
-		echo $view;
+		
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
 	}
 	
 	public function action_getListProject($ano){

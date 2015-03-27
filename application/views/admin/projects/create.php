@@ -1,5 +1,5 @@
 <div class="fixed clear">    
-    <form name="frmCreateProject" id="frmCreateProject" action="<?=URL::base();?>admin/projects/edit/<?=@$projectVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
+    <form name="frmCreateProject" id="frmCreateProject" action="<?=URL::base();?>admin/projects/salvar/<?=@$projectVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
 	    <dt>
 	      <label for="name">projeto</label>
 	    </dt>

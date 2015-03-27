@@ -51,7 +51,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}   
 
 		/*
@@ -259,15 +265,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
 
-	        header('Content-Type: application/json');
-			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$object_id,	
-				'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',	
+			
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+					array('type'=>'msg', 'content'=> $msg),
 
-				'msg' => $msg,
-			));
-			//'tabs_content' => URL::base().'admin/objects/getObjects/',				
-	        
+				)						
+			);
 	        return false;
 	    }
     }
@@ -304,17 +310,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
             $db->rollback();
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
         }
-
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,
-			'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',	
-							
-			'msg' => $msg,
-		));
-		//'tabs_content' => URL::base().'admin/objects/getObjects/',
-        
-        return false;	        
+	
+		header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
+	        return false;        
 	}
 
     /********************************/
@@ -346,7 +350,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         }
         
         //$this->endProfilling();
-        echo $view;
+        header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
     }  
 
     public function action_ongoing(){

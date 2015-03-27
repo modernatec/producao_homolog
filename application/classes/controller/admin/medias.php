@@ -23,7 +23,13 @@ class Controller_Admin_Medias extends Controller_Admin_Template {
             $this->template->content = $view;             
         }else{
             $this->auto_render = false;
-            echo $view;
+            header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
         }  	
 		/*
 		$view = View::factory('admin/medias/list')

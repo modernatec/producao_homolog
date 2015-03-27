@@ -84,13 +84,15 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
             $db->rollback();
         }
 
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),				
-			'msg' => $msg,
-		));
-
-        return false;
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+		
+		return false;	
 	}
 		
 	public function action_delete($id)
@@ -114,37 +116,13 @@ class Controller_Admin_Anotacoes extends Controller_Admin_Template {
 		}
 
 		header('Content-Type: application/json');
-		echo json_encode(array(
-			'direita' => URL::base().'admin/objects/view/'.$object_id,				
-			'msg' => $msg,
-		));
-	}
-
-
-    /********************************/
-    public function action_getSuppliers(){
-		$this->auto_render = false;
-		$view = View::factory('admin/suppliers/table');
-
-		//$this->startProfilling();
-
-		//$view->filter_origem  = json_decode($this->request->query('origem'));			
-		$view->filter_empresa = $this->request->query('empresa');
-		$view->filter_contato = $this->request->query('contato');	
-
-
-		//$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();
-
-		$query = ORM::factory('supplier')->where('order', '=', '1');
-
-		/***Filtros***/
-		//(count($view->filter_origem) > 0) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		(!empty($view->filter_empresa)) ? $query->where('empresa', 'LIKE', '%'.$view->filter_empresa.'%') : '';
-		(!empty($view->filter_contato)) ? $query->where('name', 'LIKE', '%'.$view->filter_contato.'%') : '';
-
-		$view->suppliersList = $query->order_by('empresa','ASC')->find_all();
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 		
-		// $this->endProfilling();
-		echo $view;
-	}  		
+		return false;	
+	}
 }

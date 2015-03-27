@@ -1,5 +1,5 @@
 <div class="topo form" >
-    <div style="padding-top:7px;">
+    <div style="padding:7px; 0 0 5px;">
         <select class="required round" name="project_id" id="relatorios_project_id" data-url='<?=URL::base();?>admin/relatorios/geraGraficos' data-panel='#charts'>
             <option value=''>visão geral</option>
             <? foreach($projectList as $project){?>

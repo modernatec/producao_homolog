@@ -28,7 +28,13 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}          
 
 	} 
@@ -86,47 +92,54 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		//ORM::factory('supplier', $id);	
 		$view->current_auth = $this->current_auth;
 
-		echo $view;	
+		header('Content-Type: application/json');		
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
 	}
 
 	public function action_edit($id)
 	{
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id); 
-		}else{ 
-			$this->auto_render = false;
-			$view = View::factory('admin/suppliers/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
+		$this->auto_render = false;
+		$view = View::factory('admin/suppliers/create')
+			->bind('errors', $errors)
+			->bind('message', $message);
 
-			$this->addValidateJs();
-			$view->isUpdate = true;
-			$contact = ORM::factory('supplier', $id);
-			$view->supplierVO = $this->setVO('supplier', $contact); 
-			$view->formatos = ORM::factory('format')->find_all(); 
-			$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
-				
-			$contatos_arr = array();
-			foreach ($contatos as $value) {
-				array_push($contatos_arr, $this->setVO('contato', $value));
-			}
-			$view->contactVO = $contatos_arr;
-
-			$view->teams = ORM::factory('team')->find_all();
-			$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
-			$formats_arr = array();
-			foreach ($formats_supplier as $value) {
-				array_push($formats_arr, $value->format_id);
-			}
-			$view->formats_arr = $formats_arr;
-			echo $view;
-			//$this->template->content = $view;
+		$this->addValidateJs();
+		$view->isUpdate = true;
+		$contact = ORM::factory('supplier', $id);
+		$view->supplierVO = $this->setVO('supplier', $contact); 
+		$view->formatos = ORM::factory('format')->find_all(); 
+		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+			
+		$contatos_arr = array();
+		foreach ($contatos as $value) {
+			array_push($contatos_arr, $this->setVO('contato', $value));
 		}
+		$view->contactVO = $contatos_arr;
+
+		$view->teams = ORM::factory('team')->find_all();
+		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
+		$formats_arr = array();
+		foreach ($formats_supplier as $value) {
+			array_push($formats_arr, $value->format_id);
+		}
+		$view->formats_arr = $formats_arr;
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
+		
 		
 	}
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -193,12 +206,14 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
         }
 
         header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/suppliers/index/ajax',				
-			'msg' => $msg,
-		));
-
-        return false;
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/suppliers/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+		
+		return false;	
 	}
 		
 	public function action_delete($id)
@@ -207,14 +222,21 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		{            
 			$contact = ORM::factory('supplier', $id);
 			$contact->delete();
-			$message = "Fornecedor excluído com sucesso.";
+			$msg = "Fornecedor excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			$message = 'Houveram alguns erros na validação dos dados.';
+			$msg = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
 		}
 	
-		Utils_Helper::mensagens('add',$message); 
-		Request::current()->redirect('admin/suppliers');
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/suppliers/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+		
+		return false;	
 	}
 
 
@@ -228,46 +250,35 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		//$view->filter_origem  = json_decode($this->request->query('origem'));			
 		//$filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
-		
-		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "suppliers"){		
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_empresa" => "",
-					"filter_team" => json_encode(array()),
-				),
-				"parameters" => "",
-				"model" => "suppliers",
-			);
+		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'suppliers'){
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "suppliers");
 		}else{
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_empresa" => ($this->request->post('empresa') != "") ? json_encode($this->request->post('empresa')) : Session::instance()->get('kaizen')['filtros']["filter_empresa"],
-					"filter_team" => ($this->request->post('team') != "") ? json_encode($this->request->post('team')) : Session::instance()->get('kaizen')['filtros']["filter_team"],
-				),
-				"parameters" => "",
-				"model" => "suppliers",
-			);
+			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
 
-  		$view->filter_empresa = json_decode(Session::instance()->get('kaizen')['filtros']["filter_empresa"]);
-  		$view->filter_team = json_decode(Session::instance()->get('kaizen')['filtros']["filter_team"]);
-		//$view->typeObjectsjsList = ORM::factory('objectStatu')->where('typeobject_id', 'IN', DB::Select('id')->from('typeobjects'))->where('project_id', '=', $project_id)->group_by('typeobject_id')->find_all();
+  		$filtros = Session::instance()->get('kaizen')['filtros'];
+  		foreach ($filtros as $key => $value) {
+  			$view->$key = json_decode($value);
+  		}
 
 		$query = ORM::factory('supplier')->join('contatos', 'INNER')->on('suppliers.id', '=', 'contatos.tipo_id')->where('suppliers.order', '=', '1')->and_where('contatos.tipo','=','supplier');
 
 		/***Filtros***/
-		(count($view->filter_team) > 0) ? $query->where('team_id', 'IN', $view->filter_team) : '';
-		(!empty($view->filter_empresa)) ? $query->where_open()->where('suppliers.empresa', 'LIKE', '%'.$view->filter_empresa.'%')->or_where('contatos.nome', 'LIKE', '%'.$view->filter_empresa.'%')->where_close() : '';
-
-
-		//(!empty($view->filter_contato)) ? $query->where('name', 'LIKE', '%'.$view->filter_contato.'%') : '';
+		(isset($view->filter_team)) ? $query->where('team_id', 'IN', $view->filter_team) : '';
+		(isset($view->filter_empresa)) ? $query->where_open()->where('suppliers.empresa', 'LIKE', '%'.$view->filter_empresa.'%')->or_where('contatos.nome', 'LIKE', '%'.$view->filter_empresa.'%')->where_close() : '';
 
 		$view->suppliersList = $query->group_by('empresa')->order_by('empresa','ASC')->find_all();
 
 		
-		//$this->endProfilling();
-		echo $view;
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+       
+        return false;
 	}  		
 }

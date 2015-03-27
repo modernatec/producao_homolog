@@ -14,7 +14,7 @@
 		<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 			<div class="filters">
 				<div>
-					<input type="text" class="round left" style="width:135px" placeholder="empresa ou contato" name="empresa" value="<?=$filter_empresa?>" >
+					<input type="text" class="round left" style="width:135px" placeholder="empresa ou contato" name="empresa" value="<?=@$filter_empresa?>" >
 	       			<input type="submit" class="round bar_button left" value="OK"> 
 	       		</div>
 
@@ -27,7 +27,7 @@
 					            <ul>
 					                <? foreach ($teams as $time) {?>
 					                	<li>
-					                		<input type="checkbox" name="team[]" value="<?=$time->id?>" id="time_<?=$time->id?>" <?=(in_array($time->id, $filter_team)) ? "checked" : ""?> />
+					                		<input type="checkbox" name="team[]" value="<?=$time->id?>" id="time_<?=$time->id?>" />
 					                		<label for="time_<?=$time->id?>" ><?=$time->name?></label>
 					                	</li>
 					                <?}?>

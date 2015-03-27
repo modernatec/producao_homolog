@@ -31,7 +31,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $this->template->content = $view;             
         }else{
             $this->auto_render = false;
-            echo $view;
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                    array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/users/edit/'.$this->current_user->userInfos->id),
+                )                       
+            );
+            return false;
         }  	
 	} 
         
@@ -40,42 +47,44 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     */
 	public function action_edit($userInfo_id)
     {
-        if (HTTP_Request::POST == $this->request->method())
-        {                                              
-            $this->salvar($userInfo_id);
-        }else{
-            $this->auto_render = false;
-            if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
-                echo "<span class='list_alert round'>Você não tem permissão para alterar as infos deste usuário.</span>";
-            }else{	
-       			$view = View::factory('admin/users/edit');        	            
-        		$view->bind('errors', $errors)
-                    ->bind('message', $message);
-        		
-                $userInfo = ORM::factory('userInfo', $userInfo_id);
-        		$view->teamsList = ORM::factory('team')->find_all();
-        		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
-        		
-                $view->anexosView = View::factory('admin/files/anexos');
-        				
-        		
-        		$roles = $userInfo->user->roles->find_all();
-                $roles_arr = array();
-        		foreach($roles as $roleObj){
-                    if($roleObj->id != '1'){
-            			array_push($roles_arr, $roleObj->id);
-                    }
-        		}	
-        		
-        		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
-        		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
-                $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
-        		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
+        
+        $this->auto_render = false;
+        if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
+            echo "<span class='list_alert round'>Você não tem permissão para alterar as infos deste usuário.</span>";
+        }else{	
+   			$view = View::factory('admin/users/edit');        	            
+    		$view->bind('errors', $errors)
+                ->bind('message', $message);
+    		
+            $userInfo = ORM::factory('userInfo', $userInfo_id);
+    		$view->teamsList = ORM::factory('team')->find_all();
+    		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
+    		
+            $view->anexosView = View::factory('admin/files/anexos');
+    				
+    		
+    		$roles = $userInfo->user->roles->find_all();
+            $roles_arr = array();
+    		foreach($roles as $roleObj){
+                if($roleObj->id != '1'){
+        			array_push($roles_arr, $roleObj->id);
+                }
+    		}	
+    		
+    		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
+    		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
+            $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
+    		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
 
-                //$this->template->content = $view;   
-                echo $view;
-            }
-		}
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+                )                       
+            );
+            return false;
+        }
+		
 		
     }
 
@@ -109,14 +118,23 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	*/
 	public function action_editInfo(){
         $this->auto_render = false;
-
+        /*
         header('Content-Type: application/json');
         echo json_encode(array(
             'content' => URL::base().'admin/users/index/ajax',              
             'direita' => URL::base().'admin/users/edit/'.$this->current_user->userInfos->id, 
         ));
-		//$view = View::factory('admin/users/edit');
-		//$this->action_edit($userInfo_id = $this->current_user->userInfos->id, $view);
+        */
+
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/users/index/ajax'),
+                
+            )                       
+        );
+        
+        return false;   
 	}
 	
 	/*
@@ -232,12 +250,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         }
 
         header('Content-Type: application/json');
-        echo json_encode(array(
-            'content' => URL::base().'admin/users/index/ajax',              
-            'msg' => $msg,
-        ));
-
-        return false;
+        echo json_encode(
+            array(
+                array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/users/index/ajax'),
+                array('type'=>'msg', 'content'=> $msg),
+            )                       
+        );
+        
+        return false;   
     }
 
     public function action_inativate($inId)
@@ -361,51 +381,39 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $status_id = ($status_id != "") ? $status_id : Session::instance()->get('kaizen')['parameters'];
 
 
-        if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "users"){       
-            $kaizen_arr = array(
-                "filtros" => array(
-                    "filter_nome" => "",
-                    "filter_email" => "",
-                ),
-                "parameters" => $status_id,
-                "model" => "users",
-            );
-
+        if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'users'){
+            $kaizen_arr = Utils_Helper::setFilters($this->request->post(), $status_id, "users");
         }else{
-            /*filtros*/
-            $kaizen_arr = array(
-                "filtros" => array(
-                    "filter_nome" => ($this->request->post('nome') != "") ? $this->request->post('nome') : Session::instance()->get('kaizen')['filtros']["filter_nome"],
-                    "filter_email" => ($this->request->post('email') != "") ? $this->request->post('email') : Session::instance()->get('kaizen')['filtros']["filter_email"],
-                ),
-                "parameters" => $status_id,
-                "model" => "users",
-            );
+            $kaizen_arr = Session::instance()->get('kaizen');
         }
 
         Session::instance()->set('kaizen', $kaizen_arr);    
 
         //$this->startProfilling();
 
-        //$view->filter_tipo = json_decode($this->request->query('tipo'));
-        $filter_nome = Session::instance()->get('kaizen')['filtros']["filter_nome"];
-        $filter_email = Session::instance()->get('kaizen')['filtros']["filter_email"];
-
-        $view->filter_nome = $filter_nome;  
-        $view->filter_email = $filter_email;   
+        $filtros = Session::instance()->get('kaizen')['filtros'];
+        foreach ($filtros as $key => $value) {
+            $view->$key = json_decode($value);
+        }
 
 
         $query = ORM::factory('userInfo');
 
         /***Filtros***/
-        //(count($view->filter_tipo) > 0) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
-        (!empty($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
-        (!empty($view->filter_email)) ? $query->where('email', 'LIKE', '%'.$view->filter_email.'%') : '';
+        (isset($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
+        (isset($view->filter_email)) ? $query->where('email', 'LIKE', '%'.$view->filter_email.'%') : '';
 
         $view->userinfosList = $query->where('status', '=', $status_id)->order_by('nome','ASC')->find_all();
         
         // $this->endProfilling();
-        echo $view;
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+            )                       
+        );
+       
+        return false;
     }    
  
 }

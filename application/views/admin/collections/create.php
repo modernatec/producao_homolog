@@ -1,4 +1,4 @@
-<form name="frmCreateCollection" id="frmCreateCollection" action="<?=URL::base();?>admin/collections/edit/<?=@$collectionVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
+<form name="frmCreateCollection" id="frmCreateCollection" action="<?=URL::base();?>admin/collections/salvar/<?=@$collectionVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
     <dt>
       <label for="name">coleção</label>

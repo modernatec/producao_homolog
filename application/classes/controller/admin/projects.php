@@ -29,7 +29,13 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}		
 	} 
 
@@ -57,12 +63,12 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	}
 	*/
 
-	public function action_edit($id)
+	public function action_edit($id, $ajax = null)
     {      
-    	if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id); 
-		}else{
+    	//if (HTTP_Request::POST == $this->request->method()) 
+		//{                                              
+		//	$this->salvar($id); 
+		//}else{
 			$this->auto_render = false;
 			$view = View::factory('admin/projects/create')
 					->bind('errors', $errors)
@@ -87,12 +93,21 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			}
 			$view->collectionsArr = $collectionsArr;
 			
-			//$this->template->content = $view;	
-			echo $view;
-	   	}		
+			if($ajax == null){
+				header('Content-Type: application/json');
+				echo json_encode(
+					array(
+						array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+					)						
+				);
+		        return false;
+		    }else{
+		    	return $view->render();
+		    }
+	   	//}		
 	}
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -120,7 +135,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$projeto->pasta = $pastaProjeto;                    
 			}
 
-			
 			$projeto->save();
 
 			$collections = ORM::factory('collections_project')->where('project_id', '=', $projeto->id)->find_all();
@@ -148,21 +162,27 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$erroList.= $erro.'<br/>';	
 			}
             $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
+        header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/projects/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+
+        /*
         header('Content-Type: application/json');
 		echo json_encode(array(
 			'content' => URL::base().'admin/projects/index/ajax',				
 			'msg' => $msg,
 		));
-
+		*/
         return false;
 	}
 

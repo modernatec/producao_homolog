@@ -1,4 +1,4 @@
-<form name="frmCreateTipoObj" id="frmCreateTipoObj" action="<?=URL::base();?>admin/typeobjects/edit/<?=@$typeObjectVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
+<form name="frmCreateTipoObj" id="frmCreateTipoObj" action="<?=URL::base();?>admin/typeobjects/salvar/<?=@$typeObjectVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
     <dd>
         <input type="text" class="text required round" placeholder="tipo do objeto" name="name" id="name" style="width:500px;" value="<?=@$typeObjectVO['name'];?>"/>

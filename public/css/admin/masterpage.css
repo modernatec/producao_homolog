@@ -46,9 +46,8 @@ body{
 
 
 .topo{
-	padding: 0 5px;
 	min-height: 46px;
-	background: #f1f1f1;
+	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
 	/*display: inline-block;*/
 
 	position: absolute;
@@ -57,7 +56,23 @@ body{
 }
 
 .topo .tabs{
-	margin-top: 18px;
+	margin-top: 19px;
+}
+
+.topo .filters{
+	padding-top: 8px;
+}
+
+#filtros{
+	height: 40px;
+	background: #f1f1f1;
+	padding: 0 5px;
+}
+
+.tabs_panel{
+	height: 46px;
+	overflow: hidden;
+	padding: 0 5px;
 }
 
 
@@ -367,6 +382,7 @@ a{
 
 .header{
 	padding:5px 0;
+	margin: 0 5px;
 	line-height: 35px;
 	display:block;
 	color: #008fc7;
@@ -1148,9 +1164,7 @@ a.green{
 	border-bottom: 1px #ccc solid;	
 }
 
-.topo .filters{
-	padding-top: 8px;
-}
+
 
 
 .filter{

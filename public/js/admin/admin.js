@@ -616,8 +616,6 @@ function setupAjax(container){
                 if($(this).attr('data-clear')){                    
                     $($(this).attr('data-clear')).html(" ");
                 }
-                
-
             }else{
                 $($(this).attr('href')).addClass('content_show');
             }
@@ -644,9 +642,10 @@ function setupAjax(container){
 }
 
 
-function ajaxPost(form){
+function ajaxPost(form, container){
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
+    data_post.push({name: 'container', value: container});
 
     $.ajax({
         type: "POST",
@@ -668,7 +667,8 @@ function ajaxPost(form){
 function ajaxReload(form, container){    
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
-    //console.log(container);
+    data_post.push({name: 'container', value: container});
+
     if(container != undefined){
         $(container).html("<div class='loading'>loading...</div>"); 
     }
@@ -679,7 +679,7 @@ function ajaxReload(form, container){
         data: data_post,
         timeout: 20000, 
         success: function(retorno) {
-            reloadContent(retorno, $(form).data('panel'));
+            setDataPanels(retorno);
             $('input[type=submit]').prop("disabled", '' );
         },
         error: function(e) {
@@ -703,18 +703,24 @@ function loadContent(url, container, removeDialog){
             $('#dialog, ui-dialog').remove();
         }
 
-        if($(container + " .mCSB_container").length > 0){
-            holder = container + " .mCSB_container";
-        }else{
-            holder = container;
-        }
+        data_post = {container: container};
 
-        $(holder).load(url, function() {
-            $(holder).hide().fadeIn(500, function(){
-                //console.log("terminou -> " + $(container).attr('id'));
-                setupAjax(container);  
-            });      
-        });
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data_post,
+            dataType : "json",
+            timeout: 20000, 
+            success: function(retorno) {
+                setDataPanels(retorno);
+                //reloadContent(retorno, $(form).data('panel'));
+                //$('input[type=submit]').prop("disabled", '' );
+            },
+            error: function(e) {
+                console.log(e);
+                alert("ocorreu um erro ao carregar o conteúdo.");
+            }
+        });  
     }else{
         alert("sessão expirada!");
     }
@@ -739,7 +745,6 @@ function updateBar(url, container, removeDialog){
 
         $(holder).load(url, function() {
             $(holder).hide().fadeIn(500, function(){
-                //console.log("terminou -> " + $(container).attr('id'));
                 setupAjax(container);  
             });      
         });
@@ -749,36 +754,10 @@ function updateBar(url, container, removeDialog){
 }
 
 
-function setDataPanels(data){
-    if(data.content){
-        loadContent(data.content, '#content');
-    }
+function reloadContent(args){
+    var data = $.parseJSON(args.content);
+    var container = args.container;
 
-    setTimeout(function() {
-        if(data.esquerda){
-            loadContent(data.esquerda, '#esquerda');
-        }
-        
-        if(data.direita){
-            loadContent(data.direita, '#direita');
-        }
-
-        if(data.tabs_content){
-            loadContent(data.tabs_content, '#tabs_content');
-        }
-
-        if(data.taskBar){
-            loadContent(data.taskBar, '#taskBar');
-        }
-
-    }, 500);
-
-    if(data.msg){
-        $.jGrowl(data.msg,{ theme:'aniversariantes', position:'top-right',});
-    } 
-}
-
-function reloadContent(data, container){
     $(container).html("<div class='loading'>loading...</div>"); 
     $('#dialog, ui-dialog').remove();
 
@@ -792,16 +771,49 @@ function reloadContent(data, container){
         $(holder).html(data);
     }).fadeIn(500, function(){
         setupAjax(container);   
-    });  
+    });    
+}
 
-    /*
-    $(container).fadeOut(function(){
-        $(container + " .mCSB_container").html( data );
-        $(container).slideDown(function(){
-            setupAjax();
-        });         
-    });
-    */    
+function getContent(args){
+    var url = args.content;
+    var container = args.container;
+    data_post = {container: container};
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: data_post,
+        dataType : "json",
+        timeout: 20000, 
+        success: function(retorno) {
+            setDataPanels(retorno);
+        },
+        error: function(e) {
+            console.log(e);
+            alert("ocorreu um erro ao carregar o conteúdo. getContent");
+        }
+    });  
+}
+
+function setDataPanels(data){
+    var i = 0;
+    for(k in data){
+        var result = data[k];
+        if(result.type == 'html'){
+            setTimeout(reloadContent, 500 * i, result);
+        };
+
+        if(result.type == 'url'){
+            setTimeout(getContent, 600 * i, result);
+        };
+
+        if(result.type == 'msg'){
+            $.jGrowl(result.content,{ theme:'aniversariantes', position:'top-right',});
+        };
+
+        i++;
+    }
+    console.log(data);
 }
 
 $.validator.addMethod('date',

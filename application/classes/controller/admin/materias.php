@@ -28,7 +28,13 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}          
 	} 
 
@@ -52,27 +58,29 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 	*/
         
 	public function action_edit($id)
-    {      
-    	if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id);
-		}else{   
-			$this->auto_render = false;  
-			$view = View::factory('admin/materias/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
+    {    
+		$this->auto_render = false;  
+		$view = View::factory('admin/materias/create')
+			->bind('errors', $errors)
+			->bind('message', $message);
 
-			//$this->addValidateJs("public/js/admin/validateMaterias.js");
-			$view->isUpdate = true;  
-			$materia = ORM::factory('materia', $id);
-			$view->materiaVO = $this->setVO('materia', $materia);
-			//$this->template->content = $view;
+		//$this->addValidateJs("public/js/admin/validateMaterias.js");
+		$view->isUpdate = true;  
+		$materia = ORM::factory('materia', $id);
+		$view->materiaVO = $this->setVO('materia', $materia);
+		//$this->template->content = $view;
 
-			echo $view;
-		}		
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
+			
 	}
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -105,11 +113,13 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
             $db->rollback();
         }
 
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/materias/index/ajax',				
-			'msg' => $msg,
-		));
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/materias/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 
         return false;
 	}

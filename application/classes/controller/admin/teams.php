@@ -26,7 +26,13 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 			$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}  
 	} 
 
@@ -53,29 +59,30 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 
 	public function action_edit($id)
 	{
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar($id); 
-		}else{
-			$this->auto_render = false;
-			$view = View::factory('admin/teams/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
+		$this->auto_render = false;
+		$view = View::factory('admin/teams/create')
+			->bind('errors', $errors)
+			->bind('message', $message);
 
-			
-			$this->addValidateJs("public/js/admin/validateTeams.js");
-			$view->isUpdate = true;		
-			$team = ORM::factory('team', $id);		
-			$view->teamVO = $this->setVO('team', $team);
+		
+		$this->addValidateJs("public/js/admin/validateTeams.js");
+		$view->isUpdate = true;		
+		$team = ORM::factory('team', $id);		
+		$view->teamVO = $this->setVO('team', $team);
 
-			$view->userInfos = ORM::factory('userInfo')->find_all();
-			//$this->template->content = $view;
-			echo $view;
-		}
+		$view->userInfos = ORM::factory('userInfo')->find_all();
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
+		
 			           
 	}
 
-	protected function salvar($id = null)
+	public function action_salvar($id = null)
 	{	
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -110,12 +117,14 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
         }
 
         header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/teams/index/ajax',				
-			'msg' => $msg,
-		));
-
-        return false;
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/teams/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+		
+		return false;	
 	}
 	
 	public function action_delete($inId)

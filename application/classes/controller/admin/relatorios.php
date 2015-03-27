@@ -22,7 +22,13 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			$this->template->content = $view;
 		}else{
 			$this->auto_render = false;
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}   		         
 	} 
 
@@ -92,7 +98,13 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		->as_object()->execute();
 
 		if($id != 'init'){
-			echo $view;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 		}else{
 			return $view;
 		}
@@ -249,9 +261,14 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			array_push($r, $msg);
 		}   
 		$view->r = $r;
-		echo $view; 
-
-		return false;
+		
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false; 
 	}
 
 

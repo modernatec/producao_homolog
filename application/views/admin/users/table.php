@@ -12,10 +12,10 @@
 		<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
 			<div class="filters">
 				<div class="left">
-					<input type="text" class="round left" style="width:135px" placeholder="nome" name="nome" value="<?=$filter_nome?>" >
+					<input type="text" class="round left" style="width:135px" placeholder="nome" name="nome" value="<?=@$filter_nome?>" >
 	       		</div>
 	       		<div class="left">
-					<input type="text" class="round left" style="width:135px" placeholder="email" name="email" value="<?=$filter_email?>" >
+					<input type="text" class="round left" style="width:135px" placeholder="email" name="email" value="<?=@$filter_email?>" >
 	       			<input type="submit" class="round bar_button left" value="OK"> 
 	       		</div>
 			</div>

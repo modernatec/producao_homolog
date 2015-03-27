@@ -1,4 +1,4 @@
-<form name="frmTeam" id="frmTeam" method="post" class="form" action="<?=URL::base();?>admin/teams/edit/<?=@$teamVO["id"]?>" enctype="multipart/form-data">
+<form name="frmTeam" id="frmTeam" method="post" class="form" action="<?=URL::base();?>admin/teams/salvar/<?=@$teamVO["id"]?>" enctype="multipart/form-data">
   <dl>
     <dt>
       <label for="name">Equipe</label>
