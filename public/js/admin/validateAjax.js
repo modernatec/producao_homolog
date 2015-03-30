@@ -260,7 +260,7 @@ function validateAjax(){
     $("#sync_gdocs").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -287,7 +287,7 @@ function validateAjax(){
     $("#frm_oeds").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -295,7 +295,7 @@ function validateAjax(){
     $("#frm_reset_oeds").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -303,7 +303,7 @@ function validateAjax(){
     $("#frm_acervo").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -311,7 +311,7 @@ function validateAjax(){
     $("#frm_reset_acervo").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -319,7 +319,7 @@ function validateAjax(){
     $("#frm_reset_suppliers").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -331,7 +331,7 @@ function validateAjax(){
     $("#frm_suppliers").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });
@@ -339,7 +339,7 @@ function validateAjax(){
     $("#frm_usuarios").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxReload(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"));
             return false;       
         }
     });

@@ -167,28 +167,11 @@ $(document).ready(function()
         );
     }
     
-    
-
-
-    /*ativa a última aba selecionada*/
-    //var tab = $.cookie("producao");
-    //console.log('tab = ' + tab);
-    
-    //$("#tabs").tabs("option", "active", $("#" + tab).index());
-
-    $(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
-
-
-    /*
-    $('.date').live('focus', function () {
-        $(this).not('.hasDatePicker').datepicker();
-    });
-    */
-    //logged_in = 0;
     if(window.location.hash != ""){
-        var hash_id = window.location.hash.replace('#', '');
-        loadContent(base_url + '/admin/' + hash_id + '/index/ajax' , '#content');
-        $('#' + hash_id).addClass('selected');
+        var hash_url = window.location.hash.substring(1);
+        var url = hash_url.substr(0,hash_url.length)
+        loadContent({url:base_url + 'admin/' + url , container:'#content'});
+        $('a[href="'+url+'"]').addClass('selected');
     }
 
     if($('#login').length != 0){
@@ -199,8 +182,8 @@ $(document).ready(function()
     }
 
     updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
-    //setupAjax('#content');
 });
+
 
 setInterval(function() {
     updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
@@ -283,7 +266,7 @@ function setupAjax(container){
 
     if($('#relatorios_project_id').length != 0 && container == '#content'){
         $('#relatorios_project_id').on('change', function() {
-            loadContent($('#' + this.id).data('url') + '/' + this.value, $('#' + this.id).data('panel'));
+            loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
         });
     }
 
@@ -330,19 +313,6 @@ function setupAjax(container){
 
         });
     }
-
-    /*
-    if($('#tagQtd').length != 0 && container == '#content'){
-        chartContainer = 'tagQtd';
-        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
-    }
-
-    if($('#statusQtd').length != 0 && container == '#content'){
-        chartContainer = 'statusQtd';
-        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
-    }
-    */
-
 
     if($(container + ' .scrollable_content').length != 0){
         $(container + ' .scrollable_content').each(function(index, el){
@@ -419,9 +389,10 @@ function setupAjax(container){
 
     $("#sortable").disableSelection();
 
+
     $("a[rel='load-content']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        loadContent($(this).attr("href"), $(this).data("panel"));
+        loadContent({url:$(this).attr("href"), container: $(this).data("panel")});
 
         if($(this).hasClass('menu')){
             $('#menu li a').removeClass('selected');
@@ -438,10 +409,11 @@ function setupAjax(container){
     
 
         if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+            window.location.hash = $(this).attr("href");// hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
         }
     });
 
+    /*
     $("a[rel='load-panel']").unbind('click').bind('click', function(e){
         e.preventDefault();
 
@@ -463,6 +435,7 @@ function setupAjax(container){
             window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
         }
     });
+
 
     $("a[rel='reload-panel']").unbind('click').bind('click', function(e){
         e.preventDefault();
@@ -487,10 +460,11 @@ function setupAjax(container){
             window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
         }
     });
+    */
 
     $("a[rel='task_bar']").unbind('click').bind('click', function(e){
         e.preventDefault();
-        loadContent($(this).attr("href"), $(this).data("panel"));
+        loadContent({url:$(this).attr("href"), container:$(this).data("panel")});
     
         $('#menu li a').removeClass('selected');
         $('#tasks').addClass('selected');
@@ -542,7 +516,6 @@ function setupAjax(container){
                         type: "POST",
                         url: $(btExcluir).attr('href'),
                         dataType : "json",
-                        //data: $(form).serialize(),
                         success: function(data) {
                             setDataPanels(data);
                         },
@@ -611,7 +584,7 @@ function setupAjax(container){
             });            
 
             if($(this).hasClass('ajax')){
-                loadContent(link, '#tabs_content');
+                loadContent({url:link, container:'#tabs_content'});
                 
                 if($(this).attr('data-clear')){                    
                     $($(this).attr('data-clear')).html(" ");
@@ -664,6 +637,7 @@ function ajaxPost(form, container){
     });    
 }
 
+/*
 function ajaxReload(form, container){    
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
@@ -688,16 +662,19 @@ function ajaxReload(form, container){
         }
     });    
 }
+*/
 
 lastURL = "";
 
-function loadContent(url, container, removeDialog){
+function loadContent(args){
+    url = args.url;
+    container = args.container;
+    removeDialog = args.removeDialog || false;
+    
     if(logged_in != false){
         d = new Date();
-        //console.log('loadContent = ' + url + "&c=" + d.getTime());
         lastURL = url;
         $(container).html("<div class='loading'>loading...</div>"); 
-        //console.log(removeDialog);
 
         if(removeDialog != true){
             $('#dialog, ui-dialog').remove();
@@ -713,8 +690,6 @@ function loadContent(url, container, removeDialog){
             timeout: 20000, 
             success: function(retorno) {
                 setDataPanels(retorno);
-                //reloadContent(retorno, $(form).data('panel'));
-                //$('input[type=submit]').prop("disabled", '' );
             },
             error: function(e) {
                 console.log(e);
@@ -754,25 +729,6 @@ function updateBar(url, container, removeDialog){
 }
 
 
-function reloadContent(args){
-    var data = $.parseJSON(args.content);
-    var container = args.container;
-
-    $(container).html("<div class='loading'>loading...</div>"); 
-    $('#dialog, ui-dialog').remove();
-
-    if($(container + " .mCSB_container").length > 0){
-        holder = container + " .mCSB_container";
-    }else{
-        holder = container;
-    }
-    
-    $(holder).hide(400, function(){
-        $(holder).html(data);
-    }).fadeIn(500, function(){
-        setupAjax(container);   
-    });    
-}
 
 function getContent(args){
     var url = args.content;
@@ -797,10 +753,27 @@ function getContent(args){
 
 function setDataPanels(data){
     var i = 0;
+    var func;
     for(k in data){
         var result = data[k];
+
+        switch(result.type) {
+            case 'html':
+                func = setPanelContent;
+                break;
+            case 'url':
+                func = getContent
+                break;
+            case 'url':
+                func = setMsg
+                break;
+        }
+
+        setTimeout(func, 500 * i, result);
+
+        /*
         if(result.type == 'html'){
-            setTimeout(reloadContent, 500 * i, result);
+            setTimeout(setPanelContent, 100 * i, result);
         };
 
         if(result.type == 'url'){
@@ -808,13 +781,39 @@ function setDataPanels(data){
         };
 
         if(result.type == 'msg'){
-            $.jGrowl(result.content,{ theme:'aniversariantes', position:'top-right',});
+            
         };
+        */
 
         i++;
     }
     console.log(data);
 }
+
+function setPanelContent(args){
+    var data = $.parseJSON(args.content);
+    var container = args.container;
+
+    $(container).html("<div class='loading'>loading...</div>"); 
+    $('#dialog, ui-dialog').remove();
+
+    if($(container + " .mCSB_container").length > 0){
+        holder = container + " .mCSB_container";
+    }else{
+        holder = container;
+    }
+    
+    $(holder).hide(400, function(){
+        $(holder).html(data);
+    }).fadeIn(500, function(){
+        setupAjax(container);   
+    });    
+}
+
+function setMsg(args){
+    $.jGrowl(args.content,{ theme:'aniversariantes', position:'top-right',});
+}
+
 
 $.validator.addMethod('date',
 function (value, element) {
