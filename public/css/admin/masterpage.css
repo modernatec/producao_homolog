@@ -1168,7 +1168,6 @@ a.green{
 
 
 .filter{
-	padding-top: 2px;
 	float: left;
 	color:#008fc7;
 	display: block;
@@ -1204,7 +1203,6 @@ a.green{
 }
 
 .filter ul li{
-	margin: 2px 0;
 	padding: 5px;
 	margin-right: 5px;
 

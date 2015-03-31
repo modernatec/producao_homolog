@@ -752,10 +752,11 @@ function getContent(args){
 }
 
 function setDataPanels(data){
-    var i = 0;
-    var func;
+    var i = 0;  
+    
     for(k in data){
         var result = data[k];
+        var func;
 
         switch(result.type) {
             case 'html':
@@ -764,7 +765,7 @@ function setDataPanels(data){
             case 'url':
                 func = getContent
                 break;
-            case 'url':
+            case 'msg':
                 func = setMsg
                 break;
         }
@@ -787,7 +788,7 @@ function setDataPanels(data){
 
         i++;
     }
-    console.log(data);
+    //console.log(data);
 }
 
 function setPanelContent(args){

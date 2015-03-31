@@ -3,14 +3,8 @@
 		<input type="hidden" name="project_id" value="<?=$project_id?>">
 		<div class="left">
 			<input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="<?=@$filter_taxonomia?>" >
-   			<input type="submit" class="round bar_button left" value="buscar"> 
    		</div>
-   		<div class="left">
-				<form action='<?=URL::base();?>admin/objects/getObjects/<?=$project_id?>' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
-					<input type="hidden" name="reset_form" value="true">
-					<input type="submit" class="bar_button round green" value="limpar filtros" />
-				</form>
-			</div>
+   		
    		<div class="filter" >
 		    <ul>
 		        <li class="round" >
@@ -168,5 +162,14 @@
 		    </ul>
 		</div>
 	
-</form>	
+	</form>	
+	<div class="left">
+		<input type="submit" class="round bar_button left" value="buscar"> 
+	</div>
+	<div class="left">
+		<form action='<?=URL::base();?>admin/objects/getObjects/<?=$project_id?>' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
+			<input type="hidden" name="reset_form" value="true">
+			<input type="submit" class="bar_button round green" value="limpar filtros" />
+		</form>
+	</div>
 </div>

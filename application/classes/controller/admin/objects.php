@@ -229,7 +229,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				
 				$object->save();				
 				$db->commit();
-				$msg = 'objeto salvo com sucesso.';
+				$msg = 'status salvo com sucesso.';
 			} catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
@@ -438,7 +438,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$status_init = ORM::factory('statu')
 			->where('type', '=', 'object')
 			->where('id', 'NOT IN', array('1', '8'))->find_all(); 
-		
 		
 		$status_arr = array();
 		foreach ($status_init as $status) {

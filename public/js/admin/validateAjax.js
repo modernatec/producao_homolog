@@ -490,6 +490,7 @@ function validateAjax(){
                 },
             },
             submitHandler: function(form){
+                $('input[type=submit]').attr('disabled', 'disabled');
                 ajaxPost(form, $(form).data("panel"));
             }
         })   
