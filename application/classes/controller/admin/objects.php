@@ -444,7 +444,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($status_arr, $status->id);
 		}
 		
-		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'objects'){
+		if(count($this->request->post('project_id')) > '0' || Session::instance()->get('kaizen')['model'] != 'objects'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $project_id, "objects");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');

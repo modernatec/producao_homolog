@@ -331,7 +331,6 @@ function setupAjax(container){
 
     $(container + " .scrollable_content").mCustomScrollbar("update");
     
-
     setupScroll();
 
     $('.checkAll').click(function(event) {  //on click 
@@ -753,24 +752,24 @@ function getContent(args){
 
 function setDataPanels(data){
     var i = 0;  
-    
+
+    var string = '';
     for(k in data){
         var result = data[k];
-        var func;
 
         switch(result.type) {
             case 'html':
-                func = setPanelContent;
+                func = 'setPanelContent';
                 break;
             case 'url':
-                func = getContent
+                func = 'getContent'
                 break;
             case 'msg':
-                func = setMsg
+                func = 'setMsg'
                 break;
         }
-
-        setTimeout(func, 500 * i, result);
+        string += func + '(' + result + ')';
+        //setTimeout(func, 500 * i, result);
 
         /*
         if(result.type == 'html'){
@@ -788,10 +787,28 @@ function setDataPanels(data){
 
         i++;
     }
+    
+    console.log(string);
+    $.when(
+        string
+    // get template
+    // get json
+
+    ).done(function( template, json ) {
+        console.log('ok chamou');
+        // Everything OK
+
+    }).fail(function() {
+
+        // One of the sources is not available
+
+    });
+
     //console.log(data);
 }
 
 function setPanelContent(args){
+    console.log(args);
     var data = $.parseJSON(args.content);
     var container = args.container;
 
