@@ -68,6 +68,7 @@ function checkUpload(form){
 }
 
 $(function (){
+    /*
         $('a.ajax').click(function() {
 
             var url = this.href;
@@ -94,6 +95,7 @@ $(function (){
             //prevent the browser to follow the link
             return false;
         });
+    */
     });
 
 
@@ -664,6 +666,7 @@ function ajaxReload(form, container){
 */
 
 lastURL = "";
+var returnData;
 
 function loadContent(args){
     url = args.url;
@@ -688,7 +691,8 @@ function loadContent(args){
             dataType : "json",
             timeout: 20000, 
             success: function(retorno) {
-                setDataPanels(retorno);
+                returnData = retorno;
+                setDataPanels();
             },
             error: function(e) {
                 console.log(e);
@@ -750,61 +754,25 @@ function getContent(args){
     });  
 }
 
-function setDataPanels(data){
-    var i = 0;  
 
-    var string = '';
-    for(k in data){
-        var result = data[k];
+function setDataPanels(){
+    if(returnData[0]){
+        var result = returnData[0];
 
         switch(result.type) {
             case 'html':
-                func = 'setPanelContent';
+                setPanelContent(result);
                 break;
             case 'url':
-                func = 'getContent'
+                getContent(result);
                 break;
             case 'msg':
-                func = 'setMsg'
+                setMsg(result);
                 break;
-        }
-        string += func + '(' + result + ')';
-        //setTimeout(func, 500 * i, result);
+        }    
 
-        /*
-        if(result.type == 'html'){
-            setTimeout(setPanelContent, 100 * i, result);
-        };
-
-        if(result.type == 'url'){
-            setTimeout(getContent, 600 * i, result);
-        };
-
-        if(result.type == 'msg'){
-            
-        };
-        */
-
-        i++;
+        returnData.shift();
     }
-    
-    console.log(string);
-    $.when(
-        string
-    // get template
-    // get json
-
-    ).done(function( template, json ) {
-        console.log('ok chamou');
-        // Everything OK
-
-    }).fail(function() {
-
-        // One of the sources is not available
-
-    });
-
-    //console.log(data);
 }
 
 function setPanelContent(args){
@@ -825,6 +793,7 @@ function setPanelContent(args){
         $(holder).html(data);
     }).fadeIn(500, function(){
         setupAjax(container);   
+        setDataPanels();
     });    
 }
 

@@ -30,12 +30,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$this->auto_render = false;
 			
 			header('Content-Type: application/json');
-			echo json_encode(
+			$return = json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
 				)						
 			);
-	        return false;
+			echo $return;
+			return $return;
+	        //return false;
 	        //URL::base().'admin/objects/view/'.$object->id,	
 		}           
 	} 
