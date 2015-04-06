@@ -39,27 +39,7 @@
 	            		}else{
 	        				$class_obj 	= $objeto->statu_class.$mod;
 	            			$calendar = URL::base().'/public/image/admin/calendar.png';
-	        			}
-
-	        			
-
-	        			if(is_object($objeto->getStatus($objeto->object_status_id))){
-			    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
-			    			
-			    			if($obj_taskView->tag->id == '7' && $obj_taskView->status->id == '7'){
-			    				$status = "";
-			    				$tag = "";
-					    	}else{
-					    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
-				    			$tag = '<span class="round list_faixa left '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
-				    		}
-
-				    		if($obj_taskView->task_to != 0){
-				    			$nome = explode(" ", $obj_taskView->to->nome); 
-				    			$img = ($obj_taskView->to->foto)?($obj_taskView->to->foto):('public/image/admin/default.png');
-				    			$task_to = ($status != '') ? Utils_Helper::getUserImage($obj_taskView->to) : '';
-                            }
-			    		}
+	        			}	        			
 	   				
 	    				break;
 	    			case 8://finalizado
@@ -75,7 +55,25 @@
 	        				$class_obj 	= $objeto->statu_class;
 	            			$calendar = URL::base().'/public/image/admin/calendar.png';
 
-	        			}
+	        			}	        			
+	    		}
+
+	    		if(is_object($objeto->getStatus($objeto->object_status_id))){
+	    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
+	    			
+	    			if($obj_taskView->tag->id == '7' && $obj_taskView->status->id == '7'){
+	    				$status = "";
+	    				$tag = "";
+			    	}else{
+			    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
+		    			$tag = '<span class="round list_faixa left '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
+		    		}
+
+		    		if($obj_taskView->task_to != 0){
+		    			$nome = explode(" ", $obj_taskView->to->nome); 
+		    			$img = ($obj_taskView->to->foto)?($obj_taskView->to->foto):('public/image/admin/default.png');
+		    			$task_to = ($status != '') ? Utils_Helper::getUserImage($obj_taskView->to) : '';
+                    }
 	    		}
 	    		//href="
 			?>

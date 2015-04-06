@@ -188,7 +188,7 @@ $(document).ready(function()
 
 
 setInterval(function() {
-    //updateBar();
+    updateBar();
 }, 5000);
 
 function setupScroll(){

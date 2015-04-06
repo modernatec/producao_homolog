@@ -569,10 +569,12 @@ table tbody td table tbody tr:hover {
 .form input[type='text'], .form input[type='password'], input[type='submit'],input[type='button'], .form textarea, .form select{
 	border:1px #CCC solid;
 	padding:5px;
-    box-shadow:#ccc .5px .5px 1px;
+    box-shadow: none;
+    /*#ccc .5px .5px .5px;*/
 }
 
 input[type='submit'], input[type='button']{
+	border: none;
 	box-shadow: none;
 }
 
