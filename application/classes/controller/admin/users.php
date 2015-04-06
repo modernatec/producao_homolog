@@ -35,7 +35,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             echo json_encode(
                 array(
                     array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-                    array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/users/edit/'.$this->current_user->userInfos->id),
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($this->current_user->userInfos->id, true)->render())),
                 )                       
             );
             return false;
@@ -45,17 +45,24 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	/*
     * Editar usuarios *
     */
-	public function action_edit($userInfo_id)
+	public function action_edit($userInfo_id, $ajax = null)
     {
         
         $this->auto_render = false;
         if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
-            echo "<span class='list_alert round'>Você não tem permissão para alterar as infos deste usuário.</span>";
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    //array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($this->current_user->userInfos->id, true)->render())),
+                    array('type'=>'msg', 'content'=> 'Você não tem permissão para alterar as infos deste usuário.' ),
+                )                       
+            );
         }else{	
    			$view = View::factory('admin/users/edit');        	            
     		$view->bind('errors', $errors)
                 ->bind('message', $message);
     		
+            $view->current_auth = $this->current_auth;      
             $userInfo = ORM::factory('userInfo', $userInfo_id);
     		$view->teamsList = ORM::factory('team')->find_all();
     		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
@@ -76,12 +83,16 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
     		$view->userInfoVO['username'] = (isset($values)) ? Arr::get($values, 'username') : $userInfo->user->username;
 
-            header('Content-Type: application/json');
-            echo json_encode(
-                array(
-                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
-                )                       
-            );
+            if($ajax != null){
+                return $view;
+            }else{
+                header('Content-Type: application/json');
+                echo json_encode(
+                    array(
+                        array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+                    )                       
+                );
+            }
             return false;
         }
 		
@@ -177,7 +188,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	}
       
 
-    protected function salvar($userInfo_id = null)
+    public function action_salvar($userInfo_id = null)
     {
         $this->auto_render = false;
         $db = Database::instance();
@@ -212,7 +223,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             if($resposta){
                 $userinfo->foto = $resposta[0];
             }
-
 
             $userinfo->save();
 			

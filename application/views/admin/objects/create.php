@@ -80,9 +80,15 @@
                 <dd>
                 	<select class="required round" name="supplier_id" id="supplier_id">
                         <option value=''>Selecione</option>
-                        <? foreach($suppliers as $supplier){?>
+                        <? 
+                        foreach($suppliers as $supplier){
+                            if($supplier->team_id == '1'){
+                        ?>
                             <option value='<?=$supplier->id?>' <?=((@$objVO["supplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
-                        <? }?>
+                        <? 
+                            }
+                        }   
+                        ?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
                 </dd>       
@@ -101,15 +107,47 @@
                 <dd>
                     <select class="round" name="audiosupplier_id" id="audiosupplier_id">
                         <option value='0'>Selecione</option>
-                        <? foreach($suppliers as $supplier){?>
+                        <? 
+                        foreach($suppliers as $supplier){
+                            if($supplier->team_id == '1'){
+                        ?>
                             <option value='<?=$supplier->id?>' <?=((@$objVO["audiosupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
-                        <? }?>
+                        <? 
+                            }
+                        }   
+                        ?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'audiosupplier_id');?></span>
                 </dd>       
             </div>
             <div class="left">
                 <dt><label for="speaker">locutor</label></dt>
+                <dd>
+                    <input type="text" class="text round" name="speaker" id="speaker" style="width:250px;" value='<?=$objVO['speaker'];?>'/>
+                    <span class='error'><?=Arr::get($errors, 'speaker');?></span>
+                </dd>
+            </div>
+
+            <div class="clear left">
+                <dt> <label for="artesupplier_id">arte/interface</label> </dt>
+                <dd>
+                    <select class="required round" name="artesupplier_id" id="artesupplier_id">
+                        <option value=''>Selecione</option>
+                        <? 
+                        foreach($suppliers as $supplier){
+                            if($supplier->team_id == '3'){
+                        ?>
+                            <option value='<?=$supplier->id?>' <?=((@$objVO["artesupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
+                        <? 
+                            }
+                        }   
+                        ?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
+                </dd>       
+            </div>
+            <div class="left">
+                <dt><label for="speaker">ilustrador</label></dt>
                 <dd>
                     <input type="text" class="text round" name="speaker" id="speaker" style="width:250px;" value='<?=$objVO['speaker'];?>'/>
                     <span class='error'><?=Arr::get($errors, 'speaker');?></span>

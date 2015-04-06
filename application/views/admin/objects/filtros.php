@@ -161,11 +161,12 @@
 		        </li>
 		    </ul>
 		</div>
+		<div class="left">
+			<input type="submit" class="round bar_button left" value="buscar"> 
+		</div>
 	
 	</form>	
-	<div class="left">
-		<input type="submit" class="round bar_button left" value="buscar"> 
-	</div>
+	
 	<div class="left">
 		<form action='<?=URL::base();?>admin/objects/getObjects/<?=$project_id?>' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
 			<input type="hidden" name="project_id" value="<?=$project_id?>">

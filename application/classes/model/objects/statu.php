@@ -5,6 +5,7 @@ class Model_Objects_statu extends ORM {
 	protected $_belongs_to  = array(
 		'userInfo' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
+    	'object' => array('model' => 'object', 'foreign_key' => 'object_id'),
 	);	
 
 	/****APAGAR***/

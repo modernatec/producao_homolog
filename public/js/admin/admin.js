@@ -183,13 +183,13 @@ $(document).ready(function()
         }); 
     }
 
-    updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
+    updateBar();
 });
 
 
 setInterval(function() {
-    updateBar(base_url + '/admin/taskstatus/updateTasksBar', '#taskBar', true);
-}, 120000);
+    //updateBar();
+}, 5000);
 
 function setupScroll(){
     $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
@@ -414,55 +414,6 @@ function setupAjax(container){
         }
     });
 
-    /*
-    $("a[rel='load-panel']").unbind('click').bind('click', function(e){
-        e.preventDefault();
-
-        $.ajax({
-            type: "POST",
-            url: $(this).attr('href'),
-            dataType : "json",
-            //data: $(form).serialize(),
-            success: function(data) {
-                setDataPanels(data);
-            },
-            error: function(e) {
-                console.log(e);
-                alert("ocorreu um erro.");
-            }
-        });  
-
-        if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
-        }
-    });
-
-
-    $("a[rel='reload-panel']").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        var panel = $(this).data('panel');
-        console.log(panel)
-        $.ajax({
-            type: "POST",
-            url: $(this).attr('href'),
-            dataType : "html",
-            //data: $(form).serialize(),
-            success: function(data) {
-                
-                reloadContent(data, panel);
-            },
-            error: function(e) {
-                console.log(e);
-                alert("ocorreu um erro. rel");
-            }
-        });  
-
-        if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("id");//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
-        }
-    });
-    */
-
     $("a[rel='task_bar']").unbind('click').bind('click', function(e){
         e.preventDefault();
         loadContent({url:$(this).attr("href"), container:$(this).data("panel")});
@@ -507,35 +458,26 @@ function setupAjax(container){
             btExcluir = this;
             NewDialog.dialog({
             modal: true,
-            title: "Excluir",
+            dialogClass: 'noTitleStuff',
             show: 'clip',
             hide: 'clip',
             resizable:false,
             buttons: [
-                {text: "OK", click: function() {
-                    $.ajax({
-                        type: "POST",
-                        url: $(btExcluir).attr('href'),
-                        dataType : "json",
-                        success: function(data) {
-                            setDataPanels(data);
-                        },
-                        error: function(e) {
-                            console.log(e);
-                            alert("ocorreu um erro.");
-                        }
-                    });    
+                {text: "excluir", click: function() {
+                    loadContent({url:$(btExcluir).attr('href')});
                 }},
-                {text: "Cancelar", click: function() {$(this).dialog("close")}}
+                {text: "cancelar", click: function() {$(this).dialog("close")}}
             ]
         });
         return false;
     });
 
-    $('a.popup').unbind('click').bind('click', function() {
+    $('a.popup').unbind('click').bind('click', function(e) {
+        e.preventDefault();
         var url = this.href;
+        var form;
         // show a spinner or something via css
-        var dialog = $('<div style="display:none" id="dialog" class="loading"></div>').appendTo('body');
+        var dialog = $('<div style="display:none" id="dialog" class="ui-dialog loading"></div>').appendTo('body');
         // open the dialog
         dialog.dialog({
             // add a close listener to prevent adding multiple divs to the document
@@ -547,9 +489,20 @@ function setupAjax(container){
             resizable: false,
             modal: true,
             width: 'auto',
-
+            dialogClass: 'noTitleStuff',
+            show: 'clip',
+            hide: 'clip',
             maxWidth: 600,
             maxHeight: 600,
+            buttons: [
+                {text: "salvar", click: function() {
+                    $('#'+form).submit();
+                    //loadContent({url:$(btExcluir).attr('href')});
+                }},
+                {text: "cancelar", click: function() {
+                    removeDialogs();
+                }}
+            ]
         });
 
         // load remote content
@@ -559,6 +512,11 @@ function setupAjax(container){
             function (responseText, textStatus, XMLHttpRequest) {
                 // remove the loading class
                 dialog.removeClass('loading');
+               
+                $('.ui-dialog form').each(function(e, element){
+                    form = element.id;
+                })
+
                 setTimeout(function(){ 
                     dialog.dialog('open');
                     validateAjax();
@@ -601,7 +559,7 @@ function setupAjax(container){
     })
     
     var tab = $.cookie("producao");
-    
+
     setTimeout(function(){
         if($(container + ' ' + tab).length > 0){
             $(container + ' ' + tab).click(); 
@@ -621,14 +579,25 @@ function ajaxPost(form, container){
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
     data_post.push({name: 'container', value: container});
 
+    removeDialogs();
+    var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+    NewDialog.dialog({
+        modal: true,
+        dialogClass: 'noTitleStuff',
+        show: 'clip',
+        hide: 'clip',
+        resizable:false,
+    });
+
     $.ajax({
         type: "POST",
         url: $(form).attr('action'),
         data: data_post,
         timeout: 10000,
         dataType : "json",
-        success: function(data) {
-            setDataPanels(data);
+        success: function(retorno) {
+            returnData = retorno;
+            setDataPanels();
             $('input[type=submit]').prop("disabled", '' );
         },
         error: function(e) {
@@ -666,20 +635,33 @@ function ajaxReload(form, container){
 */
 
 lastURL = "";
-var returnData;
+var returnData = [];
+var loading = false;
 
 function loadContent(args){
     url = args.url;
-    container = args.container;
+    container = args.container || '';
     removeDialog = args.removeDialog || false;
     
     if(logged_in != false){
         d = new Date();
         lastURL = url;
-        $(container).html("<div class='loading'>loading...</div>"); 
 
         if(removeDialog != true){
-            $('#dialog, ui-dialog').remove();
+            removeDialogs();
+        }
+
+        if(container == ''){
+            var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+                NewDialog.dialog({
+                modal: true,
+                dialogClass: 'noTitleStuff',
+                show: 'clip',
+                hide: 'clip',
+                resizable:false,
+            });
+        }else{
+            $(container).html("<div class='loading'>loading...</div>"); 
         }
 
         data_post = {container: container};
@@ -691,12 +673,35 @@ function loadContent(args){
             dataType : "json",
             timeout: 20000, 
             success: function(retorno) {
-                returnData = retorno;
-                setDataPanels();
+                
+                for(k in retorno){
+                    returnData.push(retorno[k]);    
+                }
+
+                if(loading == false){
+                    setDataPanels();
+                }
             },
             error: function(e) {
                 console.log(e);
-                alert("ocorreu um erro ao carregar o conteúdo.");
+                setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>Verifique se você possuí permissão para acessar este conteúdo e tente novamente...', 
+                        tema:'error',
+                        fix: true,
+                });
+
+                //console.log(e.responseText);
+                //alert("");
+                /*
+                var NewDialog = $('<div id="dialog" class="ui-dialog">'+e.responseText+'</div>');
+                    NewDialog.dialog({
+                    modal: true,
+                    dialogClass: 'noTitleStuff',
+                    show: 'clip',
+                    hide: 'clip',
+                    resizable:false,
+                });
+                */
             }
         });  
     }else{
@@ -704,33 +709,19 @@ function loadContent(args){
     }
 }
 
-function updateBar(url, container, removeDialog){
+function updateBar(url){
     if(logged_in != false){
         d = new Date();
 
-        lastURL = url;
-        $(container).html("<div class='loading'>loading...</div>"); 
+        url = base_url + '/admin/taskstatus/updateTasksBar', true
 
-        if(removeDialog != true){
-            $('#dialog, ui-dialog').remove();
-        }
-
-        if($(container + " .mCSB_container").length > 0){
-            holder = container + " .mCSB_container";
-        }else{
-            holder = container;
-        }
-
-        $(holder).load(url, function() {
-            $(holder).hide().fadeIn(500, function(){
-                setupAjax(container);  
-            });      
+        $("#taskBar").load(url, function() {
+            setupAjax('#taskBar');  
         });
     }else{
         alert("sessão expirada!");
     }
 }
-
 
 
 function getContent(args){
@@ -745,7 +736,11 @@ function getContent(args){
         dataType : "json",
         timeout: 20000, 
         success: function(retorno) {
-            setDataPanels(retorno);
+            //console.log('chamou getContent')
+            for(k in retorno){
+                returnData.unshift(retorno[k]);    
+            }
+            setDataPanels();
         },
         error: function(e) {
             console.log(e);
@@ -756,8 +751,12 @@ function getContent(args){
 
 
 function setDataPanels(){
-    if(returnData[0]){
+    loading = true;
+    if(returnData.length > 0){
         var result = returnData[0];
+        //console.log(result);
+
+        returnData.shift();
 
         switch(result.type) {
             case 'html':
@@ -770,18 +769,18 @@ function setDataPanels(){
                 setMsg(result);
                 break;
         }    
-
-        returnData.shift();
+    }else{
+        removeDialogs();
+        loading = false;
     }
 }
 
 function setPanelContent(args){
-    console.log(args);
     var data = $.parseJSON(args.content);
     var container = args.container;
 
     $(container).html("<div class='loading'>loading...</div>"); 
-    $('#dialog, ui-dialog').remove();
+    
 
     if($(container + " .mCSB_container").length > 0){
         holder = container + " .mCSB_container";
@@ -798,9 +797,31 @@ function setPanelContent(args){
 }
 
 function setMsg(args){
-    $.jGrowl(args.content,{ theme:'aniversariantes', position:'top-right',});
+    tema = args.tema || 'normal';
+    fix = args.fix || false;
+    
+    $.jGrowl(
+        args.content,
+        { 
+            theme:tema, 
+            position:'bottom-right',
+            sticky: fix,
+            open: function() {setDataPanels();},
+        }
+    );
 }
 
+function removeDialogs(){
+    var options = {};
+    $('.ui-dialog').effect('clip', options, 500, function(){
+        $(this).remove();
+    });
+    /*
+    $('#dialog, ui-dialog').fadeOut(500, function(){
+        $(this).remove();
+    });
+    */    
+}
 
 $.validator.addMethod('date',
 function (value, element) {

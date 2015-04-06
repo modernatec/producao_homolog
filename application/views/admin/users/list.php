@@ -12,7 +12,7 @@
                 <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/1'>ativos</a></li>
                 <?
                 if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>
-                <li class="round"><a class="ajax" id="tab_1" href='<?=URL::base();?>admin/users/getUsers/0'>inativos</a></li>
+                <li class="round"><a class="ajax" id="tab_2" href='<?=URL::base();?>admin/users/getUsers/0'>inativos</a></li>
                 <?}?>
             </ul>  
         </div>

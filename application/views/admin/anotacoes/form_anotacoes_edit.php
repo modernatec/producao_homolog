@@ -7,8 +7,8 @@
           <textarea class="required text round" name="anotacao" id="anotacao" style="width:490px; height:100px;"><?=@$anotacao_txt->anotacao?></textarea>
           <span class='error'><?=Arr::get($errors, 'anotacao');?></span>
         </dd>
-        <dd>
+        <!--dd>
           <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmAnotacoes" value="salvar" />             
-        </dd>	    
+        </dd-->	    
   	</dl>
   </form>

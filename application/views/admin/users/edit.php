@@ -1,4 +1,4 @@
-    <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/edit/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
+    <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
 	  	<div class="left">	
 		    <img class="foto_form" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />		    
@@ -47,9 +47,24 @@
 		    </dd>
 		</div>
 		
-		<?foreach($userInfoVO["role_id"] as $roleObj){?>
-			<input type="hidden" name="role_id[]" value="<?=$roleObj?>" />
+		<?
+		if($current_auth != 'admin'){
+			foreach($userInfoVO["role_id"] as $roleObj){?>
+				<input type="hidden" name="role_id[]" value="<?=$roleObj?>" />
+		<?}}else{?>
+		<div class="clear">	    
+			<dt>
+		      <label for="role">permissão</label>
+		    </dt>
+		    <dd>
+				<?foreach($rolesList as $roleObj){?>
+					<input type="checkbox" name="role_id[]" id="role_<?=$roleObj->id?>" value="<?=$roleObj->id?>" <?if(in_array($roleObj->id, $userInfoVO['role_id'])){ echo "checked";}?> /><label for="role_<?=$roleObj->id?>"><?=ucfirst($roleObj->name)?></label>
+				<? }?>
+				<span class='error'><?=Arr::get($errors, 'role_id');?></span>
+		    </dd>
+		</div>
 		<?}?>
+
 		<div class="left"> 
 		    <dt>
 				<label for="data_aniversario">Data do Aniversário (dd/mm)</label>

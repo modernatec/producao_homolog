@@ -28,7 +28,7 @@ class Controller_Admin_Userinfos extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs("public/js/admin/validateUsers.js");	
+		//$this->addValidateJs("public/js/admin/validateUsers.js");	
 			
 		$view->userinfo = ORM::factory('userInfo', $id);
 		$view->anexosView = View::factory('admin/files/anexos');

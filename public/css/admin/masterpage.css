@@ -32,6 +32,7 @@ body{
 	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
 	/*border-right: 1px solid #f1f1f1;*/
 	border-right: 1px dotted #008fc7;
+	z-index: 3;
 	/*box-shadow: 0 0 5px 1px rgba(0,0,0, .8);*/
 }
 
@@ -148,7 +149,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 
 .loading{
-	 background: transparent url(../../image/admin/ajax-loader.gif) no-repeat center center;
+	 background: transparent url(../../image/admin/ajax-loader.gif) no-repeat center center !important;
 	 text-indent: -5000px;
 	 display: block;
 	 height: 40px;
@@ -1368,6 +1369,38 @@ a.green{
 	width: 702px;
 	overflow: auto;
 }
+
+.noTitleStuff .ui-dialog-titlebar {display:none}
+.ui-corner-all{
+	-o-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.ui-dialog{
+	min-height: 20px !important;
+	/*width: 700px !important; */
+}
+
+
+div.jGrowl div.normal {
+    color:#FFF;
+    background: #000;
+    border-left: 8px solid #008fc7;
+    /*box-shadow:#999 1px 1px 1px;*/
+    /*border: none;*/
+}
+
+div.jGrowl div.error {
+    color:#FFF;
+    background: #000;
+    border-left: 8px solid #ff0000;
+    /*box-shadow:#000 1px 1px 1px;*/
+    /*border: none;*/
+}
+
 /*
 .ui-widget-content{
 	background: none;

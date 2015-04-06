@@ -18,34 +18,46 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 
-        $view->has_task = ORM::factory('taskView')
-        						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
-        						->where('ended', '=', '0')
-        						->where('task_to', '!=', '0')->group_by('task_to')
-        						->order_by('nome', 'ASC')->find_all();
+        //$query = ORM::factory('taskView')
+        //						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
+        //						->where('ended', '=', '0');
+		
+		//if($this->current_auth != 'admin'){
+		//	$query->where('taskViews.team_id', '=', $this->current_user->userInfos->team_id);
+		//}
+        //$view->has_task = $query->where('task_to', '!=', '0')->group_by('task_to')->order_by('nome', 'ASC')->find_all();
 
         if($this->request->query('to')){
         	$tasks_of = ORM::factory('userInfo', $this->request->query('to'));	
         	$nome = explode(" ", $tasks_of->nome);
+        	
         	$view->title = "tarefas - ".$nome[0];
         	$view->filter = "?to=".$tasks_of->id;
-
-        	//$this->action_getTasks();
         }else{
-        	$view->title = "tarefas - equipe";
-        	$view->filter = "?status=".json_encode(array("5"));
+        	
+        	if($this->request->query('team') != ''){
+        		$team_id = $this->request->query('team');
+        	}else{
+        		$team_id = $this->current_user->userInfos->team_id;
+        	}
+        	
+        	$team = ORM::factory('team', $team_id);
+        	$name = explode(" ", $team->name);
+
+        	$view->title = "tarefas - ".$name[0];
+        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
         }
 
-		$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
+		//$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
 		$view->current_auth = $this->current_auth;	
 	  	
 	  	/*alert de nova tarefa*/
-	  	$view->update = false;
-  		if(Session::instance()->get('total_tarefas') < $view->totalTasks){
-  			$view->update = true;	  			
-  		}
+	  	//$view->update = false;
+  		//if(Session::instance()->get('total_tarefas') < $view->totalTasks){
+  		//	$view->update = true;	  			
+  		//}
 
-	  	Session::instance()->set('total_tarefas', $view->totalTasks);
+	  	//Session::instance()->set('total_tarefas', $view->totalTasks);
 
 	  	if($ajax == null){
 			$this->template->content = $view;             
@@ -58,70 +70,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				)						
 			);
 	        return false;
-		}   
-
-		/*
-	  	$rs = ORM::factory('task')->where('task_id', '=', '0')->find_all();
-	  	foreach($rs as $task){
-	  		$rs2 = ORM::factory('tasks_statu');
-	  		$rs2->userInfo_id = $task->userInfo_id;
-	  		$rs2->status_id = $task->status_id;
-	  		$rs2->task_id = $task->id;
-	  		$rs2->created_at = $task->created_at;
-	  		$rs2->save();
-	  	}
-	  	*/
-
-
-	  	/*
-	  	$rs = ORM::factory('task')->where('task_id', '!=', '0')->find_all();
-	  	foreach($rs as $task){
-	  		$rs2 = ORM::factory('tasks_statu');
-	  		$rs2->userInfo_id = $task->task_to;
-	  		$rs2->status_id = $task->status_id;
-	  		$rs2->task_id = $task->task_id;
-	  		$rs2->description = $task->description;
-	  		$rs2->created_at = $task->created_at;
-	  		$rs2->save();
-	  	}
-
-
-	  	APAGAR AS TASKS DE HISTORIES
-
-	  	SELECT * FROM moderna_tasks WHERE topic LIKE '%checagem%' AND ISNULL(tag_id) GROUP BY topic
-		SELECT * FROM moderna_tasks WHERE ISNULL(tag_id) GROUP BY topic
-
-		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pre-che%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pre che%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '4' WHERE topic LIKE '%pré - che%' AND ISNULL(tag_id)
-
-		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pré prod%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pré - prod%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '3' WHERE topic LIKE '%pre-prod%' AND ISNULL(tag_id)
-
-		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE 'checagem' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem conso%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem de%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '1' WHERE topic LIKE '%checagem%' AND ISNULL(tag_id)
-
-		UPDATE moderna_tasks SET tag_id = '5' WHERE topic LIKE '%prod%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '5' WHERE topic LIKE '%desca%' AND ISNULL(tag_id)
-
-		UPDATE moderna_tasks SET tag_id = '6' WHERE topic LIKE '%corre%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '6' WHERE topic LIKE '%corri%' AND ISNULL(tag_id)
-
-		UPDATE moderna_tasks SET tag_id = '2' WHERE topic LIKE '%conso%' AND ISNULL(tag_id)
-		UPDATE moderna_tasks SET tag_id = '2' WHERE topic LIKE '%comp%' AND ISNULL(tag_id)
-
-
-
-		1 - checagem
-		2 - consolidacao
-		3 - pre-producao
-		4 - pre checagem
-		5 - producao
-		6 - correcao
-	  	*/		  	
+		}   	  	
 	} 
 
 	public function action_reorder(){
@@ -146,7 +95,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	}
     
-
+	/**
+	**Formulario popup. 	
+	**/
    	public function action_update($id){
 		$this->auto_render = false;
 		$view = View::factory('admin/tasks/form_edit');
@@ -164,7 +115,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		$view->taskVO = $taskVO;
 
-		$view->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all(); 
+		$query_team =  ORM::factory('userInfo')->where('status', '=', '1');
+		
+		if($this->current_auth != 'admin'){
+			$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
 		$view->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
 
 		echo $view;
@@ -206,6 +163,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				if(empty($id)){				
 					/**para não atualizar o criador da tarefa no update**/
 					$task->userInfo_id = $this->current_user->userInfos->id;
+					$task->team_id = $this->current_user->userInfos->team_id;
 	            }
 
 	            $task->save();  
@@ -265,7 +223,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
 
-			
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
@@ -329,26 +286,23 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         //$this->startProfilling();
 
-        //$view->filter_tipo = json_decode($this->request->query('tipo'));
         $view->filter_status = json_decode($this->request->query('status'));  
-		//$view->filter_userInfo_id = $this->request->query('userInfo_id'); 
-		$view->filter_task_to = $this->request->query('to');             
+		$view->filter_task_to = $this->request->query('to');  
+		$view->filter_team = $this->request->query('team');          
 
-        //$query = ORM::factory('task')->where('status_id', '=', $view->filter_status)        
         $query = ORM::factory('taskView');
 
+        if($this->current_auth != 'admin'){
+			$query->where('team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
         /***Filtros***/
-        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $view->filter_status) : '';
+        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $view->filter_status)->and_where('team_id', '=', $view->filter_team) : '';
         //(isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id) : '';
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
         $view->taskList = $query->and_where('ended', '=', '0')->order_by('ordem', 'ASC')->order_by('crono_date','ASC')->find_all();
-       
-
-        if(isset($view->filter_task_to) && $this->current_auth != "assistente"){
-        	
-        }
-        
+               
         //$this->endProfilling();
         header('Content-Type: application/json');
 		echo json_encode(

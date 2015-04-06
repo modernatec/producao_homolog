@@ -14,6 +14,7 @@ class Model_ObjectStatu extends ORM {
 		'collection' => array('foreign_key' => 'collection_id'),		
 		'supplier' => array('model' => 'supplier', 'through' => 'objects_suppliers'),
 		'statu' => array('model' => 'statu', 'foreign_key' => 'status_id'),
+		'object' => array('model' => 'object', 'foreign_key' => 'object_id'),
 	);
 
 	public function getAnotacoes($object_id){

@@ -43,8 +43,9 @@ class Controller_Admin_Template extends Controller_Template {
 		{
 			if (Auth::instance()->logged_in()){
 				//Request::instance()->redirect('account/noaccess');
-				Utils_Helper::mensagens('add',"você não tem acesso a este conteúdo");
-				Request::current()->redirect('admin');
+				//Utils_Helper::mensagens('add',"você não tem acesso a este conteúdo");
+				//Request::current()->redirect(URL::base().'/admin/#tasks/index/ajax');
+				echo 'você não tem acesso a este conteúdo';
 			}else{
 				Request::current()->redirect('login');
 			}

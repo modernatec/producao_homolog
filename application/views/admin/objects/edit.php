@@ -50,9 +50,9 @@
 	                  <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"><?=$objVO['description']?></textarea>
 	                  <span class='error'><?=Arr::get($errors, 'description');?></span>
 	            </dd>
-	            <dd>
+	            <!--dd>
 	              <input type="submit" class="round green" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
-	            </dd>	    
+	            </dd-->	    
 			</dl>
 		</form>
 	</div>

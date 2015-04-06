@@ -42,19 +42,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}           
 	} 
 
-	/*
-	public function action_limpaString(){
-		$this->auto_render = false;
-		$objects = ORM::factory('object')->find_all(); 
-		foreach ($objects as $object) {
-			$object->taxonomia = trim($object->taxonomia);
-			$object->title = trim($object->title);
-			$object->save();
-		}
-		echo "ok";
-	}
-	*/
-
 	public function action_redirect(){
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/redirect');
@@ -114,9 +101,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 	public function action_edit($id)
     {    
-    	//if (HTTP_Request::POST == $this->request->method()){                                              
-        //    $this->salvar($id);
-        //}else{
     	$this->auto_render = false;       
 		$view = View::factory('admin/objects/create')
 			->bind('errors', $errors)
@@ -134,7 +118,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
                 
-        //$this->template->content = $view;
         header('Content-Type: application/json');
 		echo json_encode(
 			array(
@@ -142,10 +125,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			)						
 		);
         return false;
-	    //}
 	}
 
-	public function action_view($id, $task_id = null)
+	public function action_view($id, $ajax = null)
     {       
     	$this->auto_render = false;
         $view = View::factory('admin/objects/view')
@@ -175,15 +157,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->form_status->obj = $objeto; 
  		$view->current_auth = $this->current_auth;
 
-        header('Content-Type: application/json');		
-		echo json_encode(
-			array(
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-        return false;
+ 		if($ajax != null){
+ 			return $view;
+ 		}else{
+	        header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
+	    }
 	}
-
+	
 	public function action_update($id){
 		$this->auto_render = false;
 		$view = View::factory('admin/objects/edit');
@@ -245,20 +231,23 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
 
+	        $from = strpos($this->request->post('from'), 'objects');
 	        header('Content-Type: application/json');
-
-	        if($this->request->post('from') == 'objects'){
+	        
+	        if($from !== false){
 				echo json_encode(
 					array(
-						array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object->object_id),
-						array('container' => '#tabs_content', 'type'=>'url', 'content'=>  URL::base().'admin/objects/getObjects/'),
+						array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object->object_id, true)->render())),
+						array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($object->object->project_id, true)->render())),
 						array('type'=>'msg', 'content'=> $msg),
 					)						
 				);	
+				//URL::base().'admin/objects/view/'.$object->object_id
+				//URL::base().'admin/objects/getObjects/'
 	        }else{
 				echo json_encode(
 					array(
-						array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object->object_id),
+						array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object->object_id, true)->render())),
 						array('type'=>'msg', 'content'=> $msg),
 					)						
 				);		       
@@ -276,6 +265,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
 		$object_status = ORM::factory('objects_statu', $id);
 		$object_id = $object_status->object_id;
+		$project_id = $object_status->object->project_id;
+
 		try {  
 			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
 			foreach($tasks as $task){
@@ -292,12 +283,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $db->commit();
 
             $msg = "Status excluído com sucesso."; 
-			
-			//Utils_Helper::mensagens('add',$message);
-            //Request::current()->redirect('admin/objects/view/'.$object_id);
-            //echo URL::base().'admin/objects/view/'.$object_id;
-
-            
         } catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -305,23 +290,23 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$erroList.= $erro.'<br/>';	
 			}
             $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-		    //Utils_Helper::mensagens('add',$message);  
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-			//Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
         header('Content-Type: application/json');
-		echo json_encode(
+        
+    	echo json_encode(
 			array(
-				array('container' => '#direita', 'type'=>'url', 'content'=>  URL::base().'admin/objects/view/'.$object_id),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object_id, true)->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($project_id, true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
-		);
-       
-        return false;	        
+		);	
+
+        return false;		        
 	}
 
    
@@ -401,7 +386,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object->id),
+				array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object->id, true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -424,7 +409,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
     
 
-    public function action_getObjects($project_id){
+    public function action_getObjects($project_id, $ajax = null){
     	//$this->startProfilling();
 
     	$project_id = ($project_id != "") ? $project_id : Session::instance()->get('kaizen')['parameters'];
@@ -567,16 +552,19 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$viewFiltros->materiasList = array_unique($materiasList);
 
 		//$this->endProfilling();
-		//echo $view;
-
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-       
-        return false;
+		
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	       
+	        return false;
+	    }
 	}    
 }

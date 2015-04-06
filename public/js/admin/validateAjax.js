@@ -264,8 +264,6 @@ function validateAjax(){
             return false;       
         }
     });
-
-       
     
 
     $("#formEndTask").validate({

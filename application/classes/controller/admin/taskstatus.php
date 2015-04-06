@@ -61,14 +61,14 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		        }
 			}
 
-			header('Content-Type: application/json');
-			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),	
-				'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',			
-				'msg' => $msg,
-			));
-
-			return false;
+			header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
+	        return false;
 		}
 	}	
 
@@ -131,6 +131,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			            	$new_task->object_id = $task->object_id;
 			            	$new_task->object_status_id = $task->object_status_id;
 			            	$new_task->tag_id = $new_tag_id;
+			            	$new_task->team_id = $task->team_id;
 			            	$new_task->topic = '1';
 			            	$new_task->crono_date = $date;
 			            	$new_task->description = $description;
@@ -174,14 +175,14 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		        }
 			}
 
-			header('Content-Type: application/json');
-			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$this->request->post('object_id'),
-				'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',				
-				'msg' => $msg,
-			));
-
-			return false;
+			header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
+	        return false;
 		}
 	}
 
@@ -216,13 +217,13 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
 
-	        header('Content-Type: application/json');
-			echo json_encode(array(
-				'direita' => URL::base().'admin/objects/view/'.$task->object_id,	
-				'taskBar' => URL::base().'admin/taskstatus/updateTasksBar',			
-				'msg' => $msg,
-			));
-
+	        header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$task->object_id),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
 	        return false;
 		}
 	}
@@ -318,13 +319,34 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		if($this->current_auth != "assistente"){
 	    	/*rever*/
 	    	$view = View::factory('admin/bar');
-	        
-			$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
-			$view->has_task = ORM::factory('taskView')
-	    						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
-	    						->where('ended', '=', '0')
-	    						->where('task_to', '!=', '0')->group_by('task_to')
-	    						->order_by('nome', 'ASC')->find_all();
+
+			$query = ORM::factory('taskView')
+				->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
+				->where('ended', '=', '0')
+				->where('task_to', '!=', '0');
+
+			//somente coordenadores
+			if($this->current_auth != "admin"){
+				$query->where('userInfos.team_id', '=', $this->current_user->userInfos->team_id);
+			}	
+	    	$view->has_task = $query->group_by('task_to')->order_by('nome', 'ASC')->find_all();
+
+			$teamsVO = array();
+			$teams = ORM::factory('team')->order_by('name')->find_all();
+			foreach($teams as $key => $team) {
+				$team_qtd = ORM::factory('task')->where('ended', '=', '0')->where('team_id', '=', $team->id)->count_all();
+				if($team_qtd > 0){
+					$teamsVO[$key]['id'] = $team->id;
+					$teamsVO[$key]['name'] = $team->name;
+					$teamsVO[$key]['ico'] = substr($team->name, 0, 1);
+					$teamsVO[$key]['color'] = $team->color; 
+					$teamsVO[$key]['qtd'] = $team_qtd; 				
+				}
+			}
+
+			$view->teamsVO = $teamsVO;
+			//$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
+
 
 	    	$view->current_auth = $this->current_auth;
 						
