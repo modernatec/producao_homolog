@@ -153,39 +153,49 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	*/
 	public function action_editPass(){
         $this->auto_render = false;
-        if (HTTP_Request::POST == $this->request->method()) 
-        {                                              
-            /* Atualizando usuários */
-            if($this->request->post('password')!== ''){             
-                $this->current_user->values($this->request->post(), array(
-                    'username',
-                    'password'          
-                ))->save();
-                
-                $msg = "senha alterada com sucesso.";
-            }else{
-                $msg = "ocorreu um erro";
-            }
-            
-            header('Content-Type: application/json');
-            echo json_encode(array(
-                'content' => URL::base().'admin/users/index/ajax',              
-                'msg' => $msg,
-            ));
+		$view = View::factory('admin/users/edit_login');
+		
+		$view->bind('errors', $errors)
+            ->bind('message', $message);
+		
+		$view->userInfoVO = $this->setVO('user', $this->current_user);
 
-        }else{
-    		$view = View::factory('admin/users/edit_login');
-    		
-    		$view->bind('errors', $errors)
-                ->bind('message', $message);
-    		
-    		$view->userInfoVO = $this->setVO('user', $this->current_user);
-    		echo $view;
-        }
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),                    
+            )                       
+        );
 
 
         return false;		
 	}
+
+    public function action_savePass(){
+        $this->auto_render = false;
+        if($this->request->post('password')!== ''){             
+            $this->current_user->values($this->request->post(), array(
+                'username',
+                'password'          
+            ))->save();
+            
+            $msg = "senha alterada com sucesso.";
+        }else{
+            $msg = "ocorreu um erro";
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(   
+            array(
+                array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/users/index/ajax'),
+                array('type'=>'msg', 'content'=> $msg),
+                                    
+            )                       
+        );
+
+
+        return false;
+    }
       
 
     public function action_salvar($userInfo_id = null)
@@ -259,10 +269,11 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $db->rollback();
         }
 
+
         header('Content-Type: application/json');
         echo json_encode(
             array(
-                array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/users/index/ajax'),
+                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getUsers("", true)->render())),
                 array('type'=>'msg', 'content'=> $msg),
             )                       
         );
@@ -384,7 +395,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     } 
 
     /********************************/
-    public function action_getUsers($status_id){
+    public function action_getUsers($status_id, $ajax = null){
         $this->auto_render = false;
         $view = View::factory('admin/users/table');
 
@@ -416,14 +427,18 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view->userinfosList = $query->where('status', '=', $status_id)->order_by('nome','ASC')->find_all();
         
         // $this->endProfilling();
-        header('Content-Type: application/json');
-        echo json_encode(
-            array(
-                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-            )                       
-        );
-       
-        return false;
+        if($ajax != null){
+            return $view;
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                )                       
+            );
+           
+            return false;
+        }
     }    
  
 }

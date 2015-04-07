@@ -1,3 +1,4 @@
+<div class="scrollable_content">
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
 	  	<div class="left">	
@@ -74,6 +75,8 @@
 				<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
 		    </dd>
 	    </div>
+	    <?
+		if($current_auth == 'admin'){?>
 	    <div class="clear left"> 
 		    <dt>
 				<label for="status">status</label>
@@ -87,6 +90,9 @@
 				<span class='error'><?=Arr::get($errors, 'status');?></span>
 		    </dd>
 	    </div>
+	   	<?}?>
+		
+
 	    <div class="clear left">   
 		    <dt>
 		      <label for="team">equipe</label>
@@ -122,3 +128,4 @@
 	    </dd>	
 	  </dl>
 	</form>
+</div>

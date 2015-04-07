@@ -57,12 +57,12 @@ function checkUpload(form){
 		if(filesUploads.length <= 0){
 			uploader.start();
 		}else{
-			ajaxReload(form);
+			ajaxPost(form);
             //form.submit();
 		}
 	}else{
 		//form.submit();
-        ajaxReload(form);
+        ajaxPost(form);
 	}
 		
 }
