@@ -142,6 +142,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
         $last_status = $view->taskflows[0];
 
+        /*
         $view->assign_form = View::factory('admin/tasks/form_assign');
         $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
         $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
@@ -155,6 +156,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->form_status = View::factory('admin/objects/form_status');
         $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
         $view->form_status->obj = $objeto; 
+        */
+        
  		$view->current_auth = $this->current_auth;
 
  		if($ajax != null){

@@ -12,6 +12,35 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		parent::__construct($request, $response);                
 	}
 
+	public function action_order(){
+		$this->auto_render = false;
+		ini_set('max_execution_time', 300); //max. response para 5 minutos
+		//$tasks = ORM::factory('task')->find_all();
+
+		//foreach ($tasks as $task) {
+		//	echo '<br/>'.$task->id.' ---- <br/>';
+			$tasks_status = ORM::factory('tasks_statu')->where('status_id', '=', '6')->find_all();
+			foreach ($tasks_status as $status) {
+				$tasks_finished = ORM::factory('tasks_statu')->where('task_id', '=', $status->task_id)->where('status_id', '=', '7')->find();	
+				if(count($tasks_finished) > 0){
+					//created_??
+					$status->started = $status->created_at;
+					$status->finished = $tasks_finished->created_at;
+					$status->description = $tasks_finished->description;
+					$status->save();
+
+					/*
+					$task = ORM::factory('task', $status->task_id);
+					$task->status_id = '7';
+					$task->save();
+					*/
+				}
+			}
+			
+			echo 'ok';								
+		//}
+	}
+
 	public function action_index($ajax = null)
 	{	
 		//$this->setRefresh();
@@ -160,6 +189,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					'task_to',
 				)); 
 				
+				$task->status_id = '5';
 				if(empty($id)){				
 					/**para não atualizar o criador da tarefa no update**/
 					$task->userInfo_id = $this->current_user->userInfos->id;
@@ -173,6 +203,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	            	/*
 					* cria status inicial da tarefa
 					*/    
+					/*
 					$task_statu = ORM::factory('tasks_statu');
 					$task_statu->userInfo_id = $this->current_user->userInfos->id;
 					$task_statu->status_id = '5';
@@ -180,15 +211,18 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$task_statu->save();  	
 
 					$type = "inicia_tarefa";
+					*/
 				}else{
 					/*
 					* atualiza status caso a tarefa já tenha sido iniciada
 					*/
+					/*
 					$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $id)->and_where('status_id', '=', '6')->find();
 					$task_statu->userInfo_id = $task->task_to;
 					$task_statu->save(); 
 
 					$type = "atualiza_tarefa";
+					*/
 				}
 				
 				/*
