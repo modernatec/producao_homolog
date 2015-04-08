@@ -107,7 +107,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	            */
 	            if($task->tag_id != "7"){
 	            	//procura por tarefas abertas
-	            	$task_open = ORM::factory('taskview')->where('object_id', '=', $task->object_id)->and_where('ended', '=', '0')->find_all();
+	            	$task_open = ORM::factory('task')->where('object_id', '=', $task->object_id)->and_where('ended', '=', '0')->find_all();
 					
 					if(count($task_open) == 0){
 			            if($task->tag_id == "5" || $task->tag_id == "6"){
@@ -321,7 +321,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	    	/*rever*/
 	    	$view = View::factory('admin/bar');
 
-			$query = ORM::factory('taskView')
+			$query = ORM::factory('task')
 				->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
 				->where('ended', '=', '0')
 				->where('task_to', '!=', '0');

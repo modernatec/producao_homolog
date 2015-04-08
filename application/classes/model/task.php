@@ -24,6 +24,11 @@ class Model_Task extends ORM {
 	public function getTasks($id){
 		return ORM::factory('task')->where('task_to', '=', $id)->count_all();
 	}
+
+	public function getUserTasks($id){
+		return ORM::factory('task')->where('task_to', '=', $id)->where('ended', '=', '0')->count_all();
+	}
+
 	
 
 	public function rules()

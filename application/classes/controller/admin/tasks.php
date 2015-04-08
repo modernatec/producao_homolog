@@ -324,7 +324,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->filter_task_to = $this->request->query('to');  
 		$view->filter_team = $this->request->query('team');          
 
-        $query = ORM::factory('taskView');
+        $query = ORM::factory('task');
 
         if($this->current_auth != 'admin'){
 			$query->where('team_id', '=', $this->current_user->userInfos->team_id);
@@ -346,17 +346,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		);
         return false;
     }  
-
-    public function action_ongoing(){
-        $this->auto_render = false;
-        $view = View::factory('admin/tasks/table');
-        $view->current_auth = $this->current_auth;
-
-        $view->taskList = ORM::factory('ongoing')->where('status_id', '=', '7')->find_all();
-
-        echo $view;
-    }   
-    
+        
 	/*--------------*/
     public function action_searchnew()
     {	
