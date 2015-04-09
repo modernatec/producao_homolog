@@ -47,13 +47,14 @@
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text required round" name="description" id="description" style="width:700px; height:150px;"><?=@$taskVO['description']?></textarea>
+                  <textarea class="text required round" name="description" id="description" style="width:540px; height:150px;"><?=@$taskVO['description']?></textarea>
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>
         <!--input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label-->
-        <!--dd>
-          <input type="submit" class="round green" value="salvar" />             
-        </dd-->	    
+        <dd>
+          <input type="submit" class="round green" value="salvar" />  
+          <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>                  
+        </dd>	    
 	</dl>
 </form>

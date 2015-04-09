@@ -131,7 +131,7 @@
             <div class="clear left">
                 <dt> <label for="artesupplier_id">arte/interface</label> </dt>
                 <dd>
-                    <select class="required round" name="artesupplier_id" id="artesupplier_id">
+                    <select class=" round" name="artesupplier_id" id="artesupplier_id">
                         <option value=''>Selecione</option>
                         <? 
                         foreach($suppliers as $supplier){

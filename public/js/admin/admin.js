@@ -188,8 +188,8 @@ $(document).ready(function()
 
 
 setInterval(function() {
-    //updateBar();
-}, 5000);
+    updateBar();
+}, 10000);
 
 function setupScroll(){
     $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
@@ -422,7 +422,7 @@ function setupAjax(container){
         $('#tasks').addClass('selected');
 
         if($(this).data("refresh") != undefined){
-            window.location.hash = '#tasks';
+            window.location.hash = $(this).attr("href");
         }
     });
 
@@ -472,60 +472,30 @@ function setupAjax(container){
         return false;
     });
 
+    $("a.close_pop").unbind('click').bind('click', function(e){
+        e.preventDefault();
+        removeDialogs();
+    });
+
     $('a.popup').unbind('click').bind('click', function(e) {
         e.preventDefault();
         var url = this.href;
         var form;
-        // show a spinner or something via css
-        var dialog = $('<div style="display:none" id="dialog" class="ui-dialog loading"></div>').appendTo('body');
-        // open the dialog
-        dialog.dialog({
-            // add a close listener to prevent adding multiple divs to the document
-            close: function(event, ui) {
-                // remove div with all data and events
-                dialog.remove();
-            },
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            width: 'auto',
-            dialogClass: 'noTitleStuff',
-            show: 'clip',
-            hide: 'clip',
-            maxWidth: 600,
-            maxHeight: 600,
-            buttons: [
-                {text: "salvar", click: function() {
-                    $('#'+form).submit();
-                    //loadContent({url:$(btExcluir).attr('href')});
-                }},
-                {text: "cancelar", click: function() {
-                    removeDialogs();
-                }}
-            ]
-        });
 
-        // load remote content
-        dialog.load(
-            url, 
-            {}, // omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
+        $('#dialog').remove();
+
+        $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
+        $('#dialog').load(
+            url,  
+            {},           
             function (responseText, textStatus, XMLHttpRequest) {
-                // remove the loading class
-                dialog.removeClass('loading');
-               
-                $('.ui-dialog form').each(function(e, element){
-                    form = element.id;
-                })
+                $(this).removeClass('loading');
+                setupAjax('#dialog');
 
-                setTimeout(function(){ 
-                    dialog.dialog('open');
-                    validateAjax();
-                    
-                }, 200);
+                $('#dialog').show('slide', {direction: 'left'}, 300);
             }
         );
         
-        //prevent the browser to follow the link
         return false;
     });
 
@@ -812,15 +782,18 @@ function setMsg(args){
 }
 
 function removeDialogs(){
-    var options = {};
-    $('.ui-dialog').effect('clip', options, 500, function(){
-        $(this).remove();
-    });
-    /*
-    $('#dialog, ui-dialog').fadeOut(500, function(){
-        $(this).remove();
-    });
-    */    
+    if($('.ui-dialog').length != 0){
+        var options = {};
+        $('.ui-dialog').effect('clip', options, 200, function(){
+            $(this).remove();
+        });
+    }
+
+    if($('#dialog').length != 0){
+        $('#dialog').hide('slide', {direction: 'left'}, 200, function(){
+            $(this).remove();
+        });
+    }
 }
 
 $.validator.addMethod('date',

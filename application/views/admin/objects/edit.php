@@ -50,44 +50,10 @@
 	                  <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"><?=$objVO['description']?></textarea>
 	                  <span class='error'><?=Arr::get($errors, 'description');?></span>
 	            </dd>
-	            <!--dd>
+	            <dd>
 	              <input type="submit" class="round green" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
-	            </dd-->	    
+	              <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>      
+	            </dd>	    
 			</dl>
 		</form>
-	</div>
-	<div class="left">
-		<table>
-            <thead>
-                <th>&nbsp;</th>
-                <th>envio</th>
-                <th>retorno RT</th>
-                <th>rel. correções</th>
-            </thead>
-            <tr>
-                <td><span class="text_blue">prova 1</span></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
-            </tr>
-            <tr>
-                <td><span class="text_blue">prova 2</span></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
-            </tr>
-            <tr>
-                <td><span class="text_blue">prova 3</span></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
-            </tr>
-            <tr>
-                <td><span class="text_blue">prova 4</span></td>
-                <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-        </table>
-        <span class="text_blue">obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></span>
 	</div>

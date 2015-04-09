@@ -15,8 +15,23 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_order(){
 		$this->auto_render = false;
 		ini_set('max_execution_time', 300); //max. response para 5 minutos
-		//$tasks = ORM::factory('task')->find_all();
 
+		$tasks_status = ORM::factory('task')->where('ended', '=', '0')->find_all();
+		foreach ($tasks_status as $status) {
+			$tasks_finished = ORM::factory('tasks_statu')->where('task_id', '=', $status->task_id)->find();	
+			if(count($tasks_finished) > 0){
+				//created_??
+				//$status->started = $status->created_at;
+				//$status->finished = $tasks_finished->created_at;
+				//$status->description = $tasks_finished->description;
+				$status->status_id = '6';
+				$status->save();
+				
+			}
+		}
+
+		//$tasks = ORM::factory('task')->find_all();
+		/*
 		//foreach ($tasks as $task) {
 		//	echo '<br/>'.$task->id.' ---- <br/>';
 			$tasks_status = ORM::factory('tasks_statu')->where('status_id', '=', '6')->find_all();
@@ -33,9 +48,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$task = ORM::factory('task', $status->task_id);
 					$task->status_id = '7';
 					$task->save();
-					*/
+					*
 				}
 			}
+			*/
 			
 			echo 'ok';								
 		//}
@@ -146,12 +162,28 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		$query_team =  ORM::factory('userInfo')->where('status', '=', '1');
 		
+		//var_dump($this->current_auth);
 		if($this->current_auth != 'admin'){
 			$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
 		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
 		$view->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
+
+		echo $view;
+	}
+
+	/**
+	**Formulario popup. 	
+	**/
+   	public function action_endtask($id){
+		$this->auto_render = false;
+		$view = View::factory('admin/tasks/form_endtask');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+		
+		$view->task = ORM::factory('task', $id);
 
 		echo $view;
 	}
@@ -168,6 +200,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		echo $view;
 	}
+
+
 	
 	public function action_salvar($id = null)
 	{
@@ -189,11 +223,12 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					'task_to',
 				)); 
 				
-				$task->status_id = '5';
+				
 				if(empty($id)){				
 					/**para não atualizar o criador da tarefa no update**/
 					$task->userInfo_id = $this->current_user->userInfos->id;
 					$task->team_id = $this->current_user->userInfos->team_id;
+					$task->status_id = '5';
 	            }
 
 	            $task->save();  
