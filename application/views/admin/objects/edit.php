@@ -56,4 +56,5 @@
 	            </dd>	    
 			</dl>
 		</form>
+		<input onclick="createEditor();" type="button" value="Create Editor">
 	</div>

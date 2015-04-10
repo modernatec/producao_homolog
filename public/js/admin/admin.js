@@ -136,7 +136,9 @@ function populateSelect(ui)
     });
 }
 
-
+var editor, html = '';
+var upload = false;
+var googleLoaded = false;
 
 $(document).ready(function()
 {	
@@ -185,12 +187,7 @@ $(document).ready(function()
 
     updateBar();
 
-    tinymce.init({
-        selector: "textarea",
-        menubar : false,
-        statusbar: false,
-        toolbar: "bold italic | bullist numlist outdent indent"
-    });
+
 
 });
 
@@ -207,8 +204,7 @@ function setupScroll(){
     });
 }
 
-var upload = false;
-var googleLoaded = false;
+
 
 function setupChartData(data){
     for(k in data){
@@ -248,11 +244,34 @@ var drawCharts = function drawChart() {
 }
 
 
+function createEditor() {
+    
+    // Create a new editor inside the <div id="editor">, setting its value to html
+    //var config = {};
+    //editor = CKEDITOR.appendTo( 'description', config, html );
+    console.log('chamou')
+    
+}
+
+function removeEditor() {
+    if ( !editor )
+        return;
+
+    // Retrieve the editor contents. In an Ajax application, this data would be
+    // sent to the server or used in any other way.
+    //document.getElementById( 'editorcontents' ).innerHTML = html = editor.getData();
+    //document.getElementById( 'contents' ).style.display = '';
+
+    // Destroy the editor.
+    editor.destroy();
+    editor = null;
+}
+
 function setupAjax(container){ 
     if(container == '#dialog'){
-        console.log(tinymce)
-        tinymce.EditorManager.execCommand('mceRemoveEditor', false, "description");
-        tinymce.EditorManager.execCommand('mceAddEditor', true, "description");
+        console.log('chamou ajax')
+        //removeEditor();
+        //createEditor();
 
     }
 
@@ -508,6 +527,10 @@ function setupAjax(container){
                 setupAjax('#dialog');
 
                 $('#dialog').show('slide', {direction: 'left'}, 300);
+
+                setTimeout(function(){
+                    $('#description').ckeditor();
+                }, 500);
             }
         );
         

@@ -93,8 +93,11 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/css/admin/nested.css' => 'screen',
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/common/jquery.jgrowl.css' => 'screen',
+				'public/js/common/ckeditor/samples/sample.css',
+
 
 				'public/css/admin/masterpage.css' => 'screen',
+
 				'public/css/admin/login.css' => 'screen',
 
             );
@@ -109,7 +112,8 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery.maskedinput.min.js',
 				'public/js/admin/jquery.mCustomScrollbar.concat.min.js',
 				'public/js/common/jquery/jquery.easing.min.js',
-				'public/js/common/tinymce/tinymce.min.js',
+				'public/js/common/ckeditor/ckeditor.js',
+				'public/js/common/ckeditor/adapters/jquery.js',
 
 				'https://www.google.com/jsapi',				
 
