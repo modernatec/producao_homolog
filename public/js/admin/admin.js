@@ -184,6 +184,14 @@ $(document).ready(function()
     }
 
     updateBar();
+
+    tinymce.init({
+        selector: "textarea",
+        menubar : false,
+        statusbar: false,
+        toolbar: "bold italic | bullist numlist outdent indent"
+    });
+
 });
 
 
@@ -241,6 +249,13 @@ var drawCharts = function drawChart() {
 
 
 function setupAjax(container){ 
+    if(container == '#dialog'){
+        console.log(tinymce)
+        tinymce.EditorManager.execCommand('mceRemoveEditor', false, "description");
+        tinymce.EditorManager.execCommand('mceAddEditor', true, "description");
+
+    }
+
     if($('.topo').length != 0 && container == '#content'){
         //$('#esquerda, #direita').fadeOut(function(){
             $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});

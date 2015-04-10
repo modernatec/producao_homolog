@@ -109,6 +109,7 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery.maskedinput.min.js',
 				'public/js/admin/jquery.mCustomScrollbar.concat.min.js',
 				'public/js/common/jquery/jquery.easing.min.js',
+				'public/js/common/tinymce/tinymce.min.js',
 
 				'https://www.google.com/jsapi',				
 
