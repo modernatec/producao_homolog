@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Model_Ongoing extends ORM {
-    
+    /*
 	protected $_belongs_to  = array(
 		'object' => array('foreign_key' => 'object_id'),
 		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
@@ -19,5 +19,5 @@ class Model_Ongoing extends ORM {
 	public function getReplies($id){
 		return ORM::factory('task')->where('task_id', '=', $id)->find_all();
 	}
-	
+	*/
 }

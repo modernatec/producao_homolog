@@ -2,7 +2,7 @@
 
 class Model_TaskView extends ORM {
 	//protected $load_with = array('statu');
-
+	/*
 	protected $_belongs_to  = array(
 		'object' => array('foreign_key' => 'object_id'),
 		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
@@ -37,6 +37,7 @@ class Model_TaskView extends ORM {
 			),
 	    );
 	}
+	*/
 
 	/*
 	'description' => array(

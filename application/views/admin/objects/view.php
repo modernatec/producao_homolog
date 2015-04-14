@@ -228,13 +228,13 @@
                                                             <? if($current_auth != "assistente"){?>
                                                                 <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
                                                             <?}?>
-                                                            <?=$taskReply->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
+                                                            <?=$taskReply->task->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
                                                         </div>
                                                         <?if(!empty($taskReply->description)){ ?>
                                                             <span class="wordwrap description"><?=$taskReply->description;?></span>
                                                         <?}?>
                                                         <div class="options" >
-                                                            <? if($task->status_id == '6' && $taskReply->userInfo_id == $user->id){?>
+                                                            <? if($task->status_id == '6' && $task->to->id == $user->id){?>
                                                                 <div style="min-height:20px;">
                                                                     <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button green round">entregar</a>
                                                                 </div>

@@ -8,14 +8,14 @@ class Model_TasksNota extends ORM {
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
     	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
 	);	
-
-	/****APAGAR***/
+	
 	public function getReplies($id){
-		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->find_all();
 	}
-
+	/*
 	public function getHistory($id){
 		return ORM::factory('tasksNota')->where('object_status_id', '=', $id)->order_by('id', 'DESC')->find_all();
 	}
+	*/
 	
 }

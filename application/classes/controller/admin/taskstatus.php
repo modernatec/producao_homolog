@@ -20,7 +20,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	public function action_start(){
 		$this->auto_render = false;
 
-		$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '6')->find_all();
+		$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->find_all();
 		if(count($task_ini) > 0){
 			$msg = "Tarefa já foi iniciada ".$this->request->post('task_id'); 
 		}else{
@@ -29,8 +29,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			
 			try {  					
 				$task_statu = ORM::factory('tasks_statu');
-				$task_statu->userInfo_id = $this->current_user->userInfos->id;
-				$task_statu->status_id = '6';
+				//$task_statu->userInfo_id = $this->current_user->userInfos->id;
+				//$task_statu->status_id = '6';
 				$task_statu->task_id = $this->request->post('task_id');
 				$task_statu->description = $this->request->post('description'); 
 				$task_statu->started = date("Y-m-d H:i:s");

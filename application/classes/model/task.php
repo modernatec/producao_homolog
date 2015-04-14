@@ -8,18 +8,20 @@ class Model_Task extends ORM {
 		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
 		'userInfo' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
-    	//'task' => array('model' => 'task', 'foreign_key' => 'task_id'),
     	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
     	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
 	);	
 
+	/*
 	public function getStatus($id){
 		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();
 	}
 
+	
 	public function getReplies($id){
-		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->where('status_id', '!=', '5')->find_all();
+		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->find_all();
 	}
+	*/
 
 	public function getTasks($id){
 		return ORM::factory('task')->where('task_to', '=', $id)->count_all();
