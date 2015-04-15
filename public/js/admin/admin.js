@@ -1,56 +1,3 @@
-/*
-function aniversariantes()
-{
-    $.get(base_url + 'users/aniversariantes/',function(data)
-    {  
-        data = JSON.parse(data);    
-        $.each(data.dados,function(i)
-        {
-            var dado = data.dados[i];
-            var msg = 'Hoje <b>'+dado.nome+'</b> faz aniversário!!<br/><br/>Dê os parabéns!!!</a>';
-            $.jGrowl(msg,
-                {
-                    theme:'aniversariantes',
-                    position:'bottom-left',
-                    sticky:true                       
-                }
-            );
-        });
-    });
-}
-
-
-function excluirTemporario(id)
-{
-    var filePath = $('#'+id).attr('filePath');
-    //var mimeType = $('#'+id).attr('mimeType');
-    $.get(base_url + 'pluploader/delete/'+filePath,function(data)
-    {
-       if(data=='OK')
-       {           
-           for(var i=0; i < filesUploads.length; i++)
-           {
-               if(filePath == filesUploads[i]){
-                   filesUploads[i] = 'empty';
-                   mimeUploads[i] = 'empty';
-               }
-           }                     
-           /*for(var i=0; i < mimeUploads.length; i++)
-           {
-               if(mimeType == mimeUploads[i]){
-                   mimeUploads[i] = 'empty';
-               }
-           }*
-           $('#'+id).remove();
-           $('#filesUploads').val(filesUploads.join(','));
-           $('#mimeUploads').val(mimeUploads.join(','));
-       }else
-       {
-           alert(data);
-       }
-    });
-}
-*/
 function checkUpload(form){
 	
 	if($('.delFiles').size() > 0){
@@ -67,39 +14,6 @@ function checkUpload(form){
 		
 }
 
-$(function (){
-    /*
-        $('a.ajax').click(function() {
-
-            var url = this.href;
-            // show a spinner or something via css
-            var dialog = $('<div style="display:none" id="dialog" class="loading"></div>').appendTo('body');
-            // open the dialog
-            dialog.dialog({
-                // add a close listener to prevent adding multiple divs to the document
-                close: function(event, ui) {
-                    // remove div with all data and events
-                    dialog.remove();
-                },
-                modal: true
-            });
-            // load remote content
-            dialog.load(
-                url, 
-                {}, // omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
-                function (responseText, textStatus, XMLHttpRequest) {
-                    // remove the loading class
-                    dialog.removeClass('loading');
-                }
-            );
-            //prevent the browser to follow the link
-            return false;
-        });
-    */
-    });
-
-
-
 function rightClick(obj,func)
 {
     $(obj).bind("contextmenu", function(e) { e.preventDefault(); if(func){ func(); } });
@@ -108,9 +22,11 @@ function rightClick(obj,func)
 var m_x = 0;
 var m_y = 0;
 
+/*
 $(function () {
     setupAjax();
 });
+*/
 
 function closeFilterPanel(){
     $('.filter ul li').css({'background': ''});
@@ -136,7 +52,6 @@ function populateSelect(ui)
     });
 }
 
-var editor, html = '';
 var upload = false;
 var googleLoaded = false;
 
@@ -243,38 +158,7 @@ var drawCharts = function drawChart() {
     }
 }
 
-
-function createEditor() {
-    
-    // Create a new editor inside the <div id="editor">, setting its value to html
-    //var config = {};
-    //editor = CKEDITOR.appendTo( 'description', config, html );
-    console.log('chamou')
-    
-}
-
-function removeEditor() {
-    if ( !editor )
-        return;
-
-    // Retrieve the editor contents. In an Ajax application, this data would be
-    // sent to the server or used in any other way.
-    //document.getElementById( 'editorcontents' ).innerHTML = html = editor.getData();
-    //document.getElementById( 'contents' ).style.display = '';
-
-    // Destroy the editor.
-    editor.destroy();
-    editor = null;
-}
-
 function setupAjax(container){ 
-    if(container == '#dialog'){
-        console.log('chamou ajax')
-        //removeEditor();
-        //createEditor();
-
-    }
-
     if($('.topo').length != 0 && container == '#content'){
         //$('#esquerda, #direita').fadeOut(function(){
             $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});
@@ -529,7 +413,9 @@ function setupAjax(container){
                 $('#dialog').show('slide', {direction: 'left'}, 300);
 
                 setTimeout(function(){
-                    $('#description').ckeditor();
+                    $('#description').ckeditor({
+                        height: $('#description').height(),
+                        width: $('#description').width()});
                 }, 500);
             }
         );
@@ -581,8 +467,13 @@ function setupAjax(container){
     });
 }
 
+function CKupdate(){
+    for ( instance in CKEDITOR.instances )
+        CKEDITOR.instances[instance].updateElement();
+}
 
 function ajaxPost(form, container){
+    CKupdate();
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
     data_post.push({name: 'container', value: container});
@@ -614,33 +505,6 @@ function ajaxPost(form, container){
         }
     });    
 }
-
-/*
-function ajaxReload(form, container){    
-    var data_post = $(form).serializeArray();
-    data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
-    data_post.push({name: 'container', value: container});
-
-    if(container != undefined){
-        $(container).html("<div class='loading'>loading...</div>"); 
-    }
-
-    $.ajax({
-        type: "POST",
-        url: $(form).attr('action'),
-        data: data_post,
-        timeout: 20000, 
-        success: function(retorno) {
-            setDataPanels(retorno);
-            $('input[type=submit]').prop("disabled", '' );
-        },
-        error: function(e) {
-            console.log(e);
-            alert("ocorreu um erro.");
-        }
-    });    
-}
-*/
 
 lastURL = "";
 var returnData = [];
@@ -693,23 +557,10 @@ function loadContent(args){
             error: function(e) {
                 console.log(e);
                 setMsg({
-                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>Verifique se você possuí permissão para acessar este conteúdo e tente novamente...', 
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                         tema:'error',
                         fix: true,
                 });
-
-                //console.log(e.responseText);
-                //alert("");
-                /*
-                var NewDialog = $('<div id="dialog" class="ui-dialog">'+e.responseText+'</div>');
-                    NewDialog.dialog({
-                    modal: true,
-                    dialogClass: 'noTitleStuff',
-                    show: 'clip',
-                    hide: 'clip',
-                    resizable:false,
-                });
-                */
             }
         });  
     }else{

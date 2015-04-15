@@ -38,16 +38,15 @@
                     
                     <div class="left">
                     <?
+                        $calendar = URL::base().'/public/image/admin/calendar2.png';
                         if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
-                            $class_obj = "red";
-                            $calendar = URL::base().'/public/image/admin/calendar2.png';
+                            $class_obj = "ff0000";                            
                         }else{
                             $class_obj  = $task->tag->class;
-                            $calendar = URL::base().'/public/image/admin/calendar.png';
                         }
                     ?>
-                        <span class="<?=$task->tag->class?> round list_faixa left"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> 
-                        <span class="<?=$class_obj?> round list_faixa left"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
+                        <span class="round list_faixa left tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> 
+                        <span class="round list_faixa left tag" style="background:#<?=$class_obj?>"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
                         <span class="<?=$task->status->class?> round list_faixa"><?=$task->status->status;?></span>
                     </div>
                 </a>

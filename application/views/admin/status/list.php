@@ -8,6 +8,9 @@
                 <? foreach($statusList as $status){?>
                 <li>
                     <div class="left">
+                        <span class="ball <?=$status->class;?>"></span>
+                    </div>
+                    <div class="left">
                         <a style='display:block' href="<?=URL::base().'admin/status/edit/'.$status->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$status->status?></a>
                     </div>
                     <div class="right">

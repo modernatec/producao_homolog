@@ -37,8 +37,6 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 			
-		//$view->isUpdate = true; 
-
 		$status = ORM::factory('statu', $id);
 		$view->statusVO = $this->setVO('statu', $status); 
 
@@ -103,11 +101,9 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			}
             $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
@@ -129,10 +125,8 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('statu', $id);
 			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
 			$msg = "tipo de objeto excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add',''); 
 			$errors = $e->errors('models');
 			$msg = "houveram alguns erros na exclusão dos dados.";
 		}

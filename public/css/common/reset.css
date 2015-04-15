@@ -47,19 +47,21 @@ img {
 }
 /*
 	TODO think about hanlding inheritence differently, maybe letting IE6 fail a bit...
+	em,
+strong,
 */
 address,
 caption,
 cite,
 code,
 dfn,
-em,
-strong,
+
 th,
 var {
 	font-style:normal;
 	font-weight:normal;
 }
+
 /*
 	TODO Figure out where this list-style rule is best set. Hedger has a request to investigate.
 */

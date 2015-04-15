@@ -180,7 +180,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
 			->bind('message', $message);
 
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
+		$query = ORM::factory('statu')
+		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id');
+
+		if($this->current_auth != 'admin'){
+			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$view->statusList = $query->where('type', '=', 'object')->group_by('status')->order_by('status', 'ASC')->find_all();
 		
 		$objStatus = ORM::factory('objects_statu', $id);	
 		$arr_objstatus = $this->setVO('objects_statu', $objStatus);

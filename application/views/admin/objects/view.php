@@ -4,7 +4,7 @@
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" class="bar_button round">editar OED</a>       
     <?}?>
     <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
-        <a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a>       
+        <!--a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a-->       
     <?}?>
 
     <?if($current_auth != "assistente"){?>
@@ -42,7 +42,7 @@
             foreach($taskflows as $status_task){
                 ?>                          
                     <div style='clear:both' >
-                        <div class='hist round step step_<?=$status_task->status->team->color?>' >
+                        <div class='hist round step step_<?=$status_task->status->class?>' >
                             <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
                                 <div class="left"><?=Utils_Helper::getUserImage($status_task->userInfo)?></div>
                                 <!--img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /--> 
@@ -71,7 +71,7 @@
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
                                 <?}?>
-                                <span class="list_faixa <?=$status_task->status->team->color?> round"><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></span></a>
+                                <span class="list_faixa <?=$status_task->status->class?> round"><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></span></a>
 
                                 
                                 <p>iniciado: <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?></p>
@@ -172,7 +172,7 @@
                                                         <?if($current_auth != "assistente"){?>
                                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
                                                         <?}?>
-                                                        <span class="<?=$task->tag->class?> round list_faixa"><?=$task->tag->tag?></span></a> 
+                                                        <span class="round list_faixa tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?></span></a> 
                                                     </div>
                                                     <? if($task->task_to != "0"){?>
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>

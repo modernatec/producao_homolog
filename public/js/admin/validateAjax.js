@@ -1,7 +1,4 @@
 function validateAjax(){
-    //console.log("chamou validate")
-    //$(".date").datepicker({dateFormat: 'dd/mm/yy'}).val();
-
     $('.date').live('focus', function () {
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
@@ -28,7 +25,12 @@ function validateAjax(){
         rules: {
             topic: {required:true},
             crono_date: {required:true},
-            description: {required:true},
+            description: {required:{
+                depends:function(){
+                   CKupdate();
+                   return true;
+                }
+            }},
         },
         messages: {
             topic: { required:'Campo não pode ser vazio'},

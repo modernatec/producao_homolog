@@ -166,9 +166,16 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		if($this->current_auth != 'admin'){
 			$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
 		}
-
 		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
-		$view->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
+
+		$query = ORM::factory('tag')
+		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id');
+
+		if($this->current_auth != 'admin'){
+			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$view->tagList = $query->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all(); 
 
 		echo $view;
 	}

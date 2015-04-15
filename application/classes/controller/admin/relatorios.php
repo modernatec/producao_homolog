@@ -45,9 +45,11 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$view->project_title = $project_title;
 
 		//grafico 1 tag X qtd
-		$dbTasks = DB::select('tag, count("tag_id") qtd')->from('taskviews')
+		$dbTasks = DB::select('tag, count("tag_id") qtd')->from('tasks')
 		->join('tags', 'INNER')
-		->on('taskviews.tag_id', '=', 'tags.id')
+		->on('tasks.tag_id', '=', 'tags.id')
+		->join('objects', 'INNER')
+		->on('objects.id', '=', 'tasks.object_id')
 		->where('ended', '=', '0');
 		if($id != 'init' && $id != ''){
 			$dbTasks->where('project_id', '=', $id);

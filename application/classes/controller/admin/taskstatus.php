@@ -29,8 +29,6 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			
 			try {  					
 				$task_statu = ORM::factory('tasks_statu');
-				//$task_statu->userInfo_id = $this->current_user->userInfos->id;
-				//$task_statu->status_id = '6';
 				$task_statu->task_id = $this->request->post('task_id');
 				$task_statu->description = $this->request->post('description'); 
 				$task_statu->started = date("Y-m-d H:i:s");
@@ -76,7 +74,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	*/
 	public function action_end(){
 		$this->auto_render = false;
-		$task_end = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
+		$task_end = ORM::factory('task')->where('id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
 		
 		if(count($task_end) > 0){
 			$msg = "Tarefa já finalizada";
@@ -86,8 +84,6 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			
 			try {  					
 				$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $this->request->post('task_id'))->find();
-				$task_statu->userInfo_id = $this->current_user->userInfos->id;
-				$task_statu->status_id = '7';
 				$task_statu->task_id = $this->request->post('task_id');
 				$task_statu->description = $this->request->post('description'); 
 				$task_statu->finished = date("Y-m-d H:i:s");
@@ -139,13 +135,6 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 		            	$new_task->status_id = '5';
 		            	$new_task->userInfo_id = $this->current_user->userInfos->id;
 			            $new_task->save();  
-			            
-			            /*
-						$new_statu = ORM::factory('tasks_statu');
-						$new_statu->userInfo_id = $this->current_user->userInfos->id;
-						$new_statu->status_id = '5';
-						$new_statu->task_id = $new_task->id;
-						$new_statu->save();  */
 					}
 				}
 				

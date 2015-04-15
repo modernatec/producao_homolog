@@ -47,7 +47,7 @@
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text required round" name="description" id="description" style="width:540px; height:150px;"><?=@$taskVO['description']?></textarea>
+                  <textarea class="text required round" name="description" id="description" style="width:540px; height:300px;"><?=@$taskVO['description']?></textarea>
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>

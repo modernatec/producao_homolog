@@ -3,7 +3,6 @@
 	<div class="left">
 		<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 			<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
-			<dl>
 				<div class="left">
 					<dt>
 			            <label for="status_id">status:</label>
@@ -36,25 +35,27 @@
 			            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
 			        </dd>				        
 				</div>
-				<dt>
-		            <label for="crono_date">retorno para:</label>
-		        </dt>
-		        <dd>
-		            <input type="text" name="crono_date" id="crono_date_status3" class="round required date" style="width:100px;" value="<?=$objVO['crono_date']?>" />
-		            <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
-		        </dd>			
-	            <dt>
-	            	<label for="description">observações</label>
-	            </dt>
-	            <dd>
-	                  <textarea class="text round" name="description" id="description" style="width:500px; height:200px;"><?=$objVO['description']?></textarea>
-	                  <span class='error'><?=Arr::get($errors, 'description');?></span>
-	            </dd>
+				<div class="left">
+					<dt>
+			            <label for="crono_date">retorno para:</label>
+			        </dt>
+			        <dd>
+			            <input type="text" name="crono_date" id="crono_date_status3" class="round required date" style="width:100px;" value="<?=$objVO['crono_date']?>" />
+			            <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
+			        </dd>
+		        </div>
+		        <div class="clear">			
+		            <dt>
+		            	<label for="description">observações</label>
+		            </dt>
+		            <dd>
+		                  <textarea class="text round" name="description" id="description" style="width:540px; height:300px;"><?=$objVO['description']?></textarea>
+		                  <span class='error'><?=Arr::get($errors, 'description');?></span>
+		            </dd>
+	            </div>
 	            <dd>
 	              <input type="submit" class="round green" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
 	              <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>      
 	            </dd>	    
-			</dl>
 		</form>
-		<input onclick="createEditor();" type="button" value="Create Editor">
 	</div>

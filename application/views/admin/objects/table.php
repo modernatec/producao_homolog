@@ -16,7 +16,7 @@
 	    		$tag = "";
 	    		$task_to = "";
 	    		$calendar = URL::base().'/public/image/admin/calendar2.png';
-				
+				/*
 				switch($objeto->status_id){
 	    			case 1:
 	    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
@@ -27,17 +27,12 @@
 	        			}
 	    				break;
 	    			case 2:
-	    				$mod = "";
-	    				if($objeto->supplier_id != 10){//producao externa
-	    					$mod = "_out";	
-	    				}else{
-	    					$mod = "_in"; 
-	    				}
+	    				
 
 	    				if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
 	            			$class_obj = "object_late";
 	            		}else{
-	        				$class_obj 	= $objeto->statu_class.$mod;
+	        				$class_obj 	= $objeto->statu_class;
 	            			$calendar = URL::base().'/public/image/admin/calendar.png';
 	        			}	        			
 	   				
@@ -57,6 +52,13 @@
 
 	        			}	        			
 	    		}
+	    		*/
+
+	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
+        			$class_obj = "object_late";
+        		}else{
+    				$class_obj 	= $objeto->statu_class;
+    			}	 
 
 	    		if(is_object($objeto->getStatus($objeto->object_status_id))){
 	    			$obj_taskView = $objeto->getStatus($objeto->object_status_id); 
@@ -66,7 +68,7 @@
 	    				$tag = "";
 			    	}else{
 			    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
-		    			$tag = '<span class="round list_faixa left '.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
+		    			$tag = '<span class="round list_faixa left tag" style="background:#'.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
 		    		}
 
 		    		if($obj_taskView->task_to != 0){
