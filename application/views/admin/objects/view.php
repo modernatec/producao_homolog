@@ -195,9 +195,7 @@
                                                 </div>
                                             </div>  
                                         </div>
-                                        <div class="replies replies_<?=$task->id;?>">
-
-                                             
+                                        <div class="replies replies_<?=$task->id;?>"> 
                                             <div style='clear:both'>
                                                 <div class='hist'>
                                                     <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
