@@ -54,7 +54,7 @@
 	    		}
 	    		*/
 
-	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s"))){
+	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s")) && $objeto->status_id != '8'){
         			$class_obj = "object_late";
         		}else{
     				$class_obj 	= $objeto->statu_class;

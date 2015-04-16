@@ -12,6 +12,10 @@ class Model_Task extends ORM {
     	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
 	);	
 
+	protected $_has_one = array(
+		'reply' => array('model' => 'tasks_statu', 'foreign_key' => 'task_id'),
+	);
+
 	/*
 	public function getStatus($id){
 		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();

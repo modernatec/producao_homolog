@@ -139,24 +139,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->user = $this->current_user->userInfos;                          
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
-        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->taskflows[0];
-
-        /*
-        $view->assign_form = View::factory('admin/tasks/form_assign');
-        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
-        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
-        $view->assign_form->obj = $objeto; 
-        $view->assign_form->object_status = $last_status;
-
-        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
-        $view->anotacoes_form->obj = $objeto; 
-        $view->anotacoes_form->object_status = $last_status;
-
-        $view->form_status = View::factory('admin/objects/form_status');
-        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
-        $view->form_status->obj = $objeto; 
-        */
+        $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $last_status = $view->objects_status[0];
         
  		$view->current_auth = $this->current_auth;
 
@@ -252,8 +236,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 						array('type'=>'msg', 'content'=> $msg),
 					)						
 				);	
-				//URL::base().'admin/objects/view/'.$object->object_id
-				//URL::base().'admin/objects/getObjects/'
 	        }else{
 				echo json_encode(
 					array(
@@ -471,10 +453,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(isset($view->filter_materia)) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 		
-		$view->objectsList = $query->where('project_id', '=', $project_id)->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-			->where('project_id', '=', $project_id))
+		$view->objectsList = $query->where('project_id', '=', $project_id)
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
+		//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
+			//->where('project_id', '=', $project_id))
 		/****Filtros*****/
 
 		
@@ -502,9 +485,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$query_filters = DB::select('*')->from('objectStatus')
 							->where('fase', '=', '1')
 							->where('project_id', '=', $project_id)
-							->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-							->where('project_id', '=', $project_id))
 							->execute();
+
+		//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
+							//->where('project_id', '=', $project_id))
 
 		foreach ($query_filters as $object) {
 			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));

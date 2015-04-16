@@ -9,7 +9,12 @@ class Model_Objects_statu extends ORM {
     	'object' => array('model' => 'object', 'foreign_key' => 'object_id'),
 	);	
 
-	/****APAGAR***/
+	protected $_has_many = array(
+		'tasks' => array('model' => 'task', 'foreign_key' => 'object_status_id'),
+		'anotacoes' => array('model' => 'anotacoes_object', 'foreign_key' => 'object_status_id'),
+	);
+
+	/****APAGAR***
 	public function getStatus($id){
 		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();
 	}
@@ -21,7 +26,7 @@ class Model_Objects_statu extends ORM {
 	public function getHistory($id){
 		return ORM::factory('tasksnota')->where('object_status_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 	}
-
+	*/
 
 	public function filters()
 	{

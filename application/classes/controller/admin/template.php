@@ -73,10 +73,6 @@ class Controller_Admin_Template extends Controller_Template {
 		}		
   	}
 
-  	public function setRefresh($time = 300){
-  		//$this->template->refresh   = '<meta http-equiv="refresh" content="'.$time.'">';
-  	}
- 
 	/**
 	* The after() method is called after your controller action.
 	* In our template controller we override this method so that we can
@@ -88,16 +84,11 @@ class Controller_Admin_Template extends Controller_Template {
         {
         	$styles = array(
 				'public/css/common/reset.css' => 'screen',
-				'public/css/common/jquery-ui/jquery-ui.min.css' => 'screen',						
-				
+				'public/css/common/jquery-ui/jquery-ui.min.css' => 'screen',	
 				'public/css/admin/nested.css' => 'screen',
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/common/jquery.jgrowl.css' => 'screen',
-				'public/js/common/ckeditor/samples/sample.css',
-
-
 				'public/css/admin/masterpage.css' => 'screen',
-
 				'public/css/admin/login.css' => 'screen',
 
             );

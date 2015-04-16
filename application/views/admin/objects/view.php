@@ -37,29 +37,29 @@
 
 ?>
 <div class="scrollable_content clear">             
-    <?if(isset($taskflows)){
+    <?if(isset($objects_status)){
             $count = 0;
-            foreach($taskflows as $status_task){
+            foreach($objects_status as $object){
                 ?>                          
                     <div style='clear:both' >
-                        <div class='hist round step step_<?=$status_task->status->class?>' >
+                        <div class='hist round step step_<?=$object->status->class?>' >
                             <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
-                                <div class="left"><?=Utils_Helper::getUserImage($status_task->userInfo)?></div>
-                                <!--img class='round_imgList' src='<?=URL::base();?><?=$status_task->userInfo->foto?>' height="25"  title="<?=ucfirst($status_task->userInfo->nome);?>" /--> 
+                                <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
+                                <!--img class='round_imgList' src='<?=URL::base();?><?=$object->userInfo->foto?>' height="25"  title="<?=ucfirst($object->userInfo->nome);?>" /--> 
                             </div>
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
-                                    <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$status_task->id?>" title="excluir" data-panel="#direita">Excluir</a>
+                                    <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
                                 </div>
                             <?}?>
 
                             <div class="right">
-                                <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$status_task->id?>" title="criar anotações" class="popup note">anotacao</a>
+                                <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações" class="popup note">anotacao</a>
                             </div> 
                             <? if($count == 0){
                                     if($current_auth != "assistente"){?>
                                         <div class="right">
-                                            <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$status_task->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
+                                            <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$object->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
                                         </div>
                             <?      
                                     }
@@ -69,18 +69,18 @@
                                                        
                             <div class='line_bottom'>
                                 <?if($current_auth != "assistente"){?>
-                                    <a href="<?=URL::base();?>admin/objects/update/<?=$status_task->id?>" class="popup edit black">
+                                    <a href="<?=URL::base();?>admin/objects/update/<?=$object->id?>" class="popup edit black">
                                 <?}?>
-                                <span class="list_faixa <?=$status_task->status->class?> round"><?=$status_task->status->status;?> <?=!empty($status_task->prova) ? '('.$status_task->prova.')' : ""?></span></a>
+                                <span class="list_faixa <?=$object->status->class?> round"><?=$object->status->status;?> <?=!empty($object->prova) ? '('.$object->prova.')' : ""?></span></a>
 
                                 
-                                <p>iniciado: <?=Utils_Helper::getday($status_task->created_at)?> &bull; <?=Utils_Helper::data($status_task->created_at, 'd/m/Y - H:i')?></p>
-                                <p>retorno: <?=Utils_Helper::getday($status_task->crono_date)?> &bull; <?=Utils_Helper::data($status_task->crono_date, 'd/m/Y')?></p>
+                                <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?></p>
+                                <p>retorno: <?=Utils_Helper::getday($object->crono_date)?> &bull; <?=Utils_Helper::data($object->crono_date, 'd/m/Y')?></p>
                             </div>
 
                             
-                            <?if(!empty($status_task->description)){ ?>
-                                <span class="wordwrap description"><?=$status_task->description;?></span>
+                            <?if(!empty($object->description)){ ?>
+                                <span class="wordwrap description"><?=$object->description;?></span>
                             <?}?>
 
                             <? if($count == 0){
@@ -130,33 +130,33 @@
                                     }
                                     $count++;
                                 }
-                            ?>
 
+                            foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
+                                <div style='clear:both'>
+                                    <div class="hist anotacoes round"> 
+                                        <div class="left">
+                                            <?=Utils_Helper::getUserImage($anotacao->userInfo)?>
+                                        </div>
+                                        <div class="left">
+                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
+                                            em: <?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?>
+                                        </div>
+                                        <?if($current_auth != "assistente"){?>                                        
+                                        <div class="right">
+                                            <a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" data-panel="#direita" title="Excluir">Excluir</a>
+                                        </div>
+                                        <?}?>
+                                        <div class="clear">
+                                            <hr style="margin:8px 0;" />
+                                            <pre><span class="wordwrap"><?=$anotacao->anotacao?></span></pre>
+                                        </div>
+                                    </div> 
+                                </div>
 
-                            <?foreach ($status_task->getHistory($status_task->id) as $task) {?> 
-                                <? if($task->type == 'anotacoes'){?>
-                                    <div style='clear:both'>
-                                        <div class="hist anotacoes round"> 
-                                            <div class="left">
-                                                <?=Utils_Helper::getUserImage($task->userInfo)?>
-                                                <!--img class='round_imgList<?=$task->userInfo->team->color?>' src='<?=Utils_Helper::getUserImage($task->userInfo)?>' height="20" style='float:left' alt="<?=ucfirst($task->userInfo->nome);?>" /-->
-                                            </div>
-                                            <div class="left">
-                                                <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$task->id?>&status_id=<?=$status_task->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
-                                                em: <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?>
-                                            </div>
-                                            <?if($current_auth != "assistente"){?>                                        
-                                            <div class="right">
-                                                <a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$task->id?>" data-panel="#direita" title="Excluir">Excluir</a>
-                                            </div>
-                                            <?}?>
-                                            <div class="clear">
-                                                <hr style="margin:8px 0;" />
-                                                <pre><span class="wordwrap"><?=$task->description?></span></pre>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                <?}else{?>
+                            <?}    
+
+                            foreach ($object->tasks->order_by('id', 'desc')->find_all() as $task) {?> 
+                                
                                     <div style='clear:both'>
                                         <div class='hist'>
                                             <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
@@ -221,15 +221,20 @@
                                                         <?}?>
 
 
-                                                    <?foreach ($task->getReplies($task->id) as $taskReply) {?>
+                                                    <?
+                                                    if($task->reply->id != '') {?>
                                                         <div class='line_bottom'>
                                                             <? if($current_auth != "assistente"){?>
-                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$taskReply->id?>" class="popup edit black">
+                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" class="popup edit black">
                                                             <?}?>
-                                                            <?=$taskReply->task->status->status?></a> &bull; <?=Utils_Helper::getday($taskReply->created_at)?> - <?=Utils_Helper::data($taskReply->created_at, 'd/m/Y - H:i')?><br/>
+                                                            <? if($task->reply->finished != ""){?>
+                                                                entregue: </a> &bull; <?=Utils_Helper::getday($task->reply->finished)?> - <?=Utils_Helper::data($task->reply->finished, 'd/m/Y - H:i')?><br/>
+                                                            <?}elseif($task->status_id == '6'){?>
+                                                                iniciada: </a> &bull; <?=Utils_Helper::getday($task->reply->created_at)?> - <?=Utils_Helper::data($task->reply->created_at, 'd/m/Y - H:i')?><br/>
+                                                            <?}?>
                                                         </div>
-                                                        <?if(!empty($taskReply->description)){ ?>
-                                                            <span class="wordwrap description"><?=$taskReply->description;?></span>
+                                                        <?if(!empty($task->reply->description)){ ?>
+                                                            <span class="wordwrap description"><?=$task->reply->description;?></span>
                                                         <?}?>
                                                         <div class="options" >
                                                             <? if($task->status_id == '6' && $task->to->id == $user->id){?>
@@ -244,7 +249,7 @@
                                             </div>  
                                         </div>                                    
                                     </div>
-                            <?}}?>
+                            <?}?>
                         </div> 
                         
                     </div>
