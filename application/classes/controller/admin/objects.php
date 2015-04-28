@@ -301,8 +301,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         return false;		        
 	}
 
-   
-
 	public function action_salvar($id = null)
 	{
 		$this->auto_render = false;
@@ -456,11 +454,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->objectsList = $query->where('project_id', '=', $project_id)
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
-		//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-			//->where('project_id', '=', $project_id))
-		/****Filtros*****/
-
 		
+		/****Filtros*****/
 
 		$typeObjectsList = array();
 		$typeObjectsList_arr = array();
@@ -553,8 +548,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
 				)						
 			);
 	       
