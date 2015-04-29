@@ -1,4 +1,3 @@
-<div class="fixed clear">
     <div class="list_header round">
         <div class="table_info round">
             <?=count($taskList)?> tarefas encontradas 
@@ -36,7 +35,7 @@
                             <?}else{ echo "&nbsp;";}?>
                     </div>
                     
-                    <div class="left">
+                    <div>
                     <?
                         $calendar = URL::base().'/public/image/admin/calendar2.png';
                         if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
@@ -46,6 +45,9 @@
                         }
                     ?>
                         <span class="round list_faixa left tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> 
+                    </div>
+                    <br/>
+                    <div>
                         <span class="round list_faixa left tag" style="background:#<?=$class_obj?>"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
                         <span class="<?=$task->status->class?> round list_faixa"><?=$task->status->status;?></span>
                     </div>
@@ -55,4 +57,3 @@
         echo '<ul>';
     }?>
     </div>
-</div>

@@ -1,6 +1,5 @@
 <label><b>editar status - <?=$obj->taxonomia;?></b></label><hr/>
 	
-	<div class="left">
 		<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 			<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
 				<div class="left">
@@ -49,7 +48,7 @@
 		            	<label for="description">observações</label>
 		            </dt>
 		            <dd>
-		                  <textarea class="text round" name="description" id="description" style="width:540px; height:300px;"><?=$objVO['description']?></textarea>
+		                  <textarea class="text round" name="description" id="description" style="width:420px; height:300px;"><?=$objVO['description']?></textarea>
 		                  <span class='error'><?=Arr::get($errors, 'description');?></span>
 		            </dd>
 	            </div>
@@ -58,4 +57,3 @@
 	              <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>      
 	            </dd>	    
 		</form>
-	</div>

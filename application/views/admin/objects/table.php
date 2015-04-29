@@ -1,4 +1,3 @@
-<div class="fixed clear">
 	<div class="list_header round">
 		<div class="table_info round">
 			<div class="left"><?=count($objectsList)?> objetos encontrados</div>
@@ -105,4 +104,3 @@
 		</ul>
 		<?}?>
 	</div>
-</div>

@@ -1,4 +1,4 @@
-<div class="fixed clear">
+
 	<div class="list_header round">
 		<div class="table_info round">			
 			<div class="left"><?=count($collectionsList)?> coleções encontradas </div>
@@ -41,17 +41,16 @@
 			</form>	
 		</div>
 	</div>
-	<div class="list_body scrollable_content">
+	<div class="scrollable_content">
 		<ul class="list_item">
 			<? foreach($collectionsList as $collection){?>
 			<li>				
-				<a class="left check" style="width:300px;" href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" rel="load-content" data-panel="#direita" title="Editar">
-					<p><b><?=$collection->name?></b></p>
-					<p><img src="<?=URL::base()?>/public/image/admin/calendar.png" height="16"> <span class="list_faixa round red"><?=Utils_Helper::data($collection->fechamento,'d/m/Y')?></span> &bullet; <?=$collection->segmento->name?></p>
-				</a>
 				<a class="right excluir" href="<?=URL::base().'admin/collections/delete/'.$collection->id;?>" title="Excluir">Excluir</a>	
+				<a class="check" href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" rel="load-content" data-panel="#direita" title="Editar">
+					<b><?=$collection->name?></b><br/>
+					<img src="<?=URL::base()?>/public/image/admin/calendar.png" height="16"> <span class="list_faixa round red"><?=Utils_Helper::data($collection->fechamento,'d/m/Y')?></span> &bullet; <?=$collection->segmento->name?>
+				</a>
 			</li>
 			<?}?>
 		</ul>
 	</div>
-</div>

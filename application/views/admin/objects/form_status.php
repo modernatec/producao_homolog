@@ -46,7 +46,7 @@
             	<label for="description">observações</label>
             </dt>
             <dd>
-                  <textarea class="text round" name="description" id="description" style="width:480px; height:70px;"></textarea>
+                  <textarea class="text round" name="description" id="description" style="width:300px; height:70px;"></textarea>
                   <span class='error'><?=Arr::get(@$errors, 'description');?></span>
             </dd>
             <dd>

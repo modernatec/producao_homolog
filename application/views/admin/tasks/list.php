@@ -12,13 +12,8 @@
     </div>
 </div>
 <div id="esquerda">
-	<div class="clear"> 
-	    <div class="fixed clear">
-	        
-	        <div id="tabs_content" class="scrollable_content clear">
-	            
-	        </div>
-	    </div>
-	</div>
+    <div id="tabs_content" >
+        
+    </div>
 </div>
 <div id="direita"></div>

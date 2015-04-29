@@ -112,7 +112,9 @@ setInterval(function() {
 }, 10000);
 
 function setupScroll(){
-    $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
+    //    $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
+
+    $(".scrollable_content").mCustomScrollbar({
         theme:"dark-3",
         axis:"y",
         scrollInertia: 0,
