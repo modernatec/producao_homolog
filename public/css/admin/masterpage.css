@@ -23,6 +23,10 @@ em, strong{
 	font-weight: none !important;
 }
 
+a{
+	cursor: pointer;
+}
+
 #nav{
 	overflow: hidden;
 }
@@ -36,7 +40,7 @@ em, strong{
 	color: #000;
 	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
 	/*border-right: 1px solid #f1f1f1;*/
-	border-right: 1px dotted #008fc7;
+	border-right: 1px solid #f3f3f3;
 	z-index: 3;
 	/*box-shadow: 0 0 5px 1px rgba(0,0,0, .8);*/
 }
@@ -45,7 +49,7 @@ em, strong{
 	text-align: center;
 	width: 60px;
 	right: 0;
-	border-left: 1px dotted #008fc7;
+	border-left: 1px solid #f3f3f3;
 	border-right: none;
 }
 
@@ -65,6 +69,10 @@ em, strong{
 	margin-top: 19px;
 }
 
+.filters{
+	padding: 5px 0;
+}
+
 .topo .filters{
 	padding-top: 8px;
 }
@@ -79,21 +87,20 @@ em, strong{
 	height: 46px;
 	overflow: hidden;
 	padding: 0 5px;
+	border-bottom: 2px solid #008fc7;
 }
 
 
 #esquerda{
     overflow:hidden;
     position: absolute;
-    width: 300px;
+    width: 350px;
     display: none;
     top:46px;
     bottom: 0;
     left: 151px;
-    border-right: 1px dotted #008fc7;
-    /*box-shadow: 2px 2px 2px 1px rgba(0,0,0, .2);*/
+    border-right: 1px solid #f3f3f3;
     padding: 5px;
-    /*padding-right: 20px;*/
 }
 
 
@@ -103,7 +110,7 @@ em, strong{
     display: none;
     top:46px;
     bottom: 0;
-    left: 470px;
+    left: 517px;
     right: 60px;
     /*width: 515px;*/
     padding: 5px 10px 5px 0;
@@ -432,7 +439,7 @@ a{
 }
 
 .tabs{
-	padding: 8px 0 4px 0;
+	padding-top: 8px;
 }
 
 .tabs li{
@@ -726,6 +733,7 @@ label
 	margin-top: 5px;
 	margin-bottom: 5px;
 	background: #fff;
+	overflow: auto;
 }
 
 /*
@@ -1065,18 +1073,35 @@ a.green{
 	padding-left: 10px;
 }
 
+
+
+.collapse_ico, .expand_ico{
+	background: url('../../image/admin/collapse.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	text-indent: -100px;
+	overflow: hidden;
+}
+
+.expand_ico{
+	background: url('../../image/admin/expand.png') no-repeat;
+}
+
+/*
 .list_header{
 	background: #fff;
 	padding: 5px;
 	margin-bottom: 5px;
 	border: 1px solid #008fc7;
 	display: inline-block;
-	/*min-width: 400px;	*/
+	/*min-width: 400px;	*
 	width: auto;
 	display: inline-block;
 	position: relative;
 	z-index: 1;
 }
+*/
 
 .list_faixa{
 	margin: 0 2px 2px 0;
@@ -1402,7 +1427,6 @@ a.green{
 	background: #f3f3f3;
 	border-bottom: 1px dotted #eee;
 	padding: 4px;
-	margin-bottom: 5px;
 	overflow: auto;
 	line-height: 25px;
 }
@@ -1453,7 +1477,7 @@ div.jGrowl div.error {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	width: 430px;
+	width: 482px;
 	height: auto;
 	padding: 10px;
 	background: #fff url('../../image/admin/bkg.jpg') repeat-x 0 0;

@@ -10,9 +10,10 @@
     <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
-        <a class="collapse bar_button round" data-show="replies"><span>contrair</span></a>
+        
     </div>  
     <div class="boxwired round" >
+        <a class="collapse right" data-show="replies" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a>
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />

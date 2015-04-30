@@ -61,7 +61,7 @@
 				<li class="round"><a id='tab_<?=$key+1;?>' href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
 				<?}?>
 			</ul>
-			<div class="list_header round">
+			<div class="boxwired round">
 		        <div class="table_info round">
 		            coleções
 		        </div>

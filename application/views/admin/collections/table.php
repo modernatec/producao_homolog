@@ -1,5 +1,5 @@
 
-	<div class="list_header round">
+	<div class="boxwired round">
 		<div class="table_info round">			
 			<div class="left"><?=count($collectionsList)?> coleções encontradas </div>
 			<div class="left">

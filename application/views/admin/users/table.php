@@ -1,5 +1,4 @@
-<div class="fixed clear">
-	<div class="list_header round">
+	<div class="boxwired round">
 		<div class="table_info round">
 			<div class="left"><?=count($userinfosList)?> usuários encontrados</div>
 			<div class="left">
@@ -12,13 +11,14 @@
 		<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
 			<div class="filters">
 				<div class="left">
-					<input type="text" class="round left" style="width:135px" placeholder="nome" name="nome" value="<?=@$filter_nome?>" >
+					<input type="text" class="round left" style="width:100px" placeholder="nome" name="nome" value="<?=@$filter_nome?>" >
 	       		</div>
 	       		<div class="left">
-					<input type="text" class="round left" style="width:135px" placeholder="email" name="email" value="<?=@$filter_email?>" >
+					<input type="text" class="round left" style="width:140px" placeholder="email" name="email" value="<?=@$filter_email?>" >
 	       			<input type="submit" class="round bar_button left" value="OK"> 
 	       		</div>
 			</div>
+
 		</form>	
 	</div>
 	<div class="list_body scrollable_content">
@@ -48,4 +48,3 @@
 		</ul>
 		<?}?>
 	</div>
-</div>

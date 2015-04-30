@@ -1,14 +1,15 @@
-	<div class="list_header round">
+	<div class="boxwired round">
 		<div class="table_info round">
-			<div class="left"><?=count($objectsList)?> objetos encontrados</div>
+		<?
+            if(count($objectsList) <= 0){
+                echo 'não encontrei objetos com este critérios =/';    
+            }else{
+                echo count($objectsList).' objetos encontrados';
+            }
+        ?>
 		</div>
 	</div>
 	<div class="scrollable_content list_body">
-	    <? 
-		if(count($objectsList) <= 0){
-			echo '<span class="list_alert round">nenhum registro encontrado</span>';	
-		}else{
-		?>
 		<ul class="list_item">
 			<?foreach($objectsList as $objeto){
 				$status = "";
@@ -102,5 +103,4 @@
 			</li>
 			<?}?>
 		</ul>
-		<?}?>
 	</div>

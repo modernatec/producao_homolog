@@ -6,9 +6,10 @@
                 <option value="<?=$project->id?>" ><?=$project->name?></option>
             <?}?>
         </select>
-
-        <a href="#" id='generateStatus' class="bar_button round">gerar relatório</a>
+        <?if($current_auth != "assistente"){?>
+            <a href="#" id='generateStatus' class="bar_button round">gerar relatório</a>
             <a href="#" id='updateGdocs' data-panel="#results" class="bar_button round">sync gdocs</a>
+        <?}?>
     </div>
 </div>
 <div id="page" >

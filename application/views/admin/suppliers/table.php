@@ -1,5 +1,4 @@
-<div class="fixed clear">
-	<div class="list_header round">
+	<div class="boxwired round">
 		<div class="table_info round">
 			<div class="left">			
 				<?=count($suppliersList)?> objetos encontrados 
@@ -64,4 +63,3 @@
 		</ul>
 		<?}?>
 	</div>
-</div>

@@ -347,12 +347,11 @@ function setupAjax(container){
     });
 
     $(".collapse").unbind('click').bind('click', function () {
-        $header = $(this);
-        var element = $header.data("show");
-        $('.' + element).fadeToggle(500, function () {
-            $header.text(function () {
-                return $('.' + element).is(":visible") ? "contrair" : "expandir";
-            });
+        //$header = $(this);
+        var span = $('.collapse span');
+        var element = $(this).data("show");
+        $('.' + element).fadeToggle(200, function () {
+            $('.' + element).is(":visible") ? span.attr('class', 'collapse_ico') : span.attr('class', 'expand_ico');
         });
     });
 

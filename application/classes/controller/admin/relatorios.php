@@ -17,6 +17,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 		
 		$view->graficos = $this->action_geraGraficos('init');
+		$view->current_auth = $this->current_auth;
 
 		if($ajax == null){
 			$this->template->content = $view;
