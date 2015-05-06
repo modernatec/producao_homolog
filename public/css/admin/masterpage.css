@@ -39,8 +39,8 @@ a{
 	bottom: 0;
 	color: #000;
 	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
-	/*border-right: 1px solid #f1f1f1;*/
-	border-right: 1px solid #f3f3f3;
+	/*border-right: 1px solid #f1f1f1;
+	border-right: 1px solid #f3f3f3;*/
 	z-index: 3;
 	/*box-shadow: 0 0 5px 1px rgba(0,0,0, .8);*/
 }
@@ -56,17 +56,24 @@ a{
 
 
 .topo{
-	min-height: 46px;
+	min-height: 44px;
 	background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;
 	/*display: inline-block;*/
-
+	
 	position: absolute;
 	right: 60px;
-	left: 151px;	
+	left: 150px;	
+	z-index: 1;
 }
 
 .topo .tabs{
-	margin-top: 19px;
+	position: relative;
+	height: 44px;
+}
+
+.topo .tabs li{
+	display: inline-block;
+	margin-top: 18px;
 }
 
 .filters{
@@ -84,8 +91,8 @@ a{
 }
 
 .tabs_panel{
-	height: 46px;
-	overflow: hidden;
+	height: 44px;
+	/*overflow: hidden;*/
 	padding: 0 5px;
 	border-bottom: 2px solid #008fc7;
 }
@@ -439,7 +446,7 @@ a{
 }
 
 .tabs{
-	padding-top: 8px;
+	/*padding-top: 8px;*/
 }
 
 .tabs li{

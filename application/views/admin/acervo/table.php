@@ -1,4 +1,3 @@
-<div class="fixed clear">
 	<div class="list_header round">
 		<span class='list_alert light_blue round'><?=$total_objects?> objetos encontrados</span>
 		<div class="clear">
@@ -82,22 +81,24 @@
 			?>
 			<li>
 
-				<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
+				<a class="load" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div>
-						<p><b><?=$objeto->taxonomia?></b></p>
+						<p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
 						<hr style="margin:8px 0;" />
-						<?if($objeto->supplier_id != 10){ //moderna(interno)?>
-							<p><span class="cyan round list_faixa"><?=$objeto->supplier_empresa?></span></p>
-						<?}?>
+						
+						<p><?=$objeto->collection->name?></p>
+						<?if($objeto->reaproveitamento == 0){ 
+			                $origem = "novo";
+			            }elseif($objeto->reaproveitamento == 1){
+			                $origem = "reap.";
+			            }else{
+			                $origem = "reap. integral";
+			            }?>
+            
 						<p>
-							<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
-							<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
-							<div>
-								<div class='left' style="width:25px;"><?=$task_to;?></div>
-								<?=$tag;?> 
-								<?=$status;?> 
-								
-							</div>
+							<span class="blue round list_faixa left"><?=$objeto->collection->materia->name?></span>
+							<span class="blue round list_faixa left"><?=$objeto->collection->ano?></span>
+							<span class="blue round list_faixa "><?=$origem?></span>
 						</p>
 					</div>
 				</a>
@@ -106,4 +107,3 @@
 		</ul>
 		<?}?>
 	</div>
-</div>

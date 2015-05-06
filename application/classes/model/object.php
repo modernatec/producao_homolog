@@ -6,16 +6,19 @@ class Model_Object extends ORM {
 		'sfwprods'       => array('model' => 'sfwprod', 'through' => 'objects_sfwprods'),		
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_id'),
 		'statu' => array('model' => 'status_type', 'foreign_key' => 'status_id'),
+		'object_reap' => array('model' => 'object', 'through' => 'objects_paths', 'foreign_key' => 'object_id'),
 	);
 
 	protected $_has_one = array(
-		'gdoc' => array('model' => 'gdoc', 'foreign_key' => 'object_id')
+		'gdoc' => array('model' => 'gdoc', 'foreign_key' => 'object_id'),
+		
 	);
         
 	protected $_belongs_to  = array(
 		'typeobject' => array('foreign_key' => 'typeobject_id'),
 		'country' => array('foreign_key' => 'country_id'),
-		'collection' => array('foreign_key' => 'collection_id'),		
+		'collection' => array('foreign_key' => 'collection_id'),
+		'project' => array('foreign_key' => 'project_id'),		
 		'supplier' =>  array('foreign_key' => 'supplier_id'),
 		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
 		'objectStatus' => array('model' => 'objectStatu', 'through' => 'objectstatus', 'foreign_key' => 'id'),

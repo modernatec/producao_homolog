@@ -2,7 +2,7 @@
 
     <div class="filters clear">
         <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_acervo" data-panel="#tabs_content" method="post" class="form">
-            <input type="hidden" name="project_id" value="">
+            <input type="hidden" name="acervo" value="1">
             <div class="left filter">
                 <input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="" >                
             </div>
@@ -165,10 +165,8 @@
     </div-->
 </div>
 <div id="esquerda">
-    <div class="fixed clear">
-        <div id="tabs_content" class="scrollable_content clear">
-            
-        </div>
+    <div id="tabs_content">
+        
     </div>
 </div>
 <div id="direita"></div>

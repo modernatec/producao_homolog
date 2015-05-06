@@ -6,7 +6,7 @@
         <label for="description">observações</label>
     </dt>
     <dd>
-        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:550px; height:300px;"></textarea>
+        <textarea placeholder="observações" class="text round" name="description" id="description" style="width:470px; height:300px;"></textarea>
         <span class='error'><?=Arr::get($errors, 'description');?></span>
     </dd>
     <? if($task->tag_id == '1'){?>

@@ -14,6 +14,20 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);
 	}
+
+	public function action_path()
+	{	
+		$this->auto_render = false;
+		$objctList = ORM::factory('object')->where('object_id', '!=', '')->and_where('fase', '=', '1')->find_all();
+		var_dump(count($objctList));
+		foreach ($objctList as $object) {
+			$obj = ORM::factory('objects_path');
+			$obj->object_id = $object->id;
+			$obj->object_reap_id = $object->object_id;
+			$obj->save();
+		}
+		echo 'ok';
+	} 
 	        
 	public function action_index($ajax = null)
 	{	
@@ -46,73 +60,63 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		}           
 	} 
      
-	public function action_view($id, $task_id = null)
+	public function action_view($id, $ajax = null)
     {       
     	$this->auto_render = false;
-        echo $this->action_window($id, true);
-        return true;
-	}
-
-	public function action_window($id, $ajax = false){
-		$view = View::factory('admin/objects/view')
+        $view = View::factory('admin/acervo/view')
             ->bind('errors', $errors)
             ->bind('message', $message);
 
 		$objeto = ORM::factory('object', $id);
         $view->obj = $objeto;   
-        $view->user = $this->current_user->userInfos;                          
+        $view->user = $this->current_user->userInfos;    
+
+        $array_path = array();
+        if($objeto->object_id != ""){        	
+            $this->searchPathBehind($array_path, $objeto->object_id);  
+        }      
+        $view->array_path = $array_path;  
+
+        $array_pathFoward = array();
+        $this->searchPathFoward($array_pathFoward, $objeto->id);             
+        $view->array_pathFoward = $array_pathFoward;                  
 		
-
-        //$view->taskflows = ORM::factory('objectshistory')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        //$last_status = ORM::factory('objectshistory')->where('object_id', '=', $id)->where('type', '=', 'status')->order_by('id', 'DESC')->find(); 
-
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
-        $view->taskflows = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->taskflows[0];
-
-        $view->assign_form = View::factory('admin/tasks/form_assign');
-        $view->assign_form->teamList = ORM::factory('userInfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();  
-        $view->assign_form->tagList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();  
-        $view->assign_form->obj = $objeto; 
-        $view->assign_form->object_status = $last_status;
-
-        $view->anotacoes_form = View::factory('admin/anotacoes/form_anotacoes');
-        $view->anotacoes_form->obj = $objeto; 
-        $view->anotacoes_form->object_status = $last_status;
-
-        $view->form_status = View::factory('admin/objects/form_status');
-        $view->form_status->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
-        $view->form_status->obj = $objeto; 
- 		$view->current_auth = $this->current_auth;
+        $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $last_status = $view->objects_status[0];
         
-        if($ajax){
-        	return $view;
-        }else{
-	        $this->template->content = '<div class="content"><div id="esquerda"></div><div id="direita">'.$view.'</div></div>';
+ 		$view->current_auth = $this->current_auth;
+
+ 		if($ajax != null){
+ 			return $view;
+ 		}else{
+	        header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
 	    }
 	}
-    
-	public function action_update($id){
-		$this->auto_render = false;
-		$view = View::factory('admin/objects/edit');
 
-		$view->bind('errors', $errors)
-			->bind('message', $message);
-
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status', 'ASC')->find_all();
-		
-		$objStatus = ORM::factory('objects_statu', $id);	
-		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
-
-		if($id == ""){
-			$arr_objstatus['object_id'] = $this->request->query('object_id');
+	public function searchPathFoward(&$array, $id){
+		$object_path = ORM::factory('object')->where('object_id', '=', $id)->find_all();
+		if(count($object_path) > 0){
+			foreach ($object_path as $value) {
+				array_push($array, $value);
+				$this->searchPathFoward($array, $value->id);
+			}
 		}
+	}
 
-		$view->obj = ORM::factory('object', $arr_objstatus['object_id']);
+	public function searchPathBehind(&$array, $id){
+		$object_path = ORM::factory('object', $id);
+		array_push($array, $object_path);
 
-		$view->objVO = $arr_objstatus;
-
-		echo $view;
+		if($object_path->object_id != ''){
+			$this->searchPathBehind($array, $object_path->object_id)[0];
+		}
 	}
 
     /********************************/
@@ -140,7 +144,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
     	print json_encode($result);
     }
 
-    public function action_getObjects($page){
+    public function action_getObjects($page, $ajax = null){
     	//$this->startProfilling();
 
     	$page = ($page != "") ? $page : Session::instance()->get('kaizen')['parameters'];
@@ -148,14 +152,13 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$view = View::factory('admin/acervo/table');
 
-		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
+		if(count($this->request->post('acervo')) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $page, "acervo");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
-  		//var_dump( Session::instance()->get('kaizen'));
 
   		$filtros = Session::instance()->get('kaizen')['filtros'];
   		foreach ($filtros as $key => $value) {
@@ -202,6 +205,18 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		
 		//$this->endProfilling();
-		echo $view;
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
+				)						
+			);
+	       
+	        return false;
+	    }
 	}    
 }

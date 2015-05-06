@@ -12,6 +12,7 @@ class Model_ObjectStatu extends ORM {
 		'typeobject' => array('foreign_key' => 'typeobject_id'),
 		'country' => array('foreign_key' => 'country_id'),
 		'collection' => array('foreign_key' => 'collection_id'),		
+		'project' => array('foreign_key' => 'project_id'),	
 		'supplier' => array('model' => 'supplier', 'through' => 'objects_suppliers'),
 		'statu' => array('model' => 'statu', 'foreign_key' => 'status_id'),
 		'object' => array('model' => 'object', 'foreign_key' => 'object_id'),
