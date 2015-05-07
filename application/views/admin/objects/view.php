@@ -87,44 +87,41 @@
                             <? if($count == 0){
                                     if($current_auth != "assistente"){?>
                                         <a class="down_button fade" data-show="replies_gdocs"><img src="<?=URL::base();?>public/image/admin/down.png" title="abrir tabela" /></a>
-                                        <div class="table_info replies replies_gdocs" style="margin-top:5px;">
-                                            <div class="left">
-                                                <table>
-                                                    <thead>
-                                                        <th><b>gdocs</b></th>
-                                                        <th><b>envio</b></th>
-                                                        <th><b>retorno RT</b></th>
-                                                        <th><b>consolidação</b></th>
-                                                    </thead>
-                                                    <tr>
-                                                        <td><span class="text_blue">prova 1</span></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="text_blue">prova 2</span></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="text_blue">prova 3</span></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="text_blue">prova 4</span></td>
-                                                        <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
-                                                        <td>-</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </table>
-                                                <p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p>
-                                            </div>
-                                            <div class="observacoes_gdocs scrollable_content wordwrap left" data-bottom="false"><b>observações:</b><br/><?=@$obj->gdoc->observacoes;?>
-                                            </div>
+                                        <div class="replies replies_gdocs" style="margin-top:5px;">
+                                            
+                                            <table class="left">
+                                                <thead>
+                                                    <th>&nbsp;</th>
+                                                    <th>envio</th>
+                                                    <th>retorno RT</th>
+                                                    <th>consolidação</th>
+                                                </thead>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 1</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 2</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 3</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="text_blue">prova 4</span></td>
+                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </table>
+                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><?=@$obj->gdoc->observacoes;?><br/><br/><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
                                         </div>
 
                             <?      

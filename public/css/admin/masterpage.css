@@ -85,7 +85,7 @@ a{
 }
 
 #filtros{
-	height: 40px;
+	height: 46px;
 	background: #f1f1f1;
 	padding: 0 5px;
 }
@@ -507,6 +507,54 @@ a{
 
 }
 
+table {
+    border-collapse:separate;
+    border-radius:6px;
+    -moz-border-radius:6px;
+}
+
+td, th {
+    border-left:solid #fff 1px;
+    border-top:solid #fff 1px;
+
+    padding: 4px;
+    color: #008fc7;
+    text-align: center;
+}
+
+td{
+	background: #f1f1f1;
+}
+
+th {
+    background-color: #66b5d7;
+    color: #fff;
+    border-top: none;
+}
+
+th:first-child {
+   border-radius:6px 0 0 0;
+   border-left: none;
+}
+
+th:last-child {
+   border-radius:0 6px 0 0;
+   border-right: none;
+}
+
+td:first-child {
+    border-left: none;
+}
+
+table.gray th{
+	background: #C0C0C0 !important;
+	color: #fff;
+}
+
+table.gray td{
+	color: #A0A0A0 !important;
+}
+
 
 /*
 .direita{
@@ -517,23 +565,27 @@ a{
 }
 */
 
-
+/*
 table{
 	border-collapse:collapse;
+	border:1px #fff solid;
 }
 
-table thead th{
+table th{
 	padding:5px;
-	color:#008fc7;
-	border-bottom:1px #CCC solid;
+	color:#fff;	
+	border:1px #fff solid;
+	background: #66b5d7
 }
 
-table thead th a{ color:#008fc7; }
+table th a{ color:#008fc7; }
 
-table tbody td{
+table td{
 	padding:5px;
-	border-bottom:1px #CCC solid;
-        line-height:20px;
+	line-height:20px;
+	color:#008fc7;	
+	border:1px #fff solid;
+	background: #fff !important;
 }
 
 table tbody td.acao{
@@ -554,7 +606,7 @@ table tbody td a:hover{
 }
 
 table tbody tr:nth-child(odd){
-    /*background-color: #fff;*/
+    /*background-color: #fff;*
 }
 
 table tbody tr:nth-child(even){
@@ -571,17 +623,17 @@ table tbody td table{
 }
 
 table tbody td table tbody tr:nth-child(odd){
-    /*background-color: #fefefe;*/
+    /*background-color: #fefefe;*
 }
 
 table tbody td table tbody tr:nth-child(even){
-    /*background-color: #f0f0ff;*/
+    /*background-color: #f0f0ff;*
 }
 
 table tbody td table tbody tr:hover {
     background-color: #e0e0eF; color: #000;
 }
-
+*/
 
 
 /*****Forms****/
@@ -734,13 +786,17 @@ label
 	background: #eee;
 }
 
-.boxwired{
+.boxwired, .boxwired_selected{
 	border: 1px solid #008fc7;
 	padding: 5px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	background: #fff;
 	overflow: auto;
+}
+
+.boxwired_selected{
+	border-left: 4px solid #008fc7;
 }
 
 /*
@@ -969,6 +1025,13 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 */
+.gray{
+	background: #C0C0C0 !important;
+	color: #fff;
+}
+
+
+
 .orange{
 	background: #e9573f;
 }
@@ -1048,6 +1111,10 @@ a.green{
 .text_blue{
 	background: none;
 	color: #008fc7;
+}
+
+.text_gray{
+	color: #C0C0C0 !important;
 }
 
 .stepList{
@@ -1170,10 +1237,9 @@ a.green{
 
 
 .observacoes_gdocs{
-	width: 240px;
-	height: 190px;
+	max-width: 345px;
+	height: 110px;
 	padding-left: 5px;
-	border-left: 1px dotted #008fc7;
 	margin-right: 0;
 	text-align: top;
 	overflow-y: auto;

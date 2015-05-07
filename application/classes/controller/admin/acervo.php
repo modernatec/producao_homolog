@@ -33,7 +33,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/acervo/list')
 			->bind('message', $message);
-
+		/*
 		$view->filter_segmento = array();
 		$view->filter_collection = array();
 		$view->filter_project = array();
@@ -44,6 +44,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$view->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
 		$view->typeList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
 		//$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+		*/
 
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -54,6 +55,8 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#esquerda', 'type'=>'html', 'content'=> json_encode($this->action_getObjects('0', true)->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;
@@ -120,28 +123,31 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	}
 
     /********************************/
-    public function action_getProjects($segmento_id){
+    public function getFiltros(){
     	$this->auto_render = false;
-    	$query = ORM::factory('project')->where('segmento_id', '=', $segmento_id)->find_all();
+    	$viewFiltros = View::factory('admin/acervo/filtros');
 
-    	$result = array('dados' => array());
-    	foreach ($query as $project) {
-    		array_push($result['dados'], array('id' => $project->id, 'display' => $project->name));
-    	}
+    	$filtros = Session::instance()->get('kaizen')['filtros'];
 
-    	print json_encode($result);
-    }
+  		$viewFiltros->filter_segmento = array();
+		$viewFiltros->filter_collection = array();
+		$viewFiltros->filter_project = array();
+		$viewFiltros->filter_typeobject = array();
+  		$viewFiltros->filter_supplier = array();
+  		$viewFiltros->filter_origem = array();
 
-    public function action_getCollections($project_id){
-    	$this->auto_render = false;
-    	$query = ORM::factory('Collections_Project')->where('project_id', '=', $project_id)->find_all();
 
-    	$result = array('dados' => array());
-    	foreach ($query as $collection) {
-    		array_push($result['dados'], array('id' => $collection->collection_id, 'display' => $collection->collection->name));
-    	}
+  		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->collectionList = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->typeList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->suppliersList = ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();
 
-    	print json_encode($result);
+		foreach ($filtros as $key => $value) {
+  			$viewFiltros->$key = json_decode($value);
+  		}
+
+  		return $viewFiltros;
     }
 
     public function action_getObjects($page, $ajax = null){
@@ -151,16 +157,19 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		$this->auto_render = false;
 		$view = View::factory('admin/acervo/table');
+		
 
 		if(count($this->request->post('acervo')) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $page, "acervo");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
+
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
 
   		$filtros = Session::instance()->get('kaizen')['filtros'];
+
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
   		}
@@ -173,6 +182,8 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		/***Filtros***/
 		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_supplier)) ? $query->and_where('supplier_id', 'IN', $view->filter_supplier) : '';
+		(isset($view->filter_origem)) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
 		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
 		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
 		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -195,6 +206,9 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		/***Filtros***/
 		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_supplier)) ? $query->and_where('supplier_id', 'IN', $view->filter_supplier) : '';
+		(isset($view->filter_origem)) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
+		
 		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
 		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
 		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -203,7 +217,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$view->objectsList = $query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
 		$view->pagination = $pagination;
 
-		
 		//$this->endProfilling();
 		if($ajax != null){
 			return $view;
@@ -211,8 +224,9 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
+					array('container' => '#esquerda', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					
 				)						
 			);
 	       

@@ -1,14 +1,12 @@
-	<div class="boxwired round">
-		<div class="table_info round">
+		<span class='list_alert light_blue round'>
 		<?
             if(count($objectsList) <= 0){
-                echo 'não encontrei objetos com este critérios =/';    
+                echo 'não encontrei objetos com estes critérios.';    
             }else{
-                echo count($objectsList).' objetos encontrados';
+                echo 'encontrei: '. count($objectsList).' objeto(s)';
             }
         ?>
-		</div>
-	</div>
+		</span>
 	<div class="scrollable_content list_body">
 		<ul class="list_item">
 			<?foreach($objectsList as $objeto){

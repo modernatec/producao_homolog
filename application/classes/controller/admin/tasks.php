@@ -166,7 +166,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		
 		//var_dump($this->current_auth);
 		if($this->current_auth != 'admin'){
-			$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
+			//$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
 		}
 		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
 
@@ -371,7 +371,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         $query = ORM::factory('task');
 
         if($this->current_auth != 'admin'){
-			$query->where('team_id', '=', $this->current_user->userInfos->team_id);
+			//$query->where('team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
         /***Filtros***/

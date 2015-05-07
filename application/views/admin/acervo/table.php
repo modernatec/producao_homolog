@@ -1,15 +1,19 @@
 	<div class="list_header round">
-		<span class='list_alert light_blue round'><?=$total_objects?> objetos encontrados</span>
+
+		<span class='list_alert light_blue round'>
+		<?
+			if(count($objectsList) <= 0){
+                echo 'não encontrei objetos com estes critérios.';    
+            }else{
+                echo 'encontrei: '.$total_objects.' objeto(s)';
+            }
+        ?>
+		</span>
 		<div class="clear">
 			<?=$pagination?>
 		</div>
 	</div>
 	<div class="scrollable_content list_body">
-	    <? 
-		if(count($objectsList) <= 0){
-			echo '<span class="list_alert blue round">nenhum registro encontrado</span>';	
-		}else{
-		?>
 		<ul class="list_item">
 			<?foreach($objectsList as $objeto){
 				$status = "";
@@ -96,14 +100,14 @@
 			            }?>
             
 						<p>
-							<span class="blue round list_faixa left"><?=$objeto->collection->materia->name?></span>
-							<span class="blue round list_faixa left"><?=$objeto->collection->ano?></span>
-							<span class="blue round list_faixa "><?=$origem?></span>
+							<span class="cyan round list_faixa left"><?=$objeto->collection->materia->name?></span>
+							<span class="light_blue round list_faixa left "><?=$objeto->typeobject->name;?></span>
+							<span class="light_blue round list_faixa left "><?=$origem?></span>
+							<span class="light_blue round list_faixa"><?=$objeto->collection->ano?></span>
 						</p>
 					</div>
 				</a>
 			</li>
 			<?}?>
 		</ul>
-		<?}?>
 	</div>
