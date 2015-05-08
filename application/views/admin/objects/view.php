@@ -86,9 +86,7 @@
 
                             <? if($count == 0){
                                     if($current_auth != "assistente"){?>
-                                        <a class="down_button fade" data-show="replies_gdocs"><img src="<?=URL::base();?>public/image/admin/down.png" title="abrir tabela" /></a>
                                         <div class="replies replies_gdocs" style="margin-top:5px;">
-                                            
                                             <table class="left">
                                                 <thead>
                                                     <th>&nbsp;</th>
@@ -121,7 +119,7 @@
                                                     <td>-</td>
                                                 </tr>
                                             </table>
-                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><?=@$obj->gdoc->observacoes;?><br/><br/><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
+                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><?=@$obj->gdoc->observacoes;?><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
                                         </div>
 
                             <?      

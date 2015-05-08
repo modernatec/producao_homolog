@@ -727,7 +727,7 @@ label
 
 .hist{
     padding:5px;
-
+    overflow: auto;
 }
 
 .task{
@@ -929,7 +929,7 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #dfe9f3;
 }
 
-.round_imgList, .round_imgListblue, .round_imgListgreen, .round_imgListflat_orange, .round_imgListyellow, .round_imgListwhite{
+.round_imgList, .round_imgList_producao, .round_imgList_conteudo, .round_imgList_arte, .round_imgList_iconografia, .round_imgListwhite{
 	-o-border-radius: 25px;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
@@ -969,7 +969,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-.round_imgList span, .round_imgListblue span, .round_imgListgreen span, .round_imgListflat_orange span, .round_imgListyellow span, .round_imgListwhite span{
+.round_imgList span, .round_imgList_producao span, .round_imgList_conteudo span, .round_imgList_arte span, .round_imgList_iconografia span, .round_imgListwhite span{
 	display: block;
 	text-align: center;
 	padding-top: 5px;
@@ -1421,6 +1421,11 @@ a.green{
 	border-left:5px solid #008fc7;
 }
 
+.round_imgList_producao {
+	border: 2px solid #008fc7 !important;
+}
+
+
 /**Cores arte**/
 
 .arte{
@@ -1432,6 +1437,10 @@ a.green{
 	border-left:5px solid #f37934;
 }
 
+.round_imgList_arte {
+	border: 2px solid #f37934 !important;
+}
+
 /**Cores conteudo**/
 
 .conteudo{
@@ -1441,6 +1450,25 @@ a.green{
 
 .step_conteudo{
 	border-left:5px solid #8cc152;
+}
+
+.round_imgList_conteudo {
+	border: 2px solid #8cc152 !important;
+}
+
+/**Cores iconografia**/
+
+.iconografia{
+	background:#FFCF4B;
+	color:#fff;
+}
+
+.step_iconografia{
+	border-left:5px solid #FFCF4B;
+}
+
+.round_imgList_iconografia {
+	border: 2px solid #FFCF4B !important;
 }
 
 /**********************/

@@ -322,7 +322,13 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	    	$view->has_task = $query->group_by('task_to')->order_by('nome', 'ASC')->find_all();
 
 			$teamsVO = array();
-			$teams = ORM::factory('team')->order_by('name')->find_all();
+
+			$query = ORM::factory('team')->order_by('name');
+			if($this->current_auth != "admin"){
+				$query->where('id', '=', $this->current_user->userInfos->team_id);
+			}	
+
+			$teams = $query->find_all();
 			foreach($teams as $key => $team) {
 				$team_qtd = ORM::factory('task')->where('ended', '=', '0')->where('team_id', '=', $team->id)->count_all();
 				if($team_qtd > 0){

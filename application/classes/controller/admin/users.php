@@ -417,13 +417,10 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             $view->$key = json_decode($value);
         }
 
-
         $query = ORM::factory('userInfo');
 
         /***Filtros***/
-        (isset($view->filter_nome)) ? $query->where('nome', 'LIKE', '%'.$view->filter_nome.'%') : '';
-        (isset($view->filter_email)) ? $query->where('email', 'LIKE', '%'.$view->filter_email.'%') : '';
-
+        (isset($view->filter_search)) ? $query->where_open()->where('nome', 'LIKE', '%'.$view->filter_search.'%')->or_where('email', 'LIKE', '%'.$view->filter_search.'%')->where_close() : '';
         $view->userinfosList = $query->where('status', '=', $status_id)->order_by('nome','ASC')->find_all();
         
         // $this->endProfilling();

@@ -1,14 +1,12 @@
-    <div class="boxwired round">
-        <div class="table_info round">
-        <?
-            if(count($taskList) <= 0){
-                echo 'não há tarefas!';    
-            }else{
-                echo count($taskList).' tarefas encontradas';
-            }
-        ?>
-        </div>
-    </div>
+    <span class='list_alert light_blue round'>
+    <?
+        if(count($taskList) <= 0){
+            echo 'não encontrei tarefas não iniciadas.';    
+        }else{
+            echo 'encontrei: '. count($taskList).' tarefas';
+        }
+    ?>
+    </span>
     <div class="list_body scrollable_content">
     <? 
     

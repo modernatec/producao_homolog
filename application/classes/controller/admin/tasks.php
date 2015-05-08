@@ -370,13 +370,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         $query = ORM::factory('task');
 
-        if($this->current_auth != 'admin'){
-			//$query->where('team_id', '=', $this->current_user->userInfos->team_id);
-		}
-
         /***Filtros***/
-        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $view->filter_status)->and_where('team_id', '=', $view->filter_team) : '';
-        //(isset($view->filter_userInfo_id)) ? $query->where('task_to', '=', $view->filter_userInfo_id) : '';
+        if($this->current_auth == "assistente" || $this->current_auth == "assistente 2"){
+			$status_arr = array('5');
+		}else{
+			$status_arr = array('5', '6');
+		}	
+
+        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
         $view->taskList = $query->and_where('ended', '=', '0')->order_by('ordem', 'ASC')->order_by('crono_date','ASC')->find_all();

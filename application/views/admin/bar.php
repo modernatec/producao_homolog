@@ -1,8 +1,8 @@
 <?foreach ($teamsVO as $team){?>
 <div class="task_bar_item">
 	<div class="icon_team">
-		<a class="load"  href="tasks/index/ajax?status=5&team=<?=$team['id']?>" rel="task_bar" data-panel="#content" data-refresh="true" title="tarefas <?=$team['name']?>">
-			<p class="round_imgList<?=$team['color']?> <?=$team['color']?>" style="float:left"><span><?=$team['ico']?></span></p>
+		<a class="load"  href="tasks/index/ajax?team=<?=$team['id']?>" rel="task_bar" data-panel="#content" data-refresh="true" title="tarefas <?=$team['name']?>">
+			<p class="round_imgList_<?=$team['color']?> <?=$team['color']?>" style="float:left"><span><?=$team['ico']?></span></p>
 			<div class="badge orange"><?=$team['qtd']?></div>				
 		</a>
 	</div>				

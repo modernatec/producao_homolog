@@ -20,10 +20,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$view = View::factory('admin/suppliers/list')
                 ->bind('message', $message);
 		
-		//$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
-		//$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
-		//$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
-		          
         if($ajax == null){
 			$this->template->content = $view;             
 		}else{
@@ -32,6 +28,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getSuppliers(true)->render())),
+
 				)						
 			);
 	        return false;
@@ -241,16 +239,14 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 
     /********************************/
-    public function action_getSuppliers(){
+    public function action_getSuppliers($ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/suppliers/table');
 
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
 
-		//$view->filter_origem  = json_decode($this->request->query('origem'));			
-		//$filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
-		if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'suppliers'){
+		if(count($this->request->post('suppliers')) > '0' || Session::instance()->get('kaizen')['model'] != 'suppliers'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "suppliers");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
@@ -271,14 +267,17 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		$view->suppliersList = $query->group_by('empresa')->order_by('empresa','ASC')->find_all();
 
-		
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-       
-        return false;
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	       
+	        return false;
+	    }
 	}  		
 }
