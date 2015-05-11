@@ -53,7 +53,6 @@
 	    <?
 	     if(!empty($projectVO['id'])){?>
 		    <hr style="margin:8px 0;">
-            <a href="<?=URL::base();?>admin/relatorios/relatorioLink?project_id=<?=@$projectVO['id']?>" class="round bar_button">gerar relatório</a> 
 	    <?}?>
 	    <div style="margin-top:10px;">
 			<ul class="tabs">

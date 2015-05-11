@@ -1387,7 +1387,7 @@ a.green{
 .task_open{
 	background:#ff0000;
 	padding:5px;
-	margin-right:5px;
+	
 	color:#FFF;
 	text-align: center;
 }
@@ -1395,7 +1395,7 @@ a.green{
 .task_started{
 	background:#fff799;
 	padding:5px;
-	margin-right:5px;
+	
 	color:#000;
 	text-align: center;
 }
@@ -1403,7 +1403,7 @@ a.green{
 .task_finished{
 	background:#bbd152;
 	padding:5px;
-	margin-right:5px;
+	
 	color:#000;
 	text-align: center;
 }
@@ -1555,6 +1555,15 @@ a.green{
 .ui-dialog{
 	min-height: 20px !important;
 	/*width: 700px !important; */
+}
+
+.ui-widget-content{
+	border: none !important;
+}
+
+.ui-widget-overlay{
+	background: #333;
+	opacity: .4;
 }
 
 

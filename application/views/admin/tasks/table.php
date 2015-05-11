@@ -37,8 +37,7 @@
                             $class_obj  = $task->tag->class;
                         }
                     ?>
-                    <span class="round list_faixa left tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span> 
-                    <span class="round list_faixa left tag" style="background:#<?=$class_obj?>"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
+                    <span class="round list_faixa left tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span>                    
                     <div class="clear left" style="width:25px;">           
                         <? 
                             if($task->task_to != "0"){
@@ -47,6 +46,7 @@
                         ?>
                     </div>
                     <span class="<?=$task->status->class?> round left list_faixa"><?=$task->status->status;?></span>
+                    <span class="round list_faixa left tag" style="background:#<?=$class_obj?>"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
                 </a>
             </li>
         <?}

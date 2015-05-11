@@ -107,6 +107,7 @@ $(document).ready(function()
 });
 
 
+
 setInterval(function() {
     updateBar();
 }, 10000);
@@ -199,7 +200,10 @@ function setupAjax(container){
             $('#relatorio_project_id').val(project_id);
             $('#form_relatorio').submit();
         }else{
-            alert('selecione um projeto');  
+            //alert('selecione um projeto');  
+            setMsg({
+                content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+            });
         }
     });
 
@@ -210,7 +214,10 @@ function setupAjax(container){
             $('#gdocs_project_id').val(project_id);
             $('#sync_gdocs').submit();
         }else{
-            alert('selecione um projeto');            
+            //alert('selecione um projeto');            
+            setMsg({
+                content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+            });
         }
     });
 
@@ -224,12 +231,19 @@ function setupAjax(container){
                 type: "POST",
                 url: $(this).val(),
                 dataType : "html",
+                timeout: 20000, 
                 success: function(data) {
                     reloadContent(data, panel);
                 },
                 error: function(e) {
                     console.log(e);
-                    alert("ocorreu um erro.");
+                    removeDialogs();
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        tema:'error',
+                        fix: true,
+                    });
+                    //alert("ocorreu um erro.");
                 }
             });  
 
@@ -303,6 +317,7 @@ function setupAjax(container){
             $.ajax({
                 data: data,
                 type: 'POST',
+                timeout: 20000, 
                 url: base_url + '/tasks/reorder'
             });
         }
@@ -493,7 +508,7 @@ function ajaxPost(form, container){
         type: "POST",
         url: $(form).attr('action'),
         data: data_post,
-        timeout: 10000,
+        timeout: 20000, 
         dataType : "json",
         success: function(retorno) {
             returnData = retorno;
@@ -502,7 +517,13 @@ function ajaxPost(form, container){
         },
         error: function(e) {
             console.log(e);
-            alert("ocorreu um erro.");
+            removeDialogs();
+            setMsg({
+                content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                tema:'error',
+                fix: true,
+            });
+            //alert("ocorreu um erro. ajaxPost");
         }
     });    
 }
@@ -524,6 +545,15 @@ function loadContent(args){
             removeDialogs();
         }
 
+        var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+            NewDialog.dialog({
+            modal: true,
+            dialogClass: 'noTitleStuff',
+            show: 'clip',
+            hide: 'clip',
+            resizable:false,
+        });
+        /*
         if(container == ''){
             var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
                 NewDialog.dialog({
@@ -536,6 +566,7 @@ function loadContent(args){
         }else{
             $(container).html("<div class='loading'>loading...</div>"); 
         }
+        */
 
         data_post = {container: container};
 
@@ -546,7 +577,6 @@ function loadContent(args){
             dataType : "json",
             timeout: 20000, 
             success: function(retorno) {
-                
                 for(k in retorno){
                     returnData.push(retorno[k]);    
                 }
@@ -554,13 +584,15 @@ function loadContent(args){
                 if(loading == false){
                     setDataPanels();
                 }
+                
             },
             error: function(e) {
                 console.log(e);
+                removeDialogs();
                 setMsg({
-                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                        tema:'error',
-                        fix: true,
+                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                    tema:'error',
+                    fix: true,
                 });
             }
         });  
@@ -604,7 +636,14 @@ function getContent(args){
         },
         error: function(e) {
             console.log(e);
-            alert("ocorreu um erro ao carregar o conteúdo. getContent");
+            removeDialogs();
+            setMsg({
+                content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                tema:'error',
+                fix: true,
+            });
+
+            //alert("ocorreu um erro ao carregar o conteúdo. getContent");
         }
     });  
 }

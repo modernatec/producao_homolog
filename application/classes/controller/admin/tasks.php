@@ -12,6 +12,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		parent::__construct($request, $response);                
 	}
 
+	/*
 	public function action_order(){
 		$this->auto_render = false;
 		ini_set('max_execution_time', 300); //max. response para 5 minutos
@@ -31,7 +32,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 				$status->save();
 				
 			}
-			*/
+			*
 		}
 			
 			echo 'ok';								
@@ -58,6 +59,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			echo 'ok';								
 		//}
 	}
+	*/
 
 	public function action_index($ajax = null)
 	{	
@@ -138,7 +140,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_mail(){
 		$this->auto_render = false;
 		$view = View::factory('admin/tasks/layout_mail');
-		echo $view;
+		//echo $view;
 
 	}
     
