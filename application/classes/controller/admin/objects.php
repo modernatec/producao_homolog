@@ -109,11 +109,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$objeto = ORM::factory('object', $id);
         $view->objVO = $this->setVO('object', $objeto);
+
+        if($objeto->country_id == ''){
+        	$view->objVO["country_id"] = 1; //Brasil
+        }
+
 		$view->isUpdate = true;                             
                 
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->find_all();
-        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+        $view->countries = ORM::factory('country')->order_by('name', 'ASC')->find_all();
+        $view->suppliers = ORM::factory('supplier')->where('team_id', '=', '1')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+        $view->suppliers_arte = ORM::factory('supplier')->where('team_id', '=', '3')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
         $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
@@ -334,7 +340,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'sinopse',
                     'taxonomia_reap',
                     'arq_aberto',
-                    'speaker',
+                    'locutor',
+                    'ilustrador'
 
                      ));
 

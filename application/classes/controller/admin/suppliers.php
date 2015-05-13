@@ -67,7 +67,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 				->bind('errors', $errors)
 				->bind('message', $message);
 
-		//$view->fornecedorVO = ORM::factory('supplier', $id)->join('contatos', 'INNER')->on('suppliers.id', '=', 'contatos.tipo_id')->where('suppliers.order', '=', '1')->and_where('contatos.tipo','=','supplier');
 		$contact = ORM::factory('supplier', $id);
 		$view->supplierVO = $this->setVO('supplier', ORM::factory('supplier', $id)); 
 		$view->formatos = ORM::factory('format')->find_all(); 

@@ -119,7 +119,7 @@
                                                     <td>-</td>
                                                 </tr>
                                             </table>
-                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><?=@$obj->gdoc->observacoes;?><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
+                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><pre><?=@$obj->gdoc->observacoes;?></pre><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
                                         </div>
 
                             <?      
