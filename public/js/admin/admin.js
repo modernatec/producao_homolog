@@ -89,8 +89,11 @@ $(document).ready(function()
     if(window.location.hash != ""){
         var hash_url = window.location.hash.substring(1);
         var url = hash_url.substr(0,hash_url.length)
-        loadContent({url:base_url + 'admin/' + url , container:'#content'});
-        $('a[href="'+url+'"]').addClass('selected');
+        
+        if(window.location.href.indexOf('login') == -1){
+            loadContent({url:base_url + 'admin/' + url , container:'#content'});
+            $('a[href="'+url+'"]').addClass('selected');
+        }
     }
 
     if($('#login').length != 0){
@@ -101,20 +104,13 @@ $(document).ready(function()
     }
 
     updateBar();
-
-
-
 });
-
-
 
 setInterval(function() {
     updateBar();
 }, 10000);
 
 function setupScroll(){
-    //    $(".scrollable_content, #esquerda, #direita").mCustomScrollbar({
-
     $(".scrollable_content").mCustomScrollbar({
         theme:"dark-3",
         axis:"y",

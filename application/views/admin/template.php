@@ -15,6 +15,9 @@
         	var base_url = "<?=URL::base();?>"
         	var logged_in = <?=Auth::instance()->logged_in();?>
         </script>  
+        <style type="text/css">
+        	<?=$team_css;?>
+        </style>
         <link rel="icon" type="image/vnd.microsoft.icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
         <link rel="shortcut icon" href="<?=URL::base();?>public/image/common/favicon.ico" />
 	</head>

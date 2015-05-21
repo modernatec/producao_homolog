@@ -126,6 +126,22 @@ class Controller_Admin_Template extends Controller_Template {
         $this->template->menu = ($this->current_user) ? View::factory('admin/menu') : '';
 		$this->template->bar = ($this->current_user) ? '<div id="taskBar"></div>' : '';
 
+		/*
+		styles team
+		*/
+		$teams = ORM::factory('team')->find_all();
+		$css = '';
+		foreach ($teams as $team) {
+			$css.= '.team_'.$team->id.'{
+				background:#'.$team->color.';
+				color:#fff;
+				border: 2px solid #'.$team->color.' !important;
+			}
+			.step_team_'.$team->id.'{
+				border-left:5px solid #'.$team->color.';
+			}';
+		}		
+		$this->template->team_css = $css;
 
         if($this->current_user){	
 			$this->template->user = $this->current_user;

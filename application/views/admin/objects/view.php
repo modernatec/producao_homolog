@@ -43,7 +43,7 @@
             foreach($objects_status as $object){
                 ?>                          
                     <div style='clear:both' >
-                        <div class='hist round step step_<?=$object->status->class?>' >
+                        <div class='hist round step step_team_<?=$object->userInfo->team_id?>' >
                             <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
                                 <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
                                 <!--img class='round_imgList' src='<?=URL::base();?><?=$object->userInfo->foto?>' height="25"  title="<?=ucfirst($object->userInfo->nome);?>" /--> 

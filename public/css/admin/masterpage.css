@@ -969,7 +969,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 
-.round_imgList span, .round_imgList_producao span, .round_imgList_conteudo span, .round_imgList_arte span, .round_imgList_iconografia span, .round_imgListwhite span{
+.round_imgList span{
 	display: block;
 	text-align: center;
 	padding-top: 5px;
@@ -1410,65 +1410,53 @@ a.green{
 
 
 
-/**Cores producao**/
+/**Cores producao**
 
 .producao{
 	background:#008fc7;
 	color:#fff;
+	border: 2px solid #008fc7 !important;
 }
 
 .step_producao{
 	border-left:5px solid #008fc7;
 }
 
-.round_imgList_producao {
-	border: 2px solid #008fc7 !important;
-}
 
-
-/**Cores arte**/
+/**Cores arte**
 
 .arte{
 	background:#f37934;
 	color:#fff;
+	border: 2px solid #f37934 !important;
 }
 
 .step_arte{
 	border-left:5px solid #f37934;
 }
 
-.round_imgList_arte {
-	border: 2px solid #f37934 !important;
-}
-
-/**Cores conteudo**/
+/**Cores conteudo**
 
 .conteudo{
 	background:#8cc152;
 	color:#fff;
+	border: 2px solid #8cc152 !important;
 }
 
 .step_conteudo{
 	border-left:5px solid #8cc152;
 }
 
-.round_imgList_conteudo {
-	border: 2px solid #8cc152 !important;
-}
-
-/**Cores iconografia**/
+/**Cores iconografia**
 
 .iconografia{
 	background:#FFCF4B;
 	color:#fff;
+	border: 2px solid #FFCF4B !important;
 }
 
 .step_iconografia{
 	border-left:5px solid #FFCF4B;
-}
-
-.round_imgList_iconografia {
-	border: 2px solid #FFCF4B !important;
 }
 
 /**********************/
