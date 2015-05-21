@@ -79,7 +79,7 @@ class Utils_Helper
         if($dt != ""){
             $pos = strpos($dt, "/");
             $count = count(explode("/", $dt));
-            if($pos !== false && $count > 1){
+            if($pos !== false && $count > 2){
                 $data = new DateTime($dt);
                 return date_format($data,$format);
             }else{
