@@ -159,12 +159,8 @@ var drawCharts = function drawChart() {
 
 function setupAjax(container){ 
     if($('.topo').length != 0 && container == '#content'){
-        //$('#esquerda, #direita').fadeOut(function(){
-            $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});
-            $('#esquerda, #direita').fadeIn(1000);
-        //});
-        //$('#esquerda, #direita').css({width: ($(window).width() / 2) - (($('#esquerda').offset().left / 2) + 10)}); 
-        
+        $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});
+        $('#esquerda, #direita').fadeIn(1000);
     }
 
     //******Relatorios*******//
@@ -196,7 +192,6 @@ function setupAjax(container){
             $('#relatorio_project_id').val(project_id);
             $('#form_relatorio').submit();
         }else{
-            //alert('selecione um projeto');  
             setMsg({
                 content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
             });
@@ -210,7 +205,6 @@ function setupAjax(container){
             $('#gdocs_project_id').val(project_id);
             $('#sync_gdocs').submit();
         }else{
-            //alert('selecione um projeto');            
             setMsg({
                 content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
             });
@@ -239,7 +233,6 @@ function setupAjax(container){
                         tema:'error',
                         fix: true,
                     });
-                    //alert("ocorreu um erro.");
                 }
             });  
 
@@ -277,7 +270,6 @@ function setupAjax(container){
         }
     });
     
-
     $(".populate").change(function(ui) {
         populateSelect(ui);
     });
@@ -317,9 +309,27 @@ function setupAjax(container){
                 url: base_url + '/tasks/reorder'
             });
         }
-    });
+    }).disableSelection();
 
-    $("#sortable").disableSelection();
+    $("#sortable_workflow, #sortable_workflow2").sortable({
+        connectWith: ".connect",
+        placeholder: "ui-state-highlight",
+        distance: 30,
+        update: function (event, ui) {
+            var data = $(this).sortable('serialize');
+            console.log(data)
+            // POST to server using $.post or $.ajax
+            /*
+            $.ajax({
+                data: data,
+                type: 'POST',
+                timeout: 20000, 
+                url: base_url + '/tasks/reorder'
+            });
+            */
+        }
+    }).disableSelection();
+
 
 
     $("a[rel='load-content']").unbind('click').bind('click', function(e){

@@ -129,18 +129,30 @@ class Controller_Admin_Template extends Controller_Template {
 		/*
 		styles team
 		*/
-		$teams = ORM::factory('team')->find_all();
 		$css = '';
+		$teams = ORM::factory('team')->find_all();
+		
 		foreach ($teams as $team) {
 			$css.= '.team_'.$team->id.'{
 				background:#'.$team->color.';
 				color:#fff;
 				border: 2px solid #'.$team->color.' !important;
 			}
-			.step_team_'.$team->id.'{
-				border-left:5px solid #'.$team->color.';
+			';
+		}	
+
+		$status = ORM::factory('statu')->find_all();
+		
+		foreach ($status as $statu) {
+			$css.= '.'.$statu->type.'_status'.$statu->id.'{
+				background:#'.$statu->color.';
+				color:#fff;
+			}
+			.step_'.$statu->type.'_status'.$statu->id.'{
+				border-left:5px solid #'.$statu->color.';
 			}';
-		}		
+		}	
+
 		$this->template->team_css = $css;
 
         if($this->current_user){	

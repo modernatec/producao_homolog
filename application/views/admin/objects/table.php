@@ -55,7 +55,7 @@
 	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s")) && $objeto->status_id != '8'){
         			$class_obj = "object_late";
         		}else{
-    				$class_obj 	= $objeto->statu_class;
+    				$class_obj 	= $objeto->statu_type."_status".$objeto->status_id;
     			}	 
 
 	    		if(is_object($objeto->getStatus($objeto->object_status_id))){
@@ -65,7 +65,8 @@
 	    				$status = "";
 	    				$tag = "";
 			    	}else{
-			    		$status = '<span class="round '.$obj_taskView->status->class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
+			    		$task_class = $obj_taskView->status->type.'_status'.$obj_taskView->status->id;
+			    		$status = '<span class="round '.$task_class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
 		    			$tag = '<span class="round list_faixa left tag" style="background:#'.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
 		    		}
 

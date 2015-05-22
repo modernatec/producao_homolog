@@ -139,12 +139,13 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			$errors = $e->errors('models');
 		}
 		
-		//Request::current()->redirect('admin/materias');
 		header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/materias/index/ajax',				
-			'msg' => $msg,
-		));
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/materias/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 	}
 
 }

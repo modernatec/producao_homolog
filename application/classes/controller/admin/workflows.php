@@ -19,10 +19,10 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
         
 	public function action_index($ajax = null)
 	{	
-		$view = View::factory('admin/materias/list')
+		$view = View::factory('admin/workflow/list')
 			->bind('message', $message);
 		
-		$view->materiasList = ORM::factory('materia')->order_by('id','DESC')->find_all();
+		$view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -41,14 +41,15 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 	public function action_edit($id)
     {    
 		$this->auto_render = false;  
-		$view = View::factory('admin/materias/create')
+		$view = View::factory('admin/workflow/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
 
 		//$this->addValidateJs("public/js/admin/validateMaterias.js");
-		$view->isUpdate = true;  
-		$materia = ORM::factory('materia', $id);
-		$view->materiaVO = $this->setVO('materia', $materia);
+		//$view->isUpdate = true;  
+		$workflow = ORM::factory('workflow', $id);
+		$view->workflowVO = $this->setVO('workflow', $workflow);
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
 		//$this->template->content = $view;
 
 		header('Content-Type: application/json');
@@ -69,15 +70,13 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 
 		try 
 		{            
-			$materia = ORM::factory('materia', $id)->values($this->request->post(), array(
+			$materia = ORM::factory('workflow', $id)->values($this->request->post(), array(
 				'name',
 			));
 			                
 			$materia->save();
 			$db->commit();
-			//Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
-			//Request::current()->redirect('admin/materias');
-			$msg = "matéria salva com sucesso.";		
+			$msg = "workflow salvo com sucesso.";		
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -97,7 +96,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/materias/index/ajax'),
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/workflows/index/ajax'),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -110,10 +109,10 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$this->auto_render = false;
 		try 
 		{            
-			$objeto = ORM::factory('materia', $id);
+			$objeto = ORM::factory('workflow', $id);
 			$objeto->delete();
 			//Utils_Helper::mensagens('add',''); 
-			$msg = "matéria excluído com sucesso";
+			$msg = "workflow excluído com sucesso";
 		} catch (ORM_Validation_Exception $e) {
 			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
 			$msg = "houveram alguns erros na exclusão dos dados.";
@@ -122,10 +121,13 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		
 		//Request::current()->redirect('admin/materias');
 		header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/materias/index/ajax',				
-			'msg' => $msg,
-		));
+
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/workflows/index/ajax'),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 	}
 
 }

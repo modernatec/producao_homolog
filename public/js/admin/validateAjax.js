@@ -197,6 +197,20 @@ function validateAjax(){
         }
     })
 
+    $("#frmCreateWorkflow").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;    
+        }
+    })
+
     $("#frmCreatePais").validate({
         rules: {
             name: {required:true}

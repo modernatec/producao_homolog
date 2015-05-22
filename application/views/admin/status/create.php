@@ -5,8 +5,8 @@
         <span class='error'><?=Arr::get($errors, 'status');?></span>
     </dd>  
     <dd>
-        <input type="text" class="text required round" placeholder="css class" name="class" id="class" style="width:200px;" value="<?=@$statusVO['class'];?>"/>
-        <span class='error'><?=Arr::get($errors, 'class');?></span>
+        <input type="text" class="text required round" placeholder="css class" name="color" id="color" style="width:200px;" value="<?=@$statusVO['color'];?>"/>
+        <span class='error'><?=Arr::get($errors, 'color');?></span>
     </dd>            
     <dd>
         <?foreach ($teamList as $team) {?>

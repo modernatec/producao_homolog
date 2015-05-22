@@ -70,7 +70,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('statu', $id)->values($this->request->post(), array(
 				'status',
-				'class',
+				'color',
 			));
 			$objeto->type = 'object';
 			                

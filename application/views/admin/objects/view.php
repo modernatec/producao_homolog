@@ -43,7 +43,7 @@
             foreach($objects_status as $object){
                 ?>                          
                     <div style='clear:both' >
-                        <div class='hist round step step_team_<?=$object->userInfo->team_id?>' >
+                        <div class='hist round step step_<?=$object->status->type?>_status<?=$object->status->id?>' >
                             <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
                                 <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
                                 <!--img class='round_imgList' src='<?=URL::base();?><?=$object->userInfo->foto?>' height="25"  title="<?=ucfirst($object->userInfo->nome);?>" /--> 
@@ -72,7 +72,7 @@
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$object->id?>" class="popup edit black">
                                 <?}?>
-                                <span class="list_faixa <?=$object->status->class?> round"><?=$object->status->status;?> <?=!empty($object->prova) ? '('.$object->prova.')' : ""?></span></a>
+                                <span class="list_faixa round <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?> <?=!empty($object->prova) ? '('.$object->prova.')' : ""?></span></a>
 
                                 
                                 <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?></p>
@@ -174,7 +174,7 @@
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                         <!--img class='round_imgList<?=$task->to->team->color?>' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <?}?>
-                                                    <span class="status round <?=$task->status->class?>"><?=$task->status->status?></span>
+                                                    <span class="status round"><?=$task->status->status?></span>
                                                     <div class="clear" style="padding-top:5px;">
                                                         solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
                                                         <br/>
