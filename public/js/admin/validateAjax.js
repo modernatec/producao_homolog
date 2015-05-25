@@ -205,6 +205,9 @@ function validateAjax(){
             name: { required:'Campo não pode ser vazio'}
         },
         submitHandler: function(form) {
+            var data = $('#sortable_workflow2').sortable('serialize');
+            $('#sortable_workflow2_itens').attr('value', data);
+            
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false;    

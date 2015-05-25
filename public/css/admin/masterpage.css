@@ -1017,13 +1017,18 @@ input[type='text']:focus, input[type='password']:focus{
 	width: 20px;
 	height: 20px;
 	display: block;
+	color: #fff;
+	text-align: center;
+	line-height: 22px;
 
-	-o-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-	border-radius:20px;
+
+	-o-border-radius: 22px;
+    -moz-border-radius: 22px;
+    -webkit-border-radius: 22px;
+    -khtml-border-radius: 22px;
+	border-radius:22px;
 }
+
 
 .red{
 	background: #ff0000;

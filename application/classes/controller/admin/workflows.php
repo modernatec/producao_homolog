@@ -45,12 +45,21 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		//$this->addValidateJs("public/js/admin/validateMaterias.js");
-		//$view->isUpdate = true;  
 		$workflow = ORM::factory('workflow', $id);
 		$view->workflowVO = $this->setVO('workflow', $workflow);
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->find_all();
-		//$this->template->content = $view;
+		$workflow_status = DB::select('status_id')->from('workflows_status')
+							->where('workflow_id', '=', $id)->execute()->as_array();
+
+		if(count($workflow_status) == 0){
+			$workflow_status = array('0');
+		}
+
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->where('id', 'NOT IN', $workflow_status)->find_all();
+		$view->workflowStatusList = ORM::factory('statu')->where('type', '=', 'object')
+									->join('workflows_status')->on('status.id', '=', 'status_id')
+									->where('workflow_id', '=', $id)
+									->order_by('order', 'ASC')->find_all();
+		
 
 		header('Content-Type: application/json');
 		echo json_encode(
@@ -70,11 +79,27 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 
 		try 
 		{            
-			$materia = ORM::factory('workflow', $id)->values($this->request->post(), array(
+			$workflow = ORM::factory('workflow', $id)->values($this->request->post(), array(
 				'name',
 			));
 			                
-			$materia->save();
+			$workflow->save();
+
+			$i = '0';
+			DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
+			parse_str($this->request->post('item'),$itens); 
+			
+			foreach($itens['item'] as $status_id){
+				$workflow_status = ORM::factory('workflows_statu');
+				$workflow_status->status_id = $status_id;
+				$workflow_status->workflow_id = $workflow->id;
+				
+				$workflow_status->order = $i;
+				$workflow_status->save();
+
+				$i++;
+			}
+
 			$db->commit();
 			$msg = "workflow salvo com sucesso.";		
 

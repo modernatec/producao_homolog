@@ -14,7 +14,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		$view = View::factory('admin/status/list')
 			->bind('message', $message);
 		
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('status','ASC')->find_all();
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('id','ASC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -71,6 +71,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			$objeto = ORM::factory('statu', $id)->values($this->request->post(), array(
 				'status',
 				'color',
+				'days',
 			));
 			$objeto->type = 'object';
 			                

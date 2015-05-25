@@ -316,8 +316,6 @@ function setupAjax(container){
         placeholder: "ui-state-highlight",
         distance: 30,
         update: function (event, ui) {
-            var data = $(this).sortable('serialize');
-            console.log(data)
             // POST to server using $.post or $.ajax
             /*
             $.ajax({
@@ -529,7 +527,6 @@ function ajaxPost(form, container){
                 tema:'error',
                 fix: true,
             });
-            //alert("ocorreu um erro. ajaxPost");
         }
     });    
 }
