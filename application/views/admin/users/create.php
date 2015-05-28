@@ -2,7 +2,7 @@
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/users" class="bar_button round">voltar</a>
 	</div>
-    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" action="<?=URL::base();?>admin/users/edit/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
+    <form name="frmCreateUsers" id="frmCreateUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
 	  	<div class="left">	    
 		    <div class="foto_form" style="background: url('<?=URL::base();?><?=@$userInfoVO["foto"]?>') no-repeat;"></div> 	

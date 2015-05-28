@@ -135,8 +135,11 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
       	//https://spreadsheets.google.com/feeds/spreadsheets/private/full
 
     	$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
+    	
       	$client = Zend_Gdata_ClientLogin::getHttpClient($user, $pass, $service);
 		$spreadsheetService = new Zend_Gdata_Spreadsheets($client);
+
+		var_dump($spreadsheetService);
 		//$feed = $spreadsheetService->getSpreadsheetFeed();
 
 		$r = array();

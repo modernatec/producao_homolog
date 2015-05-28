@@ -124,7 +124,7 @@ a{
 }
 
 #page{
-    overflow:hidden;
+    overflow:auto;
     position: absolute;
     top:46px;
     bottom: 0;
@@ -492,7 +492,7 @@ a{
 
 .scrollable_content{
 	position: relative;	
-    overflow:auto;
+    overflow:hidden;
     width: 100%;
 }
 
@@ -1192,6 +1192,21 @@ a.green{
 	z-index: 1;
 }
 */
+
+
+
+.cronoList{
+}
+
+.crono_row{
+	
+}
+
+.crono_row div{
+	display: inline-block;
+	position: relative;
+}
+
 
 .list_faixa{
 	margin: 0 2px 2px 0;

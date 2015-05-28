@@ -109,19 +109,17 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-        //$this->addValidateJs("public/js/admin/validateUsers.js");
         $view->teamsList    = ORM::factory('team')->find_all();
         $view->rolesList    = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
         $view->userInfoVO   = $this->setVO('userInfo');
         $view->anexosView = View::factory('admin/files/anexos');
         //$this->template->content = $view;
-
-        echo $view;
-
-        if (HTTP_Request::POST == $this->request->method()) 
-        {                                              
-            //$this->salvar(); 
-        }             
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+            )                       
+        );        
     }
 	
 	/*

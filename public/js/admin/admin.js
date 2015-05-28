@@ -113,7 +113,7 @@ setInterval(function() {
 function setupScroll(){
     $(".scrollable_content").mCustomScrollbar({
         theme:"dark-3",
-        axis:"y",
+        axis:"xy",
         scrollInertia: 0,
     });
 }
@@ -159,8 +159,8 @@ var drawCharts = function drawChart() {
 
 function setupAjax(container){ 
     if($('.topo').length != 0 && container == '#content'){
-        $('#esquerda, #direita').css({top:$('.topo').height() + 'px'});
-        $('#esquerda, #direita').fadeIn(1000);
+        $('#esquerda, #direita, #page').css({top:$('.topo').height() + 'px'});
+        $('#esquerda, #direita, #page').fadeIn(1000);
     }
 
     //******Relatorios*******//

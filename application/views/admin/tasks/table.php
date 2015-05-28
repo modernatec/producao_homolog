@@ -45,7 +45,7 @@
                             }
                         ?>
                     </div>
-                    <span class="<?=$task->status->class?> round left list_faixa"><?=$task->status->status;?></span>
+                    <span class="<?=$task->status->type?>_status<?=$task->status->id?> round left list_faixa"><?=$task->status->status;?></span>
                     <span class="round list_faixa left tag" style="background:#<?=$class_obj?>"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($task->crono_date)?></span>
                 </a>
             </li>

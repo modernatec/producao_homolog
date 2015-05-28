@@ -28,7 +28,7 @@
 			<li>
 				<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
-					<span class='round list_faixa <?=$usuario->team->color?> left'><?=$usuario->nome?></span><span class='round list_faixa <?=$usuario->team->color?>'><?=$usuario->team->name?></span>
+					<span class='round list_faixa team_<?=$usuario->team->id?> left'><?=$usuario->nome?></span><span class='round list_faixa team_<?=$usuario->team->id?>'><?=$usuario->team->name?></span>
 					<!--div class="round_imgDetail <?=$usuario->team->color?>">
 						<img class='round_imgList' src='<?=URL::base();?><?=($usuario->foto)?($usuario->foto):('public/image/admin/default.png')?>' height="20" style='float:left' alt="<?=ucfirst($usuario->nome);?>" />
 	                    <span><?=$usuario->nome?></span>
