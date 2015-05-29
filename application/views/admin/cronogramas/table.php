@@ -1,3 +1,4 @@
+
 	<span class='list_alert light_blue round'>
 	<?
         if(count($objectsList) <= 0){
@@ -40,32 +41,44 @@
 
 		
 		?>
-		<div style="display:inline-block">
-			<div>
-				<?foreach($objectsList as $objeto){?>
-					<div class="crono_row">
-						<div class="crono"><?=$objeto->taxonomia?></div>
-					</div>
-				<?}?>
-			</div>
-			<div style="background:red">
-			teste
-			</div>
+		<div class="crono_fixed scrollable_content left">
+			<?foreach($objectsList as $objeto){?>
+				<div class="crono_item">
+					<p><?=$objeto->title?></p>
+					<p><?=$objeto->taxonomia?></p>
+				</div>
+			<?}?>			
 		</div>
-		
-		<!--div class="scrollable_content cronolist">
+
+		<div class="crono scrollable_content">
+			<table>
+				<?foreach($objectsList as $objeto){?>
+					<tr>
+						<? 
+							$datas = GetDays('2015/05/28','2015/06/28');
+							foreach ($datas as $data) {
+								echo '<td>'.$data.'</td>';
+							}
+						?>
+					</tr>
+				<?}?>			
+			</table>
+		</div>
+		<!--div class="scrollable_content">
 			<?foreach($objectsList as $objeto){?>
 				<div class="crono_row">
-					<div class="crono"><?=$objeto->taxonomia?></div>
+					<div class="crono_fixed">
+						<p><?=$objeto->title?></p>
+						<p><?=$objeto->taxonomia?></p>
+					</div>
 					<? 
 						$datas = GetDays('2015/05/28','2015/06/28');
 						foreach ($datas as $data) {
 							//echo '<div class="crono">'.$data.'</div>';
 						}
-
 					?>
 				</div>
 			<?}?>
 		</div-->
-	
-	
+
+

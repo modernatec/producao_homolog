@@ -163,6 +163,12 @@ function setupAjax(container){
         $('#esquerda, #direita, #page').fadeIn(1000);
     }
 
+    if($('.crono').length != 0 && container == '#tabs_content'){
+        $('.crono').css('width', $('#page').width() - $('.crono_fixed').width() - 10);
+    }
+
+    
+
     //******Relatorios*******//
     if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
         $('.grafico').each(function(index, el) {
@@ -611,7 +617,7 @@ function updateBar(url){
         url = base_url + '/admin/taskstatus/updateTasksBar', true
 
         $("#taskBar").load(url, function() {
-            setupAjax('#taskBar');  
+            //setupAjax('#taskBar');  
         });
     }else{
         alert("sessão expirada!");

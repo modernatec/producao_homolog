@@ -124,7 +124,7 @@ a{
 }
 
 #page{
-    overflow:auto;
+    overflow:hidden;
     position: absolute;
     top:46px;
     bottom: 0;
@@ -1193,19 +1193,26 @@ a.green{
 }
 */
 
-
-
-.cronoList{
+.crono td{
+	height: 60px !important;
+	margin:0;
+	padding: 0;
+	white-space: nowrap;
 }
 
-.crono_row{
+.crono_fixed{
+	width: 230px;
+	height: auto;
+	background: #f1f1f1;
 	
 }
 
-.crono_row div{
-	display: inline-block;
-	position: relative;
+.crono_item{
+	height: 61px;
+	display: block;
 }
+
+
 
 
 .list_faixa{

@@ -6,8 +6,7 @@
             <?}?>
         </ul>  
     </div>
-    <div class="clear" id="filtros">  
-    </div>
+    <div class="clear" id="filtros"></div>
 </div>
 <div id="page">
     <div id="tabs_content" >
