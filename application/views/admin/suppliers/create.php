@@ -1,4 +1,4 @@
-<div class="fixed clear">
+	<div class="fixed clear">
 	<? if(@$supplierVO['id'] != ""){?>
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$supplierVO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
@@ -13,31 +13,37 @@
 		      <input type="text" class="text required round" name="empresa" id="empresa" style="width:300px;" value="<?=@$supplierVO['empresa'];?>"/>
 		      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
 		    </dd>
-		    <div class="left">
-			    <dt>
-			    	<label for="name1">Contato 1</label>
-			    </dt>
-			    <dd>
-				    <input type="text" class="text required round" name="nome[]" id="name1" style="width:200px;" value="<?=@$contactVO['0']['nome'];?>"/>
-				    <span class='error'><?=Arr::get($errors, 'name');?></span>
-			    </dd>
-			    <dt>
-			      	<label for="email1">E-mail</label>
-			    </dt>
-			    <dd>
-				    <input type="text" class="text required round" name="email[]" id="email1" style="width:200px;" value="<?=@$contactVO['0']['email'];?>"/>
-				    <span class='error'><?=Arr::get($errors, 'email');?></span>
-			    </dd>
-			    <dt>
-			      	<label for="telefone1">Telefone</label>
-			    </dt>	    
-			    <dd>
-		            <input type="text" class="text required round" name="telefone[]" id="telefone1" style="width:100px;" value="<?=@$contactVO['0']['telefone'];?>"/>
-			      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
-			    </dd>
+		    <div id="contato">
+			    <div class="left">
+				    <dt>
+				    	<label for="name1">Contato 1</label>
+				    </dt>
+				    <dd>
+					    <input type="text" class="text required round" name="nome[]" id="name1" style="width:200px;" value="<?=@$contactVO['0']['nome'];?>"/>
+					    <span class='error'><?=Arr::get($errors, 'name');?></span>
+				    </dd>
+				</div>
+				<div class="left">
+				    <dt>
+				      	<label for="email1">E-mail</label>
+				    </dt>
+				    <dd>
+					    <input type="text" class="text required round" name="email[]" id="email1" style="width:200px;" value="<?=@$contactVO['0']['email'];?>"/>
+					    <span class='error'><?=Arr::get($errors, 'email');?></span>
+				    </dd>
+				</div>
+				<div class="left">
+				    <dt>
+				      	<label for="telefone1">Telefone</label>
+				    </dt>	    
+				    <dd>
+			            <input type="text" class="text required round" name="telefone[]" id="telefone1" style="width:100px;" value="<?=@$contactVO['0']['telefone'];?>"/>
+				      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
+				    </dd>
+				</div>
 			</div>
 
-		    <div class="left">
+		    <div class="clear">
 			    <dt>
 			      <label for="name2">Contato 2</label>
 			    </dt>

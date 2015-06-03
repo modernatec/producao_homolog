@@ -108,9 +108,11 @@ class Controller_Admin_Template extends Controller_Template {
 
 				'https://www.google.com/jsapi',				
 
-				"public/plupload/js/plupload.js",
-				"public/plupload/js/plupload.html5.js",
-				"public/plupload/init.js",
+				"public/js/common/plupload/plupload.min.js",
+
+				//"public/plupload/js/plupload.js",
+				//"public/plupload/js/plupload.html5.js",
+				//"public/plupload/init.js",
 				
 				'public/js/admin/admin.js',
 				'public/js/admin/validateAjax.js',

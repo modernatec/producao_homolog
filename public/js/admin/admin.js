@@ -52,7 +52,7 @@ function populateSelect(ui)
     });
 }
 
-var upload = false;
+
 var googleLoaded = false;
 
 $(document).ready(function()
@@ -255,9 +255,12 @@ function setupAjax(container){
 
     validateAjax(); 
 
-    if($("#pickfiles").size() == 1 && upload == false){
+    
+    console.log($("#pickfiles").size())
+
+    
+    if($("#pickfiles").size() == 1){
        uploader.init();
-       upload = true;
     }
 
     $(container + " .scrollable_content").mCustomScrollbar("update");
