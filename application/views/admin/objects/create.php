@@ -77,6 +77,7 @@
                 <dt> <label for="supplier_id">produtora</label> </dt>
                 <dd>
                 	<select class="required round" name="supplier_id" id="supplier_id">
+                        <option value='0'>não se aplica</option>
                         <option value='10'>produção interna</option>
                         <? 
                         foreach($suppliers as $supplier){
@@ -104,6 +105,7 @@
                 <dt> <label for="audiosupplier_id">estúdio de áudio</label> </dt>
                 <dd>
                     <select class="round" name="audiosupplier_id" id="audiosupplier_id">
+                        <option value='0'>não se aplica</option>
                         <option value='10'>produção interna</option>
 
                         <? 
@@ -131,6 +133,7 @@
                 <dt> <label for="artesupplier_id">arte/interface</label> </dt>
                 <dd>
                     <select class=" round" name="artesupplier_id" id="artesupplier_id">
+                        <option value='0'>não se aplica</option>
                         <option value='10'>produção interna</option>
                         <? 
                         foreach($suppliers_arte as $supplier){
@@ -151,7 +154,20 @@
                     <textarea class="text round" name="ilustrador" id="ilustrador" style="width:500px; height:80px;"><?=$objVO['ilustrador'];?></textarea>
                     <span class='error'><?=Arr::get($errors, 'ilustrador');?></span>
                 </dd>
-            </div>           
+            </div>    
+            <div class="clear">
+                <dt>
+                    <label >compartilhamento</label>
+                </dt>
+                <dd>
+                    <? foreach ($repoList as $repo) {?>
+                        <input type="checkbox" name="repositorio[]" id="repo_<?=$repo->id?>" value="<?=$repo->id?>" <?=(in_array($repo->id, $repo_arr))? 'checked' : ''?> /><label for="repo_<?=$repo->id?>"><?=$repo->name?></label> 
+                    <?}?>   
+
+                  <span class='error'><?=Arr::get($errors, 'repositorio');?></span>
+                </dd>
+
+            </div>       
 
             <div class="clear left"> 
                 <dt><label for="arq_aberto">arquivo aberto</label></dt>
@@ -188,6 +204,30 @@
                     <span class='error'><?=Arr::get($errors, 'format_id');?></span>
                 </dd>
             </div>  
+            
+            <div class="left">
+                <dt> <label for="pnld">resultado PNLD</label> </dt>
+                <dd>
+                    <select class="required round" name="pnld" id="pnld">
+                        <option value='1' <?=(($objVO['pnld']== '1')?('selected="selected"'):(''))?>>não se aplica</option>
+                        <option value='2' <?=(($objVO['pnld']== '2')?('selected="selected"'):(''))?>>aprovado</option>
+                        <option value='3' <?=(($objVO['pnld']== '3')?('selected="selected"'):(''))?>>reprovado</option>
+                        <option value='4' <?=(($objVO['pnld']== '4')?('selected="selected"'):(''))?>>não avaliado</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'pnld');?></span>
+                </dd>  
+            </div>
+            <div class="left">
+                <dt> <label for="transcricao">transcrição de locução</label> </dt>
+                <dd>
+                    <select class="required round" name="transcricao" id="transcricao" style="width:100px;">
+                        <option value='0' <?=(($objVO['transcricao']== '0')?('selected="selected"'):(''))?>>não</option>
+                        <option value='1' <?=(($objVO['transcricao']== '1')?('selected="selected"'):(''))?>>sim</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'transcricao');?></span>
+                </dd>  
+            </div>
+
             <div class="clear left"> 
                 <dt><label for="reaproveitamento">origem</label></dt>
                 <dd>
@@ -251,6 +291,13 @@
                     </select>
                     <span class='error'><?=Arr::get($errors, 'cessao');?></span>
                 </dd> 
+            </div>
+            <div class="clear">
+                <dt> <label for="keywords">palavras chave</label> </dt>
+                <dd>
+                    <textarea class="text round" name="keywords" id="keywords" maxlength='250' style="width:500px; height:100px;"><?=$objVO['keywords'];?></textarea>
+                    <span class='error'><?=Arr::get($errors, 'keywords');?></span>
+                </dd>
             </div>
             <div class="clear">
                 <dt> <label for="obs">obsevações</label> </dt>

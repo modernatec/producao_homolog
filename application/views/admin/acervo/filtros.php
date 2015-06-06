@@ -15,7 +15,7 @@
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>
                                 <? foreach ($segmentoList as $segmento) {?>
                                     <li>
-                                        <input class="filter_segmento" type="checkbox" name="segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?=(in_array($segmento->id, $filter_segmento)) ? "checked" : ""?> />
+                                        <input class="filter_segmento" type="checkbox" name="segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(isset($filter_segmento)){ if(in_array($segmento->id, $filter_segmento)){ echo "checked";}}?> />
                                         <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
                                     </li>
                                 <?}?>
@@ -42,7 +42,7 @@
                                 <ul>
                                     <? foreach ($collectionList as $collection) {?>
                                         <li>
-                                            <input class="filter_collection" type="checkbox" name="collection[]" value="<?=$collection->id?>" id="col_<?=$collection->id?>" <?=(in_array($collection->id, $filter_collection)) ? "checked" : ""?> />
+                                            <input class="filter_collection" type="checkbox" name="collection[]" value="<?=$collection->id?>" id="col_<?=$collection->id?>" <?if(isset($filter_collection)){ if(in_array($collection->id, $filter_collection)){ echo "checked";}}?> />
                                             <label for="col_<?=$collection->id?>"><?=$collection->name?></label>
                                         </li>
                                     <?}?>
@@ -95,7 +95,7 @@
                                     
                                     <? foreach ($projectList as $project) {?>
                                         <li>
-                                            <input class="filter_project" type="checkbox" name="project[]" value="<?=$project->id?>" id="proj_<?=$project->id?>" <?=(in_array($project->id, $filter_project)) ? "checked" : ""?> />
+                                            <input class="filter_project" type="checkbox" name="project[]" value="<?=$project->id?>" id="proj_<?=$project->id?>" <?if(isset($filter_project)){ if(in_array($project->id, $filter_project)){ echo "checked";}}?> />
                                             <label for="proj_<?=$project->id?>"><?=$project->name?></label>
                                         </li>
                                     <?}?>
@@ -114,7 +114,7 @@
             <div class="left filter" >
                 <ul>
                     <li class="round" >
-                        <span class="round" id="typeobject">tipos de OED's <?=(!empty($filter_typeobject) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                        <span class="round" id="typeobject">tipos de OED's <?=(!empty($filter_tipo) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round " style="width:200px;" >                        
                             <ul >
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" style="color:#fff">selecionar tudo</label></li>
@@ -123,7 +123,7 @@
                                 <ul >
                                     <? foreach ($typeList as $typeobject) {?>
                                         <li>
-                                            <input class="filter_typeobject" type="checkbox" name="tipo[]" value="<?=$typeobject->id?>" id="type_<?=$typeobject->id?>" <?=(in_array($typeobject->id, $filter_typeobject)) ? "checked" : ""?> />
+                                            <input class="filter_typeobject" type="checkbox" name="tipo[]" value="<?=$typeobject->id?>" id="type_<?=$typeobject->id?>" <?if(isset($filter_tipo)){ if(in_array($typeobject->id, $filter_tipo)){ echo "checked";}}?> />
                                             <label for="type_<?=$typeobject->id?>"><?=$typeobject->name?></label>
                                         </li>
                                     <?}?>

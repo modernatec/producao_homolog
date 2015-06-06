@@ -433,6 +433,20 @@ a{
 	/*box-shadow:#999 2px 2px 2px;*/
 }
 
+.round_button{
+	width: 22px;
+	height: 22px;
+	line-height: 22px;
+	text-align: center;
+	display: block;
+	-o-border-radius: 22px;
+    -moz-border-radius: 22px;
+    -webkit-border-radius: 22px;
+    -khtml-border-radius: 22px;
+    border-radius: 22px;
+    background: #008fc7;
+}
+
 .pagination .bar_button{
 	margin: 0 !important;
 }
@@ -640,6 +654,7 @@ table tbody td table tbody tr:hover {
 
 .form dl, .form dt, .form dd{
 	padding:5px 0;
+	color: red;
 }
 
 
@@ -674,6 +689,9 @@ label
 
 
 .form p{ padding:2px 5px; display:inline-block; }
+p{
+	padding: 3px 0;
+}
 
 .error{
     color:#EE0000;
@@ -940,7 +958,7 @@ input[type='text']:focus, input[type='password']:focus{
 	background: #dfe9f3;
 }
 
-.round_imgList, .round_imgList_producao, .round_imgList_conteudo, .round_imgList_arte, .round_imgList_iconografia, .round_imgListwhite{
+.round_imgList{
 	-o-border-radius: 25px;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
@@ -1217,7 +1235,7 @@ a.green{
 
 .list_faixa{
 	margin: 0 2px 2px 0;
-	padding: 5px;
+	padding: 4px 5px;
 	display: inline-block;
 	/*line-height: 30px !important*/
 }

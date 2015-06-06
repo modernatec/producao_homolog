@@ -37,31 +37,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 	} 
 
-	/*
-	public function action_create()
-	{ 
-		$view = View::factory('admin/suppliers/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateSuppliers.js");
-		$view->isUpdate = false;
-		$view->formatos = ORM::factory('format')->find_all();
-		$view->supplierVO = $this->setVO('supplier'); 
-		$view->teams = ORM::factory('team')->find_all();
-
-		$view->formats_arr = array();
-
-		$this->template->content = $view;
-
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-			$this->salvar();
-		} 
-	}
-	*/
-
-	public function action_view($id){
+	public function action_view($id, $ajax = null){
 		$this->auto_render = false;
 			$view = View::factory('admin/suppliers/view')
 				->bind('errors', $errors)
@@ -70,14 +46,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$contact = ORM::factory('supplier', $id);
 		$view->supplierVO = $this->setVO('supplier', ORM::factory('supplier', $id)); 
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
 			
-		$contatos_arr = array();
-		foreach ($contatos as $value) {
-			array_push($contatos_arr, $this->setVO('contato', $value));
-		}
-		$view->contactVO = $contatos_arr;
-
 		$view->teams = ORM::factory('team')->find_all();
 		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
 		$formats_arr = array();
@@ -88,13 +58,16 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		//ORM::factory('supplier', $id);	
 		$view->current_auth = $this->current_auth;
-
-		header('Content-Type: application/json');		
-		echo json_encode(
-			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
+		if($ajax != null){
+ 			return $view;
+ 		}else{
+			header('Content-Type: application/json');		
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+		}
         return false;
 	}
 
@@ -105,19 +78,11 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs();
-		$view->isUpdate = true;
 		$contact = ORM::factory('supplier', $id);
 		$view->supplierVO = $this->setVO('supplier', $contact); 
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
 			
-		$contatos_arr = array();
-		foreach ($contatos as $value) {
-			array_push($contatos_arr, $this->setVO('contato', $value));
-		}
-		$view->contactVO = $contatos_arr;
-
 		$view->teams = ORM::factory('team')->find_all();
 		$formats_supplier = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
 		$formats_arr = array();
@@ -125,6 +90,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			array_push($formats_arr, $value->format_id);
 		}
 		$view->formats_arr = $formats_arr;
+
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
@@ -152,12 +118,14 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			));
 
 			$supplier->save();
+			$id = $supplier->id;
 
 			$delete_contacts = DB::delete('contatos')->where('tipo','=', 'supplier')->and_where('tipo_id', '=', $supplier->id)->execute();
 
 			$email = $this->request->post('email');
 			$telefone = $this->request->post('telefone');
 			$nome = $this->request->post('nome');
+
 			foreach ($nome as $key => $value) {
 				if($nome[$key] != ""){
 					$contact = ORM::factory('contato');
@@ -182,10 +150,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			
 			$db->commit();
 			$msg = "Fornecedor salvo com sucesso.";
-			//Utils_Helper::mensagens('add',$message);
-			//Request::current()->redirect('admin/suppliers');
-			//echo URL::base().'admin/suppliers/view/'.$supplier->id;
-
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -194,18 +158,18 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			}
             $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
         header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/suppliers/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getSuppliers(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($id, true)->render())),
+				//array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/suppliers/index/ajax'),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -241,6 +205,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
     public function action_getSuppliers($ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/suppliers/table');
+		$viewFiltros = View::factory('admin/suppliers/filtros');
 
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
@@ -256,6 +221,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
   		$filtros = Session::instance()->get('kaizen')['filtros'];
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
+  			$viewFiltros->$key = json_decode($value);
   		}
 
 		$query = ORM::factory('supplier')->join('contatos', 'INNER')->on('suppliers.id', '=', 'contatos.tipo_id')->where('suppliers.order', '=', '1')->and_where('contatos.tipo','=','supplier');
@@ -273,6 +239,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
 				)						
 			);
 	       

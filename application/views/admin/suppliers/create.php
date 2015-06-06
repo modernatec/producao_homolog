@@ -1,98 +1,82 @@
-	<div class="fixed clear">
 	<? if(@$supplierVO['id'] != ""){?>
 	<div class="bar">
 		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$supplierVO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 	</div>
 	<?}?>
-	<div class="list_body scrollable_content">
-	    <form name="frmSupplier" id="frmSupplier" data-panel="#direita" action="<?=URL::base();?>admin/suppliers/edit/<?=$supplierVO['id']?>" method="post" class="form" enctype="multipart/form-data">
-	    	<dt>
-				<label for="empresa">Empresa</label>
-			</dt>
-		    <dd>
-		      <input type="text" class="text required round" name="empresa" id="empresa" style="width:300px;" value="<?=@$supplierVO['empresa'];?>"/>
-		      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
-		    </dd>
-		    <div id="contato">
+	<div class="scrollable_content">
+	    <form name="frmSupplier" id="frmSupplier" action="<?=URL::base();?>admin/suppliers/salvar/<?=$supplierVO['id']?>" method="post" class="form" enctype="multipart/form-data">
+	    	<div class="left">
+		    	<dt>
+					<label for="empresa">empresa</label>
+				</dt>
+			    <dd>
+			      <input type="text" class="text required round" name="empresa" id="empresa" style="width:400px;" value="<?=@$supplierVO['empresa'];?>"/>
+			      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
+			    </dd>
+			</div>
+			<div class="left">
+				<dt>
+					<label for="status">status</label>
+				</dt>
+			    <dd>
+			    	<select class="required round" name="status" id="status" style="width:100px;">
+                        <option value='1' <?=(($supplierVO['status']== '1')?('selected="selected"'):(''))?>>aprovado</option>
+                        <option value='0' <?=(($supplierVO['status']== '0')?('selected="selected"'):(''))?>>reprovado</option>
+                    </select>
+				    <span class='error'><?=Arr::get($errors, 'status');?></span>
+			    </dd>
+			</div>
+		    <dt>
+		    	<label class="clear left">contatos</label> <a class="left round_button" id='clone'>+</a>
+		    </dt>
+		    <? $display = (count($contatos) <= 0) ? 'block' : 'none';?>
+		    <div id="contato" style="display:<?=$display?>" class="clear">
 			    <div class="left">
-				    <dt>
-				    	<label for="name1">Contato 1</label>
-				    </dt>
 				    <dd>
-					    <input type="text" class="text required round" name="nome[]" id="name1" style="width:200px;" value="<?=@$contactVO['0']['nome'];?>"/>
+					    <input type="text" class="text round" name="nome[]" placeholder="nome" style="width:200px;" />
 					    <span class='error'><?=Arr::get($errors, 'name');?></span>
 				    </dd>
 				</div>
 				<div class="left">
-				    <dt>
-				      	<label for="email1">E-mail</label>
-				    </dt>
 				    <dd>
-					    <input type="text" class="text required round" name="email[]" id="email1" style="width:200px;" value="<?=@$contactVO['0']['email'];?>"/>
+					    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" />
 					    <span class='error'><?=Arr::get($errors, 'email');?></span>
 				    </dd>
 				</div>
 				<div class="left">
-				    <dt>
-				      	<label for="telefone1">Telefone</label>
-				    </dt>	    
 				    <dd>
-			            <input type="text" class="text required round" name="telefone[]" id="telefone1" style="width:100px;" value="<?=@$contactVO['0']['telefone'];?>"/>
+			            <input type="text" class="text round" name="telefone[]" placeholder="telefone" style="width:100px;" />
 				      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
 				    </dd>
 				</div>
-			</div>
-
-		    <div class="clear">
-			    <dt>
-			      <label for="name2">Contato 2</label>
-			    </dt>
-			    <dd>
-			      <input type="text" class="text round" name="nome[]" id="name2" style="width:200px;" value="<?=@$contactVO['1']['nome'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'name');?></span>
-			    </dd>
-			    <dt>
-			      <label for="email2">E-mail</label>
-			    </dt>
-			    <dd>
-			      <input type="text" class="text round" name="email[]" id="email2" style="width:200px;" value="<?=@$contactVO['1']['email'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'email');?></span>
-			    </dd>
-			    <dt>
-			      <label for="telefone2">Telefone</label>
-			    </dt>	    
-			    <dd>
-		                <input type="text" class="text round" name="telefone[]" id="telefone2" style="width:100px;" value="<?=@$contactVO['1']['telefone'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'telefone');?></span>
-			    </dd>
-			</div>
-			<div class="left">
-			    <dt>
-			      <label for="name3">Contato</label>
-			    </dt>
-			    <dd>
-			      <input type="text" class="text round" name="nome[]" id="name3" style="width:200px;" value="<?=@$contactVO['2']['nome'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'name');?></span>
-			    </dd>
-			    <dt>
-			      <label for="email3">E-mail</label>
-			    </dt>
-			    <dd>
-			      <input type="text" class="text round" name="email[]" id="email3" style="width:200px;" value="<?=@$contactVO['2']['email'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'email');?></span>
-			    </dd>
-			    <dt>
-			      <label for="telefone3">Telefone</label>
-			    </dt>	    
-			    <dd>
-		                <input type="text" class="text round" name="telefone[]" id="telefone3" style="width:100px;" value="<?=@$contactVO['2']['telefone'];?>"/>
-			      <span class='error'><?=Arr::get($errors, 'telefone');?></span>
-			    </dd>
-			</div>
-			
+			</div>				
+			<div id='contatos_clone' class="clear">
+				<?foreach ($contatos as $key => $contato) {?>
+					<div id='contato_<?=$key?>' class="clear">
+						<div class="left">
+						    <dd>
+							    <input type="text" class="text required round" name="nome[]" placeholder="nome" style="width:200px;" value="<?=$contato->nome?>" />
+							    <span class='error'><?=Arr::get($errors, 'name');?></span>
+						    </dd>
+						</div>
+						<div class="left">
+						    <dd>
+							    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" value="<?=$contato->email?>" />
+							    <span class='error'><?=Arr::get($errors, 'email');?></span>
+						    </dd>
+						</div>
+						<div class="left">
+						    <dd>
+					            <input type="text" class="text round" name="telefone[]" placeholder="telefone" style="width:100px;" value="<?=$contato->telefone?>" />
+						      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
+						    </dd>
+						</div>
+					</div>
+				<?}?>
+			</div>		
 			<div class="clear">
 		        <dt>
-			   		<label for="trabalho">Trabalho</label>
+			   		<label for="trabalho">tipo de trabalho</label>
 			    </dt>
 			    <dd>
 			   		<? foreach ($formatos as $formato) {?>
@@ -130,9 +114,8 @@
 		              <span class='error'><?=Arr::get($errors, 'observacoes');?></span>
 		        </dd>
 			    <dd>
-			      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>" />
+			      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
 			    </dd>
 			</div>	
 		</form>
 	</div>
-</div>

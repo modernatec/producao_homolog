@@ -7,6 +7,7 @@ class Model_Object extends ORM {
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_id'),
 		'statu' => array('model' => 'status_type', 'foreign_key' => 'status_id'),
 		'object_reap' => array('model' => 'object', 'through' => 'objects_paths', 'foreign_key' => 'object_id'),
+		'repositorios' => array('model' => 'repositorio', 'through' => 'objects_repositorios', 'foreign_key' => 'object_id'),
 	);
 
 	protected $_has_one = array(
@@ -22,6 +23,7 @@ class Model_Object extends ORM {
 		'supplier' =>  array('foreign_key' => 'supplier_id'),
 		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
 		'objectStatus' => array('model' => 'objectStatu', 'through' => 'objectstatus', 'foreign_key' => 'id'),
+		'format' => array('model' => 'format', 'foreign_key' => 'format_id'),
 	);
 
 

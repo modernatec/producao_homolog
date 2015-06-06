@@ -4,62 +4,11 @@
             <?
             foreach ($array_pathFoward as $objeto) {?>
                 <li>
-                    <div>
-                        <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
-                        <div class="replies" style="display:none;">
-                            <hr style="margin:8px 0;" />
-                            
-                            <p><?=$objeto->collection->name?></p>
-                            <?if($objeto->reaproveitamento == 0){ 
-                                $origem = "novo";
-                            }elseif($objeto->reaproveitamento == 1){
-                                $origem = "reap.";
-                            }else{
-                                $origem = "reap. integral";
-                            }?>
-                            <div class="clear">
-                                <span class="list_faixa gray round left"><?=$objeto->collection->materia->name?></span>
-                                <span class="list_faixa gray round left"><?=$origem?></span>
-                                <span class="list_faixa gray round left"><?=@$objeto->typeobject->name;?></span>
-                                <span class="list_faixa gray round left"><?=@$objeto->collection->ano?></span>
-                                <span class="list_faixa gray round"><?=@$objeto->supplier->empresa?></span>
-                            </div>
-                            <table class="left gray">
-                                <thead>
-                                    <th>interatividade</th>
-                                    <th>arquivos abertos</th>
-                                    <th>cessão</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><?=(@$objeto->interatividade == 0) ? 'não' : 'sim'; ?></td>
-                                        <td><?=(@$objeto->arq_aberto == 0) ? 'não' : 'sim'; ?></td>
-                                        <td><?=(@$objeto->cessao == 0) ? 'não' : 'sim'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table class="left gray">
-                                <thead>
-                                    <th>unidade</th>
-                                    <th>capítulo</th>
-                                    <th>página</th>
-                                    <th>tamanho</th>
-                                    <th>duração</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><?=(@$objeto->uni != '') ? @$objeto->uni : '-'; ?></td>
-                                        <td><?=(@$objeto->cap != '') ? @$objeto->cap : '-'; ?></td>
-                                        <td><?=(@$objeto->pagina != '') ? @$objeto->pagina : '-'; ?></td>
-                                        <td><?=(@$objeto->tamanho != '') ? @$objeto->tamanho : '-'; ?></td>
-                                        <td><?=(@$objeto->duracao != '') ? @$objeto->duracao : '-'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>  
-
-                    </div>
+                    <?
+                        $view = View::factory('admin/acervo/list_item');
+                        $view->objeto = $objeto;
+                        echo $view;
+                    ?>
                 </li>
             <?};?>
         </ul>
@@ -68,7 +17,7 @@
             <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
             <span class="wordwrap"><?=@$obj->taxonomia;?></span>
             <hr style="margin:8px 0;" />
-            <?=@$obj->collection->name?>
+            <p><?=@$obj->collection->name?></p>
             <?if($obj->reaproveitamento == 0){ 
                 $origem = "novo";
             }elseif($obj->reaproveitamento == 1){
@@ -77,6 +26,7 @@
                 $origem = "reap. integral";
             }?>
             <div class="clear">
+                <span class="list_faixa cyan round left"><?=$obj->collection->segmento->name?></span>
                 <span class="list_faixa cyan round left"><?=$obj->collection->materia->name?></span>
                 <span class="list_faixa light_blue round left"><?=$origem?></span>
                 <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
@@ -85,13 +35,17 @@
             </div>
             <table class="clear left">
                 <thead>
+                    <th>formato</th>
                     <th>interatividade</th>
+                    <th>transcrição locução</th>
                     <th>arquivos abertos</th>
                     <th>cessão</th>
                 </thead>
                 <tbody>
                     <tr>
+                        <td><?=$obj->format->name;?></td>
                         <td><?=(@$obj->interatividade == 0) ? 'não' : 'sim'; ?></td>
+                        <td><?=(@$obj->transcricao == 0) ? 'não' : 'sim'; ?></td>
                         <td><?=(@$obj->arq_aberto == 0) ? 'não' : 'sim'; ?></td>
                         <td><?=(@$obj->cessao == 0) ? 'não' : 'sim'; ?></td>
                     </tr>
@@ -104,6 +58,7 @@
                     <th>página</th>
                     <th>tamanho</th>
                     <th>duração</th>
+                    <th>resultado PNLD</th>
                 </thead>
                 <tbody>
                     <tr>
@@ -112,75 +67,54 @@
                         <td><?=(@$obj->pagina != '') ? @$obj->pagina : '-'; ?></td>
                         <td><?=(@$obj->tamanho != '') ? @$obj->tamanho : '-'; ?></td>
                         <td><?=(@$obj->duracao != '') ? @$obj->duracao : '-'; ?></td>
+                        <td>
+                            <?
+                                /*melhorar*/
+                                switch($obj->pnld){
+                                    case '1':
+                                        echo 'não se aplica';
+                                        break;
+                                    case '2':
+                                        echo 'aprovado';
+                                        break;
+                                    case '3':
+                                        echo 'reprovado';
+                                        break;
+                                    case '4':
+                                        echo 'não avaliado';
+                                        break;
+                                }; 
+                            ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="clear">
+                <div class="clear">
+                    <?
+                        $repos = $obj->repositorios->find_all();
+                        if(count($repos) > 0){
+                    ?>
+                        <p class="text_blue clear">compartilhado com</p>
+                        <?
+                        foreach ($repos as $repo) {?>
+                            <span class="list_faixa light_blue round left"><?=$repo->name?></span>
+                    <?  }
+                        }?>
+                </div>  
+            </div>
         </div>
         <ul class="list_item">           
         <?
             foreach ($array_path as $objeto) {?>
                 <li>
-                    <div>
-                        <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
-                        <div class="replies" style="display:none;">
-                            <hr style="margin:8px 0;" />
-                            
-                            <p><?=$objeto->collection->name?></p>
-                            <?if($objeto->reaproveitamento == 0){ 
-                                $origem = "novo";
-                            }elseif($objeto->reaproveitamento == 1){
-                                $origem = "reap.";
-                            }else{
-                                $origem = "reap. integral";
-                            }?>
-                            <div class="clear">
-                                <span class="list_faixa gray round left"><?=$objeto->collection->materia->name?></span>
-                                <span class="list_faixa gray round left"><?=$origem?></span>
-                                <span class="list_faixa gray round left"><?=@$objeto->typeobject->name;?></span>
-                                <span class="list_faixa gray round left"><?=@$objeto->collection->ano?></span>
-                                <span class="list_faixa gray round"><?=@$objeto->supplier->empresa?></span>
-                            </div>
-                            <table class="left gray">
-                                <thead>
-                                    <th>interatividade</th>
-                                    <th>arquivos abertos</th>
-                                    <th>cessão</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><?=(@$objeto->interatividade == 0) ? 'não' : 'sim'; ?></td>
-                                        <td><?=(@$objeto->arq_aberto == 0) ? 'não' : 'sim'; ?></td>
-                                        <td><?=(@$objeto->cessao == 0) ? 'não' : 'sim'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table class="left gray">
-                                <thead>
-                                    <th>unidade</th>
-                                    <th>capítulo</th>
-                                    <th>página</th>
-                                    <th>tamanho</th>
-                                    <th>duração</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><?=(@$objeto->uni != '') ? @$objeto->uni : '-'; ?></td>
-                                        <td><?=(@$objeto->cap != '') ? @$objeto->cap : '-'; ?></td>
-                                        <td><?=(@$objeto->pagina != '') ? @$objeto->pagina : '-'; ?></td>
-                                        <td><?=(@$objeto->tamanho != '') ? @$objeto->tamanho : '-'; ?></td>
-                                        <td><?=(@$objeto->duracao != '') ? @$objeto->duracao : '-'; ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <?
+                        $view = View::factory('admin/acervo/list_item');
+                        $view->objeto = $objeto;
+                        echo $view;
+                    ?>
                 </li>
         <?};?>
-
-        
-
-
-        
         </ul>
     </div> 
 </div>

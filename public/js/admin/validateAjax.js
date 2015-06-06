@@ -84,15 +84,11 @@ function validateAjax(){
     $("#frmSupplier").validate({
         rules: {
             empresa:{required:true},
-            "nome[]": {required:true},
-            "email[]": {required:true,email:true},
-            "telefone[]": {required:true}
+            
         },
         messages: {
             empresa: { required:"Digite o nome da empresa."},
-            "nome[]": { required:"Digite o nome do contato."},
-            "email[]": { required: "Digite o email do contato." },
-            "telefone[]": {required:"Digite o telefone o contato."}
+           
         },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
@@ -184,6 +180,20 @@ function validateAjax(){
     })
 
     $("#frmCreateMaterias").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;    
+        }
+    })
+
+    $("#frmCreateRepo").validate({
         rules: {
             name: {required:true}
         },

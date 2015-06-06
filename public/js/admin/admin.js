@@ -113,7 +113,7 @@ setInterval(function() {
 function setupScroll(){
     $(".scrollable_content").mCustomScrollbar({
         theme:"dark-3",
-        axis:"xy",
+        axis:"y",
         scrollInertia: 0,
     });
 }
@@ -167,7 +167,9 @@ function setupAjax(container){
         $('.crono').css('width', $('#page').width() - $('.crono_fixed').width() - 10);
     }
 
-    
+    $("#clone").unbind('click').bind("click", function(e) {
+        $('#contato').clone().appendTo('#contatos_clone').css('display', 'block');
+    });
 
     //******Relatorios*******//
     if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
@@ -256,7 +258,7 @@ function setupAjax(container){
     validateAjax(); 
 
     
-    console.log($("#pickfiles").size())
+    //console.log($("#pickfiles").size())
 
     
     if($("#pickfiles").size() == 1){

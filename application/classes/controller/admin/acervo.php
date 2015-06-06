@@ -150,46 +150,71 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
   		return $viewFiltros;
     }
 
-    public function action_getObjects($page, $ajax = null){
-    	//$this->startProfilling();
+    public function action_getObjects($page = 1, $ajax = null){
+    	$this->auto_render = false;
 
+    	//$this->startProfilling();
     	$page = ($page != "") ? $page : Session::instance()->get('kaizen')['parameters'];
 
-		$this->auto_render = false;
-		$view = View::factory('admin/acervo/table');
-		
+		$view = View::factory('admin/acervo/table');		
 
 		if(count($this->request->post('acervo')) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $page, "acervo");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
-
 		}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
 
   		$filtros = Session::instance()->get('kaizen')['filtros'];
-
+  		//var_dump($filtros);
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
   		}
 
-		$query = ORM::factory('objectStatu')
-		->where('fase', '=', '1')
-		->and_where('status_id', '=', '8');
 		/************************/
+		$tax_coloum = "";
+		$tax_order = "";
 
-		/***Filtros***/
-		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
-		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
-		(isset($view->filter_supplier)) ? $query->and_where('supplier_id', 'IN', $view->filter_supplier) : '';
-		(isset($view->filter_origem)) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
-		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
-		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
+		if(isset($view->filter_taxonomia)){
+    		$list = explode(' ',addslashes($view->filter_taxonomia));
+    		$string = join('* +',$list);
+
+			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+".$string."*') AS relevance";
+			$tax_order = "AND MATCH (title, keywords) AGAINST ('+".$string."*') ORDER BY relevance DESC";
+		}
+
+    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode(',', $view->filter_segmento)."')" : "";
+    	$supplier = (isset($view->filter_supplier)) ? "AND a.supplier_id IN ('".implode("','",$view->filter_supplier)."')" : '';
+    	$origem = (isset($view->filter_origem)) ? "AND a.reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
+    	$project = (isset($view->filter_project )) ? "AND a.project_id IN ('".implode("','",$view->filter_project)."')" : '';
+    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode('','',$view->filter_collection)."')" : '';
+    	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode(',',$view->filter_tipo)."')" : '';
+    	
+
+		$sql = "SELECT 
+					a.*, 
+					b.name as collection_name, 
+					b.ano as collection_ano, 
+					c.name as tipo
+					".$tax_coloum."       				
+				FROM moderna_objects a 
+				INNER JOIN moderna_collections b ON a.collection_id = b.id
+				INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
+				INNER JOIN moderna_objects_status d ON a.id = d.object_id
+				WHERE fase = '1' AND d.status_id = '8' 
+				".$segmento." 
+				".$supplier." 
+				".$origem." 
+				".$project." 
+				".$collection." 
+				".$tipo." 
+				".$tax_order;
+
+		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 		
 		// count number of objects
-		$total_objects = $query->count_all();
+		$total_objects = count($result);//$query->count_all();
 		$view->total_objects = $total_objects;
 
 		// set-up the pagination
@@ -198,23 +223,12 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		    'items_per_page' => 50, // this will override the default set in your config
 		));
 
-		/**estranho*/
-		$query = ORM::factory('objectStatu')
-		->where('fase', '=', '1')
-		->and_where('status_id', '=', '8');
+		$sql .= ' LIMIT '.$pagination->offset.', '.$pagination->items_per_page;
+		$view->sql = $sql;
 
-		/***Filtros***/
-		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
-		(isset($view->filter_segmento)) ? $query->and_where('segmento_id', 'IN', $view->filter_segmento) : '';
-		(isset($view->filter_supplier)) ? $query->and_where('supplier_id', 'IN', $view->filter_supplier) : '';
-		(isset($view->filter_origem)) ? $query->where('reaproveitamento', 'IN', $view->filter_origem) : '';
-		
-		(isset($view->filter_project )) ? $query->and_where('project_id', 'IN', $view->filter_project) : '';		
-		(isset($view->filter_collection )) ? $query->and_where('collection_id', 'IN', $view->filter_collection ) : '';
-		(isset($view->filter_tipo)) ? $query->and_where('typeobject_id', 'IN', $view->filter_tipo) : '';
-		
+		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 
-		$view->objectsList = $query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
+		$view->objectsList = $result; //$query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
 		$view->pagination = $pagination;
 
 		//$this->endProfilling();
@@ -232,5 +246,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	       
 	        return false;
 	    }
+	    
 	}    
 }

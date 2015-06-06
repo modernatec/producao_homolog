@@ -7,17 +7,18 @@
     <b><span class="wordwrap"><?=$supplierVO['empresa']?></span></b> | <a class="text_blue" target="_blank" href="http://<?=$supplierVO['site']?>"><?=$supplierVO['site']?></a>
     <hr style="margin:8px 0;" />
     <?
-        foreach ($contactVO as $contato) {
-            echo "<span class='text_blue'>&bullet; ".$contato['nome']."</span><br/>";
-            echo " ".$contato['email']."<br/>";
-            echo " ".$contato['telefone']."<br/><br/>";
+        foreach ($contatos as $contato) {
+            echo "<div class='box round'><p><span class='text_blue'>".$contato->nome."</span></p>";
+            echo ($contato->email != '') ? "<p>".$contato->email."</p>" : '';
+            echo ($contato->telefone != '') ?  "<p>".$contato->telefone."</p>" : '';
+            echo '</div>';
         }
     ?>
     <? if($supplierVO['observacoes'] != ""){?>
-        <b>observações</b>
+        
         <hr style="margin:8px 0;" />
-        <pre>
+        <p><span class='text_blue'><b>observações</b></span></p>
         <?=$supplierVO['observacoes']?>
-        </pre>
+        
     <?}?>
 </div>

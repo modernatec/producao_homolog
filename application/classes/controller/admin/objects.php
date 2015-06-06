@@ -123,6 +123,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+        $view->repoList = ORM::factory('repositorio')->order_by('name', 'DESC')->find_all(); 
+
+        $objects_repo = ORM::factory('objects_repositorio')->where('object_id','=', $id)->find_all();
+		$repo_arr = array();
+		foreach ($objects_repo as $value) {
+			array_push($repo_arr, $value->repositorio_id);
+		}
+		$view->repo_arr = $repo_arr;
+        
                 
         header('Content-Type: application/json');
 		echo json_encode(
@@ -328,6 +337,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'format_id',
                     'reaproveitamento', 
                     'interatividade',
+                    'transcricao',
+                    'pnld',
                     'fase', 
                     'obs', 
                     'uni', 
@@ -364,6 +375,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
+
+			$delete_repos = DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();
+
+			$repos = $this->request->post('repositorio');
+
+			foreach ($repos as $key => $value) {
+				$repositorio = ORM::factory('objects_repositorio');
+				$repositorio->object_id = $object->id;	
+				$repositorio->repositorio_id = $repos[$key];	
+				$repositorio->save();
+			}	
 
 			$msg = 'Objeto salvo com sucesso.';
 			$db->commit();
