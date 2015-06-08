@@ -380,12 +380,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			$repos = $this->request->post('repositorio');
 
-			foreach ($repos as $key => $value) {
-				$repositorio = ORM::factory('objects_repositorio');
-				$repositorio->object_id = $object->id;	
-				$repositorio->repositorio_id = $repos[$key];	
-				$repositorio->save();
-			}	
+			if($repos != ""){
+				foreach ($repos as $key => $value) {
+					$repositorio = ORM::factory('objects_repositorio');
+					$repositorio->object_id = $object->id;	
+					$repositorio->repositorio_id = $repos[$key];	
+					$repositorio->save();
+				}	
+			}
 
 			$msg = 'Objeto salvo com sucesso.';
 			$db->commit();

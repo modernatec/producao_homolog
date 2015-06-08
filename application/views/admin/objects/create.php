@@ -78,7 +78,7 @@
                 <dd>
                 	<select class="required round" name="supplier_id" id="supplier_id">
                         <option value='0'>não se aplica</option>
-                        <option value='10'>produção interna</option>
+                        <option value='10' <?=((@$objVO["supplier_id"] == '10')?('selected'):(''))?>>produção interna</option>
                         <? 
                         foreach($suppliers as $supplier){
                             if($supplier->team_id == '1'){

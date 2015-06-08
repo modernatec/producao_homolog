@@ -622,7 +622,7 @@ function updateBar(url){
         url = base_url + '/admin/taskstatus/updateTasksBar', true
 
         $("#taskBar").load(url, function() {
-            //setupAjax('#taskBar');  
+            setupAjax('#taskBar');  
         });
     }else{
         alert("sessão expirada!");

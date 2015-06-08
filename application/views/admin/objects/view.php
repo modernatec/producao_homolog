@@ -174,7 +174,7 @@
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                         <!--img class='round_imgList<?=$task->to->team->color?>' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <?}?>
-                                                    <span class="status round"><?=$task->status->status?></span>
+                                                    <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
                                                     <div class="clear" style="padding-top:5px;">
                                                         solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
                                                         <br/>
