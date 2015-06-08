@@ -80,26 +80,23 @@
 			    </dt>
 			    <dd>
 			   		<? foreach ($formatos as $formato) {?>
-						<input type="checkbox" name="formato[]" id="formato_<?=$formato->id?>" value="<?=$formato->id?>" <?=(in_array($formato->id, $formats_arr))? 'checked' : ''?> /><label for="formato_<?=$formato->id?>"><?=$formato->name?></label> 
+						<input type="checkbox" name="formato[]" id="formato_<?=$formato->id?>" value="<?=$formato->id?>" <?=(array_key_exists($formato->id, $formats_arr))? 'checked' : ''?> /><label for="formato_<?=$formato->id?>"><?=$formato->name?></label> 
 			   		<?}?>   
 
 			      <span class='error'><?=Arr::get($errors, 'trabalho');?></span>
 			    </dd>
 			    <div class="left">
 				    <dt>
-				      <label for="team_id">equipe</label>
+				      <label for="team_id">times atendidos</label>
 				    </dt>
 				    <dd>
-				   		<select name="team_id" id="team_id" class="required round" style="width:150px;">
-			                <option value="">selecione</option>
-			                <? foreach($teams as $team){?>
-			                    <option value="<?=$team->id?>" <?=($supplierVO['team_id'] == $team->id) ? "selected" : ""?> ><?=$team->name?></option>
-			                <?}?>
-			            </select>
-			            <span class='error'><?=Arr::get($errors, 'team_id');?></span>
+				    	<?foreach ($teams as $team) { ?>
+							<input type="checkbox" name="team[]" id="team_<?=$team->id?>" value="<?=$team->id?>" <?=(array_key_exists($team->id, $team_arr))? 'checked' : ''?> /><label for="team_<?=$team->id?>"><?=$team->name?></label> 
+				   		<?}?>  
+			            <span class='error'><?=Arr::get($errors, 'team');?></span>
 				    </dd>
 				</div>
-		        <dt>
+		        <dt class='clear'>
 			      <label for="site">Site</label>
 			    </dt>
 			    <dd>

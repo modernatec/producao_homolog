@@ -76,7 +76,6 @@
 		    			$task_to = ($status != '') ? Utils_Helper::getUserImage($obj_taskView->to) : '';
                     }
 	    		}
-	    		//href="
 			?>
 			<li>
 
@@ -85,18 +84,19 @@
 						<p><b><?=$objeto->taxonomia?></b></p>
 						<hr style="margin:8px 0;" />
 						<?if($objeto->supplier_id != 10){ //moderna(interno)?>
-							<p><span class="cyan round list_faixa"><?=$objeto->supplier_empresa?></span></p>
+							<span class="cyan round list_faixa clear"><?=$objeto->supplier_empresa?></span>
 						<?}?>
-						<p>
+						<div class="clear">
 							<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
 							<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
-							<div>
-								<div class='left' style="width:25px;"><?=$task_to;?></div>
-								<?=$tag;?> 
-								<?=$status;?> 
-								
-							</div>
-						</p>
+						</div>
+						<div>
+							<div class='left' style="width:25px;"><?=$task_to;?></div>
+							<?=$tag;?> 
+							<?=$status;?> 
+							
+						</div>
+						
 					</div>
 				</a>
 			</li>

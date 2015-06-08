@@ -2,7 +2,7 @@
 <div class="task_bar_item">
 	<div class="icon_team">
 		<a class="load"  href="tasks/index/ajax?team=<?=$team['id']?>" rel="task_bar" data-panel="#content" data-refresh="true" title="tarefas <?=$team['name']?>">
-			<p class="round_imgList team_<?=$team['id']?>" style="float:left"><span><?=$team['ico']?></span></p>
+			<div class="round_imgList team_<?=$team['id']?>" style="float:left"><span><?=$team['ico']?></span></div>
 			<div class="badge orange"><?=$team['qtd']?></div>				
 		</a>
 	</div>				

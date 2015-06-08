@@ -3,7 +3,7 @@
         if(count($suppliersList) <= 0){
             echo 'não encontrei fornecedores com estes critérios.';    
         }else{
-            echo 'encontrei: '. count($suppliersList).' fornecedores';
+            echo 'encontrei '. count($suppliersList).' fornecedores';
         }
     ?>
 	</span>
@@ -20,10 +20,17 @@
 			<li>
 				<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div>
-						<p><span class="team_<?=$supplier->team->id?> round list_faixa"><?=$supplier->team->name?></span> <b><?=$supplier->empresa?></b></p>					
+						<p><b><?=$supplier->empresa?></b></p>					
 						<p><span class='text_blue'><?=$supplier->contato->nome?></span></p>
 						<p><?=$supplier->contato->email?></p>
 						<p><?=$supplier->contato->telefone?></p>
+						<p>
+				            <? 
+				            	$formats = $supplier->formats->find_all();
+				            	foreach ($formats as $format) {?>
+				                <span class="list_faixa blue round left"><?=$format->name?></span> 
+				            <?}?>  
+				        </p>
 					</div>
 				</a>
 			</li>

@@ -17,7 +17,13 @@
     <? if($supplierVO['observacoes'] != ""){?>
         
         <hr style="margin:8px 0;" />
-        <p><span class='text_blue'><b>observações</b></span></p>
+        <p>
+            <? foreach ($formats as $format) {?>
+                <span class="list_faixa blue round left"><?=$format->format->name?></span> 
+            <?}?>  
+        </p>
+        <p class="clear"><span class='text_blue'><b>observações</b></span></p>
+        
         <?=$supplierVO['observacoes']?>
         
     <?}?>

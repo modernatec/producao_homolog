@@ -10,6 +10,12 @@ class Model_Supplier extends ORM {
         'contato' => array('model' => 'contato', 'foreign_key'=>'tipo_id'),
     );
 
+    protected $_has_many = array(
+        'formats' => array('model' => 'format', 'through' => 'formats_suppliers', 'foreign_key' => 'supplier_id'),
+    );
+
+
+    /*
     public function getContato($supplier_id){
         $contato = ORM::factory('contato')->where('tipo_id', '=', $supplier_id)->find();
         return $contato;
@@ -24,6 +30,7 @@ class Model_Supplier extends ORM {
 
         return $formatos;
     }
+    */
 
 	public function rules()
 	{

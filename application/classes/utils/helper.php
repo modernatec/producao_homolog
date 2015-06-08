@@ -52,7 +52,7 @@ class Utils_Helper
                 if(count($nomes) > 1){
                     $nome.=substr($nomes[1], 0, 1);
                 }            
-                return "<p class='round_imgList team_".$user->team->id."' ><span>".$nome."</span></p>";
+                return "<div class='round_imgList team_".$user->team->id."' ><span>".$nome."</span></div>";
                 //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' alt='".ucfirst($user->nome)."' />";
             }
         }else{
