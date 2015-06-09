@@ -10,10 +10,10 @@
 	            <label for="tag_id">tag:</label>
 	        </dt>
 	        <dd>
-	            <select name="tag_id" id="tag_id" class="round" style="width:150px;">
+	            <select name="tag_id" id="tag_id" class="round" style="width:150px;" data-server="<?=URL::base();?>admin/tasks/setDate/">
 	                <option value="0">tag:</option>
 	                <? foreach($tagList as $tag){?>
-	                    <option value="<?=$tag->id?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
+	                    <option value="<?=$tag->id?>" data-days="<?=$tag->days?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
 	                <?}?>
 	            </select>
 	            <span class='error'><?=Arr::get(@$errors, 'tag_id');?></span>

@@ -70,7 +70,8 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('tag', $id)->values($this->request->post(), array(
 				'tag',
-				'class',
+				'color',
+				'days',
 			));
 			$objeto->type = 'task';
 			                

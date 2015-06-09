@@ -447,6 +447,32 @@ function setupAjax(container){
                     $('#description').ckeditor({
                         height: $('#description').height(),
                         width: $('#description').width()});
+                    
+                    $('#tag_id, #status_id').unbind('change').bind('change', function(e){
+                        e.preventDefault();
+                        var data_post = {days : $('#' + e.target.id + ' option:selected').data('days')};
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: $('#' + e.target.id).data('server'),
+                            data: data_post,
+                            timeout: 10000, 
+                            dataType : "html",
+                            success: function(retorno) {
+                                $('#crono_date').val(retorno);
+                            },
+                            error: function(e) {
+                                console.log(e);
+                                setMsg({
+                                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                                    tema:'error',
+                                });
+                            }
+                        });   
+                    }) 
+
+
+
                 }, 500);
             }
         );

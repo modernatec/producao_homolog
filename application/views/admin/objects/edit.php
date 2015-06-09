@@ -7,10 +7,10 @@
 			            <label for="status_id">status:</label>
 			        </dt>
 			        <dd>
-			            <select name="status_id" id="status_id" class="required round" style="width:150px;">
+			            <select name="status_id" id="status_id" class="required round" style="width:150px;" data-server="<?=URL::base();?>admin/tasks/setDate/">
 			                <option value="">selecione</option>
 			                <? foreach($statusList as $status){?>
-			                    <option value="<?=$status->id?>" <?=($objVO['status_id'] == $status->id) ? "selected" : ""?> ><?=$status->status?></option>
+			                    <option value="<?=$status->id?>" data-days="<?=$status->days?>" <?=($objVO['status_id'] == $status->id) ? "selected" : ""?> ><?=$status->status?></option>
 			                <?}?>
 			            </select>
 			            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
@@ -39,7 +39,7 @@
 			            <label for="crono_date">retorno para:</label>
 			        </dt>
 			        <dd>
-			            <input type="text" name="crono_date" id="crono_date_status3" class="round required date" style="width:100px;" value="<?=$objVO['crono_date']?>" />
+			            <input type="text" name="crono_date" id="crono_date" class="round required date" style="width:100px;" value="<?=$objVO['crono_date']?>" />
 			            <span class='error'><?=Arr::get($errors, 'crono_date');?></span>
 			        </dd>
 		        </div>
