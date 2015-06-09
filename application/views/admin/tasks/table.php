@@ -34,10 +34,10 @@
                         if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
                             $class_obj = "ff0000";                            
                         }else{
-                            $class_obj  = $task->tag->class;
+                            $class_obj  = $task->tag->color;
                         }
                     ?>
-                    <span class="round list_faixa left tag" style="background:#<?=$task->tag->class?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span>                    
+                    <span class="round list_faixa left tag" style="background:#<?=$task->tag->color?>"><?=$task->tag->tag?> - <?=$task->object->objectStatus->prova?></span>                    
                     <div class="clear left" style="width:25px;">           
                         <? 
                             if($task->task_to != "0"){
