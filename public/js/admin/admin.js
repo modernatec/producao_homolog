@@ -115,6 +115,10 @@ function setupScroll(){
         theme:"dark-3",
         axis:"y",
         scrollInertia: 0,
+        advanced:{
+            autoScrollOnFocus: false,
+            updateOnContentResize: true
+        },
     });
 }
 
@@ -265,7 +269,7 @@ function setupAjax(container){
        uploader.init();
     }
 
-    $(container + " .scrollable_content").mCustomScrollbar("update");
+    //$(container + " .scrollable_content").mCustomScrollbar("update");
     
     setupScroll();
 
@@ -322,7 +326,7 @@ function setupAjax(container){
         }
     }).disableSelection();
 
-    $("#sortable_workflow, #sortable_workflow2").sortable({
+    $(".sortable_workflow").sortable({
         connectWith: ".connect",
         placeholder: "ui-state-highlight",
         distance: 30,

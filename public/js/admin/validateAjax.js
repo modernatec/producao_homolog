@@ -215,11 +215,18 @@ function validateAjax(){
             name: { required:'Campo não pode ser vazio'}
         },
         submitHandler: function(form) {
-            var data = $('#sortable_workflow2').sortable('serialize');
-            $('#sortable_workflow2_itens').attr('value', data);
+            $('.sortable_workflow').each(function(index, element){ 
+                var fill = $(element).data('fill');
+                if(fill != undefined){
+                    var data = $(element).sortable('serialize');
+                    $('#' + fill).attr('value', data);
+                }
+            });  
+
             
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
+            
             return false;    
         }
     })

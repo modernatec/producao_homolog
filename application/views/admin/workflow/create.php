@@ -10,29 +10,54 @@
         <dd class="clear">
 	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
 	    </dd>
-        <div class="left"> 
-        	<label>status</label>
-        	<div class="scrollable_content">
-		        <ul class="list_item connect round" id="sortable_workflow">
-		        	<?foreach ($statusList as $status) {?>
-						<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
-					<?}?>
-		        </ul>
-		    </div>
+	    <div class="tabs_holder">
+	        <ul class="tabs">
+	            <li class="round"><a id="tab_1" href="#definicao">definição de workflow</a></li>
+	            <li class="round"><a id="tab_2" href="#tarefas">tarefas por status</a></li>
+	        </ul>  
 	    </div>
-	    <div class="left">
-	    	<label>workflow</label>
-		    <div class="scrollable_content">	        
-	        	<input type="hidden" name="item" id="sortable_workflow2_itens" />
-		        <ul class="list_item connect round" id="sortable_workflow2">
-		        	
-		        	<?foreach ($workflowStatusList as $status) {?>
-						<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
-					<?}?>
-		        </ul>
-	        </div>
-	    </div>
-	    
+	    <div class="scrollable_content">
+		    <div id="definicao" class="content_hide">
+		        <div class="left"> 
+		        	<label>selecione o status</label>
+			        <ul class="list_item connect round sortable_workflow" >
+			        	<?foreach ($statusList as $status) {?>
+							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
+						<?}?>
+			        </ul>
+			    </div>
+			    <div class="left">
+			    	<label>workflow</label>
+			    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
+			        <ul class="list_item connect round sortable_workflow" data-fill="sortable_workflow_itens" >
+			        	<?foreach ($workflowStatusList as $status) {?>
+							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
+						<?}?>
+			        </ul>
+			    </div>	
+			</div>
+			<div id="tarefas" class="content_hide">   
+		        <div class="left"> 
+		        	<label>selecione a tarefa</label>
+			        <ul class="list_item connect round sortable_workflow">
+			        	<?foreach ($tagsList as $tag) {?>
+							<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: #<?=$tag->color?>"><?=$tag->days?></span><?=$tag->tag?></li>
+						<?}?>
+			        </ul>
+			    </div>
+			    <div class="left">
+			    	<label>workflow</label>
+			        <?foreach ($workflowStatusList as $status) {?>
+			        	<div class="dd-item">
+			        		<span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?>
+					    </div>
+					    <input type="hidden" name="tasks_status<?=$status->id?>" id="sortable_tasks<?=$status->id?>" />
+				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$status->id?>" >
+				        </ul>
+			        <?}?>
+			    </div>	
+			</div>
+		</div>
 	  </dl>
 	</form>
 </div>

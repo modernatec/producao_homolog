@@ -352,7 +352,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'taxonomia_reap',
                     'arq_aberto',
                     'locutor',
-                    'ilustrador'
+                    'ilustrador',
+                    'keywords',
 
                      ));
 

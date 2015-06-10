@@ -97,6 +97,17 @@ a{
 	border-bottom: 2px solid #008fc7;
 }
 
+.tabs_holder{
+	height: 30px;
+	overflow: hidden;
+	margin: 5px 0;
+	border-bottom: 2px solid #008fc7;
+}
+
+.tabs_holder .tabs{
+	margin-top: 12px;
+}
+
 
 #esquerda{
     overflow:hidden;
@@ -837,7 +848,7 @@ p{
 */
 
 
-#sortable .ui-state-highlight, #sortable_workflow .ui-state-highlight{
+#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight{
 	margin: 5px 0; 
 	padding: 0; 
 	min-height: 70px; 
@@ -845,7 +856,7 @@ p{
 	border: 1px dashed #b6bcbf;
 }
 
-#sortable_workflow .ui-state-highlight{
+.sortable_workflow .ui-state-highlight{
 	min-height: 30px; 
 }
 

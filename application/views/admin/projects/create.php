@@ -55,16 +55,14 @@
 		    <hr style="margin:8px 0;">
 	    <?}?>
 	    <div style="margin-top:10px;">
-			<ul class="tabs">
-				<? foreach($anosList as $key=>$collection_ano){?>
-				<li class="round"><a id='tab_<?=$key+1;?>' href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
-				<?}?>
-			</ul>
-			<div class="boxwired round">
-		        <div class="table_info round">
-		            coleções
-		        </div>
-		    </div>
+			<div class="tabs_holder">
+				<ul class="tabs">
+					<? foreach($anosList as $key=>$collection_ano){?>
+					<li class="round"><a id='tab_<?=$key+1;?>' href="#collection_<?=$collection_ano->ano?>"><?=$collection_ano->ano?></a></li>
+					<?}?>
+				</ul>
+			</div>
+			<label>selecione as coleções</label>
 			<div class="scrollable_content">
 			<? foreach($anosList as $collection_ano){?>
 				<div id="collection_<?=$collection_ano->ano?>" class="content_hide" >

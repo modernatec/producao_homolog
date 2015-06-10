@@ -54,6 +54,9 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			$workflow_status = array('0');
 		}
 
+		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->find_all();
+		
+
 		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->where('id', 'NOT IN', $workflow_status)->find_all();
 		$view->workflowStatusList = ORM::factory('statu')->where('type', '=', 'object')
 									->join('workflows_status')->on('status.id', '=', 'status_id')
@@ -84,6 +87,9 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			));
 			                
 			$workflow->save();
+			//parse_str($this->request->post('tasks_status1'),$tasks);
+			//var_dump($tasks);
+			
 
 			$i = '0';
 			DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
@@ -99,6 +105,25 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 
 				$i++;
 			}
+
+			$x = '0';
+			foreach($itens['item'] as $status_id){
+				//parse_str($this->request->post('tasks_status'.$status_id),$tasks);
+				var_dump($this->request->post('tasks_status'.$status_id));
+				/*
+				foreach($tasks['task'] as $tag_id){
+					$workflow_tag = ORM::factory('workflows_tag');
+					$workflow_tag->tag_id = $tag_id;
+					$workflow_tag->workflow_id = $workflow->id;
+					
+					$workflow_tag->order = $x;
+					$workflow_tag->save();
+
+					$x++;
+				}
+				*/
+			}
+			
 
 			$db->commit();
 			$msg = "workflow salvo com sucesso.";		
