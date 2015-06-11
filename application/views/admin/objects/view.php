@@ -64,7 +64,7 @@
                                         </div>
                             <?      
                                     }
-                                    //$count++;
+                                    $count++;
                                 }
                             ?>
                                                        
@@ -84,49 +84,7 @@
                                 <span class="wordwrap description"><?=$object->description;?></span>
                             <?}?>
 
-                            <? if($count == 0){
-                                    if($current_auth != "assistente"){?>
-                                        <div class="replies replies_gdocs" style="margin-top:5px;">
-                                            <table class="left">
-                                                <thead>
-                                                    <th>&nbsp;</th>
-                                                    <th>envio</th>
-                                                    <th>retorno RT</th>
-                                                    <th>consolidação</th>
-                                                </thead>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 1</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p1,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt1,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r1,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 2</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p2,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt2,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r2,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 3</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p3,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->rt3,'d/m/Y')?></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->r3,'d/m/Y')?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text_blue">prova 4</span></td>
-                                                    <td><?=Utils_Helper::dataGdocs(@$obj->gdoc->p4,'d/m/Y')?></td>
-                                                    <td>-</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </table>
-                                            <div class="observacoes_gdocs table_info round scrollable_content wordwrap left" data-bottom="false"><pre><?=@$obj->gdoc->observacoes;?></pre><p>obs: informação atualizada em: <?=Utils_Helper::data(@$obj->gdoc->created_at,'d/m/Y - H:i')?></p></div>
-                                        </div>
-
-                            <?      
-                                    }
-                                    $count++;
-                                }
-
+                            <? 
                             foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
                                 <div style='clear:both'>
                                     <div class="hist anotacoes round"> 

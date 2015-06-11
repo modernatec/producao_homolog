@@ -5,13 +5,7 @@
         <input type="text" class="text required round" placeholder="status" name="status" id="status" style="width:500px;" value="<?=@$statusVO['status'];?>"/>
         <span class='error'><?=Arr::get($errors, 'status');?></span>
     </dd>  
-    <div class="left">
-        <label for="days">nº de dias</label>
-        <dd>
-            <input type="text" class="text required round" placeholder="nº de dias" name="days" id="days" style="width:60px;" value="<?=@$statusVO['days'];?>"/>
-            <span class='error'><?=Arr::get($errors, 'days');?></span>
-        </dd> 
-    </div>
+    
     <div class="left">
         <label for="color">cor</label>
         <dd>

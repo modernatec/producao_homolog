@@ -28,14 +28,14 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 		$view->current_auth = $this->current_auth;    
 
         if($ajax == null){
-            $this->template->content = $view;             
+            //$this->template->content = $view;             
         }else{
             $this->auto_render = false;
             header('Content-Type: application/json');
             echo json_encode(
                 array(
                     array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($this->current_user->userInfos->id, true)->render())),
+                    //array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($this->current_user->userInfos->id, true)->render())),
                 )                       
             );
             return false;
@@ -67,7 +67,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     		$view->teamsList = ORM::factory('team')->find_all();
     		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
     		
-            $view->anexosView = View::factory('admin/files/anexos');
+            $view->anexosView = "";//View::factory('admin/files/anexos');
     				
     		
     		$roles = $userInfo->user->roles->find_all();

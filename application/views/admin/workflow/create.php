@@ -1,6 +1,5 @@
 <div >
-    <form name="frmCreateWorkflow" id="frmCreateWorkflow" action="<?=URL::base();?>admin/workflows/salvar/<?=@$workflowVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
-	  <input type="hidden" name="uri" id="uri" value="" title="<?=rawurlencode(Arr::get($_SERVER, 'HTTP_REFERER'));?>" />
+    <form name="frmCreateWorkflow" id="frmCreateWorkflow" action="<?=URL::base();?>admin/workflows/salvar/<?=@$workflowVO["id"]?>"class="form">
 	  <dl>
 	  	<label for="name">nome</label>
         <dd>
@@ -13,7 +12,9 @@
 	    <div class="tabs_holder">
 	        <ul class="tabs">
 	            <li class="round"><a id="tab_1" href="#definicao">definição de workflow</a></li>
-	            <li class="round"><a id="tab_2" href="#tarefas">tarefas por status</a></li>
+	            <?if(count($workflowStatusList) > 0){?>
+	            	<li class="round"><a id="tab_2" href="#tarefas">tarefas por status</a></li>
+	            <?}?>
 	        </ul>  
 	    </div>
 	    <div class="scrollable_content">
@@ -22,7 +23,7 @@
 		        	<label>selecione o status</label>
 			        <ul class="list_item connect round sortable_workflow" >
 			        	<?foreach ($statusList as $status) {?>
-							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
+							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"></span><?=$status->status?></li>
 						<?}?>
 			        </ul>
 			    </div>
@@ -30,8 +31,8 @@
 			    	<label>workflow</label>
 			    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
 			        <ul class="list_item connect round sortable_workflow" data-fill="sortable_workflow_itens" >
-			        	<?foreach ($workflowStatusList as $status) {?>
-							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?></li>
+			        	<?foreach ($workflowStatusList as $workflow_status) {?>
+							<li class="dd-item" id="item-<?=$workflow_status->statu->id?>"><span class="left ball" style="background: #<?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?></li>
 						<?}?>
 			        </ul>
 			    </div>	
@@ -47,12 +48,19 @@
 			    </div>
 			    <div class="left">
 			    	<label>workflow</label>
-			        <?foreach ($workflowStatusList as $status) {?>
+
+			        <?foreach ($workflowStatusList as $workflow_status) {?>
 			        	<div class="dd-item">
-			        		<span class="left ball" style="background: #<?=$status->color?>"><?=$status->days?></span><?=$status->status?>
+			        		<span class="left ball" style="background: #<?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?>
 					    </div>
 					    <input type="hidden" name="tasks_status<?=$status->id?>" id="sortable_tasks<?=$status->id?>" />
 				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$status->id?>" >
+				        	<?
+				        		foreach ($workflowTagsList as $workflow_tag) {
+				        			if($workflow_tag->status_id == $workflow_status->status_id){
+				        	?>
+				        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>"><span class="left ball" style="background: #<?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->days?></span><?=$workflow_tag->tag->tag?></li>
+				        	<?}}?>
 				        </ul>
 			        <?}?>
 			    </div>	

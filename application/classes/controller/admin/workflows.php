@@ -25,7 +25,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
 		
 		if($ajax == null){
-			$this->template->content = $view;             
+			//$this->template->content = $view;             
+			return $view;
 		}else{
 			$this->auto_render = false;
 			header('Content-Type: application/json');
@@ -38,7 +39,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		}          
 	} 
         
-	public function action_edit($id)
+	public function action_edit($id, $ajax = null)
     {    
 		$this->auto_render = false;  
 		$view = View::factory('admin/workflow/create')
@@ -47,31 +48,38 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 
 		$workflow = ORM::factory('workflow', $id);
 		$view->workflowVO = $this->setVO('workflow', $workflow);
-		$workflow_status = DB::select('status_id')->from('workflows_status')
-							->where('workflow_id', '=', $id)->execute()->as_array();
 
-		if(count($workflow_status) == 0){
-			$workflow_status = array('0');
-		}
+		$workflow_status = DB::select('status_id')->from('workflows_status')->where('workflow_id', '=', $id)->execute()->as_array();
+		$workflow_status = (count($workflow_status) == 0) ? array('0') : $workflow_status;
 
-		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->find_all();
+		$workflow_tags = DB::select('tag_id')->from('workflows_status_tags')->where('workflow_id', '=', $id)->execute()->as_array();
+		$workflow_tags = (count($workflow_tags) == 0) ? array('0') : $workflow_tags;
 		
 
+		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->where('id', 'NOT IN', $workflow_tags)->find_all();
+		$view->workflowTagsList = ORM::factory('workflows_status_tag')
+									->join('tags')->on('tags.id', '=', 'tag_id')
+									->where('workflow_id', '=', $id)
+									->order_by('order', 'ASC')->find_all();
+
 		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->where('id', 'NOT IN', $workflow_status)->find_all();
-		$view->workflowStatusList = ORM::factory('statu')->where('type', '=', 'object')
-									->join('workflows_status')->on('status.id', '=', 'status_id')
+		$view->workflowStatusList = ORM::factory('workflows_statu')->where('type', '=', 'object')
+									->join('status')->on('status.id', '=', 'status_id')
 									->where('workflow_id', '=', $id)
 									->order_by('order', 'ASC')->find_all();
 		
-
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-        return false;
-			
+		if($ajax != null){
+			return $view;
+		}else{
+			$this->auto_render = false;
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;
+		}   			
 	}
 
 	public function action_salvar($id = null)
@@ -80,6 +88,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$db = Database::instance();
         $db->begin();
 
+        $w_id = $id;
+
 		try 
 		{            
 			$workflow = ORM::factory('workflow', $id)->values($this->request->post(), array(
@@ -87,43 +97,44 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			));
 			                
 			$workflow->save();
-			//parse_str($this->request->post('tasks_status1'),$tasks);
-			//var_dump($tasks);
-			
+			$w_id = $workflow->id;
 
 			$i = '0';
 			DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
-			parse_str($this->request->post('item'),$itens); 
+			DB::delete('workflows_status_tags')->where('workflow_id', '=', $workflow->id)->execute();
 			
+			parse_str($this->request->post('item'),$itens); 			
 			foreach($itens['item'] as $status_id){
+				$x = '0';
+				$days = 0;
+				if($this->request->post('tasks_status'.$status_id) != ''){
+					parse_str($this->request->post('tasks_status'.$status_id), $tasks);					
+					foreach($tasks['task'] as $tag_id){
+						/**rever para passar days via post?**/
+						$tag = ORM::factory('tag', $tag_id);
+						$days += $tag->days;
+						/****/
+
+						$workflow_tags = ORM::factory('workflows_status_tag');
+						$workflow_tags->status_id = $status_id;
+						$workflow_tags->workflow_id = $workflow->id;
+						$workflow_tags->tag_id = $tag_id;				
+						$workflow_tags->order = $x;
+						$workflow_tags->save();
+
+						$x++;
+					}
+				}	
+
 				$workflow_status = ORM::factory('workflows_statu');
 				$workflow_status->status_id = $status_id;
-				$workflow_status->workflow_id = $workflow->id;
-				
+				$workflow_status->workflow_id = $workflow->id;				
 				$workflow_status->order = $i;
+				$workflow_status->days = $days;
 				$workflow_status->save();
 
 				$i++;
 			}
-
-			$x = '0';
-			foreach($itens['item'] as $status_id){
-				//parse_str($this->request->post('tasks_status'.$status_id),$tasks);
-				var_dump($this->request->post('tasks_status'.$status_id));
-				/*
-				foreach($tasks['task'] as $tag_id){
-					$workflow_tag = ORM::factory('workflows_tag');
-					$workflow_tag->tag_id = $tag_id;
-					$workflow_tag->workflow_id = $workflow->id;
-					
-					$workflow_tag->order = $x;
-					$workflow_tag->save();
-
-					$x++;
-				}
-				*/
-			}
-			
 
 			$db->commit();
 			$msg = "workflow salvo com sucesso.";		
@@ -146,7 +157,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/workflows/index/ajax'),
+				array('container' => '#content', 'type'=>'html', 'content'=> json_encode($this->action_index()->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($w_id, true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

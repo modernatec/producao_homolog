@@ -67,7 +67,7 @@
 			    	}else{
 			    		$task_class = $obj_taskView->status->type.'_status'.$obj_taskView->status->id;
 			    		$status = '<span class="round '.$task_class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
-		    			$tag = '<span class="round list_faixa left tag" style="background:#'.$obj_taskView->tag->class.'">'.$obj_taskView->tag->tag.'</span>';	
+		    			$tag = '<span class="round list_faixa left tag" style="background:#'.$obj_taskView->tag->color.'">'.$obj_taskView->tag->tag.'</span>';	
 		    		}
 
 		    		if($obj_taskView->task_to != 0){

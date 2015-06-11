@@ -5,6 +5,7 @@ class Model_Statu extends ORM {
 		'tasks' => array('through' => 'status_tasks'),
 		'steps' => array('through' => 'status_tasks'),
 		'taskflows' => array('model' => 'taskflow'),
+		
 	);
 
 	protected $_belongs_to = array(
