@@ -53,8 +53,8 @@
 			        	<div class="dd-item">
 			        		<span class="left ball" style="background: #<?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?>
 					    </div>
-					    <input type="hidden" name="tasks_status<?=$status->id?>" id="sortable_tasks<?=$status->id?>" />
-				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$status->id?>" >
+					    <input type="hidden" name="tasks_status<?=$workflow_status->status_id?>" id="sortable_tasks<?=$workflow_status->status_id?>" />
+				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$workflow_status->status_id?>" >
 				        	<?
 				        		foreach ($workflowTagsList as $workflow_tag) {
 				        			if($workflow_tag->status_id == $workflow_status->status_id){

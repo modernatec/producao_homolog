@@ -7,11 +7,11 @@
 	<dl>
 		<div class="left">
 			<dt>
-	            <label for="tag_id">tag:</label>
+	            <label for="tag_id">tarefas</label>
 	        </dt>
 	        <dd>
 	            <select name="tag_id" id="tag_id" class="round" style="width:150px;" data-server="<?=URL::base();?>admin/tasks/setDate/">
-	                <option value="0">tag:</option>
+	                <option value="0">selecione</option>
 	                <? foreach($tagList as $tag){?>
 	                    <option value="<?=$tag->id?>" data-days="<?=$tag->days?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
 	                <?}?>

@@ -116,6 +116,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->isUpdate = true;                             
                 
+		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->countries = ORM::factory('country')->order_by('name', 'ASC')->find_all();
         $view->suppliers = ORM::factory('supplier')->where('team_id', '=', '1')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
@@ -179,23 +180,28 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
 			->bind('message', $message);
 
+		$objStatus = ORM::factory('objects_statu', $id);
+		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
+
+		$object_id = $objStatus->object_id;
+		if($id == ""){
+			$object_id = $this->request->query('object_id');
+			$arr_objstatus['object_id'] = $object_id;
+		}	
+
+		$object = ORM::factory('object', $object_id);
+
 		$query = ORM::factory('statu')
-		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id');
+		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
+		->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
 
 		if($this->current_auth != 'admin'){
 			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
-		$view->statusList = $query->where('type', '=', 'object')->group_by('status')->order_by('status', 'ASC')->find_all();
+		$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('status', 'ASC')->find_all();
 		
-		$objStatus = ORM::factory('objects_statu', $id);	
-		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
-
-		if($id == ""){
-			$arr_objstatus['object_id'] = $this->request->query('object_id');
-		}
-
-		$view->obj = ORM::factory('object', $arr_objstatus['object_id']);
+		$view->obj = $object;			
 
 		$view->objVO = $arr_objstatus;
 

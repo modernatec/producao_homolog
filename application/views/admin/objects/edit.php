@@ -10,7 +10,7 @@
 			            <select name="status_id" id="status_id" class="required round" style="width:150px;" data-server="<?=URL::base();?>admin/tasks/setDate/">
 			                <option value="">selecione</option>
 			                <? foreach($statusList as $status){?>
-			                    <option value="<?=$status->id?>" data-days="0" <?=($objVO['status_id'] == $status->id) ? "selected" : ""?> ><?=$status->status?></option>
+			                    <option value="<?=$status->id?>" data-days="<?=$status->workflows_statu->days?>" <?=($objVO['status_id'] == $status->id) ? "selected" : ""?> ><?=$status->status?> - <?=$status->workflows_statu->days?></option>
 			                <?}?>
 			            </select>
 			            <span class='error'><?=Arr::get($errors, 'status_id');?></span>

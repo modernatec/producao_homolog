@@ -1250,6 +1250,12 @@ a.green{
 	/*line-height: 30px !important*/
 }
 
+.list_view{
+	background: #ddd;
+	color: #A0A0A0;
+	/*border: 1px #008fc7 solid;*/
+}
+
 .list_alert{
 	display: block;
 	text-align: center;

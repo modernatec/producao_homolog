@@ -168,6 +168,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{	
+		/*
 		$this->auto_render = false;
 		try 
 		{            
@@ -190,6 +191,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
+		*/
 	}
 
 }

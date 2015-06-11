@@ -72,11 +72,17 @@
                                 <?if($current_auth != "assistente"){?>
                                     <a href="<?=URL::base();?>admin/objects/update/<?=$object->id?>" class="popup edit black">
                                 <?}?>
-                                <span class="list_faixa round <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?> <?=!empty($object->prova) ? '('.$object->prova.')' : ""?></span></a>
-
+                                <span class="list_faixa round <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?></span></a>
                                 
-                                <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?></p>
-                                <p>retorno: <?=Utils_Helper::getday($object->crono_date)?> &bull; <?=Utils_Helper::data($object->crono_date, 'd/m/Y')?></p>
+                                <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?><br/>
+                                retorno: <?=Utils_Helper::getday($object->crono_date)?> &bull; <?=Utils_Helper::data($object->crono_date, 'd/m/Y')?></p>
+
+                                <p>
+                                    <?foreach ($object->status->tags->where('workflow_id', '=', $obj->workflow_id)->order_by('order', 'ASC')->find_all() as $tag) {?>
+                                        <span class="list_faixa list_view round left"><span class="left ball" style="background:#<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
+                                    <?};?>
+
+                                </p>
                             </div>
 
                             

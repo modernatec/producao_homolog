@@ -12,7 +12,7 @@
         <label for="target">matéria</label>
       </dt>
       <dd>
-        <select name="materia_id" id="materia_id">
+        <select name="materia_id" id="materia_id" class="round">
               <option value="">selecione</option>
               <? foreach($materiaList as $materia){?>
               <option value="<?=$materia->id?>" <?=((@$collectionVO["materia_id"] == $materia->id)?('selected'):(''))?> ><?=$materia->name?></option>
@@ -26,7 +26,7 @@
         <label for="target">segmento</label>
       </dt>
       <dd>
-        <select name="segmento_id" id="segmento_id">
+        <select name="segmento_id" id="segmento_id" class="round">
               <option value="">selecione</option>
               <? foreach($segmentoList as $segmento){?>
               <option value="<?=$segmento->id?>" <?=((@$collectionVO["segmento_id"] == $segmento->id)?('selected'):(''))?> ><?=$segmento->name?></option>
@@ -39,7 +39,7 @@
       <label for="ano">ano</label>
     </dt>     
     <dd>
-      <select name="ano" id="ano">
+      <select name="ano" id="ano" class="round">
           <option value="">selecione</option>
           <? 
           for($i = date("Y") - 5; $i <= date("Y") + 5; $i++){?>

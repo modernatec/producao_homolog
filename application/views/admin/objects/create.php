@@ -39,19 +39,8 @@
                     <span class='error'><?=Arr::get($errors, 'collection_id');?></span>
                 </dd>
             </div>
+            
             <div class="clear left">
-                <dt> <label for="countries">país</label> </dt>
-                <dd>
-                    <select class="required round" name="country_id" id="country_id">
-                        <option value=''>Selecione</option>
-                        <? foreach($countries as $country){?>
-                            <option value='<?=$country->id?>' <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
-                        <? }?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'country_id');?></span>
-                </dd>
-            </div>   
-            <div class="left">
                 <dt> <label for="fase">fase</label> </dt>
                 <dd>
                     <select class="required round" name="fase" id="fase" style="width:100px;">
@@ -72,6 +61,37 @@
                     </select>
                     <span class='error'><?=Arr::get($errors, 'tipo_obj');?></span>
                 </dd>
+            </div>
+            <div class="left">
+                <dt> <label for="workflow_id">workflow</label> </dt>
+                <dd>
+                    <select class="required round" name="workflow_id" id="workflow_id">
+                        <option value=''>Selecione</option>
+                        <? foreach($workflowList as $workflow){?>
+                            <option value='<?=$workflow->id?>' <?=((@$objVO["workflow_id"] == $workflow->id)?('selected'):(''))?> ><?=$workflow->name?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'workflow_id');?></span>
+                </dd>
+            </div>  
+            <div class="clear left"> 
+                <dt><label for="reaproveitamento">origem</label></dt>
+                <dd>
+                    <select class="required round" name="reaproveitamento" id="reaproveitamento" style="width:100px;">
+                        <option value=''>Selecione</option>
+                        <option value='0' <?=(($objVO['reaproveitamento'] == '0')?('selected="selected"'):(''))?>>novo</option>
+                        <option value='1' <?=(($objVO['reaproveitamento'] == '1')?('selected="selected"'):(''))?>>reap.</option>
+                        <option value='2' <?=(($objVO['reaproveitamento'] == '2')?('selected="selected"'):(''))?>>reap. integral</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'reaproveitamento');?></span>
+                </dd> 
+            </div>
+            <div class="left">
+                <dt><label for="taxonomia_reap">Taxonomia do reap.</label></dt>
+                <dd>
+                    <input type="text" class="text round" name="taxonomia_reap" id="taxonomia_reap" style="width:250px;" value='<?=$objVO['taxonomia_reap'];?>'/>
+                    <span class='error'><?=Arr::get($errors, 'taxonomia_reap');?></span>
+                </dd>  
             </div>
             <div class="clear left">
                 <dt> <label for="supplier_id">produtora</label> </dt>
@@ -155,7 +175,19 @@
                     <span class='error'><?=Arr::get($errors, 'ilustrador');?></span>
                 </dd>
             </div>    
-            <div class="clear">
+            <div class="clear left">
+                <dt> <label for="countries">país</label> </dt>
+                <dd>
+                    <select class="required round" name="country_id" id="country_id">
+                        <option value=''>Selecione</option>
+                        <? foreach($countries as $country){?>
+                            <option value='<?=$country->id?>' <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'country_id');?></span>
+                </dd>
+            </div>   
+            <div class="left">
                 <dt>
                     <label >compartilhamento</label>
                 </dt>
@@ -228,25 +260,7 @@
                 </dd>  
             </div>
 
-            <div class="clear left"> 
-                <dt><label for="reaproveitamento">origem</label></dt>
-                <dd>
-                    <select class="required round" name="reaproveitamento" id="reaproveitamento" style="width:100px;">
-                        <option value=''>Selecione</option>
-                        <option value='0' <?=(($objVO['reaproveitamento'] == '0')?('selected="selected"'):(''))?>>novo</option>
-                        <option value='1' <?=(($objVO['reaproveitamento'] == '1')?('selected="selected"'):(''))?>>reap.</option>
-                        <option value='2' <?=(($objVO['reaproveitamento'] == '2')?('selected="selected"'):(''))?>>reap. integral</option>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'reaproveitamento');?></span>
-                </dd> 
-            </div>
-            <div class="left">
-                <dt><label for="taxonomia_reap">Taxonomia do reap.</label></dt>
-                <dd>
-                    <input type="text" class="text round" name="taxonomia_reap" id="taxonomia_reap" style="width:250px;" value='<?=$objVO['taxonomia_reap'];?>'/>
-                    <span class='error'><?=Arr::get($errors, 'taxonomia_reap');?></span>
-                </dd>  
-            </div>
+            
             <div class="clear left">
                 <dt><label for="cap">capítulo</label></dt>
                 <dd>
