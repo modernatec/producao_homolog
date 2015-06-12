@@ -13,9 +13,9 @@
         </dd>   
     </div>
     <div class="left">
-        <label for="color">cor</label>
+        <label for="hidden-input">cor</label>
         <dd>
-            <input type="text" class="text required round" placeholder="rgb" name="color" id="color" style="width:50px;" maxlength="6" value="<?=@$statusVO['color'];?>"/>
+            <input type="hidden" id="hidden-input" name="color" class="pickcolor" value="<?=@$statusVO['color'];?>">
             <span class='error'><?=Arr::get($errors, 'color');?></span>
         </dd>  
 

@@ -103,61 +103,67 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
-		
-		try 
-		{            
-			$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
-				'name',
-				'segmento_id',
-				'description',
-				'status',
-				'ssid',
-			));
-			                
-			if(!$id)
-			{
-				$pastaProjeto = Utils_Helper::limparStr($projeto->name);
+
+        $search = ORM::factory('project')->where('name', '=', $this->request->post('name'))->find_all();
+        if(!$id && $search->count() > 0){
+        	$msg = 'Já existe um projeto com este nome';
+        }else{
+			try 
+			{         
+				$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
+					'name',
+					'segmento_id',
+					'description',
+					'status',
+					'ssid',
+				));
+
 				$basedir = 'public/upload/projetos/';
 				$rootdir = DOCROOT.$basedir;
-				
-				if(!file_exists($rootdir.$pastaProjeto)){
+
+				$pastaProjeto = Utils_Helper::limparStr($this->request->post('name'));
+
+				//se nao existir a pasta criamos, se existir renomeamos
+				if(file_exists($rootdir.$projeto->pasta)){
+					rename($rootdir.$projeto->pasta, $rootdir.$pastaProjeto);
+				}else{
 					mkdir($rootdir.$pastaProjeto,0777);
 				}
+
 				$projeto->pasta = $pastaProjeto;                    
-			}
+				$projeto->save();
 
-			$projeto->save();
+				$collections = ORM::factory('collections_project')->where('project_id', '=', $projeto->id)->find_all();
+				foreach ($collections as $collection) {
+					$collection->delete();
+				}
 
-			$collections = ORM::factory('collections_project')->where('project_id', '=', $projeto->id)->find_all();
-			foreach ($collections as $collection) {
-				$collection->delete();
-			}
+				foreach ($this->request->post('selected') as $collection) {
+					$new_collection = ORM::factory('collections_project');
+					$new_collection->project_id = $projeto->id;
+					$new_collection->collection_id = $collection;
+					$new_collection->save();
+				}
 
-			foreach ($this->request->post('selected') as $collection) {
-				$new_collection = ORM::factory('collections_project');
-				$new_collection->project_id = $projeto->id;
-				$new_collection->collection_id = $collection;
-				$new_collection->save();
-			}
+							
+				$db->commit();
+				//Utils_Helper::mensagens('add','');
+				$msg = "projeto salvo com sucesso.";
+				//Request::current()->redirect('admin/projects');
 
-						
-			$db->commit();
-			//Utils_Helper::mensagens('add','');
-			$msg = "projeto salvo com sucesso.";
-			//Request::current()->redirect('admin/projects');
-
-		} catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            $db->rollback();
-        }
+			} catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $db->rollback();
+	        }
+	    }
 
         header('Content-Type: application/json');
 		echo json_encode(

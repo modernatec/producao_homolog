@@ -178,10 +178,12 @@ class Utils_Helper
     
     public static function limparStr($str)
     {
-        $str = strtolower($str);
-        $a = array('â','ã','à','á','ä','ê','è','é','ë','î','í','ì','ï','ô','õ','ò','ó','ö','û','ú','ù','ü','ç',' ','+');
-        $b = array('a','a','a','a','a','e','e','e','e','i','i','i','i','o','o','o','o','o','u','u','u','u','c','_','_');        
-        return str_replace($a,$b,$str);
+        $str = preg_replace( '/[`^~\'"]/', null, iconv( 'UTF-8', 'ASCII//TRANSLIT', $str ) );
+        $string = strtolower($str);
+        $string = preg_replace("/[^a-zA-Z0-9]/", "_", $string);
+        $string_limpa = preg_replace('/_+/', '_', $string);
+
+        return $string_limpa;
     }
     
     public static function debug($var,$exit=true)
@@ -308,5 +310,54 @@ class Utils_Helper
                 break;
         }
     }
+
+    /*
+    // Function to remove folders and files 
+        function rrmdir($dir) {
+            if (is_dir($dir)) {
+                $files = scandir($dir);
+                foreach ($files as $file)
+                    if ($file != "." && $file != "..") rrmdir("$dir/$file");
+                rmdir($dir);
+            }
+            else if (file_exists($dir)) unlink($dir);
+        }
+
+        // Function to Copy folders and files       
+        function rcopy($src, $dst) {
+            if (file_exists ( $dst ))
+                rrmdir ( $dst );
+            if (is_dir ( $src )) {
+                mkdir ( $dst );
+                $files = scandir ( $src );
+                foreach ( $files as $file )
+                    if ($file != "." && $file != "..")
+                        rcopy ( "$src/$file", "$dst/$file" );
+            } else if (file_exists ( $src ))
+                copy ( $src, $dst );
+        }
+    Usage
+    rcopy($source , $destination );
+    
+    Another example without deleting destination file or folder
+
+    function recurse_copy($src,$dst) { 
+        $dir = opendir($src); 
+        @mkdir($dst); 
+        while(false !== ( $file = readdir($dir)) ) { 
+            if (( $file != '.' ) && ( $file != '..' )) { 
+                if ( is_dir($src . '/' . $file) ) { 
+                    recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+                } 
+                else { 
+                    copy($src . '/' . $file,$dst . '/' . $file); 
+                } 
+            } 
+        } 
+        closedir($dir); 
+    } 
+
+
+    */
 }
 ?>

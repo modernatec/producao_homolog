@@ -7,7 +7,7 @@
             <? foreach($list as $tag){?>
             <li>
                 <a class="right excluir" href="<?=URL::base().'admin/tags/delete/'.$tag->id;?>" title="Excluir">Excluir</a>
-                <span class="left ball" style="background:#<?=$tag->color;?>"><?=$tag->days;?></span>
+                <span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span>
                 <a style='display:block' href="<?=URL::base().'admin/tags/edit/'.$tag->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$tag->tag?></a>
             </li>
             <?}?>

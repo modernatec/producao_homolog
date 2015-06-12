@@ -223,6 +223,10 @@ function setupAjax(container){
         }
     });
 
+    $('.pickcolor').minicolors({
+        control:'wheel',
+    });
+
 
     //**************Acervo*****************//
 

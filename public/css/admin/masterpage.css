@@ -661,6 +661,33 @@ table tbody td table tbody tr:hover {
 */
 
 
+.minicolors-swatch-color{
+	width: 31px;
+	height: 31px;
+	top:-4px;
+	left:-1px;
+
+	-o-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -khtml-border-radius: 30px;
+	border-radius:30px;
+}
+
+.minicolors-swatch{
+	border: none !important;
+}
+
+.minicolors-sprite{
+	-o-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -khtml-border-radius: 25px;
+	border-radius:25px;
+	min-height: 25px;
+}
+
+
 /*****Forms****/
 
 .form dl, .form dt, .form dd{

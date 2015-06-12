@@ -1,15 +1,16 @@
 <form name="frmCreateTipoObj" id="frmCreateTipoObj" action="<?=URL::base();?>admin/status/salvar/<?=@$statusVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
-    <label for="status">status</label>
-    <dd>
-        <input type="text" class="text required round" placeholder="status" name="status" id="status" style="width:500px;" value="<?=@$statusVO['status'];?>"/>
-        <span class='error'><?=Arr::get($errors, 'status');?></span>
-    </dd>  
-    
+    <div class="left">
+        <label for="status">status</label>
+        <dd>
+            <input type="text" class="text required round" placeholder="status" name="status" id="status" style="width:300px;" value="<?=@$statusVO['status'];?>"/>
+            <span class='error'><?=Arr::get($errors, 'status');?></span>
+        </dd>  
+    </div>
     <div class="left">
         <label for="color">cor</label>
         <dd>
-            <input type="text" class="text required round" placeholder="rgb" name="color" id="color" style="width:50px;" maxlength="6" value="<?=@$statusVO['color'];?>"/>
+            <input type="hidden" id="hidden-input" name="color" class="pickcolor" value="<?=@$statusVO['color'];?>">
             <span class='error'><?=Arr::get($errors, 'color');?></span>
         </dd> 
     </div>

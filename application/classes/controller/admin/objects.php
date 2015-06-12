@@ -37,8 +37,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			);
 			echo $return;
 			return $return;
-	        //return false;
-	        //URL::base().'admin/objects/view/'.$object->id,	
 		}           
 	} 
 
@@ -51,32 +49,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 		echo $view;
 	}
-    
-    /*
-	public function action_create($id){ 	
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-            $this->salvar($id);
-        }else{  	
-	        $view = View::factory('admin/objects/create')
-				->bind('errors', $errors)
-				->bind('message', $message);
-			
-			$view->isUpdate = false; 
-			//$this->addValidateJs('public/js/admin/validateObjects.js');
-			$view->objVO = $this->setVO('object');
-	        
-	        $view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-	        $view->countries = ORM::factory('country')->find_all();
-	        $view->suppliers = ORM::factory('supplier')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();
-	        $view->collections = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-	        $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all();
-	        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-			       
-	        $this->template->content = $view;                     
-	    }
-	}
-	*/
       
 	public function action_delete($id)
 	{

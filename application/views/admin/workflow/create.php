@@ -23,7 +23,7 @@
 		        	<label>selecione o status</label>
 			        <ul class="list_item connect round sortable_workflow" >
 			        	<?foreach ($statusList as $status) {?>
-							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: #<?=$status->color?>"></span><?=$status->status?></li>
+							<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: <?=$status->color?>"></span><?=$status->status?></li>
 						<?}?>
 			        </ul>
 			    </div>
@@ -32,7 +32,7 @@
 			    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
 			        <ul class="list_item connect round sortable_workflow" data-fill="sortable_workflow_itens" >
 			        	<?foreach ($workflowStatusList as $workflow_status) {?>
-							<li class="dd-item" id="item-<?=$workflow_status->statu->id?>"><span class="left ball" style="background: #<?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?></li>
+							<li class="dd-item" id="item-<?=$workflow_status->statu->id?>"><span class="left ball" style="background: <?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?></li>
 						<?}?>
 			        </ul>
 			    </div>	
@@ -42,7 +42,7 @@
 		        	<label>selecione a tarefa</label>
 			        <ul class="list_item connect round sortable_workflow">
 			        	<?foreach ($tagsList as $tag) {?>
-							<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: #<?=$tag->color?>"><?=$tag->days?></span><?=$tag->tag?></li>
+							<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: <?=$tag->color?>"><?=$tag->days?></span><?=$tag->tag?></li>
 						<?}?>
 			        </ul>
 			    </div>
@@ -51,7 +51,7 @@
 
 			        <?foreach ($workflowStatusList as $workflow_status) {?>
 			        	<div class="dd-item">
-			        		<span class="left ball" style="background: #<?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?>
+			        		<span class="left ball" style="background: <?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?>
 					    </div>
 					    <input type="hidden" name="tasks_status<?=$workflow_status->status_id?>" id="sortable_tasks<?=$workflow_status->status_id?>" />
 				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$workflow_status->status_id?>" >
@@ -59,7 +59,7 @@
 				        		foreach ($workflowTagsList as $workflow_tag) {
 				        			if($workflow_tag->status_id == $workflow_status->status_id){
 				        	?>
-				        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>"><span class="left ball" style="background: #<?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->days?></span><?=$workflow_tag->tag->tag?></li>
+				        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>"><span class="left ball" style="background: <?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->days?></span><?=$workflow_tag->tag->tag?></li>
 				        	<?}}?>
 				        </ul>
 			        <?}?>
