@@ -36,27 +36,6 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 		}  
 	} 
 
-	/*
-	public function action_create()
-	{ 
-		$view = View::factory('admin/teams/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$view->isUpdate = false;			
-		$this->addValidateJs("public/js/admin/validateTeams.js");
-		$view->projectVO = $this->setVO('team');
-		
-		$view->userInfos = ORM::factory('userInfo')->find_all();
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{                                              
-			$this->salvar(); 
-		}	  
-	}
-	*/
-
 	public function action_edit($id)
 	{
 		$this->auto_render = false;
@@ -91,8 +70,11 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 		try 
 		{            
 			$team = ORM::factory('team', $id)->values($this->request->post(), array(
-				'name', 'userInfo_id'
+				'name', 
+				'userInfo_id',
+				'color',
 			)); 
+			
 			$team->save();
 			$db->commit();
 			

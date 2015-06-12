@@ -20,7 +20,7 @@
             <span class="list_faixa gray round"><?=@$objeto->supplier->empresa?></span>
         </div>
 
-        <table class="clear left gray">
+        <table class="clear gray">
             <thead>
                 <th>formato</th>
                 <th>interatividade</th>
@@ -38,7 +38,7 @@
                 </tr>
             </tbody>
         </table>
-        <table class="left gray">
+        <table class=" gray">
             <thead>
                 <th>unidade</th>
                 <th>capítulo</th>

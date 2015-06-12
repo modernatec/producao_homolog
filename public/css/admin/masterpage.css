@@ -536,6 +536,7 @@ table {
     border-collapse:separate;
     border-radius:6px;
     -moz-border-radius:6px;
+    margin: 4px 0;
 }
 
 td, th {
@@ -557,17 +558,27 @@ th {
     border-top: none;
 }
 
-th:first-child {
+th:first-of-type {
    border-radius:6px 0 0 0;
    border-left: none;
 }
 
-th:last-child {
+th:last-of-type {
    border-radius:0 6px 0 0;
    border-right: none;
 }
 
-td:first-child {
+tr:last-of-type td:last-of-type {
+   border-radius:0 0 6px 0;
+   border-right: none;
+}
+
+tr:last-of-type td:first-of-type {
+   border-radius: 0 0 0 6px ;
+   border-right: none;
+}
+
+td:first-of-type {
     border-left: none;
 }
 
@@ -1279,7 +1290,7 @@ a.green{
 
 .list_view{
 	background: #ddd;
-	color: #A0A0A0;
+	color: #666;
 	/*border: 1px #008fc7 solid;*/
 }
 

@@ -42,25 +42,6 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 
 	} 
 
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/segmentos/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateSegmentos.js");
-		$view->isUpdate = false; 
-		$view->segmentoVO = $this->setVO('segmento');		
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-        	$this->salvar();
-		}		
-	}
-	*/
-
 	public function action_edit($id)
     {   
 		$this->auto_render = false;
@@ -93,7 +74,20 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			$segmento = ORM::factory('segmento', $id)->values($this->request->post(), array(
 				'name',
 			));
-			                
+
+			$basedir = 'public/upload/projetos/';
+			$rootdir = DOCROOT.$basedir;
+
+			$pastaSegmento = Utils_Helper::limparStr($this->request->post('name'));
+
+			//se nao existir a pasta criamos, se existir renomeamos
+			if(file_exists($rootdir.$segmento->pasta)){
+				rename($rootdir.$segmento->pasta, $rootdir.$pastaSegmento);
+			}else{
+				mkdir($rootdir.$pastaSegmento,0777);
+			}
+			
+			$segmento->pasta = $pastaSegmento;           
 			$segmento->save();
 			$db->commit();
 

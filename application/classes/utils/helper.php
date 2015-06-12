@@ -186,6 +186,40 @@ class Utils_Helper
         return $string_limpa;
     }
     
+    public static function criaPasta($basedir, $pasta, $nome){
+        //$basedir = 'public/upload/projetos/';
+        $rootdir = DOCROOT.$basedir;
+
+        $novo_nome = Utils_Helper::limparStr($nome);
+        
+        //se nao existir a pasta criamos, se existir renomeamos
+        if(file_exists($rootdir.$pasta)){
+            rename($rootdir.$pasta, $rootdir.$novo_nome);
+        }else{
+            mkdir($rootdir.$novo_nome,0777);
+        }
+        
+        return $novo_nome;
+    }
+
+    /*
+    public static function recurse_copy($src,$dst) { 
+        $dir = opendir($src); 
+        @mkdir($dst); 
+        while(false !== ( $file = readdir($dir)) ) { 
+            if (( $file != '.' ) && ( $file != '..' )) { 
+                if ( is_dir($src . '/' . $file) ) { 
+                    recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+                } 
+                else { 
+                    copy($src . '/' . $file,$dst . '/' . $file); 
+                } 
+            } 
+        } 
+        closedir($dir); 
+    } 
+    */
+
     public static function debug($var,$exit=true)
     {
         print '<pre>';
@@ -311,51 +345,43 @@ class Utils_Helper
         }
     }
 
+    public function rrmdir($dir) {
+        if (is_dir($dir)) {
+            $files = scandir($dir);
+            foreach ($files as $file)
+                if ($file != "." && $file != "..") rrmdir("$dir/$file");
+            rmdir($dir);
+        }
+        else if (file_exists($dir)) unlink($dir);
+    }
+
+    public static function rcopy($src, $dst) {
+        if (file_exists ( $dst ))
+            $this->rrmdir ( $dst );
+        if (is_dir ( $src )) {
+            mkdir ( $dst );
+            $files = scandir ( $src );
+            foreach ( $files as $file )
+                if ($file != "." && $file != "..")
+                    rcopy ( "$src/$file", "$dst/$file" );
+        } else if (file_exists ( $src ))
+            copy ( $src, $dst );
+    }
+
+
+
     /*
     // Function to remove folders and files 
-        function rrmdir($dir) {
-            if (is_dir($dir)) {
-                $files = scandir($dir);
-                foreach ($files as $file)
-                    if ($file != "." && $file != "..") rrmdir("$dir/$file");
-                rmdir($dir);
-            }
-            else if (file_exists($dir)) unlink($dir);
-        }
+        
 
         // Function to Copy folders and files       
-        function rcopy($src, $dst) {
-            if (file_exists ( $dst ))
-                rrmdir ( $dst );
-            if (is_dir ( $src )) {
-                mkdir ( $dst );
-                $files = scandir ( $src );
-                foreach ( $files as $file )
-                    if ($file != "." && $file != "..")
-                        rcopy ( "$src/$file", "$dst/$file" );
-            } else if (file_exists ( $src ))
-                copy ( $src, $dst );
-        }
+        
     Usage
     rcopy($source , $destination );
     
     Another example without deleting destination file or folder
 
-    function recurse_copy($src,$dst) { 
-        $dir = opendir($src); 
-        @mkdir($dst); 
-        while(false !== ( $file = readdir($dir)) ) { 
-            if (( $file != '.' ) && ( $file != '..' )) { 
-                if ( is_dir($src . '/' . $file) ) { 
-                    recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-                } 
-                else { 
-                    copy($src . '/' . $file,$dst . '/' . $file); 
-                } 
-            } 
-        } 
-        closedir($dir); 
-    } 
+    
 
 
     */

@@ -1,5 +1,5 @@
 	<div class="list_header round">
-	<?=$sql;?>
+	<?//$sql;?>
 		<span class='list_alert light_blue round'>
 		<?
 			if(count($objectsList) <= 0){

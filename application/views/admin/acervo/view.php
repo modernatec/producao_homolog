@@ -33,7 +33,7 @@
                 <span class="list_faixa light_blue round left"><?=@$obj->collection->ano?></span>
                 <span class="list_faixa light_blue round"><?=@$obj->supplier->empresa?></span>
             </div>
-            <table class="clear left">
+            <table class="clear">
                 <thead>
                     <th>formato</th>
                     <th>interatividade</th>
@@ -51,7 +51,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="left">
+            <table class="clear">
                 <thead>
                     <th>unidade</th>
                     <th>capítulo</th>

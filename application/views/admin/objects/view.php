@@ -79,7 +79,7 @@
 
                                 <p>
                                     <?foreach ($object->status->tags->where('workflow_id', '=', $obj->workflow_id)->order_by('order', 'ASC')->find_all() as $tag) {?>
-                                        <span class="list_faixa list_view round left"><span class="left ball" style="background:#<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
+                                        <span class="list_faixa list_view round left"><span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
                                     <?};?>
 
                                 </p>
@@ -132,7 +132,7 @@
                                                         <?if($current_auth != "assistente"){?>
                                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
                                                         <?}?>
-                                                        <span class="round list_faixa tag" style="background:#<?=$task->tag->color?>"><?=$task->tag->tag?></span></a> 
+                                                        <span class="round list_faixa tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span></a> 
                                                     </div>
                                                     <? if($task->task_to != "0"){?>
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>

@@ -67,7 +67,7 @@
 			    	}else{
 			    		$task_class = $obj_taskView->status->type.'_status'.$obj_taskView->status->id;
 			    		$status = '<span class="round '.$task_class.' list_faixa left">'.$obj_taskView->status->status.'</span>';
-		    			$tag = '<span class="round list_faixa left tag" style="background:#'.$obj_taskView->tag->color.'">'.$obj_taskView->tag->tag.'</span>';	
+		    			$tag = '<span class="round list_faixa left tag" style="background:'.$obj_taskView->tag->color.'">'.$obj_taskView->tag->tag.'</span>';	
 		    		}
 
 		    		if($obj_taskView->task_to != 0){
@@ -87,7 +87,7 @@
 							<span class="cyan round list_faixa clear"><?=$objeto->supplier_empresa?></span>
 						<?}?>
 						<div class="clear">
-							<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?> &bull; <?=$objeto->prova?></span>
+							<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?></span>
 							<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=Utils_Helper::data($objeto->retorno,'d/m/Y')?></span>
 						</div>
 						<div>

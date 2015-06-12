@@ -137,9 +137,9 @@ class Controller_Admin_Template extends Controller_Template {
 		
 		foreach ($teams as $team) {
 			$css.= '.team_'.$team->id.'{
-				background:#'.$team->color.';
+				background:'.$team->color.';
 				color:#fff;
-				border: 2px solid #'.$team->color.' !important;
+				border: 2px solid '.$team->color.' !important;
 			}
 			';
 		}	
@@ -148,11 +148,11 @@ class Controller_Admin_Template extends Controller_Template {
 		
 		foreach ($status as $statu) {
 			$css.= '.'.$statu->type.'_status'.$statu->id.'{
-				background:#'.$statu->color.';
+				background:'.$statu->color.';
 				color:#fff;
 			}
 			.step_'.$statu->type.'_status'.$statu->id.'{
-				border-left:5px solid #'.$statu->color.';
+				border-left:5px solid '.$statu->color.';
 			}';
 		}	
 

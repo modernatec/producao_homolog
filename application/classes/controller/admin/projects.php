@@ -118,18 +118,9 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 					'ssid',
 				));
 
-				$basedir = 'public/upload/projetos/';
-				$rootdir = DOCROOT.$basedir;
+				$segmento = ORM::factory('segmento', $this->request->post('segmento_id'));
 
-				$pastaProjeto = Utils_Helper::limparStr($this->request->post('name'));
-
-				//se nao existir a pasta criamos, se existir renomeamos
-				if(file_exists($rootdir.$projeto->pasta)){
-					rename($rootdir.$projeto->pasta, $rootdir.$pastaProjeto);
-				}else{
-					mkdir($rootdir.$pastaProjeto,0777);
-				}
-
+				$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$segmento->pasta.'/', $projeto->pasta, $this->request->post('name'));
 				$projeto->pasta = $pastaProjeto;                    
 				$projeto->save();
 
