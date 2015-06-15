@@ -72,6 +72,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 				'tag',
 				'color',
 				'days',
+				'sync',
 			));
 			$objeto->type = 'task';
 			                

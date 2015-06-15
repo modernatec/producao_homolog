@@ -20,6 +20,16 @@
         </dd>  
 
     </div>
+    <div class="left">
+        <label for="sync">concomitante</label>
+        <dd>
+            <select class="required round" name="sync" id="sync" >
+                <option value='0' <?=(($statusVO['sync']== '0')?('selected="selected"'):(''))?>>não</option>
+                <option value='1' <?=(($statusVO['sync']== '1')?('selected="selected"'):(''))?>>sim</option>
+            </select>
+            <span class='error'><?=Arr::get($errors, 'sync');?></span>
+        </dd>  
+    </div>
     <div class="clear">
         <label >times</label>        
         <dd>

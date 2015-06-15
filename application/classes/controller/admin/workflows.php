@@ -112,7 +112,10 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 					foreach($tasks['task'] as $tag_id){
 						/**rever para passar days via post?**/
 						$tag = ORM::factory('tag', $tag_id);
-						$days += $tag->days;
+
+						if($tag->sync == '0'){
+							$days += $tag->days;
+						}
 						/****/
 
 						$workflow_tags = ORM::factory('workflows_status_tag');

@@ -81,3 +81,19 @@
     </dd>
   </dl>
 </form>
+
+<label>selecione as coleções</label>
+<div class="scrollable_content">
+  <ul class="list_item">
+  <? foreach($objectList as $objeto){?>
+    <li>
+          <div>
+            <p><b><?=$objeto->taxonomia?></b></p>
+            <hr style="margin:8px 0;" />
+            <div class="clear">dddd
+            </div>
+          </div>
+      </li>
+  <?}?>
+  </ul>
+</div>  

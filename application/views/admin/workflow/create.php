@@ -41,8 +41,9 @@
 		        <div class="left"> 
 		        	<label>selecione a tarefa</label>
 			        <ul class="list_item connect round sortable_workflow">
-			        	<?foreach ($tagsList as $tag) {?>
-							<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: <?=$tag->color?>"><?=$tag->days?></span><?=$tag->tag?></li>
+			        	<?foreach ($tagsList as $tag) { 
+			        		$dot = ($tag->sync == '1') ? '*' : '';?>
+							<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: <?=$tag->color?>"><?=$tag->days?></span><?=$dot.$tag->tag?></li>
 						<?}?>
 			        </ul>
 			    </div>
@@ -58,8 +59,9 @@
 				        	<?
 				        		foreach ($workflowTagsList as $workflow_tag) {
 				        			if($workflow_tag->status_id == $workflow_status->status_id){
+				        				$dot = ($workflow_tag->tag->sync == '1') ? '*' : '';
 				        	?>
-				        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>"><span class="left ball" style="background: <?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->days?></span><?=$workflow_tag->tag->tag?></li>
+				        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>"><span class="left ball" style="background: <?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->days?></span><?=$dot.$workflow_tag->tag->tag?></li>
 				        	<?}}?>
 				        </ul>
 			        <?}?>

@@ -38,6 +38,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		}   
 	} 
 
+	/*
 	public function action_create()
     { 
 		$view = View::factory('admin/collections/create')
@@ -56,6 +57,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$this->salvar();
 		}    
 	}
+	*/
 
 	public function action_edit($id)
     {       	      
@@ -68,6 +70,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view->collectionVO = $this->setVO('collection', $collection);
 		$view->materiaList = ORM::factory('materia')->find_all();
 		$view->segmentoList = ORM::factory('segmento')->find_all();
+
+		$view->objectList = ORM::factory('object')->where('collection_id' , '=', $id)->find_all();
 
 		header('Content-Type: application/json');
 		echo json_encode(

@@ -122,13 +122,40 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
-		$objeto = ORM::factory('object', $id);
-        $view->obj = $objeto;   
+		$object = ORM::factory('object', $id);
+        $view->obj = $object;   
         $view->user = $this->current_user->userInfos;                          
 		
-        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
+        //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->objects_status[0];
+        $last_status = $view->objects_status[0]->status_id;
+
+        $query = ORM::factory('tag')
+		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
+		->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
+
+		if($this->current_auth != 'admin'){
+			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $last_status)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+
+		$tag_arr = array();
+		$tag_arr2 = array();
+		$i = 0;
+		foreach ($tagList as $key => $tag) {
+			$tag_arr[$i][$key] = $tag;
+			$tag_arr2[$i][$key] = $tag->tag;
+
+			if($tag->sync == '0'){
+				$i++;
+			}
+		}
+		//echo "<pre>";
+		//var_dump($tag_arr2);
+
+		$view->tag_arr = $tag_arr;
+
         
  		$view->current_auth = $this->current_auth;
 

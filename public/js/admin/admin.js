@@ -117,7 +117,8 @@ function setupScroll(){
         scrollInertia: 0,
         advanced:{
             autoScrollOnFocus: false,
-            updateOnContentResize: true
+            updateOnContentResize: true,
+            updateOnBrowserResize:true,
         },
     });
 }

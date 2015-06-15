@@ -64,7 +64,7 @@
                                         </div>
                             <?      
                                     }
-                                    $count++;
+                                    
                                 }
                             ?>
                                                        
@@ -77,12 +77,28 @@
                                 <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?><br/>
                                 retorno: <?=Utils_Helper::getday($object->crono_date)?> &bull; <?=Utils_Helper::data($object->crono_date, 'd/m/Y')?></p>
 
-                                <p>
-                                    <?foreach ($object->status->tags->where('workflow_id', '=', $obj->workflow_id)->order_by('order', 'ASC')->find_all() as $tag) {?>
-                                        <span class="list_faixa list_view round left"><span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
-                                    <?};?>
+                                 <? if($count == 0){
+                                        if($current_auth != "assistente"){?>
+                                
+                                    <div class="left"> 
+                                    <?foreach ($tag_arr as $key => $tagList) {?>
+                                        
+                                        <?foreach ($tagList as $tag) { 
+                                            echo ($tag->sync == '0') ? '</div><div class="left">' : '';
+                                            ?>
+                                            <span class="list_view round clear"><span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
+                                        <?}?>
+                                        
+                                    <?}
+                                    };
+                                    $count++;
+                                    echo "</div>";
+                                    }
 
-                                </p>
+                                ?>  
+                                    
+                                    
+                                
                             </div>
 
                             

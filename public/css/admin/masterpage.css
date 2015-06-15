@@ -1086,6 +1086,7 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #fff;
 	text-align: center;
 	line-height: 22px;
+	margin-right: 5px;
 
 
 	-o-border-radius: 22px;
@@ -1289,8 +1290,13 @@ a.green{
 }
 
 .list_view{
+	margin: 0 2px 2px 0;
+	padding: 4px 5px;
+	display: block;
 	background: #ddd;
 	color: #666;
+	line-height: 20px;
+	position: relative;
 	/*border: 1px #008fc7 solid;*/
 }
 
