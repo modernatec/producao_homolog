@@ -33,10 +33,8 @@ class Model_ObjectStatu extends ORM {
 		return $rs;
 	}
 
-	
-
 	public function getStatus($objId){
-		$status = ORM::factory('task')->where('object_status_id', '=', $objId)->order_by("id", 'DESC')->find();
-		return (is_null($status->status->status)) ? "" : $status;
+		//$status = ORM::factory('task')->where('object_status_id', '=', $objId)->order_by("id", 'DESC')->find();
+		//return (is_null($status->status->status)) ? "" : $status;
 	}
 }

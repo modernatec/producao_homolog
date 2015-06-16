@@ -5,14 +5,13 @@ class Model_Object extends ORM {
 	protected $_has_many = array(
 		'sfwprods'       => array('model' => 'sfwprod', 'through' => 'objects_sfwprods'),		
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_id'),
-		'statu' => array('model' => 'status_type', 'foreign_key' => 'status_id'),
+		'status' => array('model' => 'statu', 'through' => 'objects_status', 'foreign_key' => 'object_id'),
 		'object_reap' => array('model' => 'object', 'through' => 'objects_paths', 'foreign_key' => 'object_id'),
 		'repositorios' => array('model' => 'repositorio', 'through' => 'objects_repositorios', 'foreign_key' => 'object_id'),
 	);
 
 	protected $_has_one = array(
-		'gdoc' => array('model' => 'gdoc', 'foreign_key' => 'object_id'),
-		
+		'gdoc' => array('model' => 'gdoc', 'foreign_key' => 'object_id'),		
 	);
         
 	protected $_belongs_to  = array(

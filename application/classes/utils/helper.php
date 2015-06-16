@@ -41,9 +41,11 @@ class Utils_Helper
         }
     }
 
-    public static function getUserImage($user = null)
+    public static function getUserImage($user_id = null)
     {
-        if($user != null){
+        if($user_id != null){
+            $user = ORM::factory('userinfo', $user_id);
+            
             if(file_exists($user->foto)){    
                 return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto."' height='20' alt='".ucfirst($user->nome)."' />";            
             }else{

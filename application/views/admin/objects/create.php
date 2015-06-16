@@ -112,15 +112,6 @@
                     <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
                 </dd>       
             </div>
-            <? if(empty($objVO["id"])){ //criando objeto novo?>
-                <div class="left">
-                    <dt> <label for="ini_date">Data de início</label> </dt>
-                    <dd>
-                        <input type="text" class="text required round date" name="ini_date" id="ini_date" style="width:100px;" />
-                        <span class='error'><?=Arr::get($errors, 'ini_date');?></span>
-                    </dd>     
-                </div>
-            <?}?>
             <div class="clear left">
                 <dt> <label for="audiosupplier_id">estúdio de áudio</label> </dt>
                 <dd>
@@ -328,7 +319,7 @@
                 </dd>
             </div>
         <dd>
-          <input type="submit" class="round" name="btnCriar" id="btnCriar" value='<? if($isUpdate){ ?>Salvar<? }else{?>Criar<? }?>' />
+          <input type="submit" class="round" name="btnCriar" id="btnCriar" value='salvar' />
         </dd>
       </dl>
     </form>

@@ -38,27 +38,6 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		}   
 	} 
 
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/collections/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		//$this->addValidateJs("public/js/admin/validateCollections.js");
-		//$view->isUpdate = false;
-		
-		$view->projectVO = $this->setVO('collection');		
-		$view->materiaList = ORM::factory('materia')->find_all();
-		$this->template->content = $view;
-
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-			$this->salvar();
-		}    
-	}
-	*/
-
 	public function action_edit($id)
     {       	      
     	$this->auto_render = false;
@@ -79,8 +58,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
 			)						
 		);
-        return false;	   
-		
+        return false;	
 	}
 
 	public function action_salvar($id = null)

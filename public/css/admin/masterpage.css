@@ -161,7 +161,7 @@ hr {
 	display: block; 
 	height: 1px;
     border: 0; 
-    border-top: 1px dotted #008fc7;
+    border-top: 1px solid #008fc7;
     margin: 0; 
     padding: 0; 
     font-style: bold;
@@ -545,7 +545,11 @@ td, th {
 
     padding: 4px;
     color: #008fc7;
-    text-align: center;
+    
+}
+
+th{
+	text-align: center;
 }
 
 td{
@@ -1013,10 +1017,14 @@ input[type='text']:focus, input[type='password']:focus{
     -khtml-border-radius: 25px;
     border-radius: 25px;
     border: 2px solid #fff !important;
-    background: #fff;
+    background: #ccc;
     width: 25px;
     height: 25px;
     position: relative;
+}
+
+.task_line .list_faixa{
+	margin-top: 3px;
 }
 
 .round_imgDetail{

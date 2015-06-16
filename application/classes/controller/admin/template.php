@@ -102,7 +102,7 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery-dateFormat.min.js',
 				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery.maskedinput.min.js',
-				'public/js/admin/jquery.mCustomScrollbar.concat.min.js',
+				'public/js/admin/jquery.mCustomScrollbar.min.js',
 				'public/js/common/jquery/jquery.easing.min.js',
 				'public/js/common/ckeditor/ckeditor.js',
 				'public/js/common/ckeditor/adapters/jquery.js',

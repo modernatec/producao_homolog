@@ -103,7 +103,7 @@ $(document).ready(function()
         }); 
     }
 
-    updateBar();
+    //updateBar();
 });
 
 setInterval(function() {
@@ -115,6 +115,19 @@ function setupScroll(){
         theme:"dark-3",
         axis:"y",
         scrollInertia: 0,
+        
+        advanced:{
+            autoScrollOnFocus: false,
+            updateOnContentResize: true,
+            updateOnBrowserResize:true,
+        },
+    });
+
+    $(".scrollable_x").mCustomScrollbar({
+        theme:"dark-3",
+        axis:"x",
+        scrollInertia: 0,
+        
         advanced:{
             autoScrollOnFocus: false,
             updateOnContentResize: true,

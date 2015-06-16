@@ -82,18 +82,50 @@
   </dl>
 </form>
 
-<label>selecione as coleções</label>
+<span class='list_alert light_blue round'>
+<?
+      if(count($objectList) <= 0){
+          echo 'não encontrei objetos para esta coleção.';    
+      }else{
+          echo 'encontrei '. count($objectList).' objetos nesta coleção.';
+      }
+  ?>
+</span>
+
 <div class="scrollable_content">
-  <ul class="list_item">
-  <? foreach($objectList as $objeto){?>
-    <li>
-          <div>
-            <p><b><?=$objeto->taxonomia?></b></p>
-            <hr style="margin:8px 0;" />
-            <div class="clear">dddd
-            </div>
-          </div>
-      </li>
-  <?}?>
-  </ul>
+  <table>
+      <thead>
+          <th>tax.</th>
+          <th>tipo</th>
+          <th>início</th>
+          <th>fechamento</th>
+      </thead>
+      <tbody>
+          <? foreach($objectList as $objeto){?>
+          <tr>
+              <td>
+                <p><b><?=$objeto->title;?></b></p>
+                <p><?=$objeto->taxonomia;?></p>
+              </td>
+              <td>
+                  <?
+                    switch ($objeto->reaproveitamento) {
+                      case '0':
+                        echo 'novo';
+                        break;
+                      case '1':
+                        echo 'reap.';
+                        break;
+                      case '2':
+                        echo 'reap. integral';
+                        break;  
+                    }
+                  ?>
+              </td>
+              <td>i</td>
+              <td>*</td>
+          </tr>
+          <?}?>
+      </tbody>
+  </table>
 </div>  

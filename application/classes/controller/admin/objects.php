@@ -30,46 +30,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$this->auto_render = false;
 			
 			header('Content-Type: application/json');
-			$return = json_encode(
+			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
 				)						
 			);
-			echo $return;
-			return $return;
 		}           
 	} 
-
-	public function action_redirect(){
-		$this->auto_render = false;
-		$view = View::factory('admin/objects/redirect');
-
-		$view->bind('errors', $errors)
-			->bind('message', $message);
-			
-		echo $view;
-	}
-      
-	public function action_delete($id)
-	{
-		/*
-		$view = View::factory('admin/objects/list')
-			->bind('errors', $errors)
-			->bind('message', $message);
-		
-		try 
-		{            
-			$objeto = ORM::factory('object', $id);
-			$objeto->delete();
-			Utils_Helper::mensagens('add','Objeto excluído com sucesso.'); 
-		} catch (ORM_Validation_Exception $e) {
-			Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
-			$errors = $e->errors('models');
-		}
-		
-		Request::current()->redirect('admin/objects');
-		*/
-	}
 
 	public function action_edit($id)
     {    
@@ -85,8 +52,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         if($objeto->country_id == ''){
         	$view->objVO["country_id"] = 1; //Brasil
         }
-
-		$view->isUpdate = true;                             
                 
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
@@ -103,8 +68,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		foreach ($objects_repo as $value) {
 			array_push($repo_arr, $value->repositorio_id);
 		}
-		$view->repo_arr = $repo_arr;
-        
+		$view->repo_arr = $repo_arr;        
                 
         header('Content-Type: application/json');
 		echo json_encode(
@@ -128,7 +92,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->objects_status[0]->status_id;
+        $last_status = '0';//$view->objects_status[0]->status_id;
 
         $query = ORM::factory('tag')
 		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
@@ -141,21 +105,15 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $last_status)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
 		$tag_arr = array();
-		$tag_arr2 = array();
 		$i = 0;
 		foreach ($tagList as $key => $tag) {
 			$tag_arr[$i][$key] = $tag;
-			$tag_arr2[$i][$key] = $tag->tag;
 
 			if($tag->sync == '0'){
 				$i++;
 			}
 		}
-		//echo "<pre>";
-		//var_dump($tag_arr2);
-
 		$view->tag_arr = $tag_arr;
-
         
  		$view->current_auth = $this->current_auth;
 
@@ -170,155 +128,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			);
 	        return false;
 	    }
-	}
-	
-	public function action_update($id){
-		$this->auto_render = false;
-		$view = View::factory('admin/objects/edit');
-
-		$view->bind('errors', $errors)
-			->bind('message', $message);
-
-		$objStatus = ORM::factory('objects_statu', $id);
-		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
-
-		$object_id = $objStatus->object_id;
-		if($id == ""){
-			$object_id = $this->request->query('object_id');
-			$arr_objstatus['object_id'] = $object_id;
-		}	
-
-		$object = ORM::factory('object', $object_id);
-
-		$query = ORM::factory('statu')
-		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
-		->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
-
-		if($this->current_auth != 'admin'){
-			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
-		}
-
-		$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('status', 'ASC')->find_all();
-		
-		$view->obj = $object;			
-
-		$view->objVO = $arr_objstatus;
-
-		echo $view;
-	}
-
-	public function action_updateStatus($id = null){
-		$this->auto_render = false;
-		if (HTTP_Request::POST == $this->request->method()) 
-		{ 
-
-			$db = Database::instance();
-	        $db->begin();
-
-			$object = ORM::factory('objects_statu', $id);
-			try 
-			{ 
-				$object->values($this->request->post(), array( 
-		                    'object_id', 
-		                    'status_id',
-		                    'prova',
-		                    'description',
-		                    'crono_date',
-							));
-
-				
-				$object->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object->userInfo_id;	
-				
-				$object->save();				
-				$db->commit();
-				$msg = 'status salvo com sucesso.';
-			} catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $db->rollback();
-	            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
-	        } catch (Database_Exception $e) {
-	            $db->rollback();
-	            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	        }
-
-	        $from = strpos($this->request->post('from'), 'objects');
-	        header('Content-Type: application/json');
-	        
-	        if($from !== false){
-				echo json_encode(
-					array(
-						array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object->object_id, true)->render())),
-						array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($object->object->project_id, true)->render())),
-						array('type'=>'msg', 'content'=> $msg),
-					)						
-				);	
-	        }else{
-				echo json_encode(
-					array(
-						array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object->object_id, true)->render())),
-						array('type'=>'msg', 'content'=> $msg),
-					)						
-				);		       
-	        }
-
-	        return false;	
-	    }
-	}
-
-
-	public function action_deleteStatus($id){   
-		$this->auto_render = false; 
-		$db = Database::instance();
-        $db->begin();
-		
-		$object_status = ORM::factory('objects_statu', $id);
-		$object_id = $object_status->object_id;
-		$project_id = $object_status->object->project_id;
-
-		try {  
-			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
-			foreach($tasks as $task){
-				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
-				foreach($task_status as $status){
-					$status->delete();
-				}
-
-				$task->delete();
-			}
-
-			$object_status->delete();
-
-            $db->commit();
-
-            $msg = "Status excluído com sucesso."; 
-        } catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            $db->rollback();
-        }
-
-        header('Content-Type: application/json');
-        
-    	echo json_encode(
-			array(
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object_id, true)->render())),
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($project_id, true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
-			)						
-		);	
-
-        return false;		        
 	}
 
 	public function action_salvar($id = null)
@@ -364,8 +173,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			
 			if($this->request->post('taxonomia_reap') != ""){
-				$object_source = ORM::factory('object')->where('taxonomia', '=', $this->request->post('taxonomia_reap'))->find();
-				
+				$object_source = ORM::factory('object')->where('taxonomia', '=', $this->request->post('taxonomia_reap'))->find();				
 				$object->object_id = $object_source->id;	
 			}else{
 				$object->object_id = null;
@@ -376,12 +184,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			if(is_null($id) || $id == ""){
 				$objectStatus = ORM::factory('objects_statu');
 		        $objectStatus->object_id = $object->id;
-		        $objectStatus->status_id = '1';
-		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
+		        $objectStatus->status_id = '1'; //não iniciado
+		        //$objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
-
+			
 			$delete_repos = DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();
 
 			$repos = $this->request->post('repositorio');
@@ -433,8 +241,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
     	print json_encode($result);
     }
-
-    
 
     public function action_getObjects($project_id, $ajax = null){
     	//$this->startProfilling();
