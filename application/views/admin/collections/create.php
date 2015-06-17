@@ -70,19 +70,18 @@
           <span class='error'><?=Arr::get($errors, 'fechamento');?></span>
         </dd>
     </div>
-
     <div class="clear">
       <?foreach ($teamList as $team) {?>
-        <div class="clear">
-            <label for="team_<?=$team->id?>">resp. <?=$team->name?></label>
+        <div class="left">
+            <label for="team_<?=$team->id?>">responsável <?=$team->name?></label>
             <dd>
-              <select name="team[]" id="team_<?=$team->id?>" class="round">
+              <select name="team[]" id="team_<?=$team->id?>" class="round" style="width:200px;">
                   <option value="">selecione</option>
                   <? 
                     foreach($userList as $user){
                       if($user->team_id == $team->id){
                   ?>
-                  <option value="<?=$user->id?>" <?=((@$collectionVO["materia_id"] == $user->id)?('selected'):(''))?> ><?=$user->nome?></option>
+                  <option value="<?=$user->id?>" <?=((array_key_exists($user->id, $collection_users)) ? ('selected') : (''))?> ><?=$user->nome?></option>
                   <?}}?>
               </select>
               <span class='error'><?=($errors) ? $errors['team'] : '';?></span>
@@ -102,6 +101,7 @@
       <thead>
           <th>tax.</th>
           <th>tipo</th>
+          <th>workflow</th>
           <th>início</th>
           <th>fechamento</th>
       </thead>
@@ -127,6 +127,7 @@
                     }
                   ?>
               </td>
+              <td><?=$objeto->workflow->name?></td>
               <td>i</td>
               <td>*</td>
           </tr>

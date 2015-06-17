@@ -119,7 +119,7 @@ function setupScroll(){
 
     $(".scrollable_x").mCustomScrollbar({
         theme:"dark-3",
-        axis:"x",
+        axis:"yx",
         scrollInertia: 0,
         
         advanced:{

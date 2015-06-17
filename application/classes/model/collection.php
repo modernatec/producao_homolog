@@ -9,6 +9,7 @@ class Model_Collection extends ORM {
 
 	protected $_has_many = array(
 		'objects' => array('model' => 'object', 'foreign_key' => 'collection_id'),
+		'userInfos' => array('model' => 'userInfo', 'through' => 'collections_userInfos',  'foreign_key' => 'collection_id'),
 	);
 	
 	

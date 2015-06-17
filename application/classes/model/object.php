@@ -23,6 +23,7 @@ class Model_Object extends ORM {
 		'audiosupplier' => array('model' => 'supplier', 'foreign_key' => 'audiosupplier_id'),
 		'objectStatus' => array('model' => 'objectStatu', 'through' => 'objectstatus', 'foreign_key' => 'id'),
 		'format' => array('model' => 'format', 'foreign_key' => 'format_id'),
+		'workflow' => array('model' => 'workflow', 'foreign_key' => 'workflow_id'),
 	);
 
 
