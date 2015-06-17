@@ -22,12 +22,6 @@ function rightClick(obj,func)
 var m_x = 0;
 var m_y = 0;
 
-/*
-$(function () {
-    setupAjax();
-});
-*/
-
 function closeFilterPanel(){
     $('.filter ul li').css({'background': ''});
     $('.filter_panel').css({'display': 'none'});
@@ -472,12 +466,11 @@ function setupAjax(container){
                     
                     $('#tag_id, #status_id').unbind('change').bind('change', function(e){
                         e.preventDefault();
-                        var data_post = {days : $('#' + e.target.id + ' option:selected').data('days')};
+                        var days = $('#' + e.target.id + ' option:selected').data('days');
                         
                         $.ajax({
                             type: "POST",
-                            url: $('#' + e.target.id).data('server'),
-                            data: data_post,
+                            url: base_url + '/admin/feriados/getWorkDay/' + days,
                             timeout: 10000, 
                             dataType : "html",
                             success: function(retorno) {
@@ -537,7 +530,7 @@ function setupAjax(container){
         if($(container + ' ' + tab).length > 0){
             $(container + ' ' + tab).click(); 
         }else{
-            $(container + ' #tab_1').click(); 
+            $(container + ' a.ajax').first().click(); 
         }
     }, 100);    
 

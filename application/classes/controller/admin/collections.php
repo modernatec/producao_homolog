@@ -22,7 +22,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view = View::factory('admin/collections/list')
 			->bind('message', $message);
 		
-		$view->collectionsList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -49,6 +49,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view->collectionVO = $this->setVO('collection', $collection);
 		$view->materiaList = ORM::factory('materia')->find_all();
 		$view->segmentoList = ORM::factory('segmento')->find_all();
+		$view->teamList = ORM::factory('team')->find_all();
+		$view->userList = ORM::factory('userinfo')->where('status', '=', '1')->find_all();
 
 		$view->objectList = ORM::factory('object')->where('collection_id' , '=', $id)->find_all();
 
@@ -137,56 +139,61 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	}
 
 	/*******************************************/
+    public function getFiltros($ano){
+    	$this->auto_render = false;
+    	$viewFiltros = View::factory('admin/collections/filtros');
+    	$viewFiltros->ano = $ano;
 
-	public function action_getList($ano){
+    	$filtros = Session::instance()->get('kaizen')['filtros'];
+
+  		$viewFiltros->filter_segmento = array();
+  		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
+
+		foreach ($filtros as $key => $value) {
+  			$viewFiltros->$key = json_decode($value);
+  		}
+
+  		return $viewFiltros;
+    }
+
+	public function action_getList($ano, $ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/collections/table');
-		$view->ano = $ano;
 
-		if($this->request->post('reset_form') != "" || Session::instance()->get('kaizen')['model'] != "collections"){		
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_segmento" => json_encode(array()),
-					"filter_name" => "",
-				),
-				"parameters" => "",
-				"model" => "collections",
-			);
+		if(count($this->request->post('collection')) > '0' || Session::instance()->get('kaizen')['model'] != 'collection'){
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $ano, "collection");
 		}else{
-			/*filtros*/
-			$kaizen_arr = array(
-				"filtros" => array(
-					"filter_segmento" => ($this->request->post('segmento') != "") ? json_encode($this->request->post('segmento')) : Session::instance()->get('kaizen')['filtros']["filter_segmento"],
-					"filter_name" => ($this->request->post('name') != "") ? $this->request->post('name') : Session::instance()->get('kaizen')['filtros']["filter_name"],
-				),
-				"parameters" => "",
-				"model" => "collections",
-			);
+			$kaizen_arr = Session::instance()->get('kaizen');	
 		}
+		Session::instance()->set('kaizen', $kaizen_arr);
 
-  		Session::instance()->set('kaizen', $kaizen_arr);
-  		//var_dump( Session::instance()->get('kaizen'));
-
-		$filter_segmento = Session::instance()->get('kaizen')['filtros']["filter_segmento"];
-		$filter_name = Session::instance()->get('kaizen')['filtros']["filter_name"];	
-
-		$view->filter_segmento = json_decode($filter_segmento);
-		$view->filter_name = $filter_name;
+  		$filtros = Session::instance()->get('kaizen')['filtros'];
+  		
+  		foreach ($filtros as $key => $value) {
+  			$view->$key = json_decode($value);
+  		}
 
 		$query = ORM::factory('collection')->where('ano', '=', $ano);
 
-		(count($view->filter_segmento) > 0) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
-		(!empty($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
+		(isset($view->filter_segmento)) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
 		
 		$view->collectionsList = $query->order_by('name','ASC')->find_all();
-		$view->segmentoList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#esquerda', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($ano)->render())),
+					
+				)						
+			);
+	       
+	        return false;
+	    }
 	}
 	
 	public function action_getListProject($ano){

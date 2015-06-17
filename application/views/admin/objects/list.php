@@ -6,8 +6,7 @@
             <?}?>
         </ul>  
     </div>
-    <div class="clear" id="filtros">  
-    </div>
+    <div class="clear" id="filtros"></div>
 </div>
 <div id="esquerda">
     <div class="bar" style='margin-bottom:5px;'>

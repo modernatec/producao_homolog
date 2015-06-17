@@ -33,18 +33,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/acervo/list')
 			->bind('message', $message);
-		/*
-		$view->filter_segmento = array();
-		$view->filter_collection = array();
-		$view->filter_project = array();
-		$view->filter_typeobject = array();
-
-		$view->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
-		$view->collectionList = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-		$view->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
-		$view->typeList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-		//$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-		*/
 
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -167,7 +155,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
   		Session::instance()->set('kaizen', $kaizen_arr);
 
   		$filtros = Session::instance()->get('kaizen')['filtros'];
-  		//var_dump($filtros);
+  		
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
   		}

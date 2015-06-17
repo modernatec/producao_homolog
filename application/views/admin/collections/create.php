@@ -1,13 +1,24 @@
 <form name="frmCreateCollection" id="frmCreateCollection" action="<?=URL::base();?>admin/collections/salvar/<?=@$collectionVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
-    <dt>
-      <label for="name">coleção</label>
-    </dt>
-    <dd>
-      <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$collectionVO['name'];?>"/>
-      <span class='error'><?=Arr::get($errors, 'name');?></span>
-    </dd>
     <div class="left">
+      <dt>
+        <label for="op">op</label>
+      </dt>     
+      <dd>
+        <input type="text" class="text required round" name="op" id="op" style="width:50px;" value="<?=@$collectionVO['op'];?>"/>
+        <span class='error'><?=Arr::get($errors, 'op');?></span>
+      </dd>
+    </div>
+    <div class="left">
+      <dt>
+        <label for="name">coleção</label>
+      </dt>
+      <dd>
+        <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$collectionVO['name'];?>"/>
+        <span class='error'><?=Arr::get($errors, 'name');?></span>
+      </dd>
+    </div>  
+    <div class="clear left">
       <dt>
         <label for="target">matéria</label>
       </dt>
@@ -35,31 +46,22 @@
           <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
       </dd>
     </div>
-    <dt>
-      <label for="ano">ano</label>
-    </dt>     
-    <dd>
-      <select name="ano" id="ano" class="round">
-          <option value="">selecione</option>
-          <? 
-          for($i = date("Y") - 5; $i <= date("Y") + 5; $i++){?>
-            <option value="<?=$i?>" <?=((@$collectionVO["ano"] == $i)?('selected'):(''))?> ><?=$i;?></option>
-          <?}?>
-      </select>
-      <span class='error'><?=($errors) ? $errors['ano'] : '';?></span>
-    </dd>
-    <div class="clear">
-      <div class="left">
-        <dt>
-          <label for="op">OP</label>
-        </dt>	    
-        <dd>
-          <input type="text" class="text required round" name="op" id="op" style="width:50px;" value="<?=@$collectionVO['op'];?>"/>
-          <span class='error'><?=Arr::get($errors, 'op');?></span>
-        </dd>
-      </div>
-      
-      <div>
+    <div class="left">
+      <dt>
+        <label for="ano">ano</label>
+      </dt>     
+      <dd>
+        <select name="ano" id="ano" class="round">
+            <option value="">selecione</option>
+            <? 
+            for($i = date("Y") - 5; $i <= date("Y") + 5; $i++){?>
+              <option value="<?=$i?>" <?=((@$collectionVO["ano"] == $i)?('selected'):(''))?> ><?=$i;?></option>
+            <?}?>
+        </select>
+        <span class='error'><?=($errors) ? $errors['ano'] : '';?></span>
+      </dd>
+    </div>
+    <div class="left">
         <dt>
           <label for="fechamento">fechamento</label>
         </dt>	    
@@ -67,30 +69,33 @@
           <input type="text" class="text date round" name="fechamento" id="fechamento" style="width:80px;" value="<?=@$collectionVO['fechamento'];?>"/>
           <span class='error'><?=Arr::get($errors, 'fechamento');?></span>
         </dd>
-      </div>
     </div>
-    <dt>
-      <label for="repositorio">repositório</label>
-    </dt>
-    <dd>
-      <input type="text" class="text round" name="repositorio" id="repositorio" style="width:500px;" value="<?=@$collectionVO['repositorio'];?>"/>
-      <span class='error'><?=Arr::get($errors, 'repositorio');?></span>
-    </dd>
+
+    <div class="clear">
+      <?foreach ($teamList as $team) {?>
+        <div class="clear">
+            <label for="team_<?=$team->id?>">resp. <?=$team->name?></label>
+            <dd>
+              <select name="team[]" id="team_<?=$team->id?>" class="round">
+                  <option value="">selecione</option>
+                  <? 
+                    foreach($userList as $user){
+                      if($user->team_id == $team->id){
+                  ?>
+                  <option value="<?=$user->id?>" <?=((@$collectionVO["materia_id"] == $user->id)?('selected'):(''))?> ><?=$user->nome?></option>
+                  <?}}?>
+              </select>
+              <span class='error'><?=($errors) ? $errors['team'] : '';?></span>
+            </dd>
+        </div>
+      <?}?>
+    </div>
+
     <dd class='clear'>
       <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
     </dd>
   </dl>
 </form>
-
-<span class='list_alert light_blue round'>
-<?
-      if(count($objectList) <= 0){
-          echo 'não encontrei objetos para esta coleção.';    
-      }else{
-          echo 'encontrei '. count($objectList).' objetos nesta coleção.';
-      }
-  ?>
-</span>
 
 <div class="scrollable_content">
   <table>

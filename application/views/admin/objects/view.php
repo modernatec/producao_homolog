@@ -8,7 +8,7 @@
     <?}?>
 
     <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/objects/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
+        <a href="<?=URL::base();?>admin/objects_status/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
         
     </div>  
@@ -70,7 +70,7 @@
                                                        
                             <div class='line_bottom'>
                                 <?if($current_auth != "assistente"){?>
-                                    <a href="<?=URL::base();?>admin/objects/update/<?=$object->id?>" class="popup edit black">
+                                    <a href="<?=URL::base();?>admin/objects_status/update/<?=$object->id?>" class="popup edit black">
                                 <?}?>
                                 <span class="list_faixa round <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?></span></a>
                                 

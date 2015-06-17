@@ -92,7 +92,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = '0';//$view->objects_status[0]->status_id;
+        $last_status = $view->objects_status[0]->status_id;
 
         $query = ORM::factory('tag')
 		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')

@@ -1,11 +1,12 @@
 <div class="topo" >
 	<div class="tabs_panel">
 		<ul class="tabs">
-	        <? foreach($collectionsList as $key=>$collection){?>
-			<li class="round"><a class="ajax" id='tab_<?=$key+1;?>' href="<?=URL::base();?>admin/collections/getlist/<?=$collection->ano?>"><?=$collection->ano?></a></li>
+	        <? foreach($anosList as $ano){?>
+			<li class="round"><a class="ajax" id='tab_<?=$ano->ano?>' href="<?=URL::base();?>admin/collections/getlist/<?=$ano->ano?>"><?=$ano->ano?></a></li>
 			<?}?>
 	    </ul>  
     </div>
+	<div class="clear" id='filtros'></div>
 </div>
 <div id="esquerda">
     <div class="bar" style='margin-bottom:5px;'>

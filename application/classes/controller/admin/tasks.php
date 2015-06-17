@@ -192,11 +192,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		echo $view;
 	}
 
-	public function action_setDate(){
-		$this->auto_render = false;
-		$days = $this->request->post('days');
-		echo date('d/m/Y', strtotime('now +'.$days.' weekdays'));
-	}
+
 
 	/**
 	**Formulario popup. 	
