@@ -166,10 +166,10 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		if(isset($view->filter_taxonomia)){
     		$list = explode(' ',addslashes($view->filter_taxonomia));
-    		$string = join('* +',$list);
+    		$string = join('* +*',$list);
 
-			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+".$string."*') AS relevance";
-			$tax_order = "AND MATCH (title, keywords) AGAINST ('+".$string."*') ORDER BY relevance DESC";
+			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
+			$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*') ORDER BY relevance DESC";
 		}
 
     	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode(',', $view->filter_segmento)."')" : "";
