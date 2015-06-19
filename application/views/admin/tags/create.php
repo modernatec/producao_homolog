@@ -30,6 +30,30 @@
             <span class='error'><?=Arr::get($errors, 'sync');?></span>
         </dd>  
     </div>
+    <div class="clear left">
+        <label for="next_tag_id">ação automática</label>
+        <dd>
+            <select class="required round" name="next_tag_id" id="next_tag_id" >
+                <option value='0' >nenhuma</option>
+                <?foreach ($tagsList as $key => $tag) {?>
+                    <option value='<?=$tag->id?>' <?=($statusVO['next_tag_id'] == $tag->id ) ? 'selected="selected"' : '';?> ><?=$tag->tag?></option>
+                <?}?>
+                
+            </select>
+            <span class='error'><?=Arr::get($errors, 'next_tag_id');?></span>
+        </dd>  
+    </div>
+    <div class="left">
+        <label for="to">responsável</label>
+        <dd>
+            <select class="required round" name="to" id="to" >
+                <option value='0' <?=(($statusVO['to']== '0')?('selected="selected"'):(''))?>>em aberto</option>
+                <option value='1' <?=(($statusVO['to']== '1')?('selected="selected"'):(''))?>>responsável pela coleção</option>
+                <!--option value='2' <?=(($statusVO['to']== '2')?('selected="selected"'):(''))?>>usuário livre</option-->
+            </select>
+            <span class='error'><?=Arr::get($errors, 'sync');?></span>
+        </dd>  
+    </div>
     <div class="clear">
         <label >times</label>        
         <dd>

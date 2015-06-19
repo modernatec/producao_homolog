@@ -1,4 +1,4 @@
-<form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/taskstatus/end" method="post" class="form">
+<form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks_status/end" method="post" class="form">
     <input type="hidden" name='task_id' value="<?=$task->id?>" />
     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
     <input type="hidden" name='next_step' id="next_step" value="0" />

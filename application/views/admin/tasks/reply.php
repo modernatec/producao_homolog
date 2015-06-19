@@ -1,8 +1,8 @@
-<form name="frmEditTask" id="frmEditTask"  data-panel="#direita" action="<?=URL::base();?>admin/taskstatus/edit/<?=@$taskVO['id']?>" method="post" class="form">
+<form name="frmEditTask" id="frmEditTask" data-panel="#direita" action="<?=URL::base();?>admin/tasks_status/edit/<?=@$taskVO['id']?>" method="post" class="form">
 	<dl>
         <div class="clear">		
             <dd>
-                  <textarea class="text round" name="description" id="description" placeholder="observações" style="width:550px; height:300px;"><?=@$taskVO['description']?></textarea>
+                  <textarea class="text round" name="description" id="description" placeholder="observações"  style="width:420px; height:300px;"><?=@$taskVO['description']?></textarea>
                   <span class='error'><?=Arr::get($errors, 'description');?></span>
             </dd>
         </div>

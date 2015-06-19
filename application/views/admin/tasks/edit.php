@@ -1,4 +1,4 @@
-<label><b>editar tarefa</b></label><hr/>
+<label><b>tarefas</b></label><hr/>
 <form name="frmCreateTask2" id="frmCreateTask2"  data-panel="#direita" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
 	
 	<input type="hidden" name="object_id" value="<?=@$taskVO['object_id']?>">
@@ -35,9 +35,13 @@
             <dd>
                 <select name="task_to" id="task_to" class="round" style="width:150px;">
                     <option value="0">selecione</option>
-                    <? foreach($teamList as $userInfo){?>
-                        <option value="<?=$userInfo->id?>" <?=($taskVO['task_to'] == $userInfo->id) ? "selected" : ""?> ><?=$userInfo->nome?></option>
-                    <?}?>
+                    <? foreach($teams as $team){?>
+                        <optgroup label="<?=$team->name?>">
+                        <? foreach($teamList as $userInfo){ if($userInfo->team_id == $team->id){?>
+                                <option value="<?=$userInfo->id?>" <?=($taskVO['task_to'] == $userInfo->id) ? "selected" : ""?> ><?=$userInfo->nome?></option>
+                            <?}}?>
+                        </optgroup>
+                    <?}?>                    
                 </select>
                 <span class='error'><?=Arr::get($errors, 'task_to');?></span>
             </dd>

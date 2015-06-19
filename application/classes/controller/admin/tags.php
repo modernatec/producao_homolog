@@ -41,7 +41,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$view->statusVO = $this->setVO('tag', $tag); 
 
 		$view->teamList = ORM::factory('team')->find_all();  
-
+		$view->tagsList = ORM::factory('tag')->find_all();  
 		$view->teamsArray = ORM::factory('tags_team')->where('tag_id', '=', $id)->find_all();
 
 		$teamsArray = array();
@@ -68,29 +68,27 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		
 		try 
 		{            
-			$objeto = ORM::factory('tag', $id)->values($this->request->post(), array(
+			$tag = ORM::factory('tag', $id)->values($this->request->post(), array(
 				'tag',
 				'color',
 				'days',
 				'sync',
+				'next_tag_id',
+				'to',
 			));
-			$objeto->type = 'task';
-			                
-			$objeto->save();
+			$tag->type = 'task';
+			$tag->save();
 
-			$teams = ORM::factory('tags_team')->where('tag_id', '=', $objeto->id)->find_all();
-			foreach ($teams as $team) {
-				$team->delete();
+			DB::delete('tags_teams')->where('tag_id', '=', $tag->id)->execute();
+
+			if($this->request->post('team') != ""){
+				foreach ($this->request->post('team') as $team) {
+					$new_team = ORM::factory('tags_team');
+					$new_team->tag_id = $tag->id;
+					$new_team->team_id = $team;
+					$new_team->save();
+				}
 			}
-
-
-			foreach ($this->request->post('team') as $team) {
-				$new_team = ORM::factory('tags_team');
-				$new_team->tag_id = $objeto->id;
-				$new_team->team_id = $team;
-				$new_team->save();
-			}
-
 
 			$db->commit();
 			

@@ -12,58 +12,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		parent::__construct($request, $response);                
 	}
 
-	/*
-	public function action_order(){
-		$this->auto_render = false;
-		ini_set('max_execution_time', 300); //max. response para 5 minutos
-
-		$tasks_status = ORM::factory('tasks_statu')->where('status_id_', '=', '7')->find_all();
-		foreach ($tasks_status as $status) {
-			$status->finished = $status->created_at;
-			$status->save();
-			/*
-			$tasks_started = ORM::factory('tasks_statu')->where('task_id', '=', $status->task_id)->where('status_id', '=', '6')->find();	
-			if(count($tasks_started) > 0){
-				//created_??
-				//$status->started = $status->created_at;
-				//$status->finished = $tasks_finished->created_at;
-				//$status->description = $tasks_finished->description;
-				$status->status_id = '6';
-				$status->save();
-				
-			}
-			*
-		}
-			
-			echo 'ok';								
-		//}
-	}
-
-	public function action_order2(){
-		$this->auto_render = false;
-		ini_set('max_execution_time', 300); //max. response para 5 minutos
-
-		$tasks_status = ORM::factory('tasks_statu')->where('status_id_', '=', '7')->find_all();
-		foreach ($tasks_status as $status) {
-			$tasks_started = ORM::factory('tasks_statu')->where('task_id', '=', $status->task_id)->and_where('status_id_', '=', '6')->order_by('id', 'DESC')->find();	
-			if($tasks_started->id != ''){
-				//created_??
-				//$status->started = $status->created_at;
-				//$status->finished = $tasks_finished->created_at;
-				//$status->description = $tasks_finished->description;
-				$status->created_at = $tasks_started->created_at;
-				$status->save();
-				
-			}
-		}			
-			echo 'ok';								
-		//}
-	}
-	*/
-
 	public function action_index($ajax = null)
 	{	
-		//$this->setRefresh();
 		$view = View::factory('admin/tasks/list');
 		$view->userInfo_id = $this->current_user->userInfos->id;
 
@@ -97,7 +47,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
         }
 
-		//$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
 		$view->current_auth = $this->current_auth;	
 	  	
 	  	/*alert de nova tarefa*/
@@ -105,7 +54,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
   		//if(Session::instance()->get('total_tarefas') < $view->totalTasks){
   		//	$view->update = true;	  			
   		//}
-
 	  	//Session::instance()->set('total_tarefas', $view->totalTasks);
 
 	  	if($ajax == null){
@@ -122,6 +70,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}   	  	
 	} 
 
+	/**
+	**Reordena as tarefas por drag. 	
+	**/
 	public function action_reorder(){
 		$this->auto_render = false;
 		if (HTTP_Request::POST == $this->request->method()) 
@@ -137,19 +88,12 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 	}
     
-	public function action_mail(){
-		$this->auto_render = false;
-		$view = View::factory('admin/tasks/layout_mail');
-		//echo $view;
-
-	}
-    
 	/**
 	**Formulario popup. 	
 	**/
    	public function action_update($id){
 		$this->auto_render = false;
-		$view = View::factory('admin/tasks/form_edit');
+		$view = View::factory('admin/tasks/edit');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -172,11 +116,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		$query_team =  ORM::factory('userInfo')->where('status', '=', '1');
 		
-		/*var_dump($this->current_auth);
-		if($this->current_auth != 'admin'){
-			$query_team->where('team_id', '=', $this->current_user->userInfos->team_id);
-		}*/
-		
+		$view->teams = ORM::factory('team')->order_by('name', 'ASC')->find_all();
 		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
 
 		$query = ORM::factory('tag')
@@ -199,7 +139,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	**/
    	public function action_endtask($id){
 		$this->auto_render = false;
-		$view = View::factory('admin/tasks/form_endtask');
+		$view = View::factory('admin/tasks/end');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -211,7 +151,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 	public function action_updateReply($id){
 		$this->auto_render = false;
-		$view = View::factory('admin/tasks/form_edit_reply');
+		$view = View::factory('admin/tasks/reply');
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
@@ -221,8 +161,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		echo $view;
 	}
-
-
 	
 	public function action_salvar($id = null)
 	{
@@ -280,22 +218,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					$type = "atualiza_tarefa";
 					*/
 				}
-				
-				/*
-				if($this->request->post('sendmail') || empty($id)){
-					/*
-		            * envia email de tarefa para o usuário
-		            */
-		            /*
-					Controller_Admin_Taskstatus::sendMail(array(
-															'type' => $type,
-															'subject'=> $task->tag->tag,
-															'post' => $this->request->post(), 
-            												'user' => $this->current_user->userInfos));	
-				}
-				*/
-
-				//var_dump($this->request->post('sendmail'));
 
 	            $db->commit();
 
@@ -334,11 +256,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$object_id = $task->object_id;
 
 		try {  	
-			$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $id)->find_all();
-			foreach($task_status as $status){
-				$status->delete();
-			}
-
+			DB::delete('tasks_status')->where('task_id', '=', $id)->execute();
 			$task->delete();
 
             $db->commit();
@@ -359,13 +277,14 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         }
 	
 		header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
-	        return false;        
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+	    
+	    return false;        
 	}
 
     /********************************/

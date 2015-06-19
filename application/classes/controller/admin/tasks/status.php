@@ -1,16 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
-class Controller_Admin_Taskstatus extends Controller_Admin_Template {
+class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
  
 	public $auth_required		= array('login'); 
-	public $secure_actions     	= array(
-										'create' => array('login','coordenador'),
-										'delete' => array('login','assistente 2'),);
 					 
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response); 
-		              
+		parent::__construct($request, $response); 	              
 	}
   
 	
@@ -74,7 +70,7 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	*/
 	public function action_end(){
 		$this->auto_render = false;
-		$task_end = ORM::factory('task')->where('id', '=',$this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
+		$task_end = ORM::factory('task')->where('id', '=', $this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
 		
 		if(count($task_end) > 0){
 			$msg = "Tarefa já finalizada";
@@ -98,9 +94,58 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	            $task->save();
 
 	            /*
-	            * abre tarefa automaticamente para o próx. fluxo
-	            * melhorar data e separaçao de metodos
+	            * abre próx. tarefa automaticamente.
 	            */
+	            if($task->tag->next_tag_id != '0'){
+		            $new_task = ORM::factory('task');
+	            	$new_task->object_id = $task->object_id;
+	            	$new_task->object_status_id = $task->object_status_id;
+	            	$new_task->tag_id = $task->tag->next_tag_id;
+	            	$new_task->team_id = $task->team_id;
+	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($task->tag->days);
+
+	            	//$new_task->topic = '1';
+	            	//$new_task->description = $description;
+	            	switch ($task->tag->to) {
+	            		case '1':
+	            			/*
+	            			* busca usuário do time, responsável pela coleção
+	            			*/
+	            			$userInfo = ORM::factory('userInfo', $task->userInfo_id);
+	            			$object = ORM::factory('object', $task->object_id);
+
+	            			$user_collection = ORM::factory('collections_userinfo')
+	            								->where('collection_id', '=', $object->collection_id)
+	            								->and_where('team_id', '=', $userInfo->team_id)->find();
+
+	            			$task_to = $user_collection->userInfo_id;
+	            			break;
+	            		case '2':
+	            			/*
+							* fazer buscar usuário do time, menos atarefado
+							* verificar se vale a pena - coordenadores sao usuários tbm!
+							* SELECT 
+									u.nome, 
+									(SELECT COUNT(*) FROM moderna_tasks WHERE task_to = u.id AND ended = '0') AS t,
+									u.team_id
+								FROM moderna_userinfos u
+								WHERE u.team_id = '1' 
+	            			*/
+
+	            			$task_to = '0';
+	            			break;
+	            		default:
+	            			$task_to = '0';
+	            			break;
+	            	}
+
+	            	$new_task->task_to = $task_to;
+	            	$new_task->status_id = '5'; //aberto
+	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
+		            $new_task->save(); 
+		        }
+
+		        /*
 	            if($task->tag_id != "7"){
 	            	//procura por tarefas abertas
 	            	$task_open = ORM::factory('task')->where('object_id', '=', $task->object_id)->and_where('ended', '=', '0')->find_all();
@@ -137,17 +182,8 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			            $new_task->save();  
 					}
 				}
+				*/
 				
-	            /*
-	            * envia email de entrega
-	            *
-	            $this->sendMail(
-		            	array(	
-			            	'type' => 'entrega_tarefa',
-			            	'post' => $this->request->post(), 
-	            			'user' => $this->current_user->userInfos));
-	            */
-	            
 	            $db->commit();
 				
 	            $msg = "Tarefa finalizada com sucesso."; 
@@ -310,6 +346,18 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 	    	/*rever*/
 	    	$view = View::factory('admin/bar');
 
+	    	/*
+	    	possibilidade de ordenar
+			ORM::factory('task')
+                ->select('tasks.id','userinfos.nome', DB::expr('COUNT(moderna_tasks.id) as total'))
+                ->join('userinfos')->on('task_to', '=', 'userinfos.id')
+                ->where('ended', '=', '0')->and_where('userinfos.team_id', '=', '1')
+                ->group_by('userinfos.id')
+                ->order_by('total', 'ASC')
+                ->limit('1')
+                ->find_all();
+	    	*/
+
 			$query = ORM::factory('task')
 				->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
 				->where('ended', '=', '0')
@@ -341,8 +389,6 @@ class Controller_Admin_Taskstatus extends Controller_Admin_Template {
 			}
 
 			$view->teamsVO = $teamsVO;
-			//$view->totalTasks = ORM::factory('task')->where('ended', '=', '0')->count_all();
-
 
 	    	$view->current_auth = $this->current_auth;
 						

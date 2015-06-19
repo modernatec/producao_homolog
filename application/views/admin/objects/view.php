@@ -10,6 +10,7 @@
     <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects_status/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
+
         
     </div>  
     <div class="boxwired round" >
@@ -178,7 +179,7 @@
                                                     <!--img class='round_imgList<?=$task->to->team->color?> right' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <div class="task_reply round"> 
                                                         <? if($task->status_id == '5'){?>
-                                                            <form action="<?=URL::base();?>admin/taskstatus/start" id="startTask" method="post" class="form">
+                                                            <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
                                                                 <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                                 <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                                 <?  
