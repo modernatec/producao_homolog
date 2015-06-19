@@ -22,7 +22,6 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
         
-        //$view->filter_tipo = ($this->request->post('tipo') != "") ? json_encode($this->request->post('tipo')) : json_encode(array());
         $view->filter_nome = ($this->request->post('nome') != "") ? $this->request->post('nome') : "";
         $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
 		$view->current_auth = $this->current_auth;    
@@ -67,7 +66,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     		$view->teamsList = ORM::factory('team')->find_all();
     		$view->rolesList = ORM::factory('role')->where('id', ">", "1")->order_by('name', 'ASC')->find_all();
     		
-            $view->anexosView = "";//View::factory('admin/files/anexos');
+            $view->anexosView = View::factory('admin/files/anexos');
     				
     		
     		$roles = $userInfo->user->roles->find_all();
@@ -94,9 +93,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 );
             }
             return false;
-        }
-		
-		
+        }		
     }
 
     /*
@@ -195,6 +192,28 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         return false;
     }
       
+    public function action_upload(){
+        // A list of permitted file extensions
+        $allowed = array('png', 'jpg', 'gif','zip');
+
+        if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
+
+            $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+                echo 0;
+                exit;
+            }
+
+            if(move_uploaded_file($_FILES['upl']['tmp_name'], 'public/upload/'.$_FILES['upl']['name'])){
+                echo URL::base().'public/upload/'.$_FILES['upl']['name'];
+                exit;
+            }
+        }
+
+        echo 0;
+        exit;
+    }  
 
     public function action_salvar($userInfo_id = null)
     {
@@ -225,6 +244,10 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 			
 			$user->save();
 			$userinfo->user_id = $user->id;
+
+
+
+            //echo '{"status":"error"}';
 
             $resposta = Controller_Admin_Files::salvar($this->request, "public/upload/userinfos/", $userinfo->user_id, "userinfos", $this->current_user, 150);         
             

@@ -88,6 +88,9 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/css/admin/nested.css' => 'screen',
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/common/jquery.jgrowl.css' => 'screen',
+				
+				//'public/css/common/dropzone.css' => 'screen',
+				
 				'public/css/admin/jquery.minicolors.css' => 'screen',
 				'public/css/admin/masterpage.css' => 'screen',
 				'public/css/admin/login.css' => 'screen',
@@ -102,19 +105,22 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery-dateFormat.min.js',
 				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery.maskedinput.min.js',
-				'public/js/admin/jquery.mCustomScrollbar.min.js',
 				'public/js/common/jquery/jquery.easing.min.js',
+				'public/js/admin/jquery.mCustomScrollbar.min.js',
+				'public/js/admin/jquery.minicolors.js',
+				
 				'public/js/common/ckeditor/ckeditor.js',
 				'public/js/common/ckeditor/adapters/jquery.js',
 
-				//'https://www.google.com/jsapi',				
+				
+				"public/js/common/jquery/jquery.knob.js",
+				"public/js/common/jquery/jquery.ui.widget.js",
+				"public/js/common/jquery/jquery.iframe-transport.js",
+				"public/js/common/jquery/jquery.fileupload.js",
+				
 
-				//"public/js/common/plupload/plupload.min.js",
+				//'public/js/common/dropzone.js',
 
-				//"public/plupload/js/plupload.js",
-				//"public/plupload/js/plupload.html5.js",
-				//"public/plupload/init.js",
-				'public/js/admin/jquery.minicolors.js',
 				'public/js/admin/admin.js',
 				'public/js/admin/validateAjax.js',
 				'public/js/common/Popup.js',

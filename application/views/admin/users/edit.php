@@ -1,15 +1,19 @@
 <div class="scrollable_content">
+	
+	<form id="upload" method="post" action="<?=URL::base();?>admin/users/upload?>" enctype="multipart/form-data">
+	    
+	    <div id="drop">
+	    	<img class="foto_form" id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
+	        <a class="bar_button round">escolher outra foto</a>
+	        <input type="file" name="upl" multiple />
+	    </div>
+	    <ul>
+	        <!-- The file uploads will be shown here -->
+	    </ul>
+	</form>		
+
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 	  <dl>
-	  	<div class="left">	
-		    <img class="foto_form" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />		    
-		</div>
-		<div class="left">
-	        <dt>
-				<label for="arquivo">Anexar Foto</label>
-		    </dt>
-		    <?=$anexosView?> 
-		</div>
 		<div class="clear">
 		    <dt>
 		      <label for="nome">nome</label>
