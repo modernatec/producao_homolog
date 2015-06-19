@@ -102,6 +102,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
+
 		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $last_status)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
 		$tag_arr = array();

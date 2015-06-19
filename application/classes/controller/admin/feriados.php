@@ -2,7 +2,7 @@
  
 class Controller_Admin_Feriados extends Controller_Admin_Template {
  
-	public $auth_required		= array('login','admin'); //Auth is required to access this controller
+	public $auth_required		= array('login'); //Auth is required to access this controller
  	
 	/*
 	public $secure_actions     	= array(
@@ -127,16 +127,19 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 
 	public function action_getWorkDay($days){
 		$this->auto_render = false;
+		echo Controller_Admin_Feriados::getNextWorkDay($days);
+	}
 
+	public static function getNextWorkDay($days){
 		$feriados = DB::select('data')->from('feriados')->execute()->as_array('data');
 		
 		$next_date = date('Y-m-d', strtotime('now +'.$days.' weekdays'));
 
 		if (array_key_exists($next_date, $feriados)) { 
-		    $this->action_getWorkDay($days + 1);
+		    Controller_Admin_Feriados::getNextWorkDay($days + 1);
 		}else{
-			echo Utils_Helper::data($next_date);
-			return $next_date;
+			//echo $next_date);
+			return Utils_Helper::data($next_date);
 		}
 	}
 

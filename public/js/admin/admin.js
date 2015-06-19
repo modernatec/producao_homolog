@@ -660,7 +660,7 @@ function updateBar(url){
     if(logged_in != false){
         d = new Date();
 
-        url = base_url + '/admin/taskstatus/updateTasksBar', true
+        url = base_url + '/admin/tasks_status/updateTasksBar', true
 
         $("#taskBar").load(url, function() {
             setupAjax('#taskBar');  

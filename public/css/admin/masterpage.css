@@ -68,12 +68,19 @@ a{
 
 .topo .tabs{
 	position: relative;
-	height: 44px;
+	top:18px;
 }
 
 .topo .tabs li{
 	display: inline-block;
-	margin-top: 18px;
+}
+
+.tabs_panel{
+	height: 44px;
+	/*overflow: hidden;*/
+	padding: 0 5px;
+	border-bottom: 2px solid #008fc7;
+	z-index: 1;
 }
 
 .filters{
@@ -90,12 +97,7 @@ a{
 	padding: 0 5px;
 }
 
-.tabs_panel{
-	height: 44px;
-	/*overflow: hidden;*/
-	padding: 0 5px;
-	border-bottom: 2px solid #008fc7;
-}
+
 
 .tabs_holder{
 	height: 30px;
@@ -234,7 +236,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	font-size: 10px;
 }
 
-.roundTop{anexos
+.roundTop{
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
@@ -480,6 +482,7 @@ a{
 	border: 1px solid #ccc;
 	border-bottom: none;
 	background: #fff;
+	border-radius:4px 4px 0 0 !important;
 }
 
 .tabs .selected{

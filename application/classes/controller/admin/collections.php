@@ -90,9 +90,12 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			if($team_users != ""){
 				foreach ($team_users as $key => $value) {
 					if($value != ''){
+						$user = ORM::factory('userinfo', $team_users[$key]);
+
 						$collection_users = ORM::factory('collections_userinfo');
 						$collection_users->collection_id = $colecao->id;	
-						$collection_users->userInfo_id = $team_users[$key];	
+						$collection_users->userInfo_id = $user->id;//$team_users[$key];	
+						$collection_users->team_id = $user->team_id;
 						$collection_users->save();
 					}
 				}	
