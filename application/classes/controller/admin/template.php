@@ -89,7 +89,7 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/css/admin/jquery.mCustomScrollbar.css' => 'screen',
 				'public/css/common/jquery.jgrowl.css' => 'screen',
 				
-				//'public/css/common/dropzone.css' => 'screen',
+				'public/css/common/dropzone.css' => 'screen',
 				
 				'public/css/admin/jquery.minicolors.css' => 'screen',
 				'public/css/admin/masterpage.css' => 'screen',
@@ -112,14 +112,14 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/ckeditor/ckeditor.js',
 				'public/js/common/ckeditor/adapters/jquery.js',
 
-				
+				/*
 				"public/js/common/jquery/jquery.knob.js",
 				"public/js/common/jquery/jquery.ui.widget.js",
 				"public/js/common/jquery/jquery.iframe-transport.js",
 				"public/js/common/jquery/jquery.fileupload.js",
-				
+				*/
 
-				//'public/js/common/dropzone.js',
+				'public/js/common/dropzone.js',
 
 				'public/js/admin/admin.js',
 				'public/js/admin/validateAjax.js',

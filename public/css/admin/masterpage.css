@@ -289,6 +289,10 @@ a{
 }
 */
 
+.dz-message{
+	color: #ddd;
+}
+
 .foto_form{
 	-o-border-radius: 100px;
     -moz-border-radius: 100px;
@@ -297,7 +301,9 @@ a{
     border-radius: 100px;
 	width:100px;
 	height: 100px;
-	position:relative;
+	left:10px;
+	top:10px;
+	position:absolute;
 	border:3px #FFF solid;
 	border-radius:100px;
 	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);	

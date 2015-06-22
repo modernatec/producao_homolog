@@ -192,27 +192,27 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         return false;
     }
       
-    public function action_upload(){
+    public function action_upload($user_id){
+        $this->auto_render = false;
         // A list of permitted file extensions
-        $allowed = array('png', 'jpg', 'gif','zip');
+        $allowed = array('png','jpg', 'gif','zip');
 
-        if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
-
-            $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
+        if(isset($_FILES['file']) && $_FILES['file']['error'] == 0){
+            $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
             if(!in_array(strtolower($extension), $allowed)){
-                echo 0;
-                exit;
+                echo '0';
+                exit();
             }
 
-            if(move_uploaded_file($_FILES['upl']['tmp_name'], 'public/upload/'.$_FILES['upl']['name'])){
-                echo URL::base().'public/upload/'.$_FILES['upl']['name'];
-                exit;
+            if(move_uploaded_file($_FILES['file']['tmp_name'], 'public/upload/userinfos/profile'.$user_id.'.'.$extension)){
+                echo 'public/upload/userinfos/profile'.$user_id.'.'.$extension;
+                exit();
             }
+        }else{
+            echo '0';
+            exit();
         }
-
-        echo 0;
-        exit;
     }  
 
     public function action_salvar($userInfo_id = null)

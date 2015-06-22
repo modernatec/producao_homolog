@@ -1,6 +1,6 @@
 <div class="scrollable_content">
 	
-	<form id="upload" method="post" action="<?=URL::base();?>admin/users/upload?>" enctype="multipart/form-data">
+	<!--form id="upload" method="post" action="<?=URL::base();?>admin/users/upload?>" enctype="multipart/form-data">
 	    
 	    <div id="drop">
 	    	<img class="foto_form" id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
@@ -8,11 +8,17 @@
 	        <input type="file" name="upl" multiple />
 	    </div>
 	    <ul>
-	        <!-- The file uploads will be shown here -->
+	        <!-- The file uploads will be shown here ->
 	    </ul>
-	</form>		
+	</form-->		
+
 
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
+		<img class="foto_form" id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
+		<div id="upload" class="dropzone" data-user="<?=$userInfoVO['id']?>">			
+			<div class="dz-message" data-dz-message><span>clique ou arraste uma nova foto para o seu perfil</span></div>
+		</div>
+		<input type="hidden" name="foto" id="userFoto" />
 	  <dl>
 		<div class="clear">
 		    <dt>
@@ -86,7 +92,7 @@
 				<label for="status">status</label>
 		    </dt>
 		    <dd>
-	            <select name="status" id="status">
+	            <select name="status" id="status" class="round">
 					<option value="">Selecione</option>
 					<option value="0" <?=((@$userInfoVO["status"] == '0')?('selected'):(''))?> >inativo</option>
 					<option value="1" <?=((@$userInfoVO["status"] == '1')?('selected'):(''))?> >ativo</option>
