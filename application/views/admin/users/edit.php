@@ -1,35 +1,42 @@
 <div class="scrollable_content">
-	
-	<!--form id="upload" method="post" action="<?=URL::base();?>admin/users/upload?>" enctype="multipart/form-data">
-	    
-	    <div id="drop">
-	    	<img class="foto_form" id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
-	        <a class="bar_button round">escolher outra foto</a>
-	        <input type="file" name="upl" multiple />
-	    </div>
-	    <ul>
-	        <!-- The file uploads will be shown here ->
-	    </ul>
-	</form-->		
-
-
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
-		<img class="foto_form" id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
+		<div class="foto_form team_<?=@$userInfoVO["team_id"]?>" >
+			<?if($userInfoVO["foto"] != ''){?>
+				<img id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
+			<?}?>
+		</div>
 		<div id="upload" class="dropzone" data-user="<?=$userInfoVO['id']?>">			
 			<div class="dz-message" data-dz-message><span>clique ou arraste uma nova foto para o seu perfil</span></div>
 		</div>
+		
 		<input type="hidden" name="foto" id="userFoto" />
 	  <dl>
-		<div class="clear">
+		<div class="left">
 		    <dt>
 		      <label for="nome">nome</label>
 		    </dt>
 		    <dd>
-		      <input type="text" class="text round" name="nome" id="nome" style="width:500px;" value="<?=$userInfoVO["nome"];?>"/>
+		      <input type="text" class="text round" name="nome" id="nome" style="width:300px;" value="<?=$userInfoVO["nome"];?>"/>
 		      <span class='error'><?=Arr::get($errors, 'nome');?></span>
 		    </dd>
 	    </div>
-	    <div class="left">
+	    <?
+		if($current_auth == 'admin'){?>
+	    <div class="left"> 
+		    <dt>
+				<label for="status">status</label>
+		    </dt>
+		    <dd>
+	            <select name="status" id="status" class="round">
+					<option value="">Selecione</option>
+					<option value="0" <?=((@$userInfoVO["status"] == '0')?('selected'):(''))?> >inativo</option>
+					<option value="1" <?=((@$userInfoVO["status"] == '1')?('selected'):(''))?> >ativo</option>
+				</select>
+				<span class='error'><?=Arr::get($errors, 'status');?></span>
+		    </dd>
+	    </div>
+	   	<?}?>
+	    <div class="clear left">
 		    <dt>
 		      <label for="email">e-mail</label>
 		    </dt>
@@ -39,9 +46,9 @@
 		    </dd>  
 		</div>  	
 		
-	    <div class="clear left">
+	    <div class="left">
 		    <dt>
-				<label for="telefone">Telefone</label>
+				<label for="telefone">telefone</label>
 		    </dt>
 		    <dd>
 				<input type="text" class="text round" name="telefone" id="telefone" style="width:100px;" value="<?=$userInfoVO["telefone"];?>" maxlength="12"/>
@@ -57,6 +64,15 @@
 				<span class='error'><?=Arr::get($errors, 'ramal');?></span>
 		    </dd>
 		</div>
+		<div class="left"> 
+		    <dt>
+				<label for="data_aniversario">aniversário</label>
+		    </dt>
+		    <dd>
+	            <input type="text" class="text round" name="data_aniversario" placeholder='dd/mm' id="data_aniversario" style="width:50px;" value="<?=$userInfoVO["data_aniversario"];?>" maxlength="5" />
+				<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
+		    </dd>
+	    </div>
 		
 		<?
 		if($current_auth != 'admin'){
@@ -76,31 +92,8 @@
 		</div>
 		<?}?>
 
-		<div class="left"> 
-		    <dt>
-				<label for="data_aniversario">Data do Aniversário (dd/mm)</label>
-		    </dt>
-		    <dd>
-	            <input type="text" class="text round" name="data_aniversario" id="data_aniversario" style="width:50px;" value="<?=$userInfoVO["data_aniversario"];?>" maxlength="5" />
-				<span class='error'><?=Arr::get($errors, 'data_aniversario');?></span>
-		    </dd>
-	    </div>
-	    <?
-		if($current_auth == 'admin'){?>
-	    <div class="clear left"> 
-		    <dt>
-				<label for="status">status</label>
-		    </dt>
-		    <dd>
-	            <select name="status" id="status" class="round">
-					<option value="">Selecione</option>
-					<option value="0" <?=((@$userInfoVO["status"] == '0')?('selected'):(''))?> >inativo</option>
-					<option value="1" <?=((@$userInfoVO["status"] == '1')?('selected'):(''))?> >ativo</option>
-				</select>
-				<span class='error'><?=Arr::get($errors, 'status');?></span>
-		    </dd>
-	    </div>
-	   	<?}?>
+		
+	    
 		
 
 	    <div class="clear left">   

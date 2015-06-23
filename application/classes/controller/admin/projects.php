@@ -39,30 +39,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		}		
 	} 
 
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/projects/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		//$this->addValidateJs("public/js/admin/validateProjects.js");
-		$view->isUpdate = false;
-		
-		$view->projectVO = $this->setVO('project');		
-		$view->segmentosList = ORM::factory('segmento')->find_all();
-		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
-		$view->collectionsList = ORM::factory('collection')->find_all();
-		$view->collectionsArr = array();
-		$this->template->content = $view;
-
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-			$this->salvar();
-		}    
-	}
-	*/
-
 	public function action_edit($id, $ajax = null)
     {      
 		$this->auto_render = false;
@@ -116,11 +92,12 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 					'description',
 					'status',
 					'ssid',
+					'ano'
 				));
 
 				$segmento = ORM::factory('segmento', $this->request->post('segmento_id'));
 
-				$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$segmento->pasta.'/', $projeto->pasta, $this->request->post('name'));
+				$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$segmento->pasta.'/', $projeto->pasta, $this->request->post('ano').'_'.$this->request->post('name'));
 				$projeto->pasta = $pastaProjeto;                    
 				$projeto->save();
 

@@ -61,8 +61,8 @@ class Controller_Admin_Files extends Controller_Admin_Template {
 
 					if($width != ''){
 						$image = Image::factory($pasta.$file);
-						$image->resize(NULL, $width);
-						$image->crop($width, $width);
+						$image->resize($width, $width);
+						//$image->crop($width, $width);
 						$image->save();
 					}
 

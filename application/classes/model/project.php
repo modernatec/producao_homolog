@@ -2,6 +2,10 @@
 
 class Model_Project extends ORM {
 
+	protected $_belongs_to = array(
+		'segmento' => array('model' => 'segmento', 'foreign_key' => 'segmento_id'),		
+	);
+
 	public function rules()
 	{
         return array(

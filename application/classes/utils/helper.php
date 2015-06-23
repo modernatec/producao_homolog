@@ -47,7 +47,7 @@ class Utils_Helper
             $user = ORM::factory('userinfo', $user_id);
             
             if(file_exists($user->foto)){    
-                return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto."' height='20' alt='".ucfirst($user->nome)."' />";            
+                return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto.'?c='.date('dHis')."' height='20' alt='".ucfirst($user->nome)."' />";            
             }else{
                 $nomes = explode(" ", $user->nome);
                 $nome = substr($nomes[0], 0, 1);
@@ -181,7 +181,7 @@ class Utils_Helper
     public static function limparStr($str)
     {
         $str = preg_replace( '/[`^~\'"]/', null, iconv( 'UTF-8', 'ASCII//TRANSLIT', $str ) );
-        $string = strtolower($str);
+        $string = $str; //strtolower($str);
         $string = preg_replace("/[^a-zA-Z0-9]/", "_", $string);
         $string_limpa = preg_replace('/_+/', '_', $string);
 

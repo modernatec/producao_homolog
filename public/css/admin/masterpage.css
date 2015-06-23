@@ -305,9 +305,16 @@ a{
 	top:10px;
 	position:absolute;
 	border:3px #FFF solid;
+	overflow: hidden;
 	border-radius:100px;
-	box-shadow: 0 0 10px 1px rgba(0,0,0, .8);	
+	/*box-shadow: 0 0 10px 1px rgba(0,0,0, .8);	*/
 	background: #fff;
+}
+
+.foto_form img{
+	width: 100px;
+	height: 100px;
+	position: relative;
 }
 
 #menu{

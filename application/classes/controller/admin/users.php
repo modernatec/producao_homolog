@@ -77,6 +77,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 }
     		}	
     		
+            $view->usuario = $userInfo;
     		$view->userInfoVO = $this->setVO('userInfo', $userInfo);
     		$view->userInfoVO['data_aniversario'] = (isset($values)) ? Arr::get($values, 'data_aniversario') : Utils_Helper::data($userInfo->data_aniversario, 'd/m');
             $view->userInfoVO['role_id'] = (isset($values)) ? Arr::get($values, 'role_id') : $roles_arr;
@@ -205,8 +206,15 @@ class Controller_Admin_Users extends Controller_Admin_Template {
                 exit();
             }
 
-            if(move_uploaded_file($_FILES['file']['tmp_name'], 'public/upload/userinfos/profile'.$user_id.'.'.$extension)){
-                echo 'public/upload/userinfos/profile'.$user_id.'.'.$extension;
+            $file = 'public/upload/userinfos/profile'.$user_id.'.'.$extension;
+
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $file)){
+                $image = Image::factory($file);
+                $image->resize(NULL, '100');
+                $image->save();
+                chmod($file, 0777);
+
+                echo $file;
                 exit();
             }
         }else{
@@ -231,6 +239,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 				'ramal',
 				'telefone',
                 'status',
+                'foto',
 			));		
 			
 			$user = ORM::factory('user', $userinfo->user_id);	
@@ -295,6 +304,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         echo json_encode(
             array(
                 array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getUsers("", true)->render())),
+                array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($userInfo_id, true)->render())),
                 array('type'=>'msg', 'content'=> $msg),
             )                       
         );

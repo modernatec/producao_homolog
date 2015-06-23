@@ -12,7 +12,7 @@
 		      <label for="target">segmento</label>
 		    </dt>
 		    <dd>
-		      <select name="segmento_id" id="segmento_id" style="width:150px;">
+		      <select name="segmento_id" id="segmento_id" class="required round" style="width:150px;">
 	                <option value="">selecione</option>
 	                <? foreach($segmentosList as $segmento){?>
 	                <option value="<?=$segmento->id?>" <?=((@$projectVO["segmento_id"] == $segmento->id)?('selected'):(''))?> ><?=$segmento->name?></option>
@@ -21,25 +21,32 @@
 	            <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
 		    </dd>
 		</div>
+		<div class="left">
 	    <dt>
 	      <label for="status">status</label>
 	    </dt>
 	    <dd>
 	      <select class="required round" name="status" id="status" style="width:150px;">
-                <option value=''>Selecione</option>
-                <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
                 <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>em produção</option>
+                <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
             </select>
             <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
 	    </dd>
+	    </div>
+	    
 	    <dt>
-	      <label for="ssid">ssid (gdocs)</label>
+	      <label for="ano">ano</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text round" name="ssid" id="ssid" style="width:500px;" value="<?=@$projectVO['ssid'];?>"/>
-	      <span class='error'><?=Arr::get($errors, 'ssid');?></span>
+			<select name="ano" id="ano" class="required round">
+			<option value="">selecione</option>
+			<? 
+			for($i = date("Y") - 10; $i <= date("Y") + 5; $i++){?>
+			<option value="<?=$i?>" <?=((@$projectVO["ano"] == $i)?('selected'):(''))?> ><?=$i;?></option>
+			<?}?>
+			</select>
+			<span class='error'><?=($errors) ? $errors['ano'] : '';?></span>
 	    </dd>
-
 	    <dt>
 	      <label for="description">descrição</label>
 	    </dt>	    

@@ -11,22 +11,23 @@ function checkUpload(form){
 var myDropzone;
 var newFile = false;
 function setupUpload(){
-    $("#upload").dropzone({ 
-        //maxFiles:1,
+    var user_id = $("#upload").data('user');
+    var form = $('#upload').closest("form");
+    console.log('form = ' + form);
+    myDropzone = new Dropzone("#upload", {
+        maxFiles:1,
         autoProcessQueue: false,
         uploadMultiple: false,
         thumbnailWidth: 100,
         thumbnailHeight: 100,
         autoDiscover: false,
-        //previewTemplate : '<div style="display:none"></div>',
-        url: base_url + 'admin/users/upload/' + $("#upload").data('user'),
+        url: base_url + 'admin/users/upload/' + user_id,
         accept: function(file, done) {
            console.log("uploaded");
            newFile = true;
            done();
         },
         init: function() {
-            myDropzone = this;
             this.on("addedfile", function() {
                 if (this.files[1]!=null){
                     this.removeFile(this.files[0]);
@@ -39,12 +40,13 @@ function setupUpload(){
                     content:'Ops!..<br/><br/>Erro ao enviar sua foto.<br/>tente novamente...', 
                     tema:'error'
                 });
+                $('input[type=submit]').attr('disabled', '');
             }else{
                 $('#userFoto').attr('value', response);
-                console.log('resposta = ' + response);
+                form.submit();
             }
         }
-    });  
+    });
 }
 
 // Helper function that formats the file sizes
@@ -329,6 +331,11 @@ function setupAjax(container){
     validateAjax(); 
     
     if($("#upload").size() == 1){
+        if(myDropzone){
+            myDropzone.destroy();
+            myDropzone = undefined;
+        }
+        console.log(myDropzone);
         setupUpload();
     }
     

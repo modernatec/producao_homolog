@@ -179,6 +179,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			}else{
 				$object->object_id = null;
 			}
+
+			$projeto = ORM::factory('project', $this->request->post('project_id'));
+
+			$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->taxonomia , trim($this->request->post('taxonomia')));
+							
 			
 			$object->save();
 
