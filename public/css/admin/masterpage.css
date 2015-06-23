@@ -169,6 +169,11 @@ hr {
     font-style: bold;
 }
 
+span .div{
+    border-top: 1px solid white !important;
+    padding: 4px 0 !important; 
+}
+
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; display: block;}
 a.excluir{ 
 	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
@@ -210,7 +215,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 .line_bottom{
 	display:block;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
 }
 
 .line_up{
@@ -834,7 +839,7 @@ p{
 
 .hist img, .hist_reply img{
     margin-right:5px;
-    border:1px solid #999;
+    /*border:1px solid #999;*/
 }
 
 
@@ -895,7 +900,7 @@ p{
 */
 
 
-#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight{
+#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight{
 	margin: 5px 0; 
 	padding: 0; 
 	min-height: 70px; 
@@ -909,7 +914,7 @@ p{
     transform: rotate(-3deg);
 }
 
-.sortable_workflow .ui-state-highlight{
+.sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight{
 	min-height: 30px; 
 }
 
@@ -1317,6 +1322,10 @@ a.green{
     border-radius: 4px;
 }
 
+.dd-item{
+	min-width: 250px;
+}
+
 
 .list_colum{
 	float: left;
@@ -1529,7 +1538,7 @@ a.green{
 }
 
 .description{
-	padding: 10px 0;
+	/*padding: 5px 0;*/
 	display: block;
 	border-top: 1px dotted #CCC;
 }

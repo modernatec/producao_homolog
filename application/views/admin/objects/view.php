@@ -8,7 +8,7 @@
     <?}?>
 
     <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/objects_status/update/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
+        <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
 
         
@@ -45,7 +45,7 @@
                 ?>                          
                     <div style='clear:both' >
                         <div class='hist round step step_<?=$object->status->type?>_status<?=$object->status->id?>' >
-                            <div style='width:30px; height:60px; float:left; margin:0 5px 0 0'>
+                            <div style='width:30px; height:35px; float:left; margin:0 5px 0 0'>
                                 <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
                                 <!--img class='round_imgList' src='<?=URL::base();?><?=$object->userInfo->foto?>' height="25"  title="<?=ucfirst($object->userInfo->nome);?>" /--> 
                             </div>
@@ -70,14 +70,41 @@
                             ?>
                                                        
                             <div class='line_bottom'>
-                                <?if($current_auth != "assistente"){?>
-                                    <a href="<?=URL::base();?>admin/objects_status/update/<?=$object->id?>" class="popup edit black">
-                                <?}?>
-                                <span class="list_faixa round <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?></span></a>
-                                
-                                <p>iniciado: <?=Utils_Helper::getday($object->created_at)?> &bull; <?=Utils_Helper::data($object->created_at, 'd/m/Y - H:i')?><br/>
-                                retorno: <?=Utils_Helper::getday($object->crono_date)?> &bull; <?=Utils_Helper::data($object->crono_date, 'd/m/Y')?></p>
+                                <div class="left">
+                                    <?if($current_auth != "assistente"){?>
+                                        <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" class="popup edit black left">
+                                    <?
+                                    }
 
+                                    $calendar = '<img src="'.URL::base().'/public/image/admin/calendar2.png'.'" height="12" valign="middle">';
+
+                                    $diff = '';
+                                    $status_class = $object->status->type.'_status'.$object->status->id;
+                                    if($object->diff != 0){
+
+                                        if($object->diff < 0){
+                                            $diff = '<span class="list_faixa green round">'.$object->diff.'</span>';
+                                            $status_class = 'green';
+                                        }else{
+                                            $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
+                                            $status_class = 'red';
+                                        }
+                                    }
+
+                                    if($object->delivered_date != ''){
+                                        $date_faixa = $calendar.Utils_Helper::data($object->delivered_date, 'd/m/Y');
+                                    }else{
+                                        $date_faixa = $calendar.Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
+                                    }
+
+
+                                    ?>
+                                    <span class="list_faixa round left <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?></span>
+                                    <span class="list_faixa round left <?=$status_class?>"><?=$date_faixa?></span><?=$diff?>
+                                        </a>
+                                    <!--span class="list_view round clear">prev. de retorno: <?=Utils_Helper::data($object->planned_date, 'd/m/Y')?> (<?=Utils_Helper::getday($object->planned_date)?>)</span-->
+                                </div>
+                                <div class="clear">
                                  <? if($count == 0){
                                         if($current_auth != "assistente"){?>
                                 
@@ -97,11 +124,8 @@
                                     }
 
                                 ?>  
-                                    
-                                    
-                                
+                                </div>
                             </div>
-
                             
                             <?if(!empty($object->description)){ ?>
                                 <span class="wordwrap description"><?=$object->description;?></span>

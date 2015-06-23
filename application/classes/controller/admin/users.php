@@ -196,7 +196,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     public function action_upload($user_id){
         $this->auto_render = false;
         // A list of permitted file extensions
-        $allowed = array('png','jpg', 'gif','zip');
+        $allowed = array('png','jpg', 'jpeg', 'gif','zip');
 
         if(isset($_FILES['file']) && $_FILES['file']['error'] == 0){
             $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);

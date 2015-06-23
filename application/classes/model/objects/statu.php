@@ -20,6 +20,9 @@ class Model_Objects_statu extends ORM {
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			),
+			'planned_date' => array(
+				array(array($this, 'setup_date'))
+			),
 		);
 	}
 

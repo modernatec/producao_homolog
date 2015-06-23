@@ -14,7 +14,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		$view = View::factory('admin/status/list')
 			->bind('message', $message);
 		
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('id','ASC')->find_all();
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('order','ASC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -29,6 +29,24 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 	        return false;
 		}           
 	} 
+
+	/**
+	**Reordena as tarefas por drag. 	
+	**/
+	public function action_reorder(){
+		$this->auto_render = false;
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$i = '0';
+			foreach($this->request->post('item') as $status_id){
+				$task = ORM::factory('statu', $status_id);
+				$task->order = $i;
+				$task->save();
+
+				$i++;
+			}
+		}
+	}
 
 	public function action_edit($id)
     {    

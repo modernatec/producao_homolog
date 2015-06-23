@@ -394,6 +394,40 @@ function setupAjax(container){
         }
     }).disableSelection();
 
+    $(".sortable_tags").sortable({
+        placeholder: "ui-state-highlight",
+        distance: 30,
+        axis: 'y',
+        update: function (event, ui) {
+            var data = $(this).sortable('serialize');
+            // POST to server using $.post or $.ajax
+            $.ajax({
+                data: data,
+                type: 'POST',
+                timeout: 20000, 
+                url: base_url + '/tags/reorder'
+            });
+        }
+    }).disableSelection();
+
+    $(".sortable_status").sortable({
+        placeholder: "ui-state-highlight",
+        distance: 30,
+        axis: 'y',
+        update: function (event, ui) {
+            var data = $(this).sortable('serialize');
+            // POST to server using $.post or $.ajax
+            $.ajax({
+                data: data,
+                type: 'POST',
+                timeout: 20000, 
+                url: base_url + '/status/reorder'
+            });
+        }
+    }).disableSelection();
+
+    
+
     $(".sortable_workflow").sortable({
         connectWith: ".connect",
         placeholder: "ui-state-highlight",

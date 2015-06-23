@@ -11,10 +11,48 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                                  );
                                  
     const ITENS_POR_PAGINA = 20;
-					 
+	
 	public function __construct(Request $request, Response $response)
 	{
 		parent::__construct($request, $response);
+	}
+
+	/*
+	* função apenas de transição, remover
+	*/
+	public function action_geraPastas(){
+		$this->auto_render = false;  
+
+		$db = Database::instance();
+        $db->begin();
+		
+		try 
+		{     
+			$objects = ORM::factory('object')->where('fase', '=', '1')->find_all();
+			foreach ($objects as $key => $object) {
+				$projeto = ORM::factory('project', $object->project_id);
+				$obj = ORM::factory('object', $object->id);
+				$pastaObjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->pasta , trim($object->taxonomia));
+				$obj->pasta = $pastaObjeto;	
+				$obj->save();
+				echo $obj->taxonomia.'<br/>';
+			}
+			$db->commit();
+
+		}  catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
+		echo 'fim';
 	}
 	        
 	public function action_index($ajax = null)
@@ -88,7 +126,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$object = ORM::factory('object', $id);
         $view->obj = $object;   
-        $view->user = $this->current_user->userInfos;                          
+        //$view->user = $this->current_user->userInfos;                          
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
@@ -182,7 +220,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			$projeto = ORM::factory('project', $this->request->post('project_id'));
 
-			$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->taxonomia , trim($this->request->post('taxonomia')));
+			$pastaObjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->pasta , trim($this->request->post('taxonomia')));
+			$object->pasta = $pastaObjeto;		
 							
 			
 			$object->save();
@@ -192,6 +231,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		        $objectStatus->object_id = $object->id;
 		        $objectStatus->status_id = '1'; //não iniciado
 		        //$objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
+		        //$objectStatus->planned_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
@@ -404,5 +444,183 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	       
 	        return false;
 	    }
-	}    
+	}  
+
+
+	/****
+	*
+	* Gerencia Object Status
+	*
+	*******/ 
+	public function action_updateForm($id){
+		$this->auto_render = false;
+		$view = View::factory('admin/objects_status/edit');
+
+		$view->bind('errors', $errors)
+			->bind('message', $message);
+
+		$objStatus = ORM::factory('objects_statu', $id);
+		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
+
+		$object_id = $objStatus->object_id;
+		if($id == ""){
+			$object_id = $this->request->query('object_id');
+			$arr_objstatus['object_id'] = $object_id;
+		}	
+
+		$object = ORM::factory('object', $object_id);
+
+		$query = ORM::factory('statu')
+		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
+		->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
+
+		if($this->current_auth != 'admin'){
+			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
+		
+		$view->obj = $object;			
+
+		$view->objVO = $arr_objstatus;
+
+		echo $view;
+	}
+
+	public function action_updateStatus($id = null){
+		$this->auto_render = false;
+		if (HTTP_Request::POST == $this->request->method()) 
+		{ 
+
+			$db = Database::instance();
+	        $db->begin();
+
+			$object_status = ORM::factory('objects_statu', $id);
+			try 
+			{ 
+				if(empty($id)){
+					$last_status = ORM::factory('objects_statu')->where('object_id', '=', $this->request->post('object_id'))->order_by('id', 'DESC')->limit('1')->find();
+					$last_status->delivered_date = date('Y-m-d', strtotime("now"));
+
+					$last_date1 = new DateTime($last_status->delivered_date);
+					$last_date2 = new DateTime($last_status->planned_date);
+					$last_interval = $last_date2->diff($last_date1);
+					
+					$last_status->diff = $last_interval->format('%R%a');
+					$last_status->save();
+				}
+
+				$object_status->values($this->request->post(), array( 
+		                    'object_id', 
+		                    'status_id',
+		                    'prova',
+		                    'description',
+		                    'crono_date',
+							));
+
+				if(empty($id)){
+					$object_status->planned_date = $this->request->post('crono_date');				
+				}
+
+				$date1 = new DateTime(date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date')))));
+				$date2 = new DateTime($object_status->planned_date);
+				$interval = $date2->diff($date1);
+
+				$object_status->diff = $interval->format('%R%a');
+
+				$object_status->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object_status->userInfo_id;	
+				
+				$object_status->save();				
+				$db->commit();
+				$msg = 'status salvo com sucesso.';
+			} catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $db->rollback();
+	            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
+	        } catch (Database_Exception $e) {
+	            $db->rollback();
+	            $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	        }
+
+	        $from = strpos($this->request->post('from'), 'objects');
+	        header('Content-Type: application/json');
+
+	        /**ERRO??***/
+	        
+	        if($from !== false){
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object_status->object_id, true)->render())),
+						array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($object_status->object->project_id, true)->render())),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);	
+	        }else{
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object_status->object_id, true)->render())),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);		       
+	        }
+
+	        return false;	
+	    }
+	}
+
+
+	public function action_deleteStatus($id){   
+		$this->auto_render = false; 
+		$db = Database::instance();
+        $db->begin();
+		
+		$object_status = ORM::factory('objects_statu', $id);
+		$object_id = $object_status->object_id;
+		$project_id = $object_status->object->project_id;
+
+		try {  
+			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
+			foreach($tasks as $task){
+				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
+				foreach($task_status as $status){
+					$status->delete();
+				}
+
+				$task->delete();
+			}
+
+			$object_status->delete();
+
+            $db->commit();
+
+            $msg = "Status excluído com sucesso."; 
+        } catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
+        header('Content-Type: application/json');
+        
+    	echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object_id, true)->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($project_id, true)->render())),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);	
+
+        return false;		        
+	} 
 }

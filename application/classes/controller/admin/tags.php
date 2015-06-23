@@ -14,7 +14,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$view = View::factory('admin/tags/list')
 			->bind('message', $message);
 		
-		$view->list = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag','ASC')->find_all();
+		$view->list = ORM::factory('tag')->where('type', '=', 'task')->order_by('order','ASC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -29,6 +29,24 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 	        return false;
 		}           
 	} 
+
+	/**
+	**Reordena as tarefas por drag. 	
+	**/
+	public function action_reorder(){
+		$this->auto_render = false;
+		if (HTTP_Request::POST == $this->request->method()) 
+		{
+			$i = '0';
+			foreach($this->request->post('item') as $tag_id){
+				$task = ORM::factory('tag', $tag_id);
+				$task->order = $i;
+				$task->save();
+
+				$i++;
+			}
+		}
+	}
 
 	public function action_edit($id)
     {    

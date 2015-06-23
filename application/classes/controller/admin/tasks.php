@@ -80,7 +80,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			$i = '0';
 			foreach($this->request->post('item') as $task_id){
 				$task = ORM::factory('task', $task_id);
-				$task->ordem = $i;
+				$task->order = $i;
 				$task->save();
 
 				$i++;
@@ -311,7 +311,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         (isset($view->filter_status)) ? $query->where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
         (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
 
-        $view->taskList = $query->and_where('ended', '=', '0')->order_by('ordem', 'ASC')->order_by('crono_date','ASC')->find_all();
+        $view->taskList = $query->and_where('ended', '=', '0')->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
                
         //$this->endProfilling();
         header('Content-Type: application/json');

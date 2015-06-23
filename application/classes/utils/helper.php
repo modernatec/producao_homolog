@@ -33,7 +33,7 @@ class Utils_Helper
         }        
     }
     
-    public static function data($dt,$format='d/m/Y')
+    public static function data($dt, $format='d/m/Y')
     {
         if($dt != ""){
             $data = new DateTime($dt);
@@ -195,12 +195,16 @@ class Utils_Helper
         $novo_nome = Utils_Helper::limparStr($nome);
         
         //se nao existir a pasta criamos, se existir renomeamos
-        if(file_exists($rootdir.$pasta)){
-            rename($rootdir.$pasta, $rootdir.$novo_nome);
+        if($pasta != ''){
+            if(file_exists($rootdir.$pasta)){
+                rename($rootdir.$pasta, $rootdir.$novo_nome);
+            }else{
+                mkdir($rootdir.$novo_nome,0777);
+            }
         }else{
             mkdir($rootdir.$novo_nome,0777);
         }
-        
+
         return $novo_nome;
     }
 

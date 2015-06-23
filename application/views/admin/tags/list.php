@@ -3,9 +3,9 @@
 </div>
 <div id="esquerda">
     <div id="tabs_content" class="scrollable_content clear">
-        <ul class="list_item">
+        <ul class="list_item sortable_tags">
             <? foreach($list as $tag){?>
-            <li>
+            <li class="dd-item" id="item-<?=$tag->id?>">
                 <a class="right excluir" href="<?=URL::base().'admin/tags/delete/'.$tag->id;?>" title="Excluir">Excluir</a>
                 <span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span>
                 <? $dot = ($tag->sync == '1') ? '*' : '';?>
