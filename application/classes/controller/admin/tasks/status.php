@@ -8,7 +8,6 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response); 	              
 	}
-  
 	
 	/*
 	* inicia uma tarefa 
@@ -89,6 +88,8 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 				* atualiza flag ended, encerrando a tarefa para o user
 				*/
 				$task = ORM::factory('task', $this->request->post('task_id'));
+				$task->delivered_date = date('Y-m-d', strtotime("now"));
+				$task->diff = Utils_Helper::dataDiff($task->delivered_date, $task->planned_date);
 				$task->ended = '1';
 				$task->status_id = '7';
 	            $task->save();

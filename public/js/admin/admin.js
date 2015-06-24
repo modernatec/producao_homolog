@@ -312,7 +312,7 @@ function setupAjax(container){
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                         tema:'error',
-                        fix: true,
+                        
                     });
                 }
             });  
@@ -527,6 +527,32 @@ function setupAjax(container){
         return false;
     });
 
+    $("a.view_oed").unbind('click').bind('click', function(e) {   
+        e.preventDefault();
+        var url = this.href;
+
+        $('#dialog').remove();
+        $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
+
+        $('#dialog').load(
+            url,  
+            {},           
+            function (responseText, textStatus, XMLHttpRequest) {
+                $(this).removeClass('loading');
+                console.log(responseText)
+                //setupAjax('#dialog');
+
+                $('#dialog').show('slide', {direction: 'left'}, 300);
+
+                setTimeout(function(){
+                    console.log('ok')
+                }, 500);
+            }
+        );
+    });
+
+    
+
     $("a.close_pop").unbind('click').bind('click', function(e){
         e.preventDefault();
         removeDialogs();
@@ -550,9 +576,7 @@ function setupAjax(container){
                 $('#dialog').show('slide', {direction: 'left'}, 300);
 
                 setTimeout(function(){
-                    $('#description').ckeditor({
-                        height: $('#description').height(),
-                        width: $('#description').width()});
+                    $('#description').ckeditor();
                     
                     $('#tag_id, #status_id').unbind('change').bind('change', function(e){
                         e.preventDefault();
@@ -667,7 +691,7 @@ function ajaxPost(form, container){
             setMsg({
                 content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                 tema:'error',
-                fix: true,
+                
             });
         }
     });    
@@ -737,7 +761,7 @@ function loadContent(args){
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                     tema:'error',
-                    fix: true,
+                    
                 });
             }
         });  
@@ -785,7 +809,7 @@ function getContent(args){
             setMsg({
                 content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                 tema:'error',
-                fix: true,
+                
             });
 
             //alert("ocorreu um erro ao carregar o conteúdo. getContent");

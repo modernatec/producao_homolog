@@ -4,7 +4,7 @@
     <input type="hidden" name="object_status_id" value="<?=$object_status->id?>">
   	<dl>
         <dd>
-          <textarea class="required text round" name="anotacao" placeholder="anotações" id="anotacao" style="width:490px; height:100px;"></textarea>
+          <textarea class="required text round" name="anotacao" placeholder="anotações" id="description" style="width:490px; height:100px;"></textarea>
         </dd>
         <dd>
           <input type="submit" class="round" name="btnCriar" id="btnCriar" data-form="frmAnotacoes" value="criar" /> 

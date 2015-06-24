@@ -14,6 +14,7 @@
         </ul>
         <div class="boxwired_selected round">
             <a class="collapse right" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
+            <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">VER -</a>
             <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
             <span class="wordwrap"><?=@$obj->taxonomia;?></span>
             <hr style="margin:8px 0;" />

@@ -102,6 +102,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$taskVO = $this->setVO('task', $task);
 
 		$object_status_id = $task->object_status_id;
+		$view->current_auth = $this->current_auth;
 
 		if($id == ""){
 			$taskVO['object_id'] = $this->request->query('object_id');
@@ -128,6 +129,9 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 
 		$view->tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+
+
+
 
 		echo $view;
 	}
@@ -182,42 +186,19 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					'task_to',
 				)); 
 				
-				
 				if(empty($id)){				
 					/**para não atualizar o criador da tarefa no update**/
+					$task->planned_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
 					$task->userInfo_id = $this->current_user->userInfos->id;
 					$task->team_id = $this->current_user->userInfos->team_id;
 					$task->status_id = '5';
 	            }
+	            $date1 = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
+				$task->diff = Utils_Helper::dataDiff($date1, $task->planned_date);
 
 	            $task->save();  
 	            $object_id = $task->object_id;
 
-	            if(empty($id)){
-	            	/*
-					* cria status inicial da tarefa
-					*/    
-					/*
-					$task_statu = ORM::factory('tasks_statu');
-					$task_statu->userInfo_id = $this->current_user->userInfos->id;
-					$task_statu->status_id = '5';
-					$task_statu->task_id = $task->id;
-					$task_statu->save();  	
-
-					$type = "inicia_tarefa";
-					*/
-				}else{
-					/*
-					* atualiza status caso a tarefa já tenha sido iniciada
-					*/
-					/*
-					$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $id)->and_where('status_id', '=', '6')->find();
-					$task_statu->userInfo_id = $task->task_to;
-					$task_statu->save(); 
-
-					$type = "atualiza_tarefa";
-					*/
-				}
 
 	            $db->commit();
 

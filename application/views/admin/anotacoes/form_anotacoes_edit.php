@@ -4,7 +4,7 @@
     <input type="hidden" name="object_status_id" value="<?=$status_id?>">
   	<dl>
         <dd>
-          <textarea class="required text round" name="anotacao" id="anotacao" style="width:420px; height:100px;"><?=@$anotacao_txt->anotacao?></textarea>
+          <textarea class="required text round" name="anotacao" id="description" style="width:420px; height:100px;"><?=@$anotacao_txt->anotacao?></textarea>
           <span class='error'><?=Arr::get($errors, 'anotacao');?></span>
         </dd>
         <dd>

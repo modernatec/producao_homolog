@@ -34,8 +34,6 @@
             <span class="list_faixa light_blue round left"><?=$origem?></span>
             <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
             <span class="list_faixa cyan round"><?=@$obj->supplier->empresa?></span>
-            <p><b>início:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->envio_produtora,'d/m/Y')?></p>
-            <p><b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?></p>
         </div>
     </div>
 
@@ -64,7 +62,8 @@
                                             <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$object->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
                                         </div>
                             <?      
-                                    }                                    
+                                    }    
+                                    $count++;                                
                                 }
                             ?>
                                                        
@@ -101,27 +100,7 @@
                                         </a>
                                     <!--span class="list_view round clear">prev. de retorno: <?=Utils_Helper::data($object->planned_date, 'd/m/Y')?> (<?=Utils_Helper::getday($object->planned_date)?>)</span-->
                                 </div>
-                                <div class="clear">
-                                 <? if($count == 0){
-                                        if($current_auth != "assistente"){?>
                                 
-                                    <div class="left"> 
-                                    <?foreach ($tag_arr as $key => $tagList) {?>
-                                        
-                                        <?foreach ($tagList as $tag) { 
-                                            echo ($tag->sync == '0') ? '</div><div class="left">' : '';
-                                            ?>
-                                            <span class="list_view round clear"><span class="left ball" style="background:<?=$tag->color;?>"><?=$tag->days;?></span><?=$tag->tag;?></span>
-                                        <?}?>
-                                        
-                                    <?}
-                                    };
-                                    $count++;
-                                    echo "</div>";
-                                    }
-
-                                ?>  
-                                </div>
                             </div>
                             
                             <?if(!empty($object->description)){ ?>
@@ -145,9 +124,9 @@
                                             <a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" data-panel="#direita" title="Excluir">Excluir</a>
                                         </div>
                                         <?}?>
-                                        <div class="clear">
-                                            <hr style="margin:8px 0;" />
-                                            <pre><span class="wordwrap"><?=$anotacao->anotacao?></span></pre>
+                                        <hr class="clear" style="margin:8px 0;" />
+                                        <div class="clear">                                            
+                                            <span class="wordwrap description"><?=$anotacao->anotacao?></span>
                                         </div>
                                     </div> 
                                 </div>
@@ -169,9 +148,29 @@
                                                     <div class="left">
                                                         <?if($current_auth != "assistente"){?>
                                                             <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
-                                                        <?}?>
+                                                        <?}
+
+                                                        $diff = '';
+                                                        $color = $task->tag->color;
+                                                        if($task->diff != 0){
+                                                            if($task->diff < 0){
+                                                                $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
+                                                                $color = '#8cc152';
+                                                            }else{
+                                                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
+                                                                $color = 'red';
+                                                            }
+                                                        }
+
+                                                        if($task->delivered_date != ''){
+                                                            $date_faixa = Utils_Helper::data($task->delivered_date, 'd/m/Y');
+                                                        }else{
+                                                            $date_faixa = Utils_Helper::data($task->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($task->crono_date).')';
+                                                        }
+
+                                                        ?>
                                                         <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>
-                                                        <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=Utils_Helper::data($task->crono_date, 'd/m/Y')?> (<?=Utils_Helper::getday($task->crono_date)?>)</span>
+                                                        <span class="round list_faixa left tag" style="background:<?=$color?>"><?=$date_faixa?></span><?=$diff?>
                                                             </a> 
                                                     </div>
                                                     <? if($task->task_to != "0"){?>
@@ -194,7 +193,7 @@
                                         <div class="replies replies_<?=$task->id;?>"> 
                                             <div style='clear:both'>
                                                 <div class='hist'>
-                                                    <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                    <div class="right"><?=Utils_Helper::getUserImage($task->to->id)?></div>
                                                     <div class="task_reply round"> 
                                                         <? if($task->status_id == '5'){?>
                                                             <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
@@ -234,10 +233,10 @@
                                                             <span class="wordwrap description"><?=$task->reply->description;?></span>
                                                         <?}?>
                                                         </div>
-                                                        <div class="options" >
+                                                        <div class="options description" >
                                                             <? if($task->status_id == '6' && $task->to->id == $user->id){?>
-                                                                <div style="min-height:20px;">
-                                                                    <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button green round">entregar</a>
+                                                                <div class="right" style="min-height:20px; padding-top:10px">
+                                                                    <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
                                                                 </div>
                                                             <?}?>
                                                         </div>

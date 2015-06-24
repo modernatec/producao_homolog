@@ -236,4 +236,13 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	    }
 	    
 	}    
+
+
+	public function action_preview($object_id){
+		$this->auto_render = false;
+
+		$object = ORM::factory('object', $object_id);
+
+		echo '<iframe src="'.URL::base().'/admin/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$object->taxonomia.'.mp4" ></iframe>';
+	}
 }

@@ -41,6 +41,15 @@ class Utils_Helper
         }
     }
 
+    public static function dataDiff($date1, $date2){
+        $r_date1 = new DateTime($date1);
+        $r_date2 = new DateTime($date2);
+        $interval = $r_date2->diff($r_date1);
+        
+        return $interval->format('%R%a');
+    }
+
+
     public static function getUserImage($user_id = null)
     {
         if($user_id != null){
@@ -58,7 +67,8 @@ class Utils_Helper
                 //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' alt='".ucfirst($user->nome)."' />";
             }
         }else{
-            return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' />";
+            return "<div class='round_imgList' ><span>?</span></div>";
+            //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' />";
         }
     }
 
@@ -341,7 +351,7 @@ class Utils_Helper
             case '6':
                 return 'Sábado';
                 break;
-            case '7':
+            case '0':
                 return 'Domingo';
                 break;
             

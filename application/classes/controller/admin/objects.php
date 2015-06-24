@@ -130,29 +130,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->objects_status[0]->status_id;
-
-        $query = ORM::factory('tag')
-		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
-		->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
-
-		if($this->current_auth != 'admin'){
-			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
-		}
-
-
-		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $last_status)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
-
-		$tag_arr = array();
-		$i = 0;
-		foreach ($tagList as $key => $tag) {
-			$tag_arr[$i][$key] = $tag;
-
-			if($tag->sync == '0'){
-				$i++;
-			}
-		}
-		$view->tag_arr = $tag_arr;
         
  		$view->current_auth = $this->current_auth;
 
@@ -462,6 +439,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$objStatus = ORM::factory('objects_statu', $id);
 		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
 
+		$view->current_auth = $this->current_auth;
+
 		$object_id = $objStatus->object_id;
 		if($id == ""){
 			$object_id = $this->request->query('object_id');
@@ -480,6 +459,31 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
 		
+		
+		$object_status = ORM::factory('objects_statu')->where('object_id', '=', $object_id)->order_by('created_at', 'DESC')->find();  
+
+        $query = ORM::factory('tag')
+		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
+		->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
+
+		if($this->current_auth != 'admin'){
+			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+
+		$tag_arr = array();
+		$i = 0;
+		foreach ($tagList as $key => $tag) {
+			$tag_arr[$i][$key] = $tag;
+
+			if($tag->sync == '0'){
+				$i++;
+			}
+		}
+		$view->tag_arr = $tag_arr;
+		
+
 		$view->obj = $object;			
 
 		$view->objVO = $arr_objstatus;
@@ -502,11 +506,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					$last_status = ORM::factory('objects_statu')->where('object_id', '=', $this->request->post('object_id'))->order_by('id', 'DESC')->limit('1')->find();
 					$last_status->delivered_date = date('Y-m-d', strtotime("now"));
 
-					$last_date1 = new DateTime($last_status->delivered_date);
-					$last_date2 = new DateTime($last_status->planned_date);
-					$last_interval = $last_date2->diff($last_date1);
-					
-					$last_status->diff = $last_interval->format('%R%a');
+					$last_status->diff = Utils_Helper::dataDiff($last_status->delivered_date, $last_status->planned_date);
 					$last_status->save();
 				}
 
@@ -522,11 +522,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					$object_status->planned_date = $this->request->post('crono_date');				
 				}
 
-				$date1 = new DateTime(date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date')))));
-				$date2 = new DateTime($object_status->planned_date);
-				$interval = $date2->diff($date1);
-
-				$object_status->diff = $interval->format('%R%a');
+				$date1 = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
+				$object_status->diff = Utils_Helper::dataDiff($date1, $object_status->planned_date);
 
 				$object_status->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object_status->userInfo_id;	
 				

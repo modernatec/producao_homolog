@@ -215,7 +215,8 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 .line_bottom{
 	display:block;
-	padding-bottom: 5px;
+	/*padding-bottom: 5px;*/
+	overflow: auto;
 }
 
 .line_up{
@@ -697,7 +698,23 @@ table tbody td table tbody tr:hover {
 }
 */
 
+.pickcolor{
+	padding-left: 26px !important;
+	height: auto !important;
+	width: 60px !important;
+}
 
+.minicolors-swatch{
+	border: none !important;
+}
+
+
+.view_oed{
+	width: 800px;
+	height: 600px;
+	overflow: hidden;
+}
+/*
 .minicolors-swatch-color{
 	width: 31px;
 	height: 31px;
@@ -711,9 +728,7 @@ table tbody td table tbody tr:hover {
 	border-radius:30px;
 }
 
-.minicolors-swatch{
-	border: none !important;
-}
+
 
 .minicolors-sprite{
 	-o-border-radius: 25px;
@@ -723,6 +738,7 @@ table tbody td table tbody tr:hover {
 	border-radius:25px;
 	min-height: 25px;
 }
+*/
 
 
 /*****Forms****/
@@ -1287,15 +1303,29 @@ a.green{
 	/*line-height: 30px !important*/
 }
 
-.list_view{
-	margin: 0 2px 2px 0;
+
+
+.suggestions{
+	border-left:1px dotted #008fc7;
+	margin-left: 10px;
+}
+
+.suggestions > .list_view{
 	padding: 4px 5px;
 	display: block;
-	background: #ddd;
+	left: -15px;
 	color: #666;
 	line-height: 20px;
 	position: relative;
-	/*border: 1px #008fc7 solid;*/
+}
+
+.suggestions > .list_view_sub{
+	margin: 0 0 0 10px;
+	padding: 4px 5px;
+	display: block;
+	color: #666;
+	line-height: 20px;
+	position: relative;
 }
 
 .list_alert{
@@ -1621,7 +1651,7 @@ div.jGrowl div.error {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	width: 482px;
+	min-width: 482px;
 	height: auto;
 	padding: 10px;
 	background: #fff url('../../image/admin/bkg.jpg') repeat-x 0 0;

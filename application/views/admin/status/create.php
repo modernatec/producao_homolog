@@ -10,7 +10,7 @@
     <div class="left">
         <label for="color">cor</label>
         <dd>
-            <input type="hidden" id="hidden-input" name="color" class="pickcolor" value="<?=@$statusVO['color'];?>">
+            <input type="text" id="hue-demo" name="color" class="pickcolor round" value="<?=@$statusVO['color'];?>">
             <span class='error'><?=Arr::get($errors, 'color');?></span>
         </dd> 
     </div>

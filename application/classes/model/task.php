@@ -59,6 +59,9 @@ class Model_Task extends ORM {
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			),
+			'plannned_date' => array(
+				array(array($this, 'setup_date'))
+			),
 			'description' => array(
 				array(array($this, 'removeEmpty'))
 			),			
