@@ -835,6 +835,7 @@ p{
 	padding: 5px;
 	background: #f3f3f3;
 	color: #585858;
+	overflow: auto;
 }
 
 .hist img, .hist_reply img{
@@ -846,7 +847,7 @@ p{
 
 .anotacoes{
 	background: #a0d0d4;
-	margin: 10px 0;
+	margin: 5px;
 }
 
 

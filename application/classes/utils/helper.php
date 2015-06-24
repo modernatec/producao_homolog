@@ -47,7 +47,7 @@ class Utils_Helper
             $user = ORM::factory('userinfo', $user_id);
             
             if(file_exists($user->foto)){    
-                return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto.'?c='.date('dHis')."' height='20' alt='".ucfirst($user->nome)."' />";            
+                return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto.'?c='.date('dHis')."' height='20' title='".ucfirst($user->nome)."' />";            
             }else{
                 $nomes = explode(" ", $user->nome);
                 $nome = substr($nomes[0], 0, 1);

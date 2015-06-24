@@ -1,3 +1,6 @@
+<?  
+    $calendar = '<img src="'.URL::base().'/public/image/admin/calendar2.png'.'" height="12" valign="middle">';
+?>
 <div class="clear">
     <div class="bar">
     <?if($current_auth != "assistente"){?>
@@ -35,9 +38,7 @@
             <p><b>fechamento:</b> <?=Utils_Helper::dataGdocs(@$obj->gdoc->fechamento,'d/m/Y')?></p>
         </div>
     </div>
-<?
 
-?>
 <div class="scrollable_content clear">             
     <?if(isset($objects_status)){
             $count = 0;
@@ -45,10 +46,9 @@
                 ?>                          
                     <div style='clear:both' >
                         <div class='hist round step step_<?=$object->status->type?>_status<?=$object->status->id?>' >
-                            <div style='width:30px; height:35px; float:left; margin:0 5px 0 0'>
+                            <!--div style='width:30px; height:35px; float:left; margin:0 5px 0 0'>
                                 <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
-                                <!--img class='round_imgList' src='<?=URL::base();?><?=$object->userInfo->foto?>' height="25"  title="<?=ucfirst($object->userInfo->nome);?>" /--> 
-                            </div>
+                            </div-->
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
                                     <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
@@ -64,19 +64,16 @@
                                             <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$object->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
                                         </div>
                             <?      
-                                    }
-                                    
+                                    }                                    
                                 }
                             ?>
                                                        
                             <div class='line_bottom'>
                                 <div class="left">
                                     <?if($current_auth != "assistente"){?>
-                                        <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" class="popup edit black left">
+                                        <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
                                     <?
                                     }
-
-                                    $calendar = '<img src="'.URL::base().'/public/image/admin/calendar2.png'.'" height="12" valign="middle">';
 
                                     $diff = '';
                                     $status_class = $object->status->type.'_status'.$object->status->id;
@@ -92,9 +89,9 @@
                                     }
 
                                     if($object->delivered_date != ''){
-                                        $date_faixa = $calendar.Utils_Helper::data($object->delivered_date, 'd/m/Y');
+                                        $date_faixa = Utils_Helper::data($object->delivered_date, 'd/m/Y');
                                     }else{
-                                        $date_faixa = $calendar.Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
+                                        $date_faixa = Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
                                     }
 
 
@@ -133,14 +130,15 @@
 
                             <? 
                             foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
-                                <div style='clear:both'>
+                                <div class="clear">
+                                    <div class="left">
+                                        <?=Utils_Helper::getUserImage($anotacao->userInfo)?>
+                                    </div>
                                     <div class="hist anotacoes round"> 
+                                        
                                         <div class="left">
-                                            <?=Utils_Helper::getUserImage($anotacao->userInfo)?>
-                                        </div>
-                                        <div class="left">
-                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup edit black"><b>anotação</b></a><br/>  
-                                            em: <?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?>
+                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup black"><?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?></a><br/>  
+                                            
                                         </div>
                                         <?if($current_auth != "assistente"){?>                                        
                                         <div class="right">
@@ -161,7 +159,6 @@
                                     <div style='clear:both'>
                                         <div class='hist'>
                                             <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
-                                            <!--img class='round_imgList<?=$task->userInfo->team->color?> left' src='<?=Utils_Helper::getUserImage($task->userInfo)?>' height="20" alt="<?=ucfirst($task->userInfo->nome);?>" /-->
                                             <div class="task round">
                                                 <?if($current_auth != "assistente"){?>
                                                     <div class="right">
@@ -171,24 +168,22 @@
                                                 <div class='line_bottom'>
                                                     <div class="left">
                                                         <?if($current_auth != "assistente"){?>
-                                                            <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" class="popup edit black">
+                                                            <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
                                                         <?}?>
-                                                        <span class="round list_faixa tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span></a> 
+                                                        <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>
+                                                        <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=Utils_Helper::data($task->crono_date, 'd/m/Y')?> (<?=Utils_Helper::getday($task->crono_date)?>)</span>
+                                                            </a> 
                                                     </div>
                                                     <? if($task->task_to != "0"){?>
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
-                                                        <!--img class='round_imgList<?=$task->to->team->color?>' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <?}?>
                                                     <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                                    <div class="clear" style="padding-top:5px;">
-                                                        solicitado: <label><?=Utils_Helper::getday($task->created_at)?> &bull; <?=Utils_Helper::data($task->created_at, 'd/m/Y - H:i')?></label> 
-                                                        <br/>
-                                                        retorno: <label><?=Utils_Helper::getday($task->crono_date)?> &bull; <?=Utils_Helper::data($task->crono_date, 'd/m/Y')?></label>
-                                                    </div>                                                    
                                                 </div>
-                                                <?if(!empty($task->description)){ ?>
-                                                    <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
-                                                <?}?>
+                                                <div class="clear" style="padding-top:5px;">
+                                                    <?if(!empty($task->description)){ ?>
+                                                        <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
+                                                    <?}?>
+                                                </div> 
                                                 <div class="options">
                                                     <? if($task->status_id != '5'){?>
                                                         <!--a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a-->                          
@@ -200,7 +195,6 @@
                                             <div style='clear:both'>
                                                 <div class='hist'>
                                                     <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
-                                                    <!--img class='round_imgList<?=$task->to->team->color?> right' src='<?=Utils_Helper::getUserImage($task->to)?>' height="20" alt="<?=ucfirst($task->to->nome);?>" /-->
                                                     <div class="task_reply round"> 
                                                         <? if($task->status_id == '5'){?>
                                                             <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
@@ -219,24 +213,27 @@
                                                                 <?}?>
 
                                                             </form>
-                                                        <?}?>
-
-
-                                                    <?
+                                                        <?}
+                                                    
                                                     if($task->reply->id != '') {?>
                                                         <div class='line_bottom'>
                                                             <? if($current_auth != "assistente"){?>
-                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" class="popup edit black">
+                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
                                                             <?}?>
+                                                                <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
                                                             <? if($task->reply->finished != ""){?>
-                                                                entregue: </a> &bull; <?=Utils_Helper::getday($task->reply->finished)?> - <?=Utils_Helper::data($task->reply->finished, 'd/m/Y - H:i')?><br/>
+                                                                <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
+                                                                </a>
                                                             <?}elseif($task->status_id == '6'){?>
-                                                                iniciada: </a> &bull; <?=Utils_Helper::getday($task->reply->created_at)?> - <?=Utils_Helper::data($task->reply->created_at, 'd/m/Y - H:i')?><br/>
+                                                                <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
+                                                                </a>
                                                             <?}?>
                                                         </div>
+                                                        <div class="clear">
                                                         <?if(!empty($task->reply->description)){ ?>
                                                             <span class="wordwrap description"><?=$task->reply->description;?></span>
                                                         <?}?>
+                                                        </div>
                                                         <div class="options" >
                                                             <? if($task->status_id == '6' && $task->to->id == $user->id){?>
                                                                 <div style="min-height:20px;">

@@ -28,7 +28,23 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
-	config.removePlugins = 'resize';
-	config.resize_minWidth = 540;
-	config.resize_minHeight = 300;
+	//config.removePlugins = 'resize';
+	//config.resize_minWidth = 540;
+	//config.resize_minHeight = 300;
 };
+
+CKEDITOR.on( 'instanceReady', function( ev ) {
+	var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ul','li'];
+	var rules = {
+	indent : false,
+		breakBeforeOpen : false,
+		breakAfterOpen : false,
+		breakBeforeClose : false,
+		breakAfterClose : false
+	};
+
+	for (var i=0; i<blockTags.length; i++) {
+		ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
+	}
+
+});

@@ -59,6 +59,9 @@ class Model_Task extends ORM {
 			'crono_date' => array(
 				array(array($this, 'setup_date'))
 			),
+			'description' => array(
+				array(array($this, 'removeEmpty'))
+			),			
 			'taxonomia' => array(
 				array('Utils_Helper::limparStr')
 			)
@@ -98,10 +101,16 @@ class Model_Task extends ORM {
 			->get('total_count');
 	}
 
-
 	public function setup_date($value)
 	{
 		return  date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $value)));
+	}
+
+	public function removeEmpty($value){
+		$string = str_replace("&nbsp;", "", $value);
+		$pattern = "/<p[^>]*><\\/p[^>]*>/"; 
+		//$pattern = "/<[^\/>]*>([\s]?)*<\/[^>]*>/";  use this pattern to remove any empty tag
+		return preg_replace($pattern, '', $string); 
 	}
 
 	public function labels()
