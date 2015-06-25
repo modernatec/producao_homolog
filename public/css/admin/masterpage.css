@@ -296,7 +296,7 @@ a{
 */
 
 .dz-message{
-	color: #ddd;
+	color: #333;
 }
 
 .foto_form{
@@ -708,12 +708,6 @@ table tbody td table tbody tr:hover {
 	border: none !important;
 }
 
-
-.view_oed{
-	width: 800px;
-	height: 600px;
-	overflow: hidden;
-}
 /*
 .minicolors-swatch-color{
 	width: 31px;
@@ -1569,7 +1563,7 @@ a.green{
 }
 
 .description{
-	/*padding: 5px 0;*/
+	padding-top: 5px;
 	display: block;
 	border-top: 1px dotted #CCC;
 }
@@ -1615,6 +1609,16 @@ a.green{
     -khtml-border-radius: 8px;
     border-radius: 8px;
 }
+
+.acervo_preview, .iframe_body{
+	width: 800px;	
+}
+
+.iframe_body{
+	height: 600px;
+	padding-bottom: 10px;
+}
+
 
 .ui-dialog{
 	min-height: 20px !important;

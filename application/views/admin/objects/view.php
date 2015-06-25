@@ -21,6 +21,10 @@
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
+        <?
+        if($last_status->status_id == '8'){?>
+        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round right view_oed">visualizar</a>
+        <?}?>
         <span class="list_faixa light_blue round left"><?=@$obj->collection->name?></span>
         <span class="list_faixa red round"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
         <?if($obj->reaproveitamento == 0){ 
@@ -63,7 +67,7 @@
                                         </div>
                             <?      
                                     }    
-                                    $count++;                                
+                                                                  
                                 }
                             ?>
                                                        
@@ -105,9 +109,17 @@
                             
                             <?if(!empty($object->description)){ ?>
                                 <span class="wordwrap description"><?=$object->description;?></span>
-                            <?}?>
+                            <?}
 
-                            <? 
+                            if($count == 0 && $object->status_id == '8'){?>
+
+                                <div id="uploadPackage" data-action="<?=URL::base()?>admin/objects/upload/<?=$object->object_id?>" class="dropzone" >           
+                                    <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)</span></div>                                    
+                                </div>
+                            <?}
+
+                            $count++;
+
                             foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
                                 <div class="clear">
                                     <div class="left">

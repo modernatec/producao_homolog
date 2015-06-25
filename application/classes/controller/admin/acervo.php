@@ -241,8 +241,95 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	public function action_preview($object_id){
 		$this->auto_render = false;
 
+		$view = View::factory('admin/acervo/preview');
 		$object = ORM::factory('object', $object_id);
 
-		echo '<iframe src="'.URL::base().'/admin/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$object->taxonomia.'.mp4" ></iframe>';
+		$file = (strpos($object->format->ext, 'index') !== FALSE ) ? $object->format->ext : $object->taxonomia.$object->format->ext;
+		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$file;
+		//var_dump($file_path);
+		if (file_exists(DOCROOT.$file_path)) {
+			$view->src = URL::base().$file_path;
+			echo $view->render();
+		} else {
+		    echo 0;
+		}
+	}
+
+	public function action_download($object_id){
+		$this->auto_render = false;
+
+		//$view = View::factory('admin/acervo/preview');
+		$object = ORM::factory('object', $object_id);
+
+		$file = (strpos($object->format->ext, 'index') !== FALSE ) ? $object->format->ext : $object->taxonomia.$object->format->ext;
+		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/';
+		var_dump($file_path);
+		
+		if (file_exists(DOCROOT.$file_path)) {
+			$rootPath = realpath(DOCROOT.$file_path);
+			
+			$zipfilename = $object->taxonomia.'.zip';
+			$zip = new ZipArchive();
+			$zip->open(DOCROOT.$file_path.'/'.$zipfilename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+			// Create recursive directory iterator
+			/** @var SplFileInfo[] $files */
+			$files = new RecursiveIteratorIterator(
+			    new RecursiveDirectoryIterator($rootPath),
+			    RecursiveIteratorIterator::LEAVES_ONLY
+			);
+
+			foreach ($files as $name => $file)
+			{
+			    // Skip directories (they would be added automatically)
+			    if (!$file->isDir())
+			    {
+			        // Get real and relative path for current file
+			        $filePath = $file->getRealPath();
+			        $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+			        // Add current file to archive
+			        $zip->addFile($filePath, $relativePath);
+			    }
+			}
+
+			// Zip archive will be created only after closing object
+			$zip->close();
+
+			header("Content-type: application/zip"); 
+			header("Content-Disposition: attachment; filename=$zipfilename");
+			header("Content-length: ".filesize(DOCROOT.$file_path.'/'.$zipfilename));
+			header("Pragma: no-cache"); 
+			header("Expires: 0"); 
+			readfile(DOCROOT.$file_path.'/'.$zipfilename);
+
+			unlink(DOCROOT.$file_path.'/'.$zipfilename);
+
+			/*$filename = "Inferno.zip";
+			//$filepath = "/var/www/domain/httpdocs/download/path/";
+
+			// http headers for zip downloads
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Cache-Control: public");
+			header("Content-Description: File Transfer");
+			header("Content-type: application/octet-stream");
+			header("Content-Disposition: attachment; filename=\"".$zipfilename."\"");
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Length: ".filesize(DOCROOT.$file_path.'/'.$zipfilename));
+			ob_end_flush();
+			@readfile(DOCROOT.$file_path.'/'.$zipfilename);
+			*/
+		} else {
+		    echo 0;
+		}
+		
+
+		// Get real path for our folder
+		
+
+		// Initialize archive object
+		
 	}
 }

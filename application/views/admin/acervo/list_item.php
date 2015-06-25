@@ -1,7 +1,9 @@
 <div>
     <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
     <div class="replies" style="display:none;">
+
         <hr style="margin:8px 0;" />
+    <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="bar_button gray round right view_oed">visualizar</a>
         
         <p><?=$objeto->collection->name?></p>
         <?if($objeto->reaproveitamento == 0){ 

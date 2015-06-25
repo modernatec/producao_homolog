@@ -38,25 +38,6 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 	        return false;
 		}            
 	} 
-
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/formats/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateSfwprods.js");
-		$view->isUpdate = false;  
-		$view->sfwprodVO = $this->setVO('format');
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-        	$this->salvar();
-		}       
-	}
-	*/
         
 	public function action_edit($id)
     {  
@@ -90,14 +71,13 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 		{            
 			$sfwprod = ORM::factory('format', $id)->values($this->request->post(), array(
 				'name',
+				'ext'
 			));
 			                
 			$sfwprod->save();
 			$db->commit();
-			//Utils_Helper::mensagens('add','');
-			$msg = "formato salvo com sucesso.";
-			//Request::current()->redirect('admin/format');
 
+			$msg = "formato salvo com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -106,11 +86,9 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 			}
             $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
 
-		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
@@ -131,10 +109,8 @@ class Controller_Admin_Format extends Controller_Admin_Template {
 		try{            
 			$objeto = ORM::factory('format', $id);
 			$objeto->delete();
-			//Utils_Helper::mensagens('add','Software de produção excluído com sucesso.'); 
 			$msg = "formato excluído com sucesso";
 		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add',''); 
 			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}

@@ -130,8 +130,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        
+		$view->last_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->limit('1')->find();
+
+
  		$view->current_auth = $this->current_auth;
+
+ 		//ini_set('upload_max_filesize', '100M');
+ 		//ini_set('post_max_size', '100M');
 
  		if($ajax != null){
  			return $view;
@@ -421,7 +426,60 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	       
 	        return false;
 	    }
-	}  
+	} 
+
+	public function action_upload($object_id){
+        $this->auto_render = false;
+        // A list of permitted file extensions
+        $allowed = array('.zip', 'zip');
+
+        if(isset($_FILES['file']) && $_FILES['file']['error'] == 0){
+            $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+                echo '1';
+                exit();
+            }
+
+
+
+            $object = ORM::factory('object', $object_id);
+            
+            $file_path = 'public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/';
+            //Utils_Helper::rrmdir($file_path);
+
+            $file = $file_path.$_FILES['file']['name'];
+
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $file)){
+                chmod($file, 0777);
+
+				// get the absolute path to $file
+				$path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+
+				$zip = new ZipArchive;
+				$res = $zip->open($file);
+				if ($res === TRUE) {
+					// extract it to the path we determined above
+					$zip->extractTo($path);
+					$zip->close();
+					unlink($file);	
+
+					$object->uploaded = '1';
+					$object->save();
+					//echo $file;
+				} else {
+					echo '0';
+				}
+
+                
+                exit();
+            }
+        }else{
+            echo '0';
+            exit();
+        }
+        
+    }   
 
 
 	/****

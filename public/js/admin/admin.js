@@ -13,7 +13,7 @@ var newFile = false;
 function setupUpload(){
     var user_id = $("#upload").data('user');
     var form = $('#upload').closest("form");
-    console.log('form = ' + form);
+
     myDropzone = new Dropzone("#upload", {
         maxFiles:1,
         autoProcessQueue: false,
@@ -23,7 +23,6 @@ function setupUpload(){
         autoDiscover: false,
         url: base_url + 'admin/users/upload/' + user_id,
         accept: function(file, done) {
-           console.log("uploaded");
            newFile = true;
            done();
         },
@@ -37,7 +36,7 @@ function setupUpload(){
         success: function( file, response ){
             if(response == '0'){
                 setMsg({
-                    content:'Ops!..<br/><br/>Erro ao enviar sua foto.<br/>tente novamente...', 
+                    content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>tente novamente...', 
                     tema:'error'
                 });
                 $('input[type=submit]').attr('disabled', '');
@@ -48,6 +47,51 @@ function setupUpload(){
         }
     });
 }
+
+var fileDropzone;
+function setupUploadFinalPackage(){
+    console.log('setupUploadFinalPackage');
+    //var object_id = $("#uploadPackage").data('object');
+
+    fileDropzone = new Dropzone("#uploadPackage", {
+        maxFiles:1,
+        acceptedFiles: '.zip',
+        autoProcessQueue: true,
+        uploadMultiple: false,
+        thumbnailWidth: 100,
+        thumbnailHeight: 100,
+        autoDiscover: false,
+        url: $('#uploadPackage').data('action'),
+        accept: function(file, done) {
+            done();
+        },
+        init: function() {
+            this.on("addedfile", function() {
+                if (this.files[1]!=null){
+                    this.removeFile(this.files[0]);
+                }
+            });        
+        },
+        success: function( file, response ){
+            if(response == '0'){
+                setMsg({
+                    content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>tente novamente...', 
+                    tema:'error'
+                });
+                
+            }else{
+                console.log('ok');
+                $('div.dz-preview').remove();
+                $('#uploadPackage').removeClass('dz-started');
+                    
+                setMsg({
+                    content:'uploade concluído',
+                });
+            }
+        }
+    });
+}
+
 
 // Helper function that formats the file sizes
 function formatFileSize(bytes) {
@@ -338,6 +382,14 @@ function setupAjax(container){
         console.log(myDropzone);
         setupUpload();
     }
+
+    if($("#uploadPackage").size() == 1){
+        if(fileDropzone){
+            fileDropzone.destroy();
+            fileDropzone = undefined;
+        }
+        setupUploadFinalPackage();
+    }    
     
     setupScroll();
 
@@ -534,21 +586,35 @@ function setupAjax(container){
         $('#dialog').remove();
         $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
 
-        $('#dialog').load(
-            url,  
-            {},           
-            function (responseText, textStatus, XMLHttpRequest) {
-                $(this).removeClass('loading');
-                console.log(responseText)
-                //setupAjax('#dialog');
-
-                $('#dialog').show('slide', {direction: 'left'}, 300);
-
-                setTimeout(function(){
-                    console.log('ok')
-                }, 500);
+        $.ajax({
+            type: "POST",
+            url: url,
+            timeout: 1000, 
+            dataType : "html",
+            success: function(retorno) {
+                $('#dialog').removeClass('loading');
+                if(retorno != 0){
+                    $('#dialog').addClass('acervo_preview');
+                    $('#dialog').show('slide', {direction: 'left'}, 300, function(){
+                        $('#dialog').append(retorno);
+                        setupAjax('#dialog');
+                    });
+                }else{
+                    setMsg({
+                        content:'Ops!..<br/><br/>Não encontrei este OED.', 
+                        tema:'error',
+                    });
+                }
+            },
+            error: function(e) {
+                $('#dialog').removeClass('loading');
+                console.log(e);
+                setMsg({
+                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                    tema:'error',
+                });
             }
-        );
+        });  
     });
 
     

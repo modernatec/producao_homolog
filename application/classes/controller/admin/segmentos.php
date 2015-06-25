@@ -36,10 +36,6 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			);
 	        return false;
 		}
-
-
-
-
 	} 
 
 	public function action_edit($id)

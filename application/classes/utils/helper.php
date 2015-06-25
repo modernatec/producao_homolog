@@ -86,6 +86,7 @@ class Utils_Helper
         return $result;
     }
 
+    /*
     public static function dataGdocs($dt,$format='d/m/Y')
     {
         if($dt != ""){
@@ -101,6 +102,7 @@ class Utils_Helper
             return "-";
         }
     }
+    */
 
     public static function money_format($number, $format = '%n'){
         $regex  = '/%((?:[\^!\-]|\+|\(|\=.)*)([0-9]+)?'. 
@@ -208,6 +210,7 @@ class Utils_Helper
         if($pasta != ''){
             if(file_exists($rootdir.$pasta)){
                 rename($rootdir.$pasta, $rootdir.$novo_nome);
+                //chmod($file, 0777);
             }else{
                 mkdir($rootdir.$novo_nome,0777);
             }
@@ -383,23 +386,5 @@ class Utils_Helper
         } else if (file_exists ( $src ))
             copy ( $src, $dst );
     }
-
-
-
-    /*
-    // Function to remove folders and files 
-        
-
-        // Function to Copy folders and files       
-        
-    Usage
-    rcopy($source , $destination );
-    
-    Another example without deleting destination file or folder
-
-    
-
-
-    */
 }
 ?>
