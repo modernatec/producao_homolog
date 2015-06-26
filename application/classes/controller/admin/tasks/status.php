@@ -104,6 +104,7 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            	$new_task->tag_id = $task->tag->next_tag_id;
 	            	$new_task->team_id = $task->team_id;
 	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($task->tag->days);
+	            	$new_task->planned_date = Controller_Admin_Feriados::getNextWorkDay($task->tag->days);
 
 	            	//$new_task->topic = '1';
 	            	//$new_task->description = $description;

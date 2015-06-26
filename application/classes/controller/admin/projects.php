@@ -189,6 +189,28 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         exit;
     } 
 
+    public function action_getList($status_id, $ajax = null){
+		$this->auto_render = false;
+		$view = View::factory('admin/projects/table');
+
+		$query = ORM::factory('project')->where('status', '=', $status_id);		
+		$view->projectsList = $query->order_by('name','ASC')->find_all();
+		
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	       
+	        return false;
+	    }
+	}
+
+    /*
     public function action_duplicateObjects(){
     	$db = Database::instance();
         $db->begin();
@@ -238,5 +260,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         }
         return false;
     }
+    */
     
 }

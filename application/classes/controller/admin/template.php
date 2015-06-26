@@ -112,6 +112,8 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/ckeditor/ckeditor.js',
 				'public/js/common/ckeditor/adapters/jquery.js',
 
+				'https://www.google.com/jsapi',	
+
 				/*
 				"public/js/common/jquery/jquery.knob.js",
 				"public/js/common/jquery/jquery.ui.widget.js",

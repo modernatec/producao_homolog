@@ -176,7 +176,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
     	$supplier = (isset($view->filter_supplier)) ? "AND a.supplier_id IN ('".implode("','",$view->filter_supplier)."')" : '';
     	$origem = (isset($view->filter_origem)) ? "AND a.reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
     	$project = (isset($view->filter_project )) ? "AND a.project_id IN ('".implode("','",$view->filter_project)."')" : '';
-    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode('','',$view->filter_collection)."')" : '';
+    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode("','",$view->filter_collection)."')" : '';
     	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode(',',$view->filter_tipo)."')" : '';
     	
 
@@ -263,7 +263,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		$file = (strpos($object->format->ext, 'index') !== FALSE ) ? $object->format->ext : $object->taxonomia.$object->format->ext;
 		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/';
-		var_dump($file_path);
 		
 		if (file_exists(DOCROOT.$file_path)) {
 			$rootPath = realpath(DOCROOT.$file_path);
@@ -296,14 +295,30 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			// Zip archive will be created only after closing object
 			$zip->close();
 
+			header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename(DOCROOT.$file_path.'/'.$zipfilename));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize(DOCROOT.$file_path.'/'.$zipfilename));
+            ob_clean();
+            flush();
+            readfile(DOCROOT.$file_path.'/'.$zipfilename);
+
+            unlink(DOCROOT.$file_path.'/'.$zipfilename);
+
+            /*
 			header("Content-type: application/zip"); 
 			header("Content-Disposition: attachment; filename=$zipfilename");
 			header("Content-length: ".filesize(DOCROOT.$file_path.'/'.$zipfilename));
 			header("Pragma: no-cache"); 
 			header("Expires: 0"); 
 			readfile(DOCROOT.$file_path.'/'.$zipfilename);
+			*/
 
-			unlink(DOCROOT.$file_path.'/'.$zipfilename);
+			//unlink(DOCROOT.$file_path.'/'.$zipfilename);
 
 			/*$filename = "Inferno.zip";
 			//$filepath = "/var/www/domain/httpdocs/download/path/";
@@ -323,13 +338,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			*/
 		} else {
 		    echo 0;
-		}
-		
-
-		// Get real path for our folder
-		
-
-		// Initialize archive object
-		
+		    return false;
+		}		
 	}
 }
