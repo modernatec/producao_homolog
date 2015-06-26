@@ -554,6 +554,10 @@ a{
 
 }
 
+.tl{
+	text-align: left !important;
+}
+
 table {
     border-collapse:separate;
     border-radius:6px;
@@ -570,7 +574,7 @@ td, th {
     vertical-align: top;
 }
 
-th{
+th, td{
 	text-align: center;
 	padding: 4px;
 }

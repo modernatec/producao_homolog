@@ -132,6 +132,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
 		$view->last_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->limit('1')->find();
 
+		$view->taskList = ORM::factory('task')
+							->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id')
+							->where('tasks.object_id', '=', $id)
+							->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id)
+							->order_by('tasks.id', 'desc')->find_all();
 
  		$view->current_auth = $this->current_auth;
 
@@ -582,10 +587,72 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 				$date1 = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
 				$object_status->diff = Utils_Helper::dataDiff($date1, $object_status->planned_date);
-
-				$object_status->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object_status->userInfo_id;	
-				
+				$object_status->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object_status->userInfo_id;					
 				$object_status->save();				
+
+				
+				if($object_status->status->tag_id != '0'){
+					
+					$tag = ORM::factory('tag', $object_status->status->tag_id);
+
+		            $new_task = ORM::factory('task');
+	            	$new_task->object_id = $object_status->object_id;
+	            	$new_task->object_status_id = $object_status->id;
+	            	$new_task->tag_id = $tag->id;
+	            	$new_task->team_id = $this->current_user->userInfos->team_id;
+	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($tag->days);
+	            	$new_task->planned_date = $new_task->crono_date;
+
+	            	//$new_task->topic = '1';
+	            	//$new_task->description = $description;
+	            	
+	            	switch ($object_status->status->to) {
+	            		case '1':
+	            			/*
+	            			* busca usuário do time, responsável pela coleção
+	            			*/
+	            			$object = ORM::factory('object', $object_status->object_id);
+
+	            			$user_collection = ORM::factory('collections_userinfo')
+	            								->where('collection_id', '=', $object->collection_id)
+	            								->and_where('team_id', '=', $object_status->status->team_id)->find();
+
+	            			if($user_collection->userInfo_id != ''){
+		            			$task_to = $user_collection->userInfo_id;
+		            		}else{
+		            			$task_to = '0';
+		            		}
+
+	            			break;
+	            		case '2':
+	            			/*
+							* fazer buscar usuário do time, menos atarefado
+							* verificar se vale a pena - coordenadores sao usuários tbm!
+							* SELECT 
+									u.nome, 
+									(SELECT COUNT(*) FROM moderna_tasks WHERE task_to = u.id AND ended = '0') AS t,
+									u.team_id
+								FROM moderna_userinfos u
+								WHERE u.team_id = '1' 
+	            			*/
+
+	            			$task_to = '0';
+	            			break;
+	            		default:
+	            			$task_to = '0';
+	            			break;
+	            	}
+	            	
+
+	            	$new_task->task_to = $task_to;
+	            	$new_task->status_id = '5'; //aberto
+	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
+		            $new_task->save(); 
+		            
+		        }
+		        
+				
+
 				$db->commit();
 				$msg = 'status salvo com sucesso.';
 			} catch (ORM_Validation_Exception $e) {

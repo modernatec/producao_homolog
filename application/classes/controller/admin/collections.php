@@ -201,28 +201,40 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				array(
 					array('container' => '#esquerda', 'type'=>'html', 'content'=> json_encode($view->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($ano)->render())),
-					
 				)						
 			);
 	       
 	        return false;
 	    }
 	}
-	
-	public function action_getListProject($ano){
-		$this->auto_render = false;
 
+	public function action_getCollectionList($project_id){
+		$this->auto_render = false;
 		$view = View::factory('admin/collections/select');
 
+		$query = ORM::factory('collection');
 
+		if($this->request->post('ano') != ''){
+			$query->where('ano', '=', $this->request->post('ano'));
+		}
+
+		if($this->request->post('segmento') != ''){
+			$query->where('segmento_id', '=', $this->request->post('segmento'));
+		}
+
+		$view->collectionsArr = DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $project_id)->execute()->as_array('collection_id');
+
+		/*
 		$collectionsArr = array();
-		$collections = ORM::factory('collections_project')->where('project_id', '=', $this->request->query('project_id'))->find_all();
+		$collections = ORM::factory('collections_project')->where('project_id', '=', $project_id)->find_all();
 		foreach ($collections as $collection) {
 			array_push($collectionsArr, $collection->collection_id);
 		}
 		$view->collectionsArr = $collectionsArr;
+		*/
 
-		$view->collectionsList = ORM::factory('collection')->where('ano', '=', $ano)->order_by('name','ASC')->find_all();
-		echo $view;
+		$view->collectionsList = $query->find_all();
+
+		echo $view->render();
 	}
 }

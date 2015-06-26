@@ -130,9 +130,6 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		$view->tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
-
-
-
 		echo $view;
 	}
 

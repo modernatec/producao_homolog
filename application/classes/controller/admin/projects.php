@@ -46,20 +46,29 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				->bind('errors', $errors)
 				->bind('message', $message);
 	
-		$view->isUpdate = true;
-
 		$projeto = ORM::factory('project', $id);
 		$view->projectVO = $this->setVO('project', $projeto);
 		$view->segmentosList = ORM::factory('segmento')->find_all();
 		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
-		$view->collectionsList = ORM::factory('collection')->order_by('name','ASC')->find_all();
 
-		$collectionsArr = array();
-		$collections = ORM::factory('collections_project')->where('project_id', '=', $id)->find_all();
-		foreach ($collections as $collection) {
-			array_push($collectionsArr, $collection->collection_id);
+		if($projeto->ano == ''){
+			$ano = date('Y');
+		}else{
+			$ano = $projeto->ano;
 		}
-		$view->collectionsArr = $collectionsArr;
+
+		$view->ano = $ano;
+		$collection_list = ORM::factory('collection')->where('ano', '=', $ano);
+
+		if($projeto->segmento != ''){
+			$collection_list->where('segmento_id', '=', $projeto->segmento->id);
+		}
+
+		$view_collections = View::factory('admin/collections/select');
+		$view_collections->collectionsList = $collection_list->find_all();
+		$view_collections->collectionsArr = DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $projeto->id)->execute()->as_array('collection_id');
+
+		$view->view_collections = $view_collections;
 		
 		if($ajax == null){
 			header('Content-Type: application/json');
@@ -89,7 +98,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
 					'name',
 					'segmento_id',
-					'description',
 					'status',
 					'ssid',
 					'ano'
@@ -101,24 +109,19 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$projeto->pasta = $pastaProjeto;                    
 				$projeto->save();
 
-				$collections = ORM::factory('collections_project')->where('project_id', '=', $projeto->id)->find_all();
-				foreach ($collections as $collection) {
-					$collection->delete();
-				}
+				$collections = DB::delete('collections_projects')->where('project_id','=', $projeto->id)->execute();
 
-				foreach ($this->request->post('selected') as $collection) {
-					$new_collection = ORM::factory('collections_project');
-					$new_collection->project_id = $projeto->id;
-					$new_collection->collection_id = $collection;
-					$new_collection->save();
+				if($this->request->post('selected') != ''){
+					foreach ($this->request->post('selected') as $collection) {
+						$new_collection = ORM::factory('collections_project');
+						$new_collection->project_id = $projeto->id;
+						$new_collection->collection_id = $collection;
+						$new_collection->save();
+					}
 				}
-
 							
 				$db->commit();
-				//Utils_Helper::mensagens('add','');
 				$msg = "projeto salvo com sucesso.";
-				//Request::current()->redirect('admin/projects');
-
 			} catch (ORM_Validation_Exception $e) {
 	            $errors = $e->errors('models');
 				$erroList = '';
@@ -140,14 +143,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
-
-        /*
-        header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/projects/index/ajax',				
-			'msg' => $msg,
-		));
-		*/
         return false;
 	}
 
@@ -209,57 +204,4 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	        return false;
 	    }
 	}
-
-    /*
-    public function action_duplicateObjects(){
-    	$db = Database::instance();
-        $db->begin();
-		
-		try 
-		{            
-			$project_id = '4';
-			$collection_id = '36';
-			$objects = ORM::factory('object')->where('project_id', '=', $project_id)->where('collection_id', '=', $collection_id)->find_all();
-	    	foreach ($objects as $old_object) {
-	    		$new_object = ORM::factory('object');
-	    		$fields = ORM::factory('object')->list_columns();
-			
-				foreach($fields as $key=>$value){
-					if($key != 'id'){
-						$new_object->$key = $old_object->$key;	
-					}
-				}
-				$new_object->project_id = '9';
-				$new_object->save();
-
-				$objectStatus = ORM::factory('objects_statu');
-		        $objectStatus->object_id = $new_object->id;
-		        $objectStatus->status_id = '1';
-		        $objectStatus->crono_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '19/05/2014')));
-				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
-				$objectStatus->save();
-	    	}
-						
-			$db->commit();
-			Utils_Helper::mensagens('add','Objetos copiados com sucesso.');
-			Request::current()->redirect('admin/projects');
-		} catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $message = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    Utils_Helper::mensagens('add',$message);    
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $message = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            Utils_Helper::mensagens('add',$message);
-            $db->rollback();
-        }
-        return false;
-    }
-    */
-    
 }

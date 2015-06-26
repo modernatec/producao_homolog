@@ -675,6 +675,34 @@ function setupAjax(container){
         return false;
     });
 
+    $('#project_segmento, #project_ano').unbind('change').bind('change', function(e){
+        e.preventDefault();
+        var ano = $('#project_ano option:selected').val();
+        var segmento = $('#project_segmento option:selected').val();
+        var project_id = $('#project_id').val();
+        
+        var data_post = [{name: 'ano', value:ano}, {name: 'segmento', value:segmento}];
+
+        $.ajax({
+            type: "POST",
+            url: base_url + '/admin/collections/getCollectionList/' + project_id,
+            data: data_post,
+            timeout: 1000, 
+            dataType : "html",
+            success: function(retorno) {
+                $('#collections').html(retorno);
+                setupAjax('#direita');
+            },
+            error: function(e) {
+                console.log(e);
+                setMsg({
+                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                    tema:'error',
+                });
+            }
+        });   
+    }) 
+
 
     $('.tabs a').unbind('click').bind('click', function(e){
         e.preventDefault();

@@ -7,6 +7,7 @@
                     <?
                         $view = View::factory('admin/acervo/list_item');
                         $view->objeto = $objeto;
+                        $view->current_auth = $current_auth;
                         echo $view;
                     ?>
                 </li>
@@ -18,8 +19,17 @@
             <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
             <span class="wordwrap"><?=@$obj->taxonomia;?></span>
             <hr style="margin:8px 0;" />
+            <?if($obj->uploaded == 1){?>
             <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round right view_oed">visualizar</a>
+            <?
+                if($current_auth != "assistente" || $current_auth != "assistente 2"){
+                    
+            ?>
             <a href='<?=URL::base();?>/admin/acervo/download/<?=$obj->id?>' class="bar_button round right">baixar</a>
+            <?
+                    }
+                }
+            ?>
             <p><?=@$obj->collection->name?></p>
             <?if($obj->reaproveitamento == 0){ 
                 $origem = "novo";
@@ -114,6 +124,7 @@
                     <?
                         $view = View::factory('admin/acervo/list_item');
                         $view->objeto = $objeto;
+                        $view->current_auth = $current_auth;
                         echo $view;
                     ?>
                 </li>

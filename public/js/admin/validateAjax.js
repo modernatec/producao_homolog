@@ -3,9 +3,10 @@ function validateAjax(){
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
 
+    /*
     $("#frmCreateTask").validate({
         rules: {
-            topic: {required:true},
+            tag_id: {required:true},
             crono_date: {required:true},
             description: {required:true},
         },
@@ -20,10 +21,12 @@ function validateAjax(){
             return false;       
         }
     })
+    */
 
     $("#frmCreateTask2").validate({
         rules: {
-            topic: {required:true},
+            task_to:{required:true},
+            tag_id: {required:true},
             crono_date: {required:true},
             description: {required:{
                 depends:function(){
@@ -33,8 +36,6 @@ function validateAjax(){
             }},
         },
         messages: {
-            topic: { required:'Campo não pode ser vazio'},
-            crono_date: { required:'Campo não pode ser vazio'},
             description: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
@@ -291,13 +292,11 @@ function validateAjax(){
     $("#frmCreateProject").validate({
         rules: {
             name: {required:true},
-            target: {required:true},
-            description: {required:true}
+            target: {required:true}
         },
         messages: {
             name: { required:"Digite o nome do projeto."},
             target: { required: "Digite o seguimento do projeto." },
-            description: {required:"Digite uma descrição para o projeto."}
         },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');

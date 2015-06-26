@@ -84,10 +84,10 @@
 
                                         if($object->diff < 0){
                                             $diff = '<span class="list_faixa green round">'.$object->diff.'</span>';
-                                            $status_class = 'green';
+                                            //$status_class = 'green';
                                         }else{
                                             $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
-                                            $status_class = 'red';
+                                            //$status_class = 'red';
                                         }
                                     }
 
@@ -99,7 +99,7 @@
 
 
                                     ?>
-                                    <span class="list_faixa round left <?=$object->status->type?>_status<?=$object->status->id?>"><?=$object->status->status;?></span>
+                                    <span class="list_faixa round left <?=$status_class?>"><?=$object->status->status;?></span>
                                     <span class="list_faixa round left <?=$status_class?>"><?=$date_faixa?></span><?=$diff?>
                                         </a>
                                     <!--span class="list_view round clear">prev. de retorno: <?=Utils_Helper::data($object->planned_date, 'd/m/Y')?> (<?=Utils_Helper::getday($object->planned_date)?>)</span-->
@@ -143,9 +143,21 @@
                                     </div> 
                                 </div>
 
-                            <?}    
+                            <?}  
 
-                            foreach ($object->tasks->order_by('id', 'desc')->find_all() as $task) {?> 
+                            /*
+                            * Verificar como melhorar...
+                            */
+
+                            $query = $object->tasks->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id');
+                                        
+                            if($current_auth != "admin"){
+                                $query->where('tags_teams.team_id', '=', $user->team_id);
+                            }
+
+                            $task_tags = $query->group_by('tasks.id')->order_by('tasks.id', 'desc')->find_all();
+
+                            foreach ($task_tags as $task) {?> 
                                 
                                     <div style='clear:both'>
                                         <div class='hist'>
@@ -166,8 +178,8 @@
                                                         $color = $task->tag->color;
                                                         if($task->diff != 0){
                                                             if($task->diff < 0){
-                                                                $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
-                                                                $color = '#8cc152';
+                                                                $diff = '<span class="list_faixa round">'.$task->diff.'</span>';
+                                                                //$color = $task->tag->color;
                                                             }else{
                                                                 $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
                                                                 $color = 'red';

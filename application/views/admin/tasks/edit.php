@@ -13,8 +13,8 @@
     	            <label for="tag_id">tarefas</label>
     	        </dt>
     	        <dd>
-    	            <select name="tag_id" id="tag_id" class="round" style="width:150px;">
-    	                <option value="0">selecione</option>
+    	            <select name="tag_id" id="tag_id" class="required round" style="width:150px;">
+    	                <option value="">selecione</option>
     	                <? foreach($tagList as $tag){?>
     	                    <option value="<?=$tag->id?>" data-days="<?=$tag->days?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
     	                <?}?>
@@ -36,7 +36,7 @@
                     <label for="task_to">para:</label>
                 </dt>
                 <dd>
-                    <select name="task_to" id="task_to" class="round" style="width:150px;">
+                    <select name="task_to" id="task_to" class="required round" style="width:150px;">
                         <option value="0">selecione</option>
                         <? foreach($teams as $team){?>
                             <optgroup label="<?=$team->name?>">

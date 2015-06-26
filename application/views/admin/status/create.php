@@ -7,15 +7,28 @@
             <span class='error'><?=Arr::get($errors, 'status');?></span>
         </dd>  
     </div>
-    <div class="left">
+    <div class="clear left">
         <label for="color">cor</label>
         <dd>
             <input type="text" id="hue-demo" name="color" class="pickcolor round" value="<?=@$statusVO['color'];?>">
             <span class='error'><?=Arr::get($errors, 'color');?></span>
         </dd> 
     </div>
+    <div class="left">
+        <label for="project_ano">time responsável</label>
+        <dd>
+            <select name="team_id" id="team_id" class="required round">
+            <option value="">selecione</option>
+            <?foreach ($teamList as $team) {?>
+            <option value="<?=$team->id?>" <?=((@$statusVO['team_id'] == $team->id)?('selected'):(''))?> ><?=$team->name;?></option>
+            <?}?>
+            </select>
+            <span class='error'><?=($errors) ? $errors['team_id'] : '';?></span>
+        </dd>
+    </div>
+    
     <div class="clear">
-        <label for="team">times</label>
+        <label for="team">visível para:</label>
         <dd>
             <?foreach ($teamList as $team) {?>
             	<input type="checkbox" name="team[]" id="team_<?=$team->id?>" value="<?=$team->id?>" <?if(in_array($team->id, $teamsArray)){ echo "checked";}?>><label for="team_<?=$team->id?>"><?=$team->name;?></label>

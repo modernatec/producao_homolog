@@ -55,7 +55,7 @@
         </dd>  
     </div>
     <div class="clear">
-        <label >times</label>        
+        <label >visível para:</label>        
         <dd>
             <?foreach ($teamList as $team) {?>
             	<input type="checkbox" name="team[]" id="team_<?=$team->id?>" value="<?=$team->id?>" <?if(in_array($team->id, $teamsArray)){ echo "checked";}?>><label for="team_<?=$team->id?>"><?=$team->name;?></label>

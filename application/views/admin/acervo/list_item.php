@@ -3,7 +3,17 @@
     <div class="replies" style="display:none;">
 
         <hr style="margin:8px 0;" />
-    <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="bar_button gray round right view_oed">visualizar</a>
+        <?if($objeto->uploaded == 1){?>
+        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="bar_button round gray right view_oed">visualizar</a>
+        <?
+            if($current_auth != "assistente" || $current_auth != "assistente 2"){
+                
+        ?>
+        <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="bar_button round gray right">baixar</a>
+        <?
+                }
+            }
+        ?>
         
         <p><?=$objeto->collection->name?></p>
         <?if($objeto->reaproveitamento == 0){ 
