@@ -505,6 +505,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->current_auth = $this->current_auth;
 
 		$object_id = $objStatus->object_id;
+		
 		if($id == ""){
 			$object_id = $this->request->query('object_id');
 			$arr_objstatus['object_id'] = $object_id;
@@ -512,6 +513,14 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$object = ORM::factory('object', $object_id);
 
+		$object_all_status = DB::select('status_id')->from('objects_status')->where('object_id', '=', $object->id)->execute()->as_array('status_id');
+		$status_arr = array();
+		foreach ($object_all_status as $status) {
+			if($status['status_id'] != $objStatus->status_id){
+				array_push($status_arr, $status['status_id']);
+			}
+		}
+		
 		$query = ORM::factory('statu')
 		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
 		->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
@@ -520,9 +529,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
-		$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
+		$view->statusList = $query->where('workflows_status.status_id', 'NOT IN', $status_arr)->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
 		
-		
+		/*
 		$object_status = ORM::factory('objects_statu')->where('object_id', '=', $object_id)->order_by('created_at', 'DESC')->find();  
 
         $query = ORM::factory('tag')
@@ -533,7 +542,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
 		}
 
-		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)
+							->where('workflows_status_tags.status_id', 'NOT IN', $status_arr)
+							//->where('workflows_status_tags.status_id', '=', $object_status->status_id)
+							->where('type', '=', 'task')
+							->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
 		$tag_arr = array();
 		$i = 0;
@@ -545,7 +558,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			}
 		}
 		$view->tag_arr = $tag_arr;
-		
+		*/		
 
 		$view->obj = $object;			
 
@@ -591,7 +604,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object_status->save();				
 
 				
-				if($object_status->status->tag_id != '0'){
+				if($object_status->status->tag_id != '0' && $id == ''){
 					
 					$tag = ORM::factory('tag', $object_status->status->tag_id);
 
