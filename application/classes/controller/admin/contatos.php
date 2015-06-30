@@ -20,27 +20,18 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		$view = View::factory('admin/contatos/list')
                 ->bind('message', $message);
 		
-		//$view->filter_empresa = ($this->request->post('empresa') != "") ? $this->request->post('empresa') : "";
-		//$view->filter_contato = ($this->request->post('contato') != "") ? $this->request->post('contato') : "";
-		          
         $this->template->content = $view;             
 	} 
 
-	public function action_create()
+	public function action_create($qtd)
 	{ 
-		$view = View::factory('admin/suppliers/create')
+		$this->auto_render = false;
+		$view = View::factory('admin/contatos/contato_item')
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		$this->addValidateJs("public/js/admin/validateSuppliers.js");
-		$view->isUpdate = false;
-		$view->contactVO = $this->setVO('supplier'); 
-		$this->template->content = $view;
-
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-			$this->salvar();
-		} 
+		$view->key = $qtd;
+		echo $view;
 	}
 
 	public function action_edit($id)

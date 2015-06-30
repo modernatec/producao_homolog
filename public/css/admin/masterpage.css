@@ -174,6 +174,18 @@ span .div{
     padding: 4px 0 !important; 
 }
 
+a.remover{ 
+	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
+	width: 20px; height: 20px; 
+	padding: 0 !important;
+	position: relative;
+	cursor: pointer;
+	text-indent: -200px;
+	display: block;
+	overflow: hidden;
+}
+
+
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; display: block;}
 a.excluir{ 
 	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 

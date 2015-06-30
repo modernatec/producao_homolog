@@ -6,18 +6,14 @@
 	<div class="scrollable_content">
 	    <form name="frmSupplier" id="frmSupplier" action="<?=URL::base();?>admin/suppliers/salvar/<?=$supplierVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 	    	<div class="left">
-		    	<dt>
-					<label for="empresa">empresa</label>
-				</dt>
+				<label for="empresa">empresa</label>
 			    <dd>
 			      <input type="text" class="text required round" name="empresa" id="empresa" style="width:400px;" value="<?=@$supplierVO['empresa'];?>"/>
 			      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
 			    </dd>
 			</div>
 			<div class="left">
-				<dt>
-					<label for="status">status</label>
-				</dt>
+				<label for="status">status</label>
 			    <dd>
 			    	<select class="required round" name="status" id="status" style="width:100px;">
                         <option value='1' <?=(($supplierVO['status']== '1')?('selected="selected"'):(''))?>>aprovado</option>
@@ -26,54 +22,7 @@
 				    <span class='error'><?=Arr::get($errors, 'status');?></span>
 			    </dd>
 			</div>
-		    <dt>
-		    	<label class="clear left">contatos</label> <a class="left round_button" id='clone'>+</a>
-		    </dt>
-		    <? $display = (count($contatos) <= 0) ? 'block' : 'none';?>
-		    <div id="contato" style="display:<?=$display?>" class="clear">
-			    <div class="left">
-				    <dd>
-					    <input type="text" class="text round" name="nome[]" placeholder="nome" style="width:400px;" />
-					    <span class='error'><?=Arr::get($errors, 'name');?></span>
-				    </dd>
-				</div>
-				<div class="clear left">
-				    <dd>
-					    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" />
-					    <span class='error'><?=Arr::get($errors, 'email');?></span>
-				    </dd>
-				</div>
-				<div class="left">
-				    <dd>
-			            <input type="text" class="text round" name="telefone[]" placeholder="telefone" style="width:100px;" />
-				      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
-				    </dd>
-				</div>
-			</div>				
-			<div id='contatos_clone' class="clear">
-				<?foreach ($contatos as $key => $contato) {?>
-					<div id='contato_<?=$key?>' class="clear">
-						<div class="left">
-						    <dd>
-							    <input type="text" class="text required round" name="nome[]" placeholder="nome" style="width:400px;" value="<?=$contato->nome?>" />
-							    <span class='error'><?=Arr::get($errors, 'name');?></span>
-						    </dd>
-						</div>
-						<div class="clear left">
-						    <dd>
-							    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" value="<?=$contato->email?>" />
-							    <span class='error'><?=Arr::get($errors, 'email');?></span>
-						    </dd>
-						</div>
-						<div class="left">
-						    <dd>
-					            <input type="text" class="text round" name="telefone[]" placeholder="telefone" style="width:100px;" value="<?=$contato->telefone?>" />
-						      	<span class='error'><?=Arr::get($errors, 'telefone');?></span>
-						    </dd>
-						</div>
-					</div>
-				<?}?>
-			</div>		
+		    	
 			<div class="clear">
 		        <dt>
 			   		<label for="trabalho">tipo de trabalho</label>
@@ -103,7 +52,22 @@
 			      <input type="text" class="text round" name="site" id="site" style="width:200px;" value="<?=@$supplierVO['site'];?>"/>
 			      <span class='error'><?=Arr::get($errors, 'site');?></span>
 			    </dd>
-		        <dt>
+			    <dt>
+			    	<label class="clear left">contatos</label> <a data-qtd='<?=count($contatos);?>' class="left round_button addcontato">+</a>
+			    </dt>
+			    				
+				<div id='contatos' class="clear">
+					<?
+					foreach ($contatos as $key => $contato) {
+
+						$view = View::factory('admin/contatos/contato_item')->bind('errors', $errors);
+						$view->key = $key;
+						$view->contato = $contato;
+						echo $view;
+					}
+					?>
+				</div>	
+		        <dt class="clear">
 		            <label for="observacoes">observações</label>
 		        </dt>
 		        <dd>
