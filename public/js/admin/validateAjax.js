@@ -85,7 +85,6 @@ function validateAjax(){
     $("#frmSupplier").validate({
         rules: {
             empresa:{required:true},
-            
         },
         messages: {
             empresa: { required:"Digite o nome da empresa."},
@@ -97,6 +96,12 @@ function validateAjax(){
             return false;       
         }
     })
+
+    $("[name^=nome]").each(function () {
+        $(this).rules("add", {
+            required: true
+        });
+    });
 
     
 

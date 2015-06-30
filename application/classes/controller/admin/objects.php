@@ -203,13 +203,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object->object_id = $object_source->id;	
 			}else{
 				$object->object_id = null;
-			}
-
-			$projeto = ORM::factory('project', $this->request->post('project_id'));
-
-			$pastaObjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->pasta , trim($this->request->post('taxonomia')));
-			$object->pasta = $pastaObjeto;		
-							
+			}							
 			
 			$object->save();
 
@@ -601,8 +595,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$date1 = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
 				$object_status->diff = Utils_Helper::dataDiff($date1, $object_status->planned_date);
 				$object_status->userInfo_id = (empty($id)) ? $this->current_user->userInfos->id : $object_status->userInfo_id;					
-				$object_status->save();				
+				$object_status->save();		
 
+				/**criar pastas apenas qndo finalizar o objeto?**/
+				$object = ORM::factory('object', $object_status->object_id);
+				if($object_status->status_id == '8'){
+					$projeto = ORM::factory('project', $object->project_id);
+
+					$pastaObjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->pasta , trim($object->taxonomia));
+					$object->pasta = $pastaObjeto;	
+					$object->save();		
+				}
 				
 				if($object_status->status->tag_id != '0' && $id == ''){
 					
@@ -624,7 +627,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            			/*
 	            			* busca usuário do time, responsável pela coleção
 	            			*/
-	            			$object = ORM::factory('object', $object_status->object_id);
+	            			
 
 	            			$user_collection = ORM::factory('collections_userinfo')
 	            								->where('collection_id', '=', $object->collection_id)
@@ -718,6 +721,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$project_id = $object_status->object->project_id;
 
 		try {  
+
+			//DB::delete('tasks')->where('object_status_id','=', $id)->execute();
 			$tasks = ORM::factory('task')->where('object_status_id', '=', $id)->find_all();
 			foreach($tasks as $task){
 				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();

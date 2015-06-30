@@ -33,11 +33,11 @@
 		    <div id="contato" style="display:<?=$display?>" class="clear">
 			    <div class="left">
 				    <dd>
-					    <input type="text" class="text round" name="nome[]" placeholder="nome" style="width:200px;" />
+					    <input type="text" class="text round" name="nome[]" placeholder="nome" style="width:400px;" />
 					    <span class='error'><?=Arr::get($errors, 'name');?></span>
 				    </dd>
 				</div>
-				<div class="left">
+				<div class="clear left">
 				    <dd>
 					    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" />
 					    <span class='error'><?=Arr::get($errors, 'email');?></span>
@@ -55,11 +55,11 @@
 					<div id='contato_<?=$key?>' class="clear">
 						<div class="left">
 						    <dd>
-							    <input type="text" class="text required round" name="nome[]" placeholder="nome" style="width:200px;" value="<?=$contato->nome?>" />
+							    <input type="text" class="text required round" name="nome[]" placeholder="nome" style="width:400px;" value="<?=$contato->nome?>" />
 							    <span class='error'><?=Arr::get($errors, 'name');?></span>
 						    </dd>
 						</div>
-						<div class="left">
+						<div class="clear left">
 						    <dd>
 							    <input type="text" class="text round" name="email[]" placeholder="e-mail" style="width:200px;" value="<?=$contato->email?>" />
 							    <span class='error'><?=Arr::get($errors, 'email');?></span>

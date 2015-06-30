@@ -131,24 +131,6 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	public function action_delete($id)
 	{
 		$this->auto_render = false;
-		/*
-		
-		try 
-		{            
-			$projeto = ORM::factory('collection', $id);
-			$projeto->delete();
-			$msg = "coleção excluída com sucesso.";
-		} catch (ORM_Validation_Exception $e) {
-			$errors = $e->errors('models');
-			$msg = "houveram alguns erros na exclusão dos dados.";
-		}
-
-		header('Content-Type: application/json');
-		echo json_encode(array(
-			'content' => URL::base().'admin/collections/index/ajax',				
-			'msg' => $msg,
-		));
-		*/
 	}
 
 	/*******************************************/
