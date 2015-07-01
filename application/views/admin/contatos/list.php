@@ -1,14 +1,10 @@
-<div class="content">
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers/create" class="bar_button round">Cadastrar fornecedores</a>
-	</div>    
-    <div id="tabs" class="clear">
-        <ul>
-            <li id="tab_1"><a href='<?=URL::base();?>admin/suppliers/getSuppliers/?empresa=<?=$filter_empresa?>&contato=<?=$filter_contato?>'>fornecedores</a></li>
-        </ul>
+<div class="topo" >
+    <span class="header"><a href="<?=URL::base();?>admin/contatos/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar contato</a></span>
+    <div class="clear" id="filtros"></div>
+</div>
+<div id="esquerda">
+    <div id="tabs_content">
         
-        <div id="tabs_content">
-            
-        </div>
     </div>
 </div>
+<div id="direita"></div>

@@ -53,19 +53,21 @@
 			      <span class='error'><?=Arr::get($errors, 'site');?></span>
 			    </dd>
 			    <dt>
-			    	<label class="clear left">contatos</label> <a data-qtd='<?=count($contatos);?>' class="left round_button addcontato">+</a>
+			    	<a href="<?=URL::base();?>admin/contatos/getListContatos" class="popup bar_button round">adicionar contato</a>                           
 			    </dt>
 			    				
-				<div id='contatos' class="clear">
-					<?
-					foreach ($contatos as $key => $contato) {
-
-						$view = View::factory('admin/contatos/contato_item')->bind('errors', $errors);
-						$view->key = $key;
-						$view->contato = $contato;
-						echo $view;
-					}
-					?>
+				<div class="clear">
+					<label>contatos</label>
+					<ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks" >
+			        	<?foreach ($contatos as $contato) {?>
+			        		<li class="dd-item" id="contato-<?=$contato->id?>">
+			        			<p><b><?=$contato->nome?></b></p>					
+								<p><?=$contato->email?></p>
+								<p><?=$contato->telefone?></p>
+			        			
+			        		</li>
+			        	<?}?>
+			        </ul>
 				</div>	
 		        <dt class="clear">
 		            <label for="observacoes">observações</label>

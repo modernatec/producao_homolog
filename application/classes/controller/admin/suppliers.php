@@ -46,7 +46,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$contact = ORM::factory('supplier', $id);
 		$view->supplierVO = $this->setVO('supplier', ORM::factory('supplier', $id)); 
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$view->contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos = array();//ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
 			
 		$view->teams = ORM::factory('team')->find_all();
 		$view->formats = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
@@ -75,7 +75,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		$contact = ORM::factory('supplier', $id);
 		$view->supplierVO = $this->setVO('supplier', $contact); 
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$view->contatos = ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos = array();//ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
 			
 		$view->teams = ORM::factory('team')->find_all();
 
@@ -242,9 +242,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
   		}
 
 		$query = ORM::factory('supplier')
-					->join('contatos', 'INNER')->on('suppliers.id', '=', 'contatos.tipo_id')
 					->join('suppliers_teams', 'INNER')->on('suppliers.id', '=', 'suppliers_teams.supplier_id')//comentar para incluir
-					->where('suppliers.order', '=', '1')->and_where('contatos.tipo','=','supplier');
+					->where('suppliers.order', '=', '1');
 
 		/***Filtros***/
 		(isset($view->filter_team)) ? $query->where('suppliers_teams.team_id', 'IN', $view->filter_team) : '';

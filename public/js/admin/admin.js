@@ -270,7 +270,6 @@ var drawCharts = function drawChart() {
     }
 }
 
-var qtdContatos = 0;
 function setupAjax(container){ 
     if($('.topo').length != 0 && container == '#content'){
         $('#esquerda, #direita, #page').css({top:$('.topo').height() + 'px'});
@@ -280,57 +279,6 @@ function setupAjax(container){
     if($('.crono').length != 0 && container == '#tabs_content'){
         $('.crono').css('width', $('#page').width() - $('.crono_fixed').width() - 10);
     }
-
-    $(".addcontato").unbind('click').bind("click", function(e) {
-        if(qtdContatos == 0){
-            qtdContatos = $(this).data('qtd') + 1;
-        }else{
-            qtdContatos+= 1;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: base_url + "admin/contatos/create/" + qtdContatos,
-            dataType : "html",
-            timeout: 2000, 
-            success: function(data) {
-                $("#contatos").append(data);
-                setupAjax('#direita');
-            },
-            error: function(e) {
-                console.log(e);
-                removeDialogs();
-                setMsg({
-                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',
-                    
-                });
-            }
-        }); 
-    });
-
-    $("a.remover").unbind('click').bind('click', function(e) {    
-        var removeElement = $(this).data('remove');
-        var NewDialog = $('<div id="dialog"><p>Deseja realmente remover este item?</p></div>'),
-            btExcluir = this;
-            NewDialog.dialog({
-            modal: true,
-            dialogClass: 'noTitleStuff',
-            show: 'clip',
-            hide: 'clip',
-            resizable:false,
-            buttons: [
-                {text: "excluir", click: function() {
-                    $('#' + removeElement).remove();
-
-                    removeDialogs();
-                }},
-                {text: "cancelar", click: function() {$(this).dialog("close")}}
-            ]
-        });
-        return false;
-    });
-
     
 
     //******Relatorios*******//

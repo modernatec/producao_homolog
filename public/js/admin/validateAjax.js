@@ -97,11 +97,29 @@ function validateAjax(){
         }
     })
 
+    /*
     $("[name^=nome]").each(function () {
         $(this).rules("add", {
             required: true
         });
     });
+*/
+    
+    $("#frmContato").validate({
+        rules: {
+            nome:{required:true},
+        },
+        messages: {
+            nome: { required:"Digite o nome do contato."},
+           
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+    
 
     
 

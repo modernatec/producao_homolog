@@ -1,5 +1,5 @@
 <div class="topo" >
-    <span class="header"><a href="<?=URL::base();?>admin/suppliers/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar fornecedores</a></span>
+    <span class="header"><a href="<?=URL::base();?>admin/contatos/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar contato</a></span>
     <div class="clear" id="filtros"></div>
 </div>
 <div id="esquerda">
