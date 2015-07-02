@@ -91,6 +91,14 @@ function validateAjax(){
            
         },
         submitHandler: function(form) {
+            $('.sortable_workflow').each(function(index, element){ 
+                var fill = $(element).data('fill');
+                if(fill != undefined){
+                    var data = $(element).sortable('serialize');
+                    $('#' + fill).attr('value', data);
+                }
+            });  
+
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false;       
@@ -114,6 +122,8 @@ function validateAjax(){
            
         },
         submitHandler: function(form) {
+
+
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false;       
@@ -395,6 +405,22 @@ function validateAjax(){
     });
 
     
+
+    $("#frm_listContatos").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
+
+    $("#frm_reset_listContatos").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
 
     
 

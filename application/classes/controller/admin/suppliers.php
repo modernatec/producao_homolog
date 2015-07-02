@@ -44,9 +44,9 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 				->bind('message', $message);
 
 		$contact = ORM::factory('supplier', $id);
-		$view->supplierVO = $this->setVO('supplier', ORM::factory('supplier', $id)); 
+		$view->VO = $this->setVO('supplier', ORM::factory('supplier', $id)); 
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$view->contatos = array();//ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos_suppliers = ORM::factory('Contatos_Supplier')->where('supplier_id','=', $id)->find_all();
 			
 		$view->teams = ORM::factory('team')->find_all();
 		$view->formats = ORM::factory('formats_supplier')->where('supplier_id','=', $id)->find_all();
@@ -73,9 +73,10 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			->bind('message', $message);
 
 		$contact = ORM::factory('supplier', $id);
-		$view->supplierVO = $this->setVO('supplier', $contact); 
+		$view->VO = $this->setVO('supplier', $contact); 
+
 		$view->formatos = ORM::factory('format')->find_all(); 
-		$view->contatos = array();//ORM::factory('contato')->where('tipo','=','supplier')->and_where('tipo_id','=', $id)->find_all();
+		$view->contatos_suppliers = ORM::factory('Contatos_Supplier')->where('supplier_id','=', $id)->find_all();
 			
 		$view->teams = ORM::factory('team')->find_all();
 
@@ -111,25 +112,17 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			$supplier->save();
 			$id = $supplier->id;
 
-			$delete_contacts = DB::delete('contatos')->where('tipo','=', 'supplier')->and_where('tipo_id', '=', $supplier->id)->execute();
+			$delete_contacts = DB::delete('contatos_suppliers')->where('supplier_id','=', $supplier->id)->execute();
 
-			$email = $this->request->post('email');
-			$telefone = $this->request->post('telefone');
-			$nome = $this->request->post('nome');
-
-			foreach ($nome as $key => $value) {
-				if($nome[$key] != ""){
-					$contact = ORM::factory('contato');
-					$contact->nome = $value;
-					$contact->email = $email[$key];
-					$contact->telefone = $telefone[$key];
-					$contact->tipo = "supplier";
-					$contact->tipo_id = $supplier->id;	
-					$contact->save();
-				}
+			parse_str($this->request->post('contatos'),$contatos); 
+			foreach ($contatos['contato'] as $key => $contato_id) {
+				$contato_supplier = ORM::factory('contatos_supplier');
+				$contato_supplier->contato_id = $contato_id;
+				$contato_supplier->supplier_id = $supplier->id;
+				$contato_supplier->save();	
 			}	
 
-			$delete_contatos_suppliers = DB::delete('formats_suppliers')->where('supplier_id', '=', $supplier->id)->execute();
+			$delete_formats_suppliers = DB::delete('formats_suppliers')->where('supplier_id', '=', $supplier->id)->execute();
 		 	
 		 	$formato = $this->request->post('formato');
 		 	foreach ($formato as $key => $value) {				

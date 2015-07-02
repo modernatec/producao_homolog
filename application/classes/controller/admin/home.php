@@ -18,7 +18,8 @@ class Controller_Admin_Home extends Controller_Admin_Template {
 	
 	public function action_index()
 	{
-		
+		//$this->auto_render = false;
+		/*
 		if(Auth::instance()->logged_in()== 0){	
 			Request::current()->redirect('login');
 		}
@@ -26,6 +27,7 @@ class Controller_Admin_Home extends Controller_Admin_Template {
 		$view = View::factory('admin/home');                
 		$view->taskList = ORM::factory('task')->join('tasks_users', 'INNER')->on('tasks.id', '=', 'tasks_users.task_id')->where('tasks_users.user_id', '=', Auth::instance()->get_user()->id)->or_where('tasks.user_id', '=', Auth::instance()->get_user()->id)->group_by('tasks_users.task_id')->find_all();
 	  	$this->template->content = $view;
+	  	*/
 		
 	} 
 }

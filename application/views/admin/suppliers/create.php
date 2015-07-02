@@ -1,14 +1,14 @@
-	<? if(@$supplierVO['id'] != ""){?>
+	<? if(@$VO['id'] != ""){?>
 	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$supplierVO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
+		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$VO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 	</div>
 	<?}?>
 	<div class="scrollable_content">
-	    <form name="frmSupplier" id="frmSupplier" action="<?=URL::base();?>admin/suppliers/salvar/<?=$supplierVO['id']?>" method="post" class="form" enctype="multipart/form-data">
+	    <form name="frmSupplier" id="frmSupplier" action="<?=URL::base();?>admin/suppliers/salvar/<?=$VO['id']?>" method="post" class="form" enctype="multipart/form-data">
 	    	<div class="left">
 				<label for="empresa">empresa</label>
 			    <dd>
-			      <input type="text" class="text required round" name="empresa" id="empresa" style="width:400px;" value="<?=@$supplierVO['empresa'];?>"/>
+			      <input type="text" class="text required round" name="empresa" id="empresa" style="width:400px;" value="<?=@$VO['empresa'];?>"/>
 			      <span class='error'><?=Arr::get($errors, 'empresa');?></span>
 			    </dd>
 			</div>
@@ -16,8 +16,8 @@
 				<label for="status">status</label>
 			    <dd>
 			    	<select class="required round" name="status" id="status" style="width:100px;">
-                        <option value='1' <?=(($supplierVO['status']== '1')?('selected="selected"'):(''))?>>aprovado</option>
-                        <option value='0' <?=(($supplierVO['status']== '0')?('selected="selected"'):(''))?>>reprovado</option>
+                        <option value='1' <?=(($VO['status']== '1')?('selected="selected"'):(''))?>>aprovado</option>
+                        <option value='0' <?=(($VO['status']== '0')?('selected="selected"'):(''))?>>reprovado</option>
                     </select>
 				    <span class='error'><?=Arr::get($errors, 'status');?></span>
 			    </dd>
@@ -49,22 +49,26 @@
 			      <label for="site">Site</label>
 			    </dt>
 			    <dd>
-			      <input type="text" class="text round" name="site" id="site" style="width:200px;" value="<?=@$supplierVO['site'];?>"/>
+			      <input type="text" class="text round" name="site" id="site" style="width:200px;" value="<?=@$VO['site'];?>"/>
 			      <span class='error'><?=Arr::get($errors, 'site');?></span>
 			    </dd>
-			    <dt>
-			    	<a href="<?=URL::base();?>admin/contatos/getListContatos" class="popup bar_button round">adicionar contato</a>                           
-			    </dt>
+	    		<a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>contatos</span></a>                           
 			    				
 				<div class="clear">
-					<label>contatos</label>
-					<ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks" >
-			        	<?foreach ($contatos as $contato) {?>
-			        		<li class="dd-item" id="contato-<?=$contato->id?>">
-			        			<p><b><?=$contato->nome?></b></p>					
-								<p><?=$contato->email?></p>
-								<p><?=$contato->telefone?></p>
-			        			
+					
+					<input type="hidden" name="contatos" id="sortable_contacts" />
+					<ul class="list_item connect round sortable_workflow" data-fill="sortable_contacts" >
+			        	<?foreach ($contatos_suppliers as $cs) {?>
+			        		<li class="dd-item" id="contato-<?=$cs->contato->id?>">
+			        			<div>
+									<b><?=$cs->contato->nome?></b>
+								</div>
+								<div>
+									<?=$cs->contato->email?>
+								</div>
+								<div>
+									<?=$cs->contato->telefone?>
+								</div>			        			
 			        		</li>
 			        	<?}?>
 			        </ul>
@@ -73,7 +77,7 @@
 		            <label for="observacoes">observações</label>
 		        </dt>
 		        <dd>
-		              <textarea class="text round" name="observacoes" id="observacoes" style="width:500px; height:200px;"><?=@$supplierVO['observacoes'];?></textarea>
+		              <textarea class="text round" name="observacoes" id="observacoes" style="width:500px; height:200px;"><?=@$VO['observacoes'];?></textarea>
 		              <span class='error'><?=Arr::get($errors, 'observacoes');?></span>
 		        </dd>
 			    <dd>

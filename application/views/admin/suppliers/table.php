@@ -21,9 +21,6 @@
 				<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div>
 						<p><b><?=$supplier->empresa?></b></p>					
-						<p><span class='text_blue'>nome</span></p>
-						<p>email</p>
-						<p>telefone</p>
 						<p>
 				            <? 
 				            	$formats = $supplier->formats->find_all();

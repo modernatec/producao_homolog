@@ -174,9 +174,9 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
     }
 
 
-    public function action_getContatos($ajax = null){
+    public function action_getContatos($ajax = null, $view = 'table'){
 		$this->auto_render = false;
-		$view = View::factory('admin/contatos/table');
+		$view = View::factory('admin/contatos/'.$view);
 		
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
@@ -197,7 +197,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		$query = ORM::factory('contato');
 		/***Filtros***/
 		//(isset($view->filter_team)) ? $query->where('suppliers_teams.team_id', 'IN', $view->filter_team) : '';
-		//(isset($view->filter_empresa)) ? $query->where_open()->where('suppliers.empresa', 'LIKE', '%'.$view->filter_empresa.'%')->or_where('contatos.nome', 'LIKE', '%'.$view->filter_empresa.'%')->where_close() : '';
+		(isset($view->filter_nome)) ? $query->where_open()->where('nome', 'LIKE', '%'.$view->filter_nome.'%')->or_where('email', 'LIKE', '%'.$view->filter_nome.'%')->where_close() : '';
 
 		$view->contatosList = $query->order_by('nome','ASC')->find_all();
 
@@ -216,11 +216,24 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	    }
 	}  
 
-	public function action_getListContatos(){
+	public function action_getListContatos($ajax = null){
 		$this->auto_render = false;
-		$view = View::factory('admin/contatos/contato_item');
-		$view->contatosList = ORM::factory('contato')->find_all();
 
-		echo $view;
+		$listView = $this->action_getContatos(true, $view = 'contato_item');
+		
+		$view = View::factory('admin/contatos/contato_list');
+		$view->listView = $listView;
+
+		if($ajax != null){
+			echo $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#contatosList', 'type'=>'html', 'content'=> json_encode($listView->render())),
+					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+				)						
+			);
+	    }
 	}		
 }

@@ -12,25 +12,8 @@ class Model_Supplier extends ORM {
 
     protected $_has_many = array(
         'formats' => array('model' => 'format', 'through' => 'formats_suppliers', 'foreign_key' => 'supplier_id'),
+        'contatos' => array('model' => 'contato', 'through' => 'contatos_suppliers', 'foreign_key' => 'supplier_id'),
     );
-
-
-    /*
-    public function getContato($supplier_id){
-        $contato = ORM::factory('contato')->where('tipo_id', '=', $supplier_id)->find();
-        return $contato;
-    }
-
-    public function getFormats($supplier_id){
-        $formats = ORM::factory('formats_supplier')->where('supplier_id', '=', $supplier_id)->find_all();
-        $formatos = "";
-        foreach ($formats as $format) {
-            $formatos.=$format->format->name." &bull; ";
-        }
-
-        return $formatos;
-    }
-    */
 
 	public function rules()
 	{

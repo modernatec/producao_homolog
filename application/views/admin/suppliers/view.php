@@ -1,20 +1,21 @@
 <div class="bar">
     <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/suppliers/edit/<?=$supplierVO['id']?>" rel="load-content" data-panel="#direita" class="bar_button round">editar</a>       
+        <a href="<?=URL::base();?>admin/suppliers/edit/<?=$VO['id']?>" rel="load-content" data-panel="#direita" class="bar_button round">editar</a>       
     <?}?>
 </div>  
 <div class="boxwired round" >
-    <b><span class="wordwrap"><?=$supplierVO['empresa']?></span></b> | <a class="text_blue" target="_blank" href="http://<?=$supplierVO['site']?>"><?=$supplierVO['site']?></a>
+    <b><span class="wordwrap"><?=$VO['empresa']?></span></b> | <a class="text_blue" target="_blank" href="http://<?=$VO['site']?>"><?=$VO['site']?></a>
     <hr style="margin:8px 0;" />
     <?
-        foreach ($contatos as $contato) {
-            echo "<div class='box round'><p><span class='text_blue'>".$contato->nome."</span></p>";
-            echo ($contato->email != '') ? "<p>".$contato->email."</p>" : '';
-            echo ($contato->telefone != '') ?  "<p>".$contato->telefone."</p>" : '';
+        foreach ($contatos_suppliers as $cs) {
+            echo "<div class='box left round' style='min-height:65px;'><p><span class='text_blue'>".$cs->contato->nome."</span></p>";
+            echo ($cs->contato->email != '') ? "<p>".$cs->contato->email."</p>" : '';
+            echo ($cs->contato->telefone != '') ?  "<p>".$cs->contato->telefone."</p>" : '';
             echo '</div>';
         }
     ?>
-    <? if($supplierVO['observacoes'] != ""){?>
+    <div class="clear" style="padding:4px 0;">
+    
         
         <hr style="margin:8px 0;" />
         <p>
@@ -22,9 +23,11 @@
                 <span class="list_faixa blue round left"><?=$format->format->name?></span> 
             <?}?>  
         </p>
-        <p class="clear"><span class='text_blue'><b>observações</b></span></p>
         
-        <?=$supplierVO['observacoes']?>
+    <? if($VO['observacoes'] != ""){?> 
+        <p class="clear"><span class='text_blue'><b>observações</b></span></p>  
+        <?=$VO['observacoes']?>
         
     <?}?>
+    </div>
 </div>

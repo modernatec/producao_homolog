@@ -374,6 +374,17 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 				Utils_Helper::mensagens('add','Usuário ou senha desconhecidos');
             }
         }
+
+        /*
+        if (Auth::instance()->logged_in())
+        {
+            // User is logged in, continue on
+        }
+        else
+        {
+            // User isn't logged in, redirect to the login form.
+        }
+        */
 		
     }
      

@@ -749,21 +749,24 @@ function CKupdate(){
         CKEDITOR.instances[instance].updateElement();
 }
 
-function ajaxPost(form, container){
+function ajaxPost(form, container, dialog){
     CKupdate();
     var data_post = $(form).serializeArray();
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
     data_post.push({name: 'container', value: container});
+    var dialog = dialog;
 
-    removeDialogs();
-    var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
-    NewDialog.dialog({
-        modal: true,
-        dialogClass: 'noTitleStuff',
-        show: 'clip',
-        hide: 'clip',
-        resizable:false,
-    });
+    if(dialog == undefined){        
+        removeDialogs();
+        var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+        NewDialog.dialog({
+            modal: true,
+            dialogClass: 'noTitleStuff',
+            show: 'clip',
+            hide: 'clip',
+            resizable:false,
+        });
+    }
 
     $.ajax({
         type: "POST",
@@ -773,7 +776,7 @@ function ajaxPost(form, container){
         dataType : "json",
         success: function(retorno) {
             returnData = retorno;
-            setDataPanels();
+            setDataPanels(dialog);
             $('input[type=submit]').prop("disabled", '' );
         },
         error: function(e) {
@@ -805,28 +808,22 @@ function loadContent(args){
             removeDialogs();
         }
 
-        var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
-            NewDialog.dialog({
-            modal: true,
-            dialogClass: 'noTitleStuff',
-            show: 'clip',
-            hide: 'clip',
-            resizable:false,
-        });
-        /*
-        if(container == ''){
+        if(container != '#content'){
             var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
-                NewDialog.dialog({
+            NewDialog.dialog({
                 modal: true,
                 dialogClass: 'noTitleStuff',
-                show: 'clip',
-                hide: 'clip',
+                show: {
+                    effect: "clip",
+                    duration: 0
+                },
+                hide: {
+                    effect: "clip",
+                    duration: 0
+                },
                 resizable:false,
             });
-        }else{
-            $(container).html("<div class='loading'>loading...</div>"); 
         }
-        */
 
         data_post = {container: container};
 
@@ -876,7 +873,7 @@ function updateBar(url){
 }
 
 
-function getContent(args){
+function getContent(args, dialog){
     var url = args.content;
     var container = args.container;
     data_post = {container: container};
@@ -892,7 +889,7 @@ function getContent(args){
             for(k in retorno){
                 returnData.unshift(retorno[k]);    
             }
-            setDataPanels();
+            setDataPanels(dialog);
         },
         error: function(e) {
             console.log(e);
@@ -909,7 +906,7 @@ function getContent(args){
 }
 
 
-function setDataPanels(){
+function setDataPanels(dialog){
     loading = true;
     if(returnData.length > 0){
         var result = returnData[0];
@@ -919,22 +916,24 @@ function setDataPanels(){
 
         switch(result.type) {
             case 'html':
-                setPanelContent(result);
+                setPanelContent(result, dialog);
                 break;
             case 'url':
-                getContent(result);
+                getContent(result, dialog);
                 break;
             case 'msg':
-                setMsg(result);
+                setMsg(result, dialog);
                 break;
         }    
     }else{
-        removeDialogs();
+        if(dialog == undefined){   
+            removeDialogs();
+        }
         loading = false;
     }
 }
 
-function setPanelContent(args){
+function setPanelContent(args, dialog){
     var data = $.parseJSON(args.content);
     var container = args.container;
 
@@ -946,16 +945,22 @@ function setPanelContent(args){
     }else{
         holder = container;
     }
+
+    $(holder).html(data);
+    setupAjax(container);   
+    setDataPanels(dialog);
     
-    $(holder).hide(400, function(){
+    /*
+    $(holder).fadeOut(0, function(){
         $(holder).html(data);
-    }).fadeIn(500, function(){
+    }).fadeIn(10, function(){
         setupAjax(container);   
-        setDataPanels();
-    });    
+        setDataPanels(dialog);
+    });
+    */    
 }
 
-function setMsg(args){
+function setMsg(args, dialog){
     tema = args.tema || 'normal';
     fix = args.fix || false;
     
@@ -965,7 +970,7 @@ function setMsg(args){
             theme:tema, 
             position:'bottom-right',
             sticky: fix,
-            open: function() {setDataPanels();},
+            open: function() {setDataPanels(dialog);},
         }
     );
 }

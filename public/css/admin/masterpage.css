@@ -202,6 +202,16 @@ a.link{ background: transparent url(../../image/admin/download.png) no-repeat 0 
 a.link:hover{color:#666; text-decoration: underline;}
 
 
+.add{
+	color: #008fc7;
+	display: inline-block;
+	background: transparent url(../../image/admin/add.png) no-repeat 0 0; 
+	width: 22px; 
+	height: 22px; 
+	padding: 0 !important;
+	text-indent: 24px;
+}
+
 .loading{
 	 background: transparent url(../../image/admin/ajax-loader.gif) no-repeat center center !important;
 	 text-indent: -5000px;
@@ -938,6 +948,7 @@ p{
 	-ms-transform: rotate(-3deg); /* IE 9 */
     -webkit-transform: rotate(-3deg); /* Chrome, Safari, Opera */
     transform: rotate(-3deg);
+    z-index: 1000;
 }
 
 .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight{
@@ -1777,3 +1788,5 @@ div.jGrowl div.error {
 #upload ul li.error p{
     color:red;
 }
+
+
