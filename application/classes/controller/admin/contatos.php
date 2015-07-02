@@ -36,49 +36,14 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		}          
 	} 
 
-	/*
-	*	rever
-	*/
-	public function action_view($id, $ajax = null){
-		$this->auto_render = false;
-			$view = View::factory('admin/contatos/view')
-				->bind('errors', $errors)
-				->bind('message', $message);
-
-		$contato = ORM::factory('contato', $id);
-		$view->VO = $this->setVO('contato', $contato); 
-		$view->current_auth = $this->current_auth;
-		
-		if($ajax != null){
- 			return $view;
- 		}else{
-			header('Content-Type: application/json');		
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-		}
-        return false;
-	}
-
-	public function action_create($qtd)
-	{ 
-		$this->auto_render = false;
-		$view = View::factory('admin/contatos/contato_item')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$view->key = $qtd;
-		echo $view;
-	}
-
 	public function action_edit($id)
 	{
 		$this->auto_render = false;
 		$view = View::factory('admin/contatos/create')
 			->bind('errors', $errors)
 			->bind('message', $message);
+
+		$view->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
 
 		$contato = ORM::factory('contato', $id);
 		$view->VO = $this->setVO('contato', $contato); 
@@ -105,7 +70,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 				'email',
 				'telefone',
 				'celular',
-				'tipo'
+				'service_id'
 			));
 
 			$contato->save();
@@ -142,9 +107,9 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	{
 		try 
 		{            
-			$contact = ORM::factory('supplier', $id);
+			$contact = ORM::factory('contato', $id);
 			$contact->delete();
-			$message = "Fornecedor excluído com sucesso.";
+			$message = "contato excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
 			$message = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
@@ -162,9 +127,8 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 
     	$filtros = Session::instance()->get('kaizen')['filtros'];
 
-  		$viewFiltros->filter_team = array();
-
-  		$viewFiltros->teamList = ORM::factory('team')->order_by('name', 'ASC')->find_all();
+  		$viewFiltros->filter_service_id = array();
+  		$viewFiltros->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
 
 		foreach ($filtros as $key => $value) {
   			$viewFiltros->$key = json_decode($value);
@@ -181,7 +145,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
 
-		if(count($this->request->post('contatos')) > '0' || Session::instance()->get('kaizen')['model'] != 'suppliers'){
+		if(count($this->request->post('contatos')) > '0' || Session::instance()->get('kaizen')['model'] != 'contatos'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "contatos");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
@@ -196,7 +160,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 
 		$query = ORM::factory('contato');
 		/***Filtros***/
-		//(isset($view->filter_team)) ? $query->where('suppliers_teams.team_id', 'IN', $view->filter_team) : '';
+		(isset($view->filter_service_id)) ? $query->where('service_id', 'IN', $view->filter_service_id) : '';
 		(isset($view->filter_nome)) ? $query->where_open()->where('nome', 'LIKE', '%'.$view->filter_nome.'%')->or_where('email', 'LIKE', '%'.$view->filter_nome.'%')->where_close() : '';
 
 		$view->contatosList = $query->order_by('nome','ASC')->find_all();
@@ -220,6 +184,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		$this->auto_render = false;
 
 		$listView = $this->action_getContatos(true, $view = 'contato_item');
+		$listView->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
 		
 		$view = View::factory('admin/contatos/contato_list');
 		$view->listView = $listView;
@@ -231,7 +196,6 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#contatosList', 'type'=>'html', 'content'=> json_encode($listView->render())),
-					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	    }

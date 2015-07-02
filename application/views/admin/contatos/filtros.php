@@ -6,14 +6,14 @@
    		</div>
    		<div class="filter" >
 		    <ul>
-		        <li class="round" >
-		            <span class="round" id="team">time <?=(!empty($filter_team) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+		        <li class="round">
+		            <span class="round" id="service_id">serviço <?=(!empty($filter_service_id) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 		            <div class="filter_panel round scrollable_content" data-bottom="false">
 			            <ul>
-			                <? foreach ($teamList as $team) {?>
+			                <? foreach ($services as $service) {?>
 			                	<li>
-			                		<input type="checkbox" name="team[]" value="<?=$team->id?>" id="time_<?=$team->id?>" <?if(isset($filter_team)){ if(in_array($team->id, $filter_team)){ echo "checked";}}?>  />
-			                		<label for="time_<?=$team->id?>" ><?=$team->name?></label>
+			                		<input type="checkbox" name="service_id[]" value="<?=$service->id?>" id="service_<?=$service->id?>" <?if(isset($filter_service_id)){ if(in_array($service->id, $filter_service_id)){ echo "checked";}}?>  />
+			                		<label for="service_<?=$service->id?>" ><?=$service->name?></label>
 			                	</li>
 			                <?}?>
 			                <p>
@@ -27,8 +27,8 @@
 		</div>
 	<input type="submit" class="round bar_button left" value="buscar">        	
 </form>	
-<form action='<?=URL::base();?>admin/suppliers/getSuppliers' id="frm_reset_suppliers" data-panel="#tabs_content" method="post" class="form">
-	<input type="hidden" name="suppliers" value="true">
+<form action='<?=URL::base();?>admin/contatos/getContatos' id="frm_reset_contatos" data-panel="#tabs_content" method="post" class="form">
+	<input type="hidden" name="contatos" value="true">
 	<input type="submit" class="bar_button round green" value="limpar filtros" />
 </form>
 

@@ -227,6 +227,22 @@ function validateAjax(){
         }
     })
 
+    $("#frmCreateService").validate({
+        rules: {
+            name: {required:true}
+        },
+        messages: {
+            name: { required:'Campo não pode ser vazio'}
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;    
+        }
+    })
+
+    
+
     $("#frmCreateFeriados").validate({
         rules: {
             feriado: {required:true}
@@ -415,6 +431,14 @@ function validateAjax(){
     });
 
     $("#frm_reset_listContatos").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
+
+    $("#frm_reset_contatos").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"), false);

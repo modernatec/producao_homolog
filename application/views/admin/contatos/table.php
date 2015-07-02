@@ -18,10 +18,13 @@
 			<? foreach($contatosList as $contato){?>
 			<li>
 				<a href="<?=URL::base().'admin/contatos/edit/'.$contato->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
-					<div>
-						<p><b><?=$contato->nome?></b></p>					
-						<p><?=$contato->email?></p>
-						<p><?=$contato->telefone?></p>
+					<div class="left" style="width:90px;">
+						<span class="list_faixa round blue"><?=$contato->service->name?></span>
+					</div>
+					<div class="left" >
+						<b><?=$contato->nome?></b><br/>				
+						<?=$contato->email?><br/>
+						<?=$contato->telefone?>
 					</div>
 				</a>
 			</li>

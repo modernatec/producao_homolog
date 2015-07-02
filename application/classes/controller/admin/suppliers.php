@@ -240,7 +240,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		/***Filtros***/
 		(isset($view->filter_team)) ? $query->where('suppliers_teams.team_id', 'IN', $view->filter_team) : '';
-		(isset($view->filter_empresa)) ? $query->where_open()->where('suppliers.empresa', 'LIKE', '%'.$view->filter_empresa.'%')->or_where('contatos.nome', 'LIKE', '%'.$view->filter_empresa.'%')->where_close() : '';
+		(isset($view->filter_empresa)) ? $query->where_open()->where('suppliers.empresa', 'LIKE', '%'.$view->filter_empresa.'%')->where_close() : '';
 
 		$view->suppliersList = $query->group_by('empresa')->order_by('empresa','ASC')->find_all();
 

@@ -93,79 +93,21 @@
                     <span class='error'><?=Arr::get($errors, 'taxonomia_reap');?></span>
                 </dd>  
             </div>
-            <div class="clear left">
-                <dt> <label for="supplier_id">produtora</label> </dt>
-                <dd>
-                	<select class="required round" name="supplier_id" id="supplier_id">
-                        <option value='0'>não se aplica</option>
-                        <option value='10' <?=((@$objVO["supplier_id"] == '10')?('selected'):(''))?>>produção interna</option>
-                        <? 
-                        foreach($suppliers as $supplier){
-                            if($supplier->team_id == '1'){
-                        ?>
-                            <option value='<?=$supplier->id?>' <?=((@$objVO["supplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
-                        <? 
-                            }
-                        }   
-                        ?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'supplier_id');?></span>
-                </dd>       
-            </div>
-            <div class="clear left">
-                <dt> <label for="audiosupplier_id">estúdio de áudio</label> </dt>
-                <dd>
-                    <select class="round" name="audiosupplier_id" id="audiosupplier_id">
-                        <option value='0'>não se aplica</option>
-                        <option value='10'>produção interna</option>
-
-                        <? 
-                        foreach($suppliers as $supplier){
-                            if($supplier->team_id == '1'){
-                        ?>
-                            <option value='<?=$supplier->id?>' <?=((@$objVO["audiosupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
-                        <? 
-                            }
-                        }   
-                        ?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'audiosupplier_id');?></span>
-                </dd>       
-            </div>
-            <div class="left">
-                <dt><label for="locutor">locutor(es)</label></dt>
-                <dd>
-                    <textarea class="text round" name="locutor" id="locutor" style="width:500px; height:80px;"><?=$objVO['locutor'];?></textarea>
-                    <span class='error'><?=Arr::get($errors, 'locutor');?></span>
-                </dd>
-            </div>
-
             <div class="clear">
-                <dt> <label for="artesupplier_id">arte/interface</label> </dt>
-                <dd>
-                    <select class=" round" name="artesupplier_id" id="artesupplier_id">
-                        <option value='0'>não se aplica</option>
-                        <option value='10'>produção interna</option>
-                        <? 
-                        foreach($suppliers_arte as $supplier){
-                            if($supplier->team_id == '3'){
-                        ?>
-                            <option value='<?=$supplier->id?>' <?=((@$objVO["artesupplier_id"] == $supplier->id)?('selected'):(''))?> ><?=$supplier->empresa?></option>
-                        <? 
-                            }
-                        }   
-                        ?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'artesupplier_id');?></span>
-                </dd>       
+                <dt><label>produtoras (produção &bullet; áudio &bullet; arte)</label></dt>
+                <input type="hidden" name="produtoras" id="sortable_produtoras" />
+                <ul class="list_item connect round sortable_workflow" data-fill="sortable_produtoras" >
+                    
+                </ul>                    
             </div>
-            <div class="left">
-                <dt><label for="ilustrador">ilustrador(es)</label></dt>
-                <dd>
-                    <textarea class="text round" name="ilustrador" id="ilustrador" style="width:500px; height:80px;"><?=$objVO['ilustrador'];?></textarea>
-                    <span class='error'><?=Arr::get($errors, 'ilustrador');?></span>
-                </dd>
-            </div>    
+            <div class="clear">
+                <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>créditos (locutores &bullet; ilustradores)</span></a></dt>
+                <input type="hidden" name="locutores" id="sortable_locutores" />
+                <ul class="list_item connect round sortable_workflow" data-fill="sortable_locutores" >
+                    
+                </ul>                    
+            </div>
+             
             <div class="clear left">
                 <dt> <label for="countries">país</label> </dt>
                 <dd>

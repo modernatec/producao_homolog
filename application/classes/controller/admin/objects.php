@@ -94,8 +94,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->countries = ORM::factory('country')->order_by('name', 'ASC')->find_all();
-        $view->suppliers = ORM::factory('supplier')->where('team_id', '=', '1')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-        $view->suppliers_arte = ORM::factory('supplier')->where('team_id', '=', '3')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+        //$view->suppliers = ORM::factory('supplier')->where('team_id', '=', '1')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
+        //$view->suppliers_arte = ORM::factory('supplier')->where('team_id', '=', '3')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
         $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 

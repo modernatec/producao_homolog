@@ -34,17 +34,15 @@
 			    </dd>
 			</div>
 			<div class="clear left">
-			    <label for="tipo">principal atividade</label>
+			    <label for="service_id">principal atividade</label>
 			    <dd>				    
-				    <select class="required round" name="tipo" id="tipo" >
+				    <select class="required round" name="service_id" id="service_id" >
                         <option value='' >selecione</option>
-                        <option value='1' <?=(($VO['tipo']== '1')?('selected="selected"'):(''))?>>atendimento</option>
-                        <option value='2' <?=(($VO['tipo']== '2')?('selected="selected"'):(''))?>>locutor</option>
-                        <option value='3' <?=(($VO['tipo']== '3')?('selected="selected"'):(''))?>>ilustrador</option>
-                        <option value='4' <?=(($VO['tipo']== '4')?('selected="selected"'):(''))?>>roteirista</option>
-                        <option value='5' <?=(($VO['tipo']== '5')?('selected="selected"'):(''))?>>tradutor</option>
+                        <? foreach ($services as $service) {?>
+                        	<option value='<?=$service->id?>' <?=(($VO['service_id']== $service->id)?('selected="selected"'):(''))?>><?=$service->name?></option>	
+                        <?}?>
                     </select>
-				    <span class='error'><?=Arr::get($errors, 'tipo');?></span>
+				    <span class='error'><?=Arr::get($errors, 'service_id');?></span>
 			    </dd>
 			</div>
 			<dd class="clear">

@@ -60,14 +60,12 @@
 					<ul class="list_item connect round sortable_workflow" data-fill="sortable_contacts" >
 			        	<?foreach ($contatos_suppliers as $cs) {?>
 			        		<li class="dd-item" id="contato-<?=$cs->contato->id?>">
-			        			<div>
-									<b><?=$cs->contato->nome?></b>
+			        			<div class="left" style="width:90px;">
+									<span class="list_faixa round blue"><?=$cs->contato->service->name?></span>
 								</div>
 								<div>
+									 <b><?=$cs->contato->nome?></b><br/>
 									<?=$cs->contato->email?>
-								</div>
-								<div>
-									<?=$cs->contato->telefone?>
 								</div>			        			
 			        		</li>
 			        	<?}?>
