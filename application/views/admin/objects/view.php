@@ -87,7 +87,7 @@
                                             //$status_class = 'green';
                                         }else{
                                             $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
-                                            //$status_class = 'red';
+                                            $status_class = 'red';
                                         }
                                     }
 
@@ -99,7 +99,7 @@
 
 
                                     ?>
-                                    <span class="list_faixa round left <?=$status_class?>"><?=$object->status->status;?></span>
+                                    <span class="list_faixa round left <?=$object->status->type.'_status'.$object->status->id?>"><?=$object->status->status;?></span>
                                     <span class="list_faixa round left <?=$status_class?>"><?=$date_faixa?></span><?=$diff?>
                                         </a>
                                     <!--span class="list_view round clear">prev. de retorno: <?=Utils_Helper::data($object->planned_date, 'd/m/Y')?> (<?=Utils_Helper::getday($object->planned_date)?>)</span-->
@@ -114,7 +114,7 @@
                             if($count == 0 && $object->status_id == '8'){?>
 
                                 <div id="uploadPackage" data-action="<?=URL::base()?>admin/objects/upload/<?=$object->object_id?>" class="dropzone" >           
-                                    <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)</span></div>                                    
+                                    <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)<br/>tamanho max.: 100mb</span></div>                                    
                                 </div>
                             <?}
 

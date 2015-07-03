@@ -87,15 +87,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$objeto = ORM::factory('object', $id);
         $view->objVO = $this->setVO('object', $objeto);
 
-        if($objeto->country_id == ''){
-        	$view->objVO["country_id"] = 1; //Brasil
-        }
-                
+        $view->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
+        $view->contatosList = $objeto->contatos->find_all();
+        $view->suppliersList = $objeto->suppliers->find_all();
+
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->countries = ORM::factory('country')->order_by('name', 'ASC')->find_all();
-        //$view->suppliers = ORM::factory('supplier')->where('team_id', '=', '1')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
-        //$view->suppliers_arte = ORM::factory('supplier')->where('team_id', '=', '3')->order_by('order', 'ASC')->order_by('empresa', 'ASC')->find_all();        
         $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
@@ -203,7 +200,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object->object_id = $object_source->id;	
 			}else{
 				$object->object_id = null;
-			}							
+			}	
 			
 			$object->save();
 
@@ -229,6 +226,27 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					$repositorio->save();
 				}	
 			}
+
+			DB::delete('contatos_objects')->where('object_id', '=', $object->id)->execute();
+			
+			parse_str($this->request->post('creditos'),$creditos); 
+			foreach ($creditos['contato'] as $key => $contato_id) {
+				$contato_object = ORM::factory('contatos_object');
+				$contato_object->contato_id = $contato_id;
+				$contato_object->object_id = $object->id;
+				$contato_object->save();	
+			}	
+
+			DB::delete('suppliers_objects')->where('object_id', '=', $object->id)->execute();
+			
+			parse_str($this->request->post('produtoras'),$produtoras); 
+			foreach ($produtoras['supplier'] as $key => $produtora_id) {
+				$supplier_object = ORM::factory('suppliers_object');
+				$supplier_object->supplier_id = $produtora_id;
+				$supplier_object->object_id = $object->id;
+				$supplier_object->save();	
+			}	
+
 
 			$msg = 'Objeto salvo com sucesso.';
 			$db->commit();
@@ -311,6 +329,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   		}
 
 		$query = ORM::factory('objectStatu')->where('fase', '=', '1');
+					//->join('collections_projects', 'INNER')->on('objectStatus.project_id', '=', 'collections_projects.project_id');
 
 		/***Filtros***/
 		(isset($view->filter_tipo)) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -321,7 +340,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		(isset($view->filter_materia)) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(isset($view->filter_taxonomia)) ? $query->where_open()->where('taxonomia', 'LIKE', '%'.$view->filter_taxonomia.'%')->or_where('title', 'LIKE', '%'.$view->filter_taxonomia.'%')->where_close() : '';
 		
-		$view->objectsList = $query->where('project_id', '=', $project_id)
+		$view->objectsList = $query->where('objectStatus.project_id', '=', $project_id)
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
 		
 		

@@ -138,7 +138,6 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		if (array_key_exists($next_date, $feriados)) { 
 		    Controller_Admin_Feriados::getNextWorkDay($days + 1);
 		}else{
-			//echo $next_date);
 			return Utils_Helper::data($next_date);
 		}
 	}

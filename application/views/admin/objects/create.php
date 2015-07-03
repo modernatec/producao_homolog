@@ -12,7 +12,7 @@
             </dd>
             <dt><label for="taxonomia">taxonomia</label></dt>
             <dd>
-                <input type="text" class="text required round" name="taxonomia" id="taxonomia" style="width:500px;" value='<?=$objVO['taxonomia'];?>'/>
+                <input type="text" class="text required round" name="taxonomia" id="taxonomia" style="width:300px;" value='<?=$objVO['taxonomia'];?>'/>
                 <span class='error'><?=Arr::get($errors, 'taxonomia');?></span>
             </dd>
             <div class="left">
@@ -41,11 +41,11 @@
             </div>
             
             <div class="clear left">
-                <dt> <label for="fase">fase</label> </dt>
+                <dt> <label for="fase">status</label> </dt>
                 <dd>
-                    <select class="required round" name="fase" id="fase" style="width:100px;">
-                        <option value='1' <?=(($objVO['fase']== '1')?('selected="selected"'):(''))?>>Produção</option>
-                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>Caiu</option>
+                    <select class="required round" name="fase" id="fase">
+                        <option value='1' <?=(($objVO['fase']== '1')?('selected="selected"'):(''))?>>em produção</option>
+                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>caiu</option>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'fase');?></span>
                 </dd>  
@@ -94,46 +94,53 @@
                 </dd>  
             </div>
             <div class="clear">
-                <dt><label>produtoras (produção &bullet; áudio &bullet; arte)</label></dt>
+                <dt><a href="<?=URL::base();?>admin/suppliers/getListSuppliers/true" class="popup"><span class='add'>produtoras (produção &bullet; áudio &bullet; arte)</span></a></dt>
                 <input type="hidden" name="produtoras" id="sortable_produtoras" />
-                <ul class="list_item connect round sortable_workflow" data-fill="sortable_produtoras" >
-                    
+                <ul class="list_item connect_suppliers round sortable_produtoras" data-fill="sortable_produtoras" >
+                    <?foreach ($suppliersList as $supplier) {?>
+                        <li class="dd-item" id="supplier-<?=$supplier->id?>">
+                            <div><p><b><?=$supplier->empresa?></b></p></div>
+                            <div class="clear left">
+                                <select class="required round" name="service[]">
+                                    <option value=''>serviço</option>
+                                    <? foreach($services as $service){?>
+                                        <option value='<?=$service->id?>' ><?=$service->name?></option>
+                                    <?}?>
+                                </select>
+                            </div>
+                            <div class="left">
+                                <input type="text" name="valor[]" placeholder="valor" class="round" />
+                            </div>
+                        </li>
+                    <?}?>
                 </ul>                    
             </div>
             <div class="clear">
-                <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>créditos (locutores &bullet; ilustradores)</span></a></dt>
-                <input type="hidden" name="locutores" id="sortable_locutores" />
-                <ul class="list_item connect round sortable_workflow" data-fill="sortable_locutores" >
-                    
+                <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>créditos (roteiristas &bullet; locutores &bullet; ilustradores)</span></a></dt>
+                <input type="hidden" name="creditos" id="sortable_creditos" />
+                <ul class="list_item connect round sortable_workflow" data-fill="sortable_creditos" >
+                    <?foreach ($contatosList as $contato) {?>
+                        <li class="dd-item" id="contato-<?=$contato->id?>">
+                            <div class="left" style="width:90px;">
+                                <span class="list_faixa round blue"><?=$contato->service->name?></span>
+                            </div>
+                            <div>
+                                 <b><?=$contato->nome?></b><br/>
+                                <?=$contato->email?>
+                            </div>
+                        </li>
+                    <?}?>
                 </ul>                    
             </div>
-             
-            <div class="clear left">
-                <dt> <label for="countries">país</label> </dt>
+            <div class="clear">
+                <dt> <label for="obs">obsevações</label> </dt>
                 <dd>
-                    <select class="required round" name="country_id" id="country_id">
-                        <option value=''>Selecione</option>
-                        <? foreach($countries as $country){?>
-                            <option value='<?=$country->id?>' <?=((@$objVO["country_id"] == $country->id)?('selected'):(''))?> ><?=$country->name?></option>
-                        <? }?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'country_id');?></span>
+                    <textarea class="text round" name="obs" id="obs" style="width:500px; height:100px;"><?=$objVO['obs'];?></textarea>
+                    <span class='error'><?=Arr::get($errors, 'obs');?></span>
                 </dd>
-            </div>   
-            <div class="left">
-                <dt>
-                    <label >compartilhamento</label>
-                </dt>
-                <dd>
-                    <? foreach ($repoList as $repo) {?>
-                        <input type="checkbox" name="repositorio[]" id="repo_<?=$repo->id?>" value="<?=$repo->id?>" <?=(in_array($repo->id, $repo_arr))? 'checked' : ''?> /><label for="repo_<?=$repo->id?>"><?=$repo->name?></label> 
-                    <?}?>   
-
-                  <span class='error'><?=Arr::get($errors, 'repositorio');?></span>
-                </dd>
-
-            </div>       
-
+            </div>
+            <input type="hidden" name="country_id" value="1" />
+            <!-- Brasil-->                   
             <div class="clear left"> 
                 <dt><label for="arq_aberto">arquivo aberto</label></dt>
                 <dd>
@@ -169,19 +176,6 @@
                     <span class='error'><?=Arr::get($errors, 'format_id');?></span>
                 </dd>
             </div>  
-            
-            <div class="left">
-                <dt> <label for="pnld">resultado PNLD</label> </dt>
-                <dd>
-                    <select class="required round" name="pnld" id="pnld">
-                        <option value='1' <?=(($objVO['pnld']== '1')?('selected="selected"'):(''))?>>não se aplica</option>
-                        <option value='2' <?=(($objVO['pnld']== '2')?('selected="selected"'):(''))?>>aprovado</option>
-                        <option value='3' <?=(($objVO['pnld']== '3')?('selected="selected"'):(''))?>>reprovado</option>
-                        <option value='4' <?=(($objVO['pnld']== '4')?('selected="selected"'):(''))?>>não avaliado</option>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'pnld');?></span>
-                </dd>  
-            </div>
             <div class="left">
                 <dt> <label for="transcricao">transcrição de locução</label> </dt>
                 <dd>
@@ -192,7 +186,6 @@
                     <span class='error'><?=Arr::get($errors, 'transcricao');?></span>
                 </dd>  
             </div>
-
             
             <div class="clear left">
                 <dt><label for="cap">capítulo</label></dt>
@@ -239,6 +232,31 @@
                     <span class='error'><?=Arr::get($errors, 'cessao');?></span>
                 </dd> 
             </div>
+            <div class="left">
+                <dt> <label for="pnld">resultado PNLD</label> </dt>
+                <dd>
+                    <select class="required round" name="pnld" id="pnld">
+                        <option value='1' <?=(($objVO['pnld']== '1')?('selected="selected"'):(''))?>>não se aplica</option>
+                        <option value='2' <?=(($objVO['pnld']== '2')?('selected="selected"'):(''))?>>aprovado</option>
+                        <option value='3' <?=(($objVO['pnld']== '3')?('selected="selected"'):(''))?>>reprovado</option>
+                        <option value='4' <?=(($objVO['pnld']== '4')?('selected="selected"'):(''))?>>não avaliado</option>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'pnld');?></span>
+                </dd>  
+            </div>
+            <div class="clear">
+                <dt>
+                    <label >compartilhado com:</label>
+                </dt>
+                <dd>
+                    <? foreach ($repoList as $repo) {?>
+                        <input type="checkbox" name="repositorio[]" id="repo_<?=$repo->id?>" value="<?=$repo->id?>" <?=(in_array($repo->id, $repo_arr))? 'checked' : ''?> /><label for="repo_<?=$repo->id?>"><?=$repo->name?></label> 
+                    <?}?>   
+
+                  <span class='error'><?=Arr::get($errors, 'repositorio');?></span>
+                </dd>
+
+            </div>  
             <div class="clear">
                 <dt> <label for="keywords">palavras chave</label> </dt>
                 <dd>
@@ -246,13 +264,7 @@
                     <span class='error'><?=Arr::get($errors, 'keywords');?></span>
                 </dd>
             </div>
-            <div class="clear">
-                <dt> <label for="obs">obsevações</label> </dt>
-                <dd>
-                    <textarea class="text round" name="obs" id="obs" style="width:500px; height:100px;"><?=$objVO['obs'];?></textarea>
-                    <span class='error'><?=Arr::get($errors, 'obs');?></span>
-                </dd>
-            </div>
+            
             <div class="clear">
                 <dt> <label for="sinopse">sinopse</label> </dt>
                 <dd>

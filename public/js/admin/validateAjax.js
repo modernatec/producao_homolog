@@ -3,26 +3,6 @@ function validateAjax(){
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
 
-    /*
-    $("#frmCreateTask").validate({
-        rules: {
-            tag_id: {required:true},
-            crono_date: {required:true},
-            description: {required:true},
-        },
-        messages: {
-            topic: { required:'Campo não pode ser vazio'},
-            crono_date: { required:'Campo não pode ser vazio'},
-            description: { required:'Campo não pode ser vazio'},
-        },
-        submitHandler: function(form) {
-            $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxPost(form, $(form).data("panel"));
-            return false;       
-        }
-    })
-    */
-
     $("#frmCreateTask2").validate({
         rules: {
             task_to:{required:true},
@@ -57,7 +37,6 @@ function validateAjax(){
             crono_date: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
-            //console.log('validate frmStatus');
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false;       
@@ -106,12 +85,14 @@ function validateAjax(){
     })
 
     /*
-    $("[name^=nome]").each(function () {
-        $(this).rules("add", {
-            required: true
+    if($('#frmSupplier').length != 0){
+        $("[name^=nome]").each(function () {
+            $(this).rules("add", {
+                required: true
+            });
         });
-    });
-*/
+    }
+    */
     
     $("#frmContato").validate({
         rules: {
@@ -446,6 +427,24 @@ function validateAjax(){
         }
     });
 
+    $("#frm_listSuppliers").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
+
+    $("#frm_reset_listSuppliers").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
+
+    
+
     
 
     $("#frm_suppliers").validate({
@@ -520,9 +519,18 @@ function validateAjax(){
             reaproveitamento:{ required:'Selecione uma opção'},
         },
         submitHandler: function(form) {
+            $('.sortable_workflow, .sortable_produtoras').each(function(index, element){ 
+                var fill = $(element).data('fill');
+                if(fill != undefined){
+                    var data = $(element).sortable('serialize');
+                    $('#' + fill).attr('value', data);
+                }
+            });  
+            
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false; 
+            
         }
     })   
 

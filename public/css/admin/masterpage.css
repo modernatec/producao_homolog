@@ -935,7 +935,7 @@ p{
 */
 
 
-#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight{
+#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
 	margin: 5px 0; 
 	padding: 0; 
 	min-height: 70px; 
@@ -950,11 +950,11 @@ p{
     z-index: 1000;
 }
 
-.sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight{
+.sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
 	min-height: 30px; 
 }
 
-.connect{
+.connect, .connect_suppliers{
 	min-width: 250px;
 	min-height: 30px;
 	border: 1px dotted #ccc;

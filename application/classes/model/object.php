@@ -8,6 +8,8 @@ class Model_Object extends ORM {
 		'status' => array('model' => 'statu', 'through' => 'objects_status', 'foreign_key' => 'object_id'),
 		'object_reap' => array('model' => 'object', 'through' => 'objects_paths', 'foreign_key' => 'object_id'),
 		'repositorios' => array('model' => 'repositorio', 'through' => 'objects_repositorios', 'foreign_key' => 'object_id'),
+		'contatos' => array('model' => 'contato', 'through' => 'contatos_objects', 'foreign_key' => 'object_id'),
+		'suppliers' => array('model' => 'supplier', 'through' => 'suppliers_objects', 'foreign_key' => 'object_id'),
 	);
 
 	protected $_has_one = array(

@@ -214,9 +214,9 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
     }
 
 
-    public function action_getSuppliers($ajax = null){
+    public function action_getSuppliers($ajax = null, $view = 'table'){
 		$this->auto_render = false;
-		$view = View::factory('admin/suppliers/table');
+		$view = View::factory('admin/suppliers/'.$view);
 		
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
@@ -257,5 +257,27 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 	       
 	        return false;
 	    }
-	}  		
+	}  
+
+
+	public function action_getListSuppliers($ajax = null){
+		$this->auto_render = false;
+
+		$listView = $this->action_getSuppliers(true, $view = 'dialog_item');
+		$listView->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
+		
+		$view = View::factory('admin/suppliers/dialog_list');
+		$view->listView = $listView;
+
+		if($ajax != null){
+			echo $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#suppliersList', 'type'=>'html', 'content'=> json_encode($listView->render())),
+				)						
+			);
+	    }
+	}		
 }

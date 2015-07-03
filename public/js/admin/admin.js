@@ -50,9 +50,6 @@ function setupUpload(){
 
 var fileDropzone;
 function setupUploadFinalPackage(){
-    console.log('setupUploadFinalPackage');
-    //var object_id = $("#uploadPackage").data('object');
-
     fileDropzone = new Dropzone("#uploadPackage", {
         maxFiles:1,
         acceptedFiles: '.zip',
@@ -75,7 +72,7 @@ function setupUploadFinalPackage(){
         success: function( file, response ){
             if(response == '0'){
                 setMsg({
-                    content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>tente novamente...', 
+                    content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>Verifique o tamanho do pacote e tente novamente...', 
                     tema:'error'
                 });
                 
@@ -91,7 +88,6 @@ function setupUploadFinalPackage(){
         }
     });
 }
-
 
 // Helper function that formats the file sizes
 function formatFileSize(bytes) {
@@ -475,22 +471,19 @@ function setupAjax(container){
         }
     }).disableSelection();
 
-    
-
     $(".sortable_workflow").sortable({
         connectWith: ".connect",
         placeholder: "ui-state-highlight",
         distance: 30,
         update: function (event, ui) {
-            // POST to server using $.post or $.ajax
-            /*
-            $.ajax({
-                data: data,
-                type: 'POST',
-                timeout: 20000, 
-                url: base_url + '/tasks/reorder'
-            });
-            */
+        }
+    }).disableSelection();
+
+    $(".sortable_produtoras").sortable({
+        connectWith: ".connect_suppliers",
+        placeholder: "ui-state-highlight",
+        distance: 30,
+        update: function (event, ui) {
         }
     }).disableSelection();
 

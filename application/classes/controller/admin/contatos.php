@@ -183,10 +183,10 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	public function action_getListContatos($ajax = null){
 		$this->auto_render = false;
 
-		$listView = $this->action_getContatos(true, $view = 'contato_item');
+		$listView = $this->action_getContatos(true, $view = 'dialog_item');
 		$listView->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
 		
-		$view = View::factory('admin/contatos/contato_list');
+		$view = View::factory('admin/contatos/dialog_list');
 		$view->listView = $listView;
 
 		if($ajax != null){

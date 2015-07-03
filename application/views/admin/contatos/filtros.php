@@ -7,7 +7,7 @@
    		<div class="filter" >
 		    <ul>
 		        <li class="round">
-		            <span class="round" id="service_id">serviço <?=(!empty($filter_service_id) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+		            <span class="round" id="service_id">tipo <?=(!empty($filter_service_id) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 		            <div class="filter_panel round scrollable_content" data-bottom="false">
 			            <ul>
 			                <? foreach ($services as $service) {?>
