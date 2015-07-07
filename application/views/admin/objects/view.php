@@ -25,8 +25,9 @@
         if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round right view_oed">visualizar</a>
         <?}?>
+
         <span class="list_faixa light_blue round left"><?=@$obj->collection->name?></span>
-        <span class="list_faixa red round"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
+        <span class="list_faixa light_blue round left"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
         <?if($obj->reaproveitamento == 0){ 
             $origem = "novo";
         }elseif($obj->reaproveitamento == 1){
@@ -34,10 +35,17 @@
         }else{
             $origem = "reap. integral";
         }?>
+        <span class="list_faixa light_blue round left"><?=$origem?></span>
+        <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
+        
         <div class="clear">
-            <span class="list_faixa light_blue round left"><?=$origem?></span>
-            <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
-            <span class="list_faixa cyan round"><?=@$obj->supplier->empresa?></span>
+        <b>início:</b> <?=Utils_Helper::data(@$obj->crono_date,'d/m/Y')?><br/>
+        <b>entrega:</b> <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
+        </div>
+        <div class="clear">
+            <?foreach ($suppliersList as $supplier_obj) {?>
+                <span class="list_faixa cyan round left"><?=@$supplier_obj->supplier->empresa;?></span>
+            <?}?>
         </div>
     </div>
 

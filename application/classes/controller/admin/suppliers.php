@@ -90,8 +90,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			)						
 		);
         return false;
-		
-		
 	}
 
 	public function action_salvar($id = null)
@@ -265,9 +263,11 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 
 		$listView = $this->action_getSuppliers(true, $view = 'dialog_item');
 		$listView->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
+		$listView->current_auth = $this->current_auth;
 		
 		$view = View::factory('admin/suppliers/dialog_list');
 		$view->listView = $listView;
+
 
 		if($ajax != null){
 			echo $view;

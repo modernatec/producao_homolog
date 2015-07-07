@@ -192,14 +192,14 @@ $(document).ready(function()
 
     Dropzone.autoDiscover = false;
 
-    //updateBar();
+//    updateBar();
 });
 
-/*
+
 setInterval(function() {
-    updateBar();
+//    updateBar();
 }, 10000);
-*/
+
 
 function setupScroll(){
     $(".scrollable_content").mCustomScrollbar({
@@ -402,7 +402,9 @@ function setupAjax(container){
         populateSelect(ui);
     });
 
-    $(".fone").mask("(99) 9999-9999");   
+    $(".fone").mask("(99) 9999-9999"); 
+
+    $('.money').autoNumeric('init');
 
     $(".filter span").unbind('click').bind("click", function(e) {
         if($(this).parent().children('.filter_panel').css('display') == 'none'){
@@ -484,6 +486,15 @@ function setupAjax(container){
         placeholder: "ui-state-highlight",
         distance: 30,
         update: function (event, ui) {
+            
+        },
+        stop: function (event, ui) {
+            item = $('#' + ui.item.attr('id') + " > div.infos");
+            if(item.hasClass('hide')){
+                item.removeClass('hide');
+            }else{
+                item.addClass('hide');
+            }
         }
     }).disableSelection();
 
@@ -629,40 +640,78 @@ function setupAjax(container){
                 $(this).removeClass('loading');
                 setupAjax('#dialog');
 
-                $('#dialog').show('slide', {direction: 'left'}, 300);
+                var is_json = true;
+                try{
+                   var response = $.parseJSON(responseText);
+                }catch(err){
+                   is_json = false;
+                }   
 
-                setTimeout(function(){
-                    $('#description').ckeditor();
-                    
-                    $('#tag_id, #status_id').unbind('change').bind('change', function(e){
-                        e.preventDefault();
-                        var days = $('#' + e.target.id + ' option:selected').data('days');
+                if(is_json){
+                    setMsg({
+                        content: response[0].content, 
+                        tema:'error',
+                    });
+                }else{
+                    $('#dialog').show('slide', {direction: 'left'}, 300);
+
+                    setTimeout(function(){
+                        $('#description').ckeditor();
                         
-                        $.ajax({
-                            type: "POST",
-                            url: base_url + '/admin/feriados/getWorkDay/' + days,
-                            timeout: 10000, 
-                            dataType : "html",
-                            success: function(retorno) {
-                                $('#crono_date').val(retorno);
-                            },
-                            error: function(e) {
-                                console.log(e);
-                                setMsg({
-                                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                                    tema:'error',
-                                });
-                            }
-                        });   
-                    }) 
-
-
-
-                }, 500);
+                        $('#tag_id, #status_id').unbind('change').bind('change', function(e){
+                            e.preventDefault();
+                            var days = $('#' + e.target.id + ' option:selected').data('days');
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: base_url + '/admin/feriados/getWorkDay/' + days,
+                                timeout: 10000, 
+                                dataType : "html",
+                                success: function(retorno) {
+                                    $('#crono_date').val(retorno);
+                                },
+                                error: function(e) {
+                                    console.log(e);
+                                    setMsg({
+                                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                                        tema:'error',
+                                    });
+                                }
+                            });   
+                        }) 
+                    }, 500);
+                }
+                
             }
         );
         
         return false;
+    });
+
+    $('.crono').unbind('change').bind('change', function(e){
+        days = $(this).data('days');
+        start = $(this).val();
+        target = $(this).data('target');
+
+        var data_post = [{name: 'from', value:start}];
+
+        $.ajax({
+            type: "POST",
+            url: base_url + '/admin/feriados/getWorkDay/' + days,
+            data: data_post,
+            timeout: 1000, 
+            dataType : "html",
+            success: function(retorno) {
+                $('#' + target).val(retorno);
+            },
+            error: function(e) {
+                console.log(e);
+                setMsg({
+                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                    tema:'error',
+                });
+            }
+        });  
     });
 
     $('#project_segmento, #project_ano').unbind('change').bind('change', function(e){

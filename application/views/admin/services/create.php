@@ -1,7 +1,7 @@
     <form name="frmCreateService" id="frmCreateService" action="<?=URL::base();?>admin/services/salvar/<?=@$VO["id"]?>" method="post" class="form">
 	  <dl>
         <dd>
-            <input type="text" class="text required round" placeHolder="tipo de contato" name="name" id="name" style="width:300px;" value="<?=@$VO['name'];?>"/>
+            <input type="text" class="text required round" placeHolder="serviço" name="name" id="name" style="width:300px;" value="<?=@$VO['name'];?>"/>
             <span class='error'><?=Arr::get($errors, 'name');?></span>
         </dd>            
 	    <dd>

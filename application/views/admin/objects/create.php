@@ -97,20 +97,29 @@
                 <dt><a href="<?=URL::base();?>admin/suppliers/getListSuppliers/true" class="popup"><span class='add'>produtoras (produção &bullet; áudio &bullet; arte)</span></a></dt>
                 <input type="hidden" name="produtoras" id="sortable_produtoras" />
                 <ul class="list_item connect_suppliers round sortable_produtoras" data-fill="sortable_produtoras" >
-                    <?foreach ($suppliersList as $supplier) {?>
-                        <li class="dd-item" id="supplier-<?=$supplier->id?>">
-                            <div><p><b><?=$supplier->empresa?></b></p></div>
+                    <?foreach ($suppliersList as $supplier_obj) {?>
+                        <li class="dd-item" id="supplier-<?=$supplier_obj->supplier->id?>">
+                            <div><p><b><?=$supplier_obj->supplier->empresa?></b></p></div>
                             <div class="clear left">
-                                <select class="required round" name="service[]">
+                                <div><label>serviço</label></div>
+                                <select class="required round" name="services[]" style="width:100px;">
                                     <option value=''>serviço</option>
                                     <? foreach($services as $service){?>
-                                        <option value='<?=$service->id?>' ><?=$service->name?></option>
+                                        <option value='<?=$service->id?>' <?=($service->id == $supplier_obj->service_id) ? 'selected' : ''?> ><?=$service->name?></option>
                                     <?}?>
                                 </select>
                             </div>
+                            <?
+                            if($current_auth != "assistente" && $current_auth != "assistente 2"){?>
                             <div class="left">
-                                <input type="text" name="valor[]" placeholder="valor" class="round" />
+                                <div><label>valor</label></div>
+                                <input type="text" name="valores[]" placeholder="valor" class="required money round" data-a-sep="." data-a-dec="," value="<?=$supplier_obj->amount?>" />
                             </div>
+                            <div class="left">
+                                <div><label>obs:</label></div>
+                                <input type="text" name="produtora_obs[]" placeholder="obs" class="round" value="<?=$supplier_obj->obs?>" />
+                            </div>
+                            <?}?>
                         </li>
                     <?}?>
                 </ul>                    

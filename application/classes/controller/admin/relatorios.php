@@ -141,10 +141,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 			'materia', 
 			'tipo', 
 			'novo/reap.', 
-			'fornecedor', 
 			'envio', 
 			'retorno', 
-			'prova', 
+			
 			'status', 
 			'fechamento', 
 			'f. coleção', 
@@ -179,10 +178,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'typeobject' => $object->typeobject_name,
 						
 						'reaproveitamento' => $reap,  
-						'fornecedor' => $object->supplier_empresa, 
+						 
 						'data_envio' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas_e[0], $datas_e[1], $datas_e[2]),
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
-						'prova' => $object->prova, 
 						'status' => $object->statu_status, 
 						'fechamento' => ($datas_f[0] != "" && count($datas_f) > 1) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
 						'fechamento_colecao' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_fc[0], $datas_fc[1], $datas_fc[2]) : "-",

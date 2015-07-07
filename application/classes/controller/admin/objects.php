@@ -54,6 +54,59 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		echo 'fim';
 	}
+
+
+	/*
+	* função apenas de transição, remover
+	*/
+	public function action_produtoras(){
+		$this->auto_render = false;  
+
+		$db = Database::instance();
+        $db->begin();
+		
+		try 
+		{     
+			$objects = ORM::factory('object')->find_all();
+			foreach ($objects as $object) {
+				if($object->supplier_id != ""){
+					$supplier_object = ORM::factory('suppliers_object');
+					$supplier_object->supplier_id = $object->supplier_id;
+					$supplier_object->object_id = $object->id;
+					$supplier_object->service_id = '7';
+					$supplier_object->amount = '0';
+					$supplier_object->save();	
+
+					echo $object->taxonomia.'<br/>';
+				}else{
+					echo $object->taxonomia.'*****************<br/>';
+				}
+			}
+			$db->commit();
+			$msg = 'fim';
+
+		}  catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
+		echo $msg;
+	}
+
+
+
+
+
+
+
 	        
 	public function action_index($ajax = null)
 	{	
@@ -87,9 +140,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$objeto = ORM::factory('object', $id);
         $view->objVO = $this->setVO('object', $objeto);
 
+        $view->current_auth = $this->current_auth;
+
         $view->services = ORM::factory('service')->order_by('name', 'ASC')->find_all();
         $view->contatosList = $objeto->contatos->find_all();
-        $view->suppliersList = $objeto->suppliers->find_all();
+        $view->suppliersList = $objeto->suppliers_objects->find_all();
 
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
@@ -136,6 +191,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 							->order_by('tasks.id', 'desc')->find_all();
 
  		$view->current_auth = $this->current_auth;
+ 		$view->suppliersList = $object->suppliers_objects->find_all();
 
  		//ini_set('upload_max_filesize', '100M');
  		//ini_set('post_max_size', '100M');
@@ -191,6 +247,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'locutor',
                     'ilustrador',
                     'keywords',
+                    'workflow_id',
 
                      ));
 
@@ -204,6 +261,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 			$object->save();
 
+			/*
 			if(is_null($id) || $id == ""){
 				$objectStatus = ORM::factory('objects_statu');
 		        $objectStatus->object_id = $object->id;
@@ -213,39 +271,49 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
+			*/
 			
-			$delete_repos = DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();
+			if($this->request->post('repositorio') != ""){
+				DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();
+				$repos = $this->request->post('repositorio');
+				if($repos != ""){
+					foreach ($repos as $key => $value) {
+						$repositorio = ORM::factory('objects_repositorio');
+						$repositorio->object_id = $object->id;	
+						$repositorio->repositorio_id = $repos[$key];	
+						$repositorio->save();
+					}	
+				}
+			}
 
-			$repos = $this->request->post('repositorio');
-
-			if($repos != ""){
-				foreach ($repos as $key => $value) {
-					$repositorio = ORM::factory('objects_repositorio');
-					$repositorio->object_id = $object->id;	
-					$repositorio->repositorio_id = $repos[$key];	
-					$repositorio->save();
+			if($this->request->post('creditos') != ""){
+				DB::delete('contatos_objects')->where('object_id', '=', $object->id)->execute();			
+				parse_str($this->request->post('creditos'),$creditos); 
+			
+				foreach ($creditos['contato'] as $key => $contato_id) {
+					$contato_object = ORM::factory('contatos_object');
+					$contato_object->contato_id = $contato_id;
+					$contato_object->object_id = $object->id;
+					$contato_object->save();	
 				}	
 			}
 
-			DB::delete('contatos_objects')->where('object_id', '=', $object->id)->execute();
-			
-			parse_str($this->request->post('creditos'),$creditos); 
-			foreach ($creditos['contato'] as $key => $contato_id) {
-				$contato_object = ORM::factory('contatos_object');
-				$contato_object->contato_id = $contato_id;
-				$contato_object->object_id = $object->id;
-				$contato_object->save();	
-			}	
-
-			DB::delete('suppliers_objects')->where('object_id', '=', $object->id)->execute();
-			
-			parse_str($this->request->post('produtoras'),$produtoras); 
-			foreach ($produtoras['supplier'] as $key => $produtora_id) {
-				$supplier_object = ORM::factory('suppliers_object');
-				$supplier_object->supplier_id = $produtora_id;
-				$supplier_object->object_id = $object->id;
-				$supplier_object->save();	
-			}	
+			if($this->request->post('produtoras') != ""){
+				DB::delete('suppliers_objects')->where('object_id', '=', $object->id)->execute();			
+				$services = $this->request->post('services');
+				$amounts = $this->request->post('valores');
+				$produtora_obs = $this->request->post('produtora_obs');
+				parse_str($this->request->post('produtoras'),$produtoras); 
+				foreach ($produtoras['supplier'] as $key => $produtora_id) {
+					$supplier_object = ORM::factory('suppliers_object');
+					$supplier_object->supplier_id = $produtora_id;
+					$supplier_object->object_id = $object->id;
+					$supplier_object->service_id = $services[$key];
+					$supplier_object->amount = ($amounts[$key] != "") ? $amounts[$key] : '0';
+					$supplier_object->obs = $produtora_obs[$key];
+					$supplier_object->save();	
+				}	
+			}
 
 
 			$msg = 'Objeto salvo com sucesso.';
@@ -384,8 +452,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
 			array_push($collectionList_index, $object['collection_name']);
 
-			array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
-			array_push($suppliersList_index, $object['supplier_empresa']);
+			//array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
+			//array_push($suppliersList_index, $object['supplier_empresa']);
 
 			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
 			array_push($materiasList_index, $object['materia_name']);
@@ -524,60 +592,75 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			$arr_objstatus['object_id'] = $object_id;
 		}	
 
-		$object = ORM::factory('object', $object_id);
+		$tasks = ORM::factory('task')->where('object_id', '=', $object_id)->where('ended', '=', '0')->find_all();
+		if(count($tasks) > 0 && $id == ""){
+			echo json_encode(
+				array(
+					array('type'=>'msg', 'content'=> 'Ops!..<br/><br/>não terminamos todas as tarefas...'),
+				)						
+			);	
+		}else{
+			$object = ORM::factory('object', $object_id);
 
-		$object_all_status = DB::select('status_id')->from('objects_status')->where('object_id', '=', $object->id)->execute()->as_array('status_id');
-		$status_arr = array();
-		foreach ($object_all_status as $status) {
-			if($status['status_id'] != $objStatus->status_id){
-				array_push($status_arr, $status['status_id']);
+
+			$object_all_status = DB::select('status_id')->from('objects_status')->where('object_id', '=', $object->id)->execute()->as_array('status_id');
+			
+			$status_arr = array();
+			foreach ($object_all_status as $status) {
+				if($status['status_id'] != $objStatus->status_id){
+					array_push($status_arr, $status['status_id']);
+				}
 			}
-		}
-		
-		$query = ORM::factory('statu')
-		->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
-		->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
 
-		if($this->current_auth != 'admin'){
-			$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
-		}
+			$query = ORM::factory('statu')
+			->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
+			->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
 
-		$view->statusList = $query->where('workflows_status.status_id', 'NOT IN', $status_arr)->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
-		
-		/*
-		$object_status = ORM::factory('objects_statu')->where('object_id', '=', $object_id)->order_by('created_at', 'DESC')->find();  
-
-        $query = ORM::factory('tag')
-		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
-		->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
-
-		if($this->current_auth != 'admin'){
-			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
-		}
-
-		$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)
-							->where('workflows_status_tags.status_id', 'NOT IN', $status_arr)
-							//->where('workflows_status_tags.status_id', '=', $object_status->status_id)
-							->where('type', '=', 'task')
-							->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
-
-		$tag_arr = array();
-		$i = 0;
-		foreach ($tagList as $key => $tag) {
-			$tag_arr[$i][$key] = $tag;
-
-			if($tag->sync == '0'){
-				$i++;
+			if($this->current_auth != 'admin'){
+				$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
 			}
+
+			if(count($status_arr) > 0){
+				$query->where('workflows_status.status_id', 'NOT IN', $status_arr);
+			}
+
+			$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
+			
+			/*
+			$object_status = ORM::factory('objects_statu')->where('object_id', '=', $object_id)->order_by('created_at', 'DESC')->find();  
+
+	        $query = ORM::factory('tag')
+			->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
+			->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
+
+			if($this->current_auth != 'admin'){
+				$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
+			}
+
+			$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)
+								->where('workflows_status_tags.status_id', 'NOT IN', $status_arr)
+								//->where('workflows_status_tags.status_id', '=', $object_status->status_id)
+								->where('type', '=', 'task')
+								->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+
+			$tag_arr = array();
+			$i = 0;
+			foreach ($tagList as $key => $tag) {
+				$tag_arr[$i][$key] = $tag;
+
+				if($tag->sync == '0'){
+					$i++;
+				}
+			}
+			$view->tag_arr = $tag_arr;
+			*/		
+
+			$view->obj = $object;			
+
+			$view->objVO = $arr_objstatus;
+
+			echo $view;
 		}
-		$view->tag_arr = $tag_arr;
-		*/		
-
-		$view->obj = $object;			
-
-		$view->objVO = $arr_objstatus;
-
-		echo $view;
 	}
 
 	public function action_updateStatus($id = null){
@@ -618,6 +701,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 				/**criar pastas apenas qndo finalizar o objeto?**/
 				$object = ORM::factory('object', $object_status->object_id);
+
+				if($this->request->post('status_id') == '1'){
+					$object->crono_date = $date1;
+					$object->save();
+				}
+
+
 				if($object_status->status_id == '8'){
 					$projeto = ORM::factory('project', $object->project_id);
 
@@ -634,7 +724,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            	$new_task->object_id = $object_status->object_id;
 	            	$new_task->object_status_id = $object_status->id;
 	            	$new_task->tag_id = $tag->id;
-	            	$new_task->team_id = $this->current_user->userInfos->team_id;
+	            	$new_task->team_id = $object_status->status->team_id;//$this->current_user->userInfos->team_id;
 	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($tag->days);
 	            	$new_task->planned_date = $new_task->crono_date;
 

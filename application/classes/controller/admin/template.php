@@ -105,21 +105,16 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery-dateFormat.min.js',
 				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery.maskedinput.min.js',
+				
 				'public/js/common/jquery/jquery.easing.min.js',
 				'public/js/admin/jquery.mCustomScrollbar.min.js',
 				'public/js/admin/jquery.minicolors.js',
 				
 				'public/js/common/ckeditor/ckeditor.js',
 				'public/js/common/ckeditor/adapters/jquery.js',
+				'public/js/common/autoNumeric.js',
 
 				'https://www.google.com/jsapi',	
-
-				/*
-				"public/js/common/jquery/jquery.knob.js",
-				"public/js/common/jquery/jquery.ui.widget.js",
-				"public/js/common/jquery/jquery.iframe-transport.js",
-				"public/js/common/jquery/jquery.fileupload.js",
-				*/
 
 				'public/js/common/dropzone.js',
 

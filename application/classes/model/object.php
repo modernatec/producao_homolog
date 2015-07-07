@@ -9,7 +9,8 @@ class Model_Object extends ORM {
 		'object_reap' => array('model' => 'object', 'through' => 'objects_paths', 'foreign_key' => 'object_id'),
 		'repositorios' => array('model' => 'repositorio', 'through' => 'objects_repositorios', 'foreign_key' => 'object_id'),
 		'contatos' => array('model' => 'contato', 'through' => 'contatos_objects', 'foreign_key' => 'object_id'),
-		'suppliers' => array('model' => 'supplier', 'through' => 'suppliers_objects', 'foreign_key' => 'object_id'),
+		'suppliers_objects' => array('model' => 'suppliers_object', 'foreign_key' => 'object_id'),
+		'suppliers' => array('model' => 'supplier', 'through' => 'suppliers_object', 'foreign_key' => 'object_id'),
 	);
 
 	protected $_has_one = array(
@@ -48,6 +49,12 @@ class Model_Object extends ORM {
 	{
 		return array(
 			'crono_date' => array(
+				array(array($this, 'setup_date'))
+			),
+			'planned_date' => array(
+				array(array($this, 'setup_date'))
+			),
+			'delivered_date' => array(
 				array(array($this, 'setup_date'))
 			),
 

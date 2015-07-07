@@ -62,6 +62,9 @@ class Model_Task extends ORM {
 			'plannned_date' => array(
 				array(array($this, 'setup_date'))
 			),
+			'delivered_date' => array(
+				array(array($this, 'setup_date'))
+			),
 			'description' => array(
 				array(array($this, 'removeEmpty'))
 			),			

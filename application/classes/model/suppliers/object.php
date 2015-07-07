@@ -3,7 +3,22 @@
 class Model_Suppliers_Object extends ORM {
 
     protected $_belongs_to = array(
-        'team' => array('foreign_key' => 'team_id'),
+        'supplier' => array('foreign_key' => 'supplier_id'),
     );
+
+    public function filters()
+	{
+		return array(
+			'amount' => array(
+				array(array($this, 'setup_decimal'))
+			),
+		);
+	}
+
+	public function setup_decimal($value)
+	{
+		$r = str_replace('.', '', $value);
+		return str_replace(',', '.', $r);
+    }
 
 }

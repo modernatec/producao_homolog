@@ -94,44 +94,44 @@
       <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
     </dd>
   </dl>
-</form>
+
 
 <div class="scrollable_content">
-  <table>
-      <thead>
-          <th>tax.</th>
-          <th>tipo</th>
-          <th>workflow</th>
-          <th>início</th>
-          <th>fechamento</th>
-      </thead>
-      <tbody>
-          <? foreach($objectList as $objeto){?>
-          <tr>
-              <td>
-                <p><b><?=$objeto->title;?></b></p>
-                <p><?=$objeto->taxonomia;?></p>
-              </td>
-              <td>
-                  <?
-                    switch ($objeto->reaproveitamento) {
-                      case '0':
-                        echo 'novo';
-                        break;
-                      case '1':
-                        echo 'reap.';
-                        break;
-                      case '2':
-                        echo 'reap. integral';
-                        break;  
-                    }
-                  ?>
-              </td>
-              <td><?=$objeto->workflow->name?></td>
-              <td>i</td>
-              <td>*</td>
-          </tr>
-          <?}?>
-      </tbody>
-  </table>
+  <?foreach ($workflows as $workflow) {
+      $days = 0;
+      $r = $workflow->name;
+    ?>
+
+
+      <span class='list_alert light_blue round'><?=$workflow->name?> (<?=$workflow->days?> dias)</span>
+      <table width="100%" class="gray">
+        <thead>
+            <th width="60%">taxonomia</th>
+            <th width="20%">início</th>
+            <th width="20%">fechamento</th>
+        </thead>
+        <tbody>
+            <? foreach($objectList as $objeto){ 
+              if($objeto->workflow_id == $workflow->id){?>
+            <tr>
+                <td width="60%" class="tl">
+                  <div><p><b><?=$objeto->title;?></b></p></div>
+                  <p><?=$objeto->taxonomia;?></p>
+                </td>
+                <td width="20%">
+                  <input type="text" name="objects[]" value="<?=$objeto->id?>" />
+                  <input type="text" name="start[]" placeholder="início" data-days="<?=$workflow->days?>" data-target="end_<?=$objeto->id?>" class="crono date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->crono_date,'d/m/Y')?>" />
+                </td>
+                <td width="20%">
+                  <input type="text" name="end[]" placeholder="término" id="end_<?=$objeto->id?>" class="date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->planned_date,'d/m/Y')?>" />
+                </td>
+            </tr>
+            <?}}?>
+        </tbody>
+    </table>
+    <hr style="margin:8px 0;" />
+  <?}?>
+  
 </div>  
+
+</form>

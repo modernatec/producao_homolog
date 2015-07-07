@@ -17,24 +17,6 @@
 		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
 		        </dd>				        
 			</div>
-			<!--div class="left">
-				<dt>
-		            <label for="prova">prova:</label>
-		        </dt>
-		        <dd>
-		            <select name="prova" id="prova" class="required round" style="width:150px;">
-		                <option value="">selecione</option>
-			                <? for($i = 1; $i < 11; $i++){
-		                		if($i < 10){
-		                			$i = '0'.$i;
-		                		}
-			                ?>
-		                    <option value="prova<?=$i?>" <?=($objVO['prova'] == "prova".$i) ? "selected" : ""?> >prova <?=$i?></option>
-		                <?}?>
-		            </select>
-		            <span class='error'><?=Arr::get($errors, 'status_id');?></span>
-		        </dd>				        
-			</div-->
 			<div class="left">
 				<dt>
 		            <label for="crono_date">retorno para:</label>

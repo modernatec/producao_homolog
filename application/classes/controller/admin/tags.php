@@ -59,7 +59,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$view->statusVO = $this->setVO('tag', $tag); 
 
 		$view->teamList = ORM::factory('team')->find_all();  
-		$view->tagsList = ORM::factory('tag')->find_all();  
+		$view->tagsList = ORM::factory('tag')->order_by('order', 'ASC')->find_all();  
 		$view->teamsArray = ORM::factory('tags_team')->where('tag_id', '=', $id)->find_all();
 
 		$teamsArray = array();

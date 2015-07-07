@@ -18,6 +18,15 @@ class Controller_Admin_Home extends Controller_Admin_Template {
 	
 	public function action_index()
 	{
+		if (Auth::instance()->logged_in())
+        {
+            // User is logged in, continue on
+        }
+        else
+        {
+            // User isn't logged in, redirect to the login form.
+            Request::current()->redirect('login');
+        }
 		//$this->auto_render = false;
 		/*
 		if(Auth::instance()->logged_in()== 0){	

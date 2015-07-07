@@ -125,21 +125,82 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		);
 	}
 
+	/*
+	* Melhorar
+	*/
 	public function action_getWorkDay($days){
 		$this->auto_render = false;
-		echo Controller_Admin_Feriados::getNextWorkDay($days);
+		if($this->request->post('from') != ''){
+			$from = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('from'))));
+		}else{
+			$from = 'now';
+		}
+
+		$feriados = DB::select('data')->from('feriados')->execute()->as_array('data');
+
+		$x = 0;
+		$i = 1;
+
+		if($days > 0){
+			while ($x < $days) {
+				$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+
+				while (array_key_exists($nextBusinessDay, $feriados)) {
+				    $i++;
+				    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+				}
+				$i++;
+				$x++;
+			}
+		}else{
+			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			while (array_key_exists($nextBusinessDay, $feriados)) {
+			    $i++;
+			    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			}
+			$i++;
+		}
+
+		if(date( "w", strtotime($nextBusinessDay)) == '0'){
+			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+		}
+
+		echo Utils_Helper::data($nextBusinessDay);
 	}
 
+	/*
+	* Acessar de outros controllers, mas esta redundante.
+	*/
 	public static function getNextWorkDay($days){
 		$feriados = DB::select('data')->from('feriados')->execute()->as_array('data');
-		
-		$next_date = date('Y-m-d', strtotime('now +'.$days.' weekdays'));
+		$from = 'now';
+		$x = 0;
+		$i = 1;
 
-		if (array_key_exists($next_date, $feriados)) { 
-		    Controller_Admin_Feriados::getNextWorkDay($days + 1);
+		if($days > 0){
+			while ($x < $days) {
+				$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+
+				while (array_key_exists($nextBusinessDay, $feriados)) {
+				    $i++;
+				    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+				}
+				$i++;
+				$x++;
+			}
 		}else{
-			return Utils_Helper::data($next_date);
+			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			while (array_key_exists($nextBusinessDay, $feriados)) {
+			    $i++;
+			    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			}
+			$i++;
 		}
-	}
 
+		if(date( "w", strtotime($nextBusinessDay)) == '0'){
+			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+		}
+
+		return Utils_Helper::data($nextBusinessDay);
+	}
 }

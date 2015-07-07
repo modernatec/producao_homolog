@@ -21,16 +21,26 @@
 			<?foreach ($suppliersList as $supplier) {?>
 				<li class="dd-item" id="supplier-<?=$supplier->id?>">
 					<div><p><b><?=$supplier->empresa?></b></p></div>
-					<div class="clear left">
-						<select class="required round" name="service[]">
-	                        <option value=''>serviço</option>
-	                        <? foreach($services as $service){?>
-	                            <option value='<?=$service->id?>' ><?=$service->name?></option>
-	                        <?}?>
-	                    </select>
-					</div>
-					<div class="left">
-						<input type="text" name="valor[]" placeholder="valor" class="round" />
+					<div class="infos hide">
+						<div class="clear left">
+							<div><label>serviço</label></div>
+							<select class="required round" name="services[]" style="width:100px;">
+		                        <option value=''>serviço</option>
+		                        <? foreach($services as $service){?>
+		                            <option value='<?=$service->id?>' ><?=$service->name?></option>
+		                        <?}?>
+		                    </select>
+						</div>
+						<?if($current_auth != "assistente" && $current_auth != "assistente 2"){?>
+						<div class="left">
+							<div><label>valor</label></div>
+							<input type="text" name="valores[]" placeholder="valor" class="required money round" data-a-sep="." data-a-dec="," />
+						</div>
+						<div class="left">
+							<div><label>obs:</label></div>
+							<input type="text" name="produtora_obs[]" placeholder="valor" class="round" />
+						</div>
+						<?}?>
 					</div>
 				</li>
 			<?}?>
