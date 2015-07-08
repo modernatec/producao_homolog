@@ -2,7 +2,7 @@
  
 class Controller_Admin_Services extends Controller_Admin_Template {
  
-	public $auth_required		= array('login','admin'); //Auth is required to access this controller
+	public $auth_required		= array('login','coordenador'); //Auth is required to access this controller
  	
 	/*
 	public $secure_actions     	= array(

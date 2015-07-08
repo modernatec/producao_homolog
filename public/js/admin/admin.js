@@ -890,9 +890,9 @@ function loadContent(args){
                 removeDialogs();
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',
-                    
+                    tema:'error',                    
                 });
+                setupAjax();
             }
         });  
     }else{

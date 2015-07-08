@@ -1,5 +1,5 @@
 <div class="bar">
-    <?if($current_auth != "assistente"){?>
+    <?if($current_auth != "assistente" && $current_auth != "assistente 2"){?>
         <a href="<?=URL::base();?>admin/suppliers/edit/<?=$VO['id']?>" rel="load-content" data-panel="#direita" class="bar_button round">editar</a>       
     <?}?>
 </div>  

@@ -1,7 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
 class Controller_Admin_Pluploader extends Controller_Admin_Template {
- 
+    /*
+    REVER
+
 	public $auth_required		= array('login'); //Auth is required to access this controller
  
 	public $secure_actions     	= array('edit' => array('login'), 'delete' => array('login'), );
@@ -53,7 +55,7 @@ class Controller_Admin_Pluploader extends Controller_Admin_Template {
 
                 /*$count = 1;
                 while (file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName_a . '_' . $count . $fileName_b))
-                        $count++;*/
+                        $count++;*
 
                 $fileName = Utils_Helper::limparStr($fileName_a).'_'.time().$fileName_b;
         }
@@ -146,4 +148,5 @@ class Controller_Admin_Pluploader extends Controller_Admin_Template {
         }
         die('OK');
     }
+    */
 }

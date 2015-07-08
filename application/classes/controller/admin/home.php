@@ -1,9 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
 class Controller_Admin_Home extends Controller_Admin_Template {
+	
+	public $auth_required		= array('login'); //Auth is required to access this controller
  	
 	/*
-	public $auth_required		= array('login'); //Auth is required to access this controller
+	
  	
 	public $secure_actions     	= array('post' => array('login','admin','coordenador', 'assistente'),
 								   'edit' => array('login','admin'),

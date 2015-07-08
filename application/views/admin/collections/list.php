@@ -2,7 +2,7 @@
 	<div class="tabs_panel">
 		<ul class="tabs">
 	        <? foreach($anosList as $ano){?>
-			<li class="round"><a class="ajax" id='tab_<?=$ano->ano?>' href="<?=URL::base();?>admin/collections/getlist/<?=$ano->ano?>"><?=$ano->ano?></a></li>
+			<li class="round"><a class="ajax" id='collections_<?=$ano->ano?>' href="<?=URL::base();?>admin/collections/getlist/<?=$ano->ano?>"><?=$ano->ano?></a></li>
 			<?}?>
 	    </ul>  
     </div>

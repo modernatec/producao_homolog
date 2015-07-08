@@ -53,25 +53,28 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view->userList = ORM::factory('userinfo')->where('status', '=', '1')->find_all();
 		$view->collection_users = DB::select('userInfo_id')->from('collections_userinfos')->where('collection_id', '=', $id)->execute()->as_array('userInfo_id');
 
-		$collection_workflow = ORM::factory('object')
-								->where('fase', '=', '1')
-								->where('collection_id' , '=', $id)
-								->group_by('workflow_id')->find_all();
+		if($id != ""){
+			$collection_workflow = ORM::factory('object')
+									->where('fase', '=', '1')
+									->where('collection_id' , '=', $id)
+									->group_by('workflow_id')->find_all();
 
-		$workflows_arr = array();
-		foreach ($collection_workflow as $workflow_item) {
-			array_push($workflows_arr, $workflow_item->workflow_id);
-		}						
+			$workflows_arr = array();
+			foreach ($collection_workflow as $workflow_item) {
+				array_push($workflows_arr, $workflow_item->workflow_id);
+			}						
 
-		$view->workflows = DB::select('workflows.id', 'name, sum("days") days')->from('workflows')
-			->join('workflows_status')->on('workflows.id', '=', 'workflows_status.workflow_id')
-			->where('workflows.id', 'IN', $workflows_arr)
-			->group_by('workflows.id')
-			->as_object()->execute();
+			if(count($workflows_arr) > 0){
+				$view->workflows = DB::select('workflows.id', 'name, sum("days") days')->from('workflows')
+					->join('workflows_status')->on('workflows.id', '=', 'workflows_status.workflow_id')
+					->where('workflows.id', 'IN', $workflows_arr)
+					->group_by('workflows.id')
+					->as_object()->execute();
 
-
-		//$view->workflows = ORM::factory('workflow')->find_all();
-		$view->objectList = ORM::factory('object')->where('fase', '=', '1')->where('collection_id' , '=', $id)->find_all();
+				//$view->workflows = ORM::factory('workflow')->find_all();
+				$view->objectList = ORM::factory('object')->where('fase', '=', '1')->where('collection_id' , '=', $id)->find_all();	
+			}		
+		}
 
 		header('Content-Type: application/json');
 		echo json_encode(
@@ -104,7 +107,6 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$team = DB::delete('collections_userinfos')->where('collection_id','=', $id)->execute();
 
 			$team_users = $this->request->post('team');
-
 			if($team_users != ""){
 				foreach ($team_users as $key => $value) {
 					if($value != ''){
@@ -120,40 +122,44 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			}
 
 			$objects = $this->request->post('objects');
-			$starts = $this->request->post('start');
-			$ends = $this->request->post('end');
-			foreach ($objects as $key => $value) {
-				if($value != ''){
-					$object = ORM::factory('object', $objects[$key]);
-					$object->crono_date = $starts[$key];
-					$object->planned_date = $ends[$key];	
-					$object->save();
+			if($objects != ""){
+				$starts = $this->request->post('start');
+				$ends = $this->request->post('end');
+				foreach ($objects as $key => $value) {
+					if($value != ''){
+						$object = ORM::factory('object', $objects[$key]);
+						$object->crono_date = $starts[$key];
+						$object->planned_date = $ends[$key];	
+						$object->save();
 
-					//achar o status não iniciado
-					$objectStatus = ORM::factory('objects_statu')
-										->where('object_id', '=', $objects[$key])
-										->where('status_id', '=', '1')->find(); 
+						//achar o status não iniciado
+						$objectStatus_result = ORM::factory('objects_statu')
+											->where('object_id', '=', $objects[$key])
+											->where('status_id', '=', '1')->limit('1')->find_all(); 
 
-					//cria o status "não iniciado" e habilita o OED para produção
-					if(count($objectStatus) == 0){
-						$objectStatus = ORM::factory('objects_statu');						
-				         //não iniciado
-				        //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
-				        $objectStatus->planned_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $starts[$key])));
-					}	
+						//cria o status "não iniciado" e habilita o OED para produção
+						if(count($objectStatus_result) == 0){
+							$objectStatus = ORM::factory('objects_statu');
+					         //não iniciado
+					        //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
+					        $objectStatus->planned_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $starts[$key])));
+						}else{
+							$objectStatus = ORM::factory('objects_statu', $objectStatus_result[0]->id);
+						}	
 
-					$objectStatus->status_id = '1';
-					$objectStatus->object_id = $objects[$key];
-					$objectStatus->crono_date = $starts[$key];
-					$objectStatus->userInfo_id = $this->current_user->userInfos->id;		
+						$objectStatus->status_id = '1';
+						$objectStatus->object_id = $objects[$key];
+						$objectStatus->crono_date = $starts[$key];
+						$objectStatus->userInfo_id = $this->current_user->userInfos->id;		
 
-					$date1 = date('Y-m-d', strtotime(str_replace('/', '-', $starts[$key])));
-					$objectStatus->diff = Utils_Helper::dataDiff($date1, $objectStatus->planned_date);
+						$date1 = date('Y-m-d', strtotime(str_replace('/', '-', $starts[$key])));
+						$objectStatus->diff = Utils_Helper::dataDiff($date1, $objectStatus->planned_date);
 
-					$objectStatus->save();
+						$objectStatus->save();
+					}
 				}
 			}
-			
+
 			$db->commit();
 			$msg = "coleção salva com sucesso.";
 			
@@ -234,7 +240,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
-					array('container' => '#esquerda', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($ano)->render())),
 				)						
 			);

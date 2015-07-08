@@ -176,6 +176,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             ->bind('errors', $errors)
             ->bind('message', $message);
 
+        $view->container = ($this->request->query('c') != "") ? $this->request->query('c') : 'objects';
+
 		$object = ORM::factory('object', $id);
         $view->obj = $object;   
         $view->user = $this->current_user->userInfos;                          

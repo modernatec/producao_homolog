@@ -2,7 +2,7 @@
  
 class Controller_Admin_Teams extends Controller_Admin_Template {
  
-	public $auth_required		= array('login'); //Auth is required to access this controller
+	public $auth_required		= array('login', 'admin'); //Auth is required to access this controller
  
 	public $secure_actions     	= array(
 									'edit' => array('login', 'admin'),

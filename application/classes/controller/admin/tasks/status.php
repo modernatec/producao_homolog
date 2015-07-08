@@ -54,12 +54,18 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	        }
 		}
 
+
+		if($this->request->post('from') == "tasks/index/ajax"){
+			$tabs_content = array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/tasks/getTasks/'."?status=".json_encode(array("5")).'&team='.$this->current_user->userInfos->team->id);
+		}else{
+			$tabs_content = array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id);
+		}
+
 		header('Content-Type: application/json');		
 		echo json_encode(
 			array(
 				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-				array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
-
+				$tabs_content,
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -169,14 +175,25 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	        }
 		}
 
-		header('Content-Type: application/json');		
-		echo json_encode(
-			array(
-				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-				array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
-				array('type'=>'msg', 'content'=> $msg),
-			)						
-		);
+		header('Content-Type: application/json');
+
+		if($this->request->post('from') == "tasks/index/ajax"){
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
+		}else{
+			echo json_encode(
+				array(
+					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+					array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
+					array('type'=>'msg', 'content'=> $msg),
+				)						
+			);
+		}
+
         return false;
 	}
 
@@ -212,13 +229,24 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	        }
 
 	        header('Content-Type: application/json');		
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$task->object_id),
-					array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
+
+			if($this->request->post('from') == "tasks/index/ajax"){
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$task->object_id),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);
+			}else{
+				echo json_encode(
+					array(
+						array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$task->object_id),
+						array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
+						array('type'=>'msg', 'content'=> $msg),
+					)						
+				);				
+			}
+
 	        return false;
 		}
 	}

@@ -2,7 +2,7 @@
  
 class Controller_Admin_Feriados extends Controller_Admin_Template {
  
-	public $auth_required		= array('login'); //Auth is required to access this controller
+	public $auth_required		= array('login', 'coordenador'); //Auth is required to access this controller
  	
 	/*
 	public $secure_actions     	= array(
@@ -153,12 +153,15 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 				$x++;
 			}
 		}else{
+			$i = 0;
 			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			/*
 			while (array_key_exists($nextBusinessDay, $feriados)) {
 			    $i++;
 			    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
 			}
 			$i++;
+			*/
 		}
 
 		if(date( "w", strtotime($nextBusinessDay)) == '0'){
@@ -189,12 +192,15 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 				$x++;
 			}
 		}else{
+			$i = 0;
 			$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+			/*
 			while (array_key_exists($nextBusinessDay, $feriados)) {
 			    $i++;
 			    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
 			}
 			$i++;
+			*/
 		}
 
 		if(date( "w", strtotime($nextBusinessDay)) == '0'){

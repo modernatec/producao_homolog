@@ -7,7 +7,7 @@
 			<? foreach($feriadosList as $feriado){?>
 			<li>
 				<div class="left">
-					<a style='display:block' href="<?=URL::base().'admin/feriados/edit/'.$feriado->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$feriado->feriado.' - '.Utils_Helper::data($feriado->data)?></a>
+					<a style='display:block' href="<?=URL::base().'admin/feriados/edit/'.$feriado->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=Utils_Helper::data($feriado->data).' - '.$feriado->feriado?></a>
 				</div>
 				<div class="right">
 					<a class="excluir" href="<?=URL::base().'admin/feriados/delete/'.$feriado->id;?>" title="Excluir">Excluir</a>

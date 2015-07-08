@@ -1,7 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
  
 class Controller_Admin_Curriculums extends Controller_Admin_Template {
- 
+ 	/*
+ 	*REVER
+
 	public $auth_required		= array('login'); //Auth is required to access this controller
  
 	public $secure_actions     	= array(
@@ -38,7 +40,7 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 			->bind('message', $message);
 		$view->curriculumsList = ORM::factory('curriculum')->order_by('name','ASC')->find_all();
 		$this->template->content = $view;             
-		*/
+		*
 	} 
 
 	public function action_create()
@@ -139,4 +141,5 @@ class Controller_Admin_Curriculums extends Controller_Admin_Template {
 		Utils_Helper::mensagens('add',$message); 
 		Request::current()->redirect('admin/curriculums');
 	}
+	*/
 }

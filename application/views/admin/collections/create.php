@@ -97,7 +97,9 @@
 
 
 <div class="scrollable_content">
-  <?foreach ($workflows as $workflow) {
+  <?
+    if(isset($workflows)){
+    foreach ($workflows as $workflow) {
       $days = 0;
       $r = $workflow->name;
     ?>
@@ -119,7 +121,7 @@
                   <p><?=$objeto->taxonomia;?></p>
                 </td>
                 <td width="20%">
-                  <input type="text" name="objects[]" value="<?=$objeto->id?>" />
+                  <input type="hidden" name="objects[]" value="<?=$objeto->id?>" />
                   <input type="text" name="start[]" placeholder="início" data-days="<?=$workflow->days?>" data-target="end_<?=$objeto->id?>" class="crono date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->crono_date,'d/m/Y')?>" />
                 </td>
                 <td width="20%">
@@ -130,7 +132,7 @@
         </tbody>
     </table>
     <hr style="margin:8px 0;" />
-  <?}?>
+  <?}}?>
   
 </div>  
 

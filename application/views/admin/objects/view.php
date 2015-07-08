@@ -15,6 +15,13 @@
     </div>  
     <div class="boxwired round" >
         <a class="collapse right" data-show="replies" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a>
+        <div class="right">
+        <?foreach ($obj->collection->userInfos->find_all() as $key => $userInfo) {?>
+            <div class="left" style="width:25px;">           
+            <?=Utils_Helper::getUserImage($userInfo->id);?>
+            </div>
+        <?}?>
+        </div>
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
@@ -112,7 +119,7 @@
                             <?}
 
                             //finalizado
-                            if($count == 0 && $object->status_id == '8'){?>
+                            if($count == 0 && $object->status_id == '8' && $current_auth != "assistente"){?>
                                 <div id="uploadPackage" data-action="<?=URL::base()?>admin/objects/upload/<?=$object->object_id?>" class="dropzone" >           
                                     <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)<br/>tamanho max.: 100mb</span></div>                                    
                                 </div>

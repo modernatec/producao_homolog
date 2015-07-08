@@ -300,7 +300,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
 			)						
 		);
         return false;
