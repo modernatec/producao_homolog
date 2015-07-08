@@ -42,21 +42,19 @@
 					<?foreach ($taskList as $task) {
 						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->task_to) : '<div class="round_imgList"><span>?</span></div>';
 
-						$diff = '';
+						$task_diff = '';
 		                if($task->diff != 0){
                             if($task->diff < 0){
-                                $diff = '<span class="list_faixa round">'.$task->diff.'</span>';
-                                //$color = $task->tag->color;
+                                $task_diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
                             }else{
-                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
-                                $color = 'red';
+                                $task_diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
                             }
                         }
 					?>
 						<div class="clear task_line" >
 							<div class='left'><?=$task_to;?></div>
 							<span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>	
-							<span class="round <?=$task->status->type.'_status'.$task->status->id?> list_faixa left"><?=$task->status->status;?></span><?=$diff?>
+							<span class="round <?=$task->status->type.'_status'.$task->status->id?> list_faixa left"><?=$task->status->status;?></span><?=$task_diff?>
 						</div>
 					<?}?>
 				</a>

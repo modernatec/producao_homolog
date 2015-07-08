@@ -172,6 +172,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			
 			$task = ORM::factory('task', $id);
 			$object_id = $task->object_id;
+			$project_id = $task->object->project_id;
+			
 			try {  						
 				$task->values($this->request->post(), array(
 					'object_id',
@@ -217,6 +219,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+					array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$project_id),
 					array('type'=>'msg', 'content'=> $msg),
 
 				)						
@@ -232,6 +235,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		
 		$task = ORM::factory('task', $id);
 		$object_id = $task->object_id;
+		$project_id = $task->object->project_id;
 
 		try {  	
 			DB::delete('tasks_status')->where('task_id', '=', $id)->execute();
@@ -258,6 +262,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		echo json_encode(
 			array(
 				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$object_id),
+				array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$project_id),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

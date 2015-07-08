@@ -1,6 +1,3 @@
-<?  
-    $calendar = '<img src="'.URL::base().'/public/image/admin/calendar2.png'.'" height="12" valign="middle">';
-?>
 <div class="clear">
     <div class="bar">
     <?if($current_auth != "assistente"){?>
@@ -56,9 +53,6 @@
                 ?>                          
                     <div style='clear:both' >
                         <div class='hist round step step_<?=$object->status->type?>_status<?=$object->status->id?>' >
-                            <!--div style='width:30px; height:35px; float:left; margin:0 5px 0 0'>
-                                <div class="left"><?=Utils_Helper::getUserImage($object->userInfo)?></div>
-                            </div-->
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
                                     <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
@@ -75,7 +69,6 @@
                                         </div>
                             <?      
                                     }    
-                                                                  
                                 }
                             ?>
                                                        
@@ -110,7 +103,6 @@
                                     <span class="list_faixa round left <?=$object->status->type.'_status'.$object->status->id?>"><?=$object->status->status;?></span>
                                     <span class="list_faixa round left <?=$status_class?>"><?=$date_faixa?></span><?=$diff?>
                                         </a>
-                                    <!--span class="list_view round clear">prev. de retorno: <?=Utils_Helper::data($object->planned_date, 'd/m/Y')?> (<?=Utils_Helper::getday($object->planned_date)?>)</span-->
                                 </div>
                                 
                             </div>
@@ -119,8 +111,8 @@
                                 <span class="wordwrap description"><?=$object->description;?></span>
                             <?}
 
+                            //finalizado
                             if($count == 0 && $object->status_id == '8'){?>
-
                                 <div id="uploadPackage" data-action="<?=URL::base()?>admin/objects/upload/<?=$object->object_id?>" class="dropzone" >           
                                     <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)<br/>tamanho max.: 100mb</span></div>                                    
                                 </div>
@@ -156,7 +148,6 @@
                             /*
                             * Verificar como melhorar...
                             */
-
                             $query = $object->tasks->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id');
                                         
                             if($current_auth != "admin"){
@@ -166,121 +157,120 @@
                             $task_tags = $query->group_by('tasks.id')->order_by('tasks.id', 'desc')->find_all();
 
                             foreach ($task_tags as $task) {?> 
-                                
-                                    <div style='clear:both'>
-                                        <div class='hist'>
-                                            <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
-                                            <div class="task round">
-                                                <?if($current_auth != "assistente"){?>
-                                                    <div class="right">
-                                                        <a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
+                            
+                                <div style='clear:both'>
+                                    <div class='hist'>
+                                        <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
+                                        <div class="task round">
+                                            <?if($current_auth != "assistente"){?>
+                                                <div class="right">
+                                                    <a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
+                                                </div>
+                                            <?}?>
+                                            <div class='line_bottom'>
+                                                <div class="left">
+                                                    <?if($current_auth != "assistente"){?>
+                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
+                                                    <?}
+
+                                                    $diff = '';
+                                                    $color = $task->tag->color;
+                                                    if($task->diff != 0){
+                                                        if($task->diff < 0){
+                                                            $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
+                                                            //$color = $task->tag->color;
+                                                        }else{
+                                                            $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
+                                                            $color = 'red';
+                                                        }
+                                                    }
+
+                                                    if($task->delivered_date != ''){
+                                                        $date_faixa = Utils_Helper::data($task->delivered_date, 'd/m/Y');
+                                                    }else{
+                                                        $date_faixa = Utils_Helper::data($task->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($task->crono_date).')';
+                                                    }
+
+                                                    ?>
+                                                    <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>
+                                                    <span class="round list_faixa left tag" style="background:<?=$color?>"><?=$date_faixa?></span><?=$diff?>
+                                                        </a> 
+                                                </div>
+                                                <? if($task->task_to != "0"){?>
+                                                    <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                <?}?>
+                                                <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
+                                            </div>
+                                            <div class="clear" style="padding-top:5px;">
+                                                <?if(!empty($task->description)){ ?>
+                                                    <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
+                                                <?}?>
+                                            </div> 
+                                            <div class="options">
+                                                <? if($task->status_id != '5'){?>
+                                                    <!--a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a-->                          
+                                                <?}?>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    <div class="replies replies_<?=$task->id;?>"> 
+                                        <div style='clear:both'>
+                                            <div class='hist'>
+                                                <div class="right"><?=Utils_Helper::getUserImage($task->to->id)?></div>
+                                                <div class="task_reply round"> 
+                                                    <? if($task->status_id == '5'){?>
+                                                        <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
+                                                            <input type="hidden" name='task_id' value="<?=$task->id?>" />
+                                                            <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
+                                                            <?  
+                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                                    $start = false;
+                                                                }else{
+                                                                    $start = true;
+                                                                }
+
+                                                                if($start){
+                                                            ?>
+                                                                    <input type="submit" class="bar_button round" value="iniciar">
+                                                            <?}?>
+
+                                                        </form>
+                                                    <?}
+                                                
+                                                if($task->reply->id != '') {?>
+                                                    <div class='line_bottom'>
+                                                        <? if($current_auth != "assistente"){?>
+                                                            <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
+                                                        <?}?>
+                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
+                                                        <? if($task->reply->finished != ""){?>
+                                                            <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
+                                                            </a>
+                                                        <?}elseif($task->status_id == '6'){?>
+                                                            <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
+                                                            </a>
+                                                        <?}?>
+                                                    </div>
+                                                    <div class="clear">
+                                                    <?if(!empty($task->reply->description)){ ?>
+                                                        <span class="wordwrap description"><?=$task->reply->description;?></span>
+                                                    <?}?>
+                                                    </div>
+                                                    <div class="options description" >
+                                                        <? if($task->status_id == '6' && $task->to->id == $user->id){?>
+                                                            <div class="right" style="min-height:20px; padding-top:10px">
+                                                                <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
+                                                            </div>
+                                                        <?}?>
                                                     </div>
                                                 <?}?>
-                                                <div class='line_bottom'>
-                                                    <div class="left">
-                                                        <?if($current_auth != "assistente"){?>
-                                                            <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
-                                                        <?}
-
-                                                        $diff = '';
-                                                        $color = $task->tag->color;
-                                                        if($task->diff != 0){
-                                                            if($task->diff < 0){
-                                                                $diff = '<span class="list_faixa round">'.$task->diff.'</span>';
-                                                                //$color = $task->tag->color;
-                                                            }else{
-                                                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
-                                                                $color = 'red';
-                                                            }
-                                                        }
-
-                                                        if($task->delivered_date != ''){
-                                                            $date_faixa = Utils_Helper::data($task->delivered_date, 'd/m/Y');
-                                                        }else{
-                                                            $date_faixa = Utils_Helper::data($task->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($task->crono_date).')';
-                                                        }
-
-                                                        ?>
-                                                        <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>
-                                                        <span class="round list_faixa left tag" style="background:<?=$color?>"><?=$date_faixa?></span><?=$diff?>
-                                                            </a> 
-                                                    </div>
-                                                    <? if($task->task_to != "0"){?>
-                                                        <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
-                                                    <?}?>
-                                                    <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                                </div>
-                                                <div class="clear" style="padding-top:5px;">
-                                                    <?if(!empty($task->description)){ ?>
-                                                        <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
-                                                    <?}?>
                                                 </div> 
-                                                <div class="options">
-                                                    <? if($task->status_id != '5'){?>
-                                                        <!--a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a-->                          
-                                                    <?}?>
-                                                </div>
-                                            </div>  
-                                        </div>
-                                        <div class="replies replies_<?=$task->id;?>"> 
-                                            <div style='clear:both'>
-                                                <div class='hist'>
-                                                    <div class="right"><?=Utils_Helper::getUserImage($task->to->id)?></div>
-                                                    <div class="task_reply round"> 
-                                                        <? if($task->status_id == '5'){?>
-                                                            <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
-                                                                <input type="hidden" name='task_id' value="<?=$task->id?>" />
-                                                                <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                                <?  
-                                                                    if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                                        $start = false;
-                                                                    }else{
-                                                                        $start = true;
-                                                                    }
-
-                                                                    if($start){
-                                                                ?>
-                                                                        <input type="submit" class="bar_button round" value="iniciar">
-                                                                <?}?>
-
-                                                            </form>
-                                                        <?}
-                                                    
-                                                    if($task->reply->id != '') {?>
-                                                        <div class='line_bottom'>
-                                                            <? if($current_auth != "assistente"){?>
-                                                                <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
-                                                            <?}?>
-                                                                <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                                            <? if($task->reply->finished != ""){?>
-                                                                <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
-                                                                </a>
-                                                            <?}elseif($task->status_id == '6'){?>
-                                                                <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
-                                                                </a>
-                                                            <?}?>
-                                                        </div>
-                                                        <div class="clear">
-                                                        <?if(!empty($task->reply->description)){ ?>
-                                                            <span class="wordwrap description"><?=$task->reply->description;?></span>
-                                                        <?}?>
-                                                        </div>
-                                                        <div class="options description" >
-                                                            <? if($task->status_id == '6' && $task->to->id == $user->id){?>
-                                                                <div class="right" style="min-height:20px; padding-top:10px">
-                                                                    <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
-                                                                </div>
-                                                            <?}?>
-                                                        </div>
-                                                    <?}?>
-                                                    </div> 
-                                                </div>
-                                            </div>  
-                                        </div>                                    
-                                    </div>
+                                            </div>
+                                        </div>  
+                                    </div>                                    
+                                </div>
                             <?}?>
                         </div> 
-                        
                     </div>
                 <?               
             }   

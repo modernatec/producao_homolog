@@ -355,17 +355,68 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	print json_encode($result);
     }
 
+    public function getFiltros($project_id){
+    	$this->auto_render = false;
+    	$viewFiltros = View::factory('admin/objects/filtros');
+    	$viewFiltros->project_id = $project_id;
+
+    	$filtros = Session::instance()->get('kaizen')['filtros'];
+
+		$viewFiltros->typeObjectsList = array();
+		$viewFiltros->statusList = array();
+		$viewFiltros->collectionList = array();
+		$viewFiltros->suppliersList = array();
+		$viewFiltros->materiasList = array();
+
+  		$viewFiltros->typeObjectsList = ORM::factory('typeobject')
+  											->join('objectStatus')->on('objectStatus.typeobject_id', '=', 'typeobjects.id')
+  											->where('objectStatus.fase', '=', '1')
+  											->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('typeObjects.id')
+  											->order_by('name', 'ASC')->find_all();
+
+		$viewFiltros->statusList = ORM::factory('statu')
+											->join('objectStatus')->on('objectStatus.status_id', '=', 'status.id')
+  											->where('objectStatus.fase', '=', '1')
+  											->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('status.id')
+											->order_by('status', 'ASC')->find_all();
+
+		$viewFiltros->collectionList = ORM::factory('collection')
+											->join('objectStatus')->on('objectStatus.collection_id', '=', 'collections.id')
+  											->where('objectStatus.fase', '=', '1')
+  											->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('collections.id')
+											->order_by('name', 'ASC')->find_all();
+
+		$viewFiltros->suppliersList = ORM::factory('supplier')
+											->join('objectStatus')->on('objectStatus.supplier_id', '=', 'suppliers.id')
+  											->where('objectStatus.fase', '=', '1')
+  											->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('suppliers.id')											
+											->order_by('empresa', 'ASC')->find_all();
+
+		$viewFiltros->materiasList = ORM::factory('materia')
+											->join('objectStatus')->on('objectStatus.materia_id', '=', 'materias.id')
+  											->where('objectStatus.fase', '=', '1')
+  											->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('materias.id')											
+											->order_by('name', 'ASC')->find_all();
+
+		foreach ($filtros as $key => $value) {
+  			$viewFiltros->$key = json_decode($value);
+  		}
+
+  		return $viewFiltros;
+    }
+
     public function action_getObjects($project_id, $ajax = null){
     	//$this->startProfilling();
-
     	$project_id = ($project_id != "") ? $project_id : Session::instance()->get('kaizen')['parameters'];
 
 		$this->auto_render = false;
-		$view = View::factory('admin/objects/table');
-		$viewFiltros = View::factory('admin/objects/filtros');
-		
+		$view = View::factory('admin/objects/table');		
 		$view->project_id = $project_id;
-		$viewFiltros->project_id = $project_id;
 
 		//diferente de "finalizado" e "nao iniciado"
 		$status_init = ORM::factory('statu')
@@ -388,16 +439,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   		$filtros = Session::instance()->get('kaizen')['filtros'];
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
-  			$viewFiltros->$key = json_decode($value);
   		}
 
   		if(!isset($view->filter_status)){
   			$view->filter_status = json_decode(json_encode($status_arr));
-  			$viewFiltros->filter_status = json_decode(json_encode($status_arr));
   		}
 
 		$query = ORM::factory('objectStatu')->where('fase', '=', '1');
-					//->join('collections_projects', 'INNER')->on('objectStatus.project_id', '=', 'collections_projects.project_id');
 
 		/***Filtros***/
 		(isset($view->filter_tipo)) ? $query->where('typeobject_id', 'IN', $view->filter_tipo) : '';
@@ -410,92 +458,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		
 		$view->objectsList = $query->where('objectStatus.project_id', '=', $project_id)
 			->order_by('retorno','ASC')->order_by('taxonomia', 'ASC')->find_all();
-		
-		
-		/****Filtros*****/
-
-		$typeObjectsList = array();
-		$typeObjectsList_arr = array();
-		$typeObjectsList_index = array();
-
-		$statusList = array();
-		$statusList_arr = array();
-		$statusList_index = array();
-
-		$collectionList = array();
-		$collectionList_arr = array();
-		$collectionList_index = array();
-
-		$suppliersList = array();
-		$suppliersList_arr = array();
-		$suppliersList_index = array();
-
-		$materiasList = array();
-		$materiasList_arr = array();
-		$materiasList_index = array();
-
-		$query_filters = DB::select('*')->from('objectStatus')
-							->where('fase', '=', '1')
-							->where('project_id', '=', $project_id)
-							->execute();
-
-		//->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')
-							//->where('project_id', '=', $project_id))
-
-		foreach ($query_filters as $object) {
-			array_push($typeObjectsList_arr, array('typeobject_id' => $object['typeobject_id'], 'typeobject_name' => $object['typeobject_name']));
-			array_push($typeObjectsList_index, $object['typeobject_name']);
-
-			array_push($statusList_arr, array('status_id' => $object['status_id'], 'statu_status' => $object['statu_status']));
-			array_push($statusList_index, $object['statu_status']);
-
-			array_push($collectionList_arr, array('collection_id' => $object['collection_id'], 'collection_name' => $object['collection_name']));
-			array_push($collectionList_index, $object['collection_name']);
-
-			//array_push($suppliersList_arr, array('supplier_id' => $object['supplier_id'], 'supplier_empresa' => $object['supplier_empresa']));
-			//array_push($suppliersList_index, $object['supplier_empresa']);
-
-			array_push($materiasList_arr, array('materia_id' => $object['materia_id'], 'materia_name' => $object['materia_name']));
-			array_push($materiasList_index, $object['materia_name']);
-		}
-
-		array_multisort($typeObjectsList_index, SORT_ASC, SORT_STRING, $typeObjectsList_arr);
-		array_multisort($statusList_index, SORT_ASC, SORT_STRING, $statusList_arr);
-		array_multisort($collectionList_index, SORT_ASC, SORT_STRING, $collectionList_arr);
-		array_multisort($suppliersList_index, SORT_ASC, SORT_STRING, $suppliersList_arr);
-		array_multisort($materiasList_index, SORT_ASC, SORT_STRING, $materiasList_arr);
-
-		foreach ($typeObjectsList_arr as $typeObject) {
-			array_push($typeObjectsList, json_encode($typeObject));
-		}
-
-		foreach ($statusList_arr as $status) {
-			array_push($statusList, json_encode($status));
-		}
-
-		foreach ($collectionList_arr as $collection) {
-			array_push($collectionList, json_encode($collection));
-		}
-
-		foreach ($suppliersList_arr as $supplier) {
-			array_push($suppliersList, json_encode($supplier));
-		}
-
-		foreach ($materiasList_arr as $materia) {
-			array_push($materiasList, json_encode($materia));
-		}
-
-		$view->typeObjectsList = array_unique($typeObjectsList);
-		$view->statusList = array_unique($statusList);
-		$view->collectionList = array_unique($collectionList);
-		$view->suppliersList = array_unique($suppliersList);
-		$view->materiasList = array_unique($materiasList);
-
-		$viewFiltros->typeObjectsList = array_unique($typeObjectsList);
-		$viewFiltros->statusList = array_unique($statusList);
-		$viewFiltros->collectionList = array_unique($collectionList);
-		$viewFiltros->suppliersList = array_unique($suppliersList);
-		$viewFiltros->materiasList = array_unique($materiasList);
 
 		//$this->endProfilling();
 		
@@ -506,7 +468,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($viewFiltros->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($project_id)->render())),
 				)						
 			);
 	       
@@ -526,8 +488,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                 echo '1';
                 exit();
             }
-
-
 
             $object = ORM::factory('object', $object_id);
             
@@ -626,35 +586,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 			$view->statusList = $query->where('workflows_status.workflow_id', '=', $object->workflow_id)->where('type', '=', 'object')->group_by('status')->order_by('order', 'ASC')->find_all();
 			
-			/*
-			$object_status = ORM::factory('objects_statu')->where('object_id', '=', $object_id)->order_by('created_at', 'DESC')->find();  
-
-	        $query = ORM::factory('tag')
-			->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
-			->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
-
-			if($this->current_auth != 'admin'){
-				$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
-			}
-
-			$tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)
-								->where('workflows_status_tags.status_id', 'NOT IN', $status_arr)
-								//->where('workflows_status_tags.status_id', '=', $object_status->status_id)
-								->where('type', '=', 'task')
-								->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
-
-			$tag_arr = array();
-			$i = 0;
-			foreach ($tagList as $key => $tag) {
-				$tag_arr[$i][$key] = $tag;
-
-				if($tag->sync == '0'){
-					$i++;
-				}
-			}
-			$view->tag_arr = $tag_arr;
-			*/		
-
 			$view->obj = $object;			
 
 			$view->objVO = $arr_objstatus;
@@ -724,7 +655,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            	$new_task->object_id = $object_status->object_id;
 	            	$new_task->object_status_id = $object_status->id;
 	            	$new_task->tag_id = $tag->id;
-	            	$new_task->team_id = $object_status->status->team_id;//$this->current_user->userInfos->team_id;
+	            	$new_task->team_id = $object_status->status->team_id;
 	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($tag->days);
 	            	$new_task->planned_date = $new_task->crono_date;
 
@@ -736,8 +667,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            			/*
 	            			* busca usuário do time, responsável pela coleção
 	            			*/
-	            			
-
 	            			$user_collection = ORM::factory('collections_userinfo')
 	            								->where('collection_id', '=', $object->collection_id)
 	            								->and_where('team_id', '=', $object_status->status->team_id)->find();
@@ -775,8 +704,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		            $new_task->save(); 
 		            
 		        }
-		        
-				
 
 				$db->commit();
 				$msg = 'status salvo com sucesso.';
@@ -803,6 +730,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					array(
 						array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($object_status->object_id, true)->render())),
 						array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($object_status->object->project_id, true)->render())),
+						array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($object_status->object->project_id)->render())),
 						array('type'=>'msg', 'content'=> $msg),
 					)						
 				);	

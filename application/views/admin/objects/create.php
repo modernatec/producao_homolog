@@ -96,7 +96,7 @@
             <div class="clear">
                 <dt><a href="<?=URL::base();?>admin/suppliers/getListSuppliers/true" class="popup"><span class='add'>produtoras (produção &bullet; áudio &bullet; arte)</span></a></dt>
                 <input type="hidden" name="produtoras" id="sortable_produtoras" />
-                <ul class="list_item connect_suppliers round sortable_produtoras" data-fill="sortable_produtoras" >
+                <ul class="list_item connect_suppliers round sortable_produtoras drop" data-fill="sortable_produtoras" >
                     <?foreach ($suppliersList as $supplier_obj) {?>
                         <li class="dd-item" id="supplier-<?=$supplier_obj->supplier->id?>">
                             <div><p><b><?=$supplier_obj->supplier->empresa?></b></p></div>

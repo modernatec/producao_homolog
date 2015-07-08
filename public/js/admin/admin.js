@@ -490,7 +490,7 @@ function setupAjax(container){
         },
         stop: function (event, ui) {
             item = $('#' + ui.item.attr('id') + " > div.infos");
-            if(item.hasClass('hide')){
+            if($(item).closest('ul').hasClass('drop')){
                 item.removeClass('hide');
             }else{
                 item.addClass('hide');
