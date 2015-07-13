@@ -50,7 +50,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$view->materiaList = ORM::factory('materia')->find_all();
 		$view->segmentoList = ORM::factory('segmento')->find_all();
 		$view->teamList = ORM::factory('team')->find_all();
-		$view->userList = ORM::factory('userinfo')->where('status', '=', '1')->find_all();
+		$view->userList = ORM::factory('userinfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();
 		$view->collection_users = DB::select('userInfo_id')->from('collections_userinfos')->where('collection_id', '=', $id)->execute()->as_array('userInfo_id');
 
 		if($id != ""){

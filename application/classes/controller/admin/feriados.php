@@ -2,15 +2,15 @@
  
 class Controller_Admin_Feriados extends Controller_Admin_Template {
  
-	public $auth_required		= array('login', 'coordenador'); //Auth is required to access this controller
+	public $auth_required		= array('login'); //Auth is required to access this controller
  	
-	/*
+	
 	public $secure_actions     	= array(
 										'create' => array('login', 'coordenador'),
 										'edit' => array('login', 'coordenador'),
 										'delete' => array('login', 'coordenador'),
                                   );
-	*/
+	
 					 
 	public function __construct(Request $request, Response $response)
 	{

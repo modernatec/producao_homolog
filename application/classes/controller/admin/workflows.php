@@ -99,44 +99,46 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			$workflow->save();
 			$w_id = $workflow->id;
 
-			$i = '0';
-			DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
-			DB::delete('workflows_status_tags')->where('workflow_id', '=', $workflow->id)->execute();
-			
-			parse_str($this->request->post('item'),$itens); 			
-			foreach($itens['item'] as $status_id){
-				$x = '0';
-				$days = 0;
-				if($this->request->post('tasks_status'.$status_id) != ''){
-					parse_str($this->request->post('tasks_status'.$status_id), $tasks);					
-					foreach($tasks['task'] as $tag_id){
-						/**rever para passar days via post?**/
-						$tag = ORM::factory('tag', $tag_id);
+			if($this->request->post('item') != ""){
+				$i = '0';
+				DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
+				DB::delete('workflows_status_tags')->where('workflow_id', '=', $workflow->id)->execute();
+				
+				parse_str($this->request->post('item'),$itens); 			
+				foreach($itens['item'] as $status_id){
+					$x = '0';
+					$days = 0;
+					if($this->request->post('tasks_status'.$status_id) != ''){
+						parse_str($this->request->post('tasks_status'.$status_id), $tasks);					
+						foreach($tasks['task'] as $tag_id){
+							/**rever para passar days via post?**/
+							$tag = ORM::factory('tag', $tag_id);
 
-						if($tag->sync == '0'){
-							$days += $tag->days;
+							if($tag->sync == '0'){
+								$days += $tag->days;
+							}
+							/****/
+
+							$workflow_tags = ORM::factory('workflows_status_tag');
+							$workflow_tags->status_id = $status_id;
+							$workflow_tags->workflow_id = $workflow->id;
+							$workflow_tags->tag_id = $tag_id;				
+							$workflow_tags->order = $x;
+							$workflow_tags->save();
+
+							$x++;
 						}
-						/****/
+					}	
 
-						$workflow_tags = ORM::factory('workflows_status_tag');
-						$workflow_tags->status_id = $status_id;
-						$workflow_tags->workflow_id = $workflow->id;
-						$workflow_tags->tag_id = $tag_id;				
-						$workflow_tags->order = $x;
-						$workflow_tags->save();
+					$workflow_status = ORM::factory('workflows_statu');
+					$workflow_status->status_id = $status_id;
+					$workflow_status->workflow_id = $workflow->id;				
+					$workflow_status->order = $i;
+					$workflow_status->days = $days;
+					$workflow_status->save();
 
-						$x++;
-					}
-				}	
-
-				$workflow_status = ORM::factory('workflows_statu');
-				$workflow_status->status_id = $status_id;
-				$workflow_status->workflow_id = $workflow->id;				
-				$workflow_status->order = $i;
-				$workflow_status->days = $days;
-				$workflow_status->save();
-
-				$i++;
+					$i++;
+				}
 			}
 
 			$db->commit();
@@ -171,8 +173,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 	
 	public function action_delete($id)
 	{	
-		/*
 		$this->auto_render = false;
+
 		try 
 		{            
 			$objeto = ORM::factory('workflow', $id);
@@ -194,7 +196,6 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
-		*/
 	}
 
 }

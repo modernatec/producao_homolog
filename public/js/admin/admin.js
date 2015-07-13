@@ -82,7 +82,7 @@ function setupUploadFinalPackage(){
                 $('#uploadPackage').removeClass('dz-started');
                     
                 setMsg({
-                    content:'uploade concluído',
+                    content:'upload concluído',
                 });
             }
         }
@@ -428,6 +428,8 @@ function setupAjax(container){
     $("#sortable").sortable({
         placeholder: "ui-state-highlight",
         distance: 70,
+        scroll: true, 
+        scrollSensitivity: 100,
         axis: 'y',
         update: function (event, ui) {
             var data = $(this).sortable('serialize');
@@ -444,6 +446,8 @@ function setupAjax(container){
     $(".sortable_tags").sortable({
         placeholder: "ui-state-highlight",
         distance: 30,
+        scroll: true, 
+        scrollSensitivity: 100,
         axis: 'y',
         update: function (event, ui) {
             var data = $(this).sortable('serialize');
@@ -460,6 +464,8 @@ function setupAjax(container){
     $(".sortable_status").sortable({
         placeholder: "ui-state-highlight",
         distance: 30,
+        scroll: true, 
+        scrollSensitivity: 100,
         axis: 'y',
         update: function (event, ui) {
             var data = $(this).sortable('serialize');
@@ -477,6 +483,8 @@ function setupAjax(container){
         connectWith: ".connect",
         placeholder: "ui-state-highlight",
         distance: 30,
+        scroll: true, 
+        scrollSensitivity: 100,
         update: function (event, ui) {
         }
     }).disableSelection();
@@ -485,6 +493,8 @@ function setupAjax(container){
         connectWith: ".connect_suppliers",
         placeholder: "ui-state-highlight",
         distance: 30,
+        scroll: true, 
+        scrollSensitivity: 100,
         update: function (event, ui) {
             
         },
@@ -850,7 +860,7 @@ function loadContent(args){
             removeDialogs();
         }
 
-        if(container != '#content'){
+        //if($('#dialog').length == 0){
             var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
             NewDialog.dialog({
                 modal: true,
@@ -865,7 +875,7 @@ function loadContent(args){
                 },
                 resizable:false,
             });
-        }
+        //}
 
         data_post = {container: container};
 
