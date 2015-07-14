@@ -74,12 +74,12 @@ function setupUploadFinalPackage(){
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>Verifique o tamanho do pacote e tente novamente...', 
                     tema:'error'
-                });
-                
+                });                
             }else{
-                console.log('ok');
+                console.log(response);
                 $('div.dz-preview').remove();
-                $('#uploadPackage').removeClass('dz-started');
+
+                //$('#uploadPackage').removeClass('dz-started');
                     
                 setMsg({
                     content:'upload concluído',
@@ -191,14 +191,13 @@ $(document).ready(function()
     }
 
     Dropzone.autoDiscover = false;
-
-//    updateBar();
+    updateBar();
 });
 
 
 setInterval(function() {
-//    updateBar();
-}, 10000);
+    updateBar();
+}, 5000);
 
 
 function setupScroll(){
@@ -267,533 +266,539 @@ var drawCharts = function drawChart() {
 }
 
 function setupAjax(container){ 
-    if($('.topo').length != 0 && container == '#content'){
-        $('#esquerda, #direita, #page').css({top:$('.topo').height() + 'px'});
-        $('#esquerda, #direita, #page').fadeIn(1000);
-    }
+    if(container == "#taskBar"){
+        $("a[rel='task_bar']").unbind('click').bind('click', function(e){
+            e.preventDefault();
+            loadContent({url:$(this).attr("href"), container:$(this).data("panel")});
+        
+            $('#menu li a').removeClass('selected');
+            $('#tasks').addClass('selected');
 
-    if($('.crono').length != 0 && container == '#tabs_content'){
-        $('.crono').css('width', $('#page').width() - $('.crono_fixed').width() - 10);
-    }
-    
-
-    //******Relatorios*******//
-    if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
-        $('.grafico').each(function(index, el) {
-            chartContainer.push($(el).attr('id'));
+            if($(this).data("refresh") != undefined){
+                window.location.hash = $(this).attr("href");
+            }
         });
-        drawCharts();
-    }
+    }else{
 
-    if($('.grafico').length != 0 && container == '#content'){
-        $('.grafico').each(function(index, el) {
-            chartContainer.push($(el).attr('id'));
-        });
-        google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
-        googleLoaded = true;
-    }    
 
-    if($('#relatorios_project_id').length != 0 && container == '#content'){
-        $('#relatorios_project_id').on('change', function() {
-            loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
-        });
-    }
+        if($('.topo').length != 0 && container == '#content'){
+            $('#esquerda, #direita, #page').css({top:$('.topo').height() + 'px'});
+            $('#esquerda, #direita, #page').fadeIn(1000);
+        }
 
-    $("#generateStatus").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        var project_id = $('#relatorios_project_id').val();
-        if(project_id != ''){
-            $('#relatorio_project_id').val(project_id);
-            $('#form_relatorio').submit();
-        }else{
-            setMsg({
-                content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+        if($('.crono').length != 0 && container == '#tabs_content'){
+            $('.crono').css('width', $('#page').width() - $('.crono_fixed').width() - 10);
+        }
+        
+
+        //******Relatorios*******//
+        if($('.grafico').length != 0 && container == '#charts' && googleLoaded == true){
+            $('.grafico').each(function(index, el) {
+                chartContainer.push($(el).attr('id'));
+            });
+            drawCharts();
+        }
+
+        if($('.grafico').length != 0 && container == '#content'){
+            $('.grafico').each(function(index, el) {
+                chartContainer.push($(el).attr('id'));
+            });
+            google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
+            googleLoaded = true;
+        }    
+
+        if($('#relatorios_project_id').length != 0 && container == '#content'){
+            $('#relatorios_project_id').on('change', function() {
+                loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
             });
         }
-    });
 
-    $("#updateGdocs").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        var project_id = $('#relatorios_project_id').val();
-        if(project_id != ''){
-            $('#gdocs_project_id').val(project_id);
-            $('#sync_gdocs').submit();
-        }else{
-            setMsg({
-                content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+        $("#generateStatus").unbind('click').bind('click', function(e){
+            e.preventDefault();
+            var project_id = $('#relatorios_project_id').val();
+            if(project_id != ''){
+                $('#relatorio_project_id').val(project_id);
+                $('#form_relatorio').submit();
+            }else{
+                setMsg({
+                    content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+                });
+            }
+        });
+
+        $("#updateGdocs").unbind('click').bind('click', function(e){
+            e.preventDefault();
+            var project_id = $('#relatorios_project_id').val();
+            if(project_id != ''){
+                $('#gdocs_project_id').val(project_id);
+                $('#sync_gdocs').submit();
+            }else{
+                setMsg({
+                    content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...'
+                });
+            }
+        });
+
+        $('.pickcolor').minicolors({
+            control:'wheel',
+        });
+
+
+        //**************Acervo*****************//
+
+        if($('#pagination').length != 0 && container == '#tabs_content'){
+            $('#pagination').on('change', function() {
+                var panel = $(this).data('panel');
+                $.ajax({
+                    type: "POST",
+                    url: $(this).val(),
+                    dataType : "html",
+                    timeout: 20000, 
+                    success: function(data) {
+                        reloadContent(data, panel);
+                    },
+                    error: function(e) {
+                        console.log(e);
+                        removeDialogs();
+                        setMsg({
+                            content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                            tema:'error',
+                            
+                        });
+                    }
+                });  
+
             });
         }
-    });
 
-    $('.pickcolor').minicolors({
-        control:'wheel',
-    });
+        if($(container + ' .scrollable_content').length != 0){
+            $(container + ' .scrollable_content').each(function(index, el){
+                if($(el).data('bottom') == undefined){
+                    $(el).css({height:$( window ).height() - $(el).offset().top - 5});
+                }
+            });
+        }
+
+        validateAjax(); 
+        
+        if($("#upload").size() == 1){
+            if(myDropzone){
+                myDropzone.destroy();
+                myDropzone = undefined;
+            }
+            console.log(myDropzone);
+            setupUpload();
+        }
+
+        if($("#uploadPackage").size() == 1){
+            if(fileDropzone){
+                fileDropzone.destroy();
+                fileDropzone = undefined;
+            }
+            setupUploadFinalPackage();
+        }    
+        
+        setupScroll();
+
+        $('.checkAll').click(function(event) {  //on click 
+            if(this.checked) { // check select status
+                $('.'+this.id).each(function() { //loop through each checkbox
+                    this.checked = true;  //select all checkboxes with class "checkbox1"               
+                });
+            }else{
+                $('.'+this.id).each(function() { //loop through each checkbox
+                    this.checked = false; //deselect all checkboxes with class "checkbox1"                       
+                });         
+            }
+        });
+        
+        $(".populate").change(function(ui) {
+            populateSelect(ui);
+        });
+
+        $(".fone").mask("(99) 9999-9999"); 
+
+        $('.money').autoNumeric('init');
+
+        $(".filter span").unbind('click').bind("click", function(e) {
+            if($(this).parent().children('.filter_panel').css('display') == 'none'){
+                closeFilterPanel();
+            }
+            $(this).parent().children('.filter_panel').fadeToggle(function(){
+                if($(this).parent().children('.filter_panel').css('display') == 'none'){
+                    $(this).parent().parent().children('li').css({'background': ''});
+                }
+            });
+
+            $(this).parent().parent().children('li').css({'background': '#cccccc'});
+            
+        });
+
+        $(".cancelar").unbind('click').bind('click', function() { 
+            closeFilterPanel();
+        });
 
 
-    //**************Acervo*****************//
+        $("#sortable").sortable({
+            placeholder: "ui-state-highlight",
+            distance: 70,
+            scroll: true, 
+            scrollSensitivity: 100,
+            axis: 'y',
+            update: function (event, ui) {
+                var data = $(this).sortable('serialize');
+                // POST to server using $.post or $.ajax
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    timeout: 20000, 
+                    url: base_url + '/tasks/reorder'
+                });
+            }
+        }).disableSelection();
 
-    if($('#pagination').length != 0 && container == '#tabs_content'){
-        $('#pagination').on('change', function() {
-            var panel = $(this).data('panel');
+        $(".sortable_tags").sortable({
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
+            scrollSensitivity: 100,
+            axis: 'y',
+            update: function (event, ui) {
+                var data = $(this).sortable('serialize');
+                // POST to server using $.post or $.ajax
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    timeout: 20000, 
+                    url: base_url + '/tags/reorder'
+                });
+            }
+        }).disableSelection();
+
+        $(".sortable_status").sortable({
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
+            scrollSensitivity: 100,
+            axis: 'y',
+            update: function (event, ui) {
+                var data = $(this).sortable('serialize');
+                // POST to server using $.post or $.ajax
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    timeout: 20000, 
+                    url: base_url + '/status/reorder'
+                });
+            }
+        }).disableSelection();
+
+        $(".sortable_workflow").sortable({
+            connectWith: ".connect",
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
+            scrollSensitivity: 100,
+            update: function (event, ui) {
+            }
+        }).disableSelection();
+
+        $(".sortable_produtoras").sortable({
+            connectWith: ".connect_suppliers",
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
+            scrollSensitivity: 100,
+            update: function (event, ui) {
+                
+            },
+            stop: function (event, ui) {
+                item = $('#' + ui.item.attr('id') + " > div.infos");
+                if($(item).closest('ul').hasClass('drop')){
+                    item.removeClass('hide');
+                }else{
+                    item.addClass('hide');
+                }
+            }
+        }).disableSelection();
+
+
+
+        $("a[rel='load-content']").unbind('click').bind('click', function(e){
+            e.preventDefault();
+            loadContent({url:$(this).attr("href"), container: $(this).data("panel")});
+
+            if($(this).hasClass('menu')){
+                $('#menu li a').removeClass('selected');
+                $(this).addClass('selected');
+            }
+
+            if($(this).hasClass('load')){
+                $('.list_item li a').removeClass('selected');
+                $(this).addClass('selected');
+            }    
+
+            $("li").removeClass("blueSelection");
+            $(this).closest("li").addClass("blueSelection");
+        
+
+            if($(this).data("refresh") != undefined){
+                window.location.hash = $(this).attr("href");// hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+            }
+        });
+
+        
+
+        $(".collapse").unbind('click').bind('click', function () {
+            //$header = $(this);
+            var span = $('.collapse span');
+            var element = $(this).data("show");
+            $('.' + element).fadeToggle(200, function () {
+                $('.' + element).is(":visible") ? span.attr('class', 'collapse_ico') : span.attr('class', 'expand_ico');
+            });
+        });
+
+        $('.show').unbind('click').bind('click', function() {
+            $('.hide').slideUp();
+
+            var element = $(this).data("show");
+            $('#' + element).slideToggle();
+        });
+
+        $('.fade').unbind('click').bind('click', function() {
+            var element = $(this).data("show");
+            $('.' + element).fadeToggle();
+        });
+
+        $('.cancel').unbind('click').bind('click', function() {
+            var element = $(this).data("show");
+            $('#' + element).slideUp();
+        });
+
+        $("a:contains('Excluir'), a.excluir").unbind('click').bind('click', function() {        
+            var NewDialog = $('<div id="dialog"><p>Deseja realmente excluir este conteúdo?</p></div>'),
+                btExcluir = this;
+                NewDialog.dialog({
+                modal: true,
+                dialogClass: 'noTitleStuff',
+                show: 'clip',
+                hide: 'clip',
+                resizable:false,
+                buttons: [
+                    {text: "excluir", click: function() {
+                        loadContent({url:$(btExcluir).attr('href')});
+                    }},
+                    {text: "cancelar", click: function() {$(this).dialog("close")}}
+                ]
+            });
+            return false;
+        });
+
+        $("a.view_oed").unbind('click').bind('click', function(e) {   
+            e.preventDefault();
+            var url = this.href;
+
+            $('#dialog').remove();
+            $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
+
             $.ajax({
                 type: "POST",
-                url: $(this).val(),
+                url: url,
+                timeout: 1000, 
                 dataType : "html",
-                timeout: 20000, 
-                success: function(data) {
-                    reloadContent(data, panel);
+                success: function(retorno) {
+                    $('#dialog').removeClass('loading');
+                    if(retorno != 0){
+                        $('#dialog').addClass('acervo_preview');
+                        $('#dialog').show('slide', {direction: 'left'}, 300, function(){
+                            $('#dialog').append(retorno);
+                            setupAjax('#dialog');
+                        });
+                    }else{
+                        setMsg({
+                            content:'Ops!..<br/><br/>Não encontrei este OED.', 
+                            tema:'error',
+                        });
+                    }
                 },
                 error: function(e) {
+                    $('#dialog').removeClass('loading');
                     console.log(e);
-                    removeDialogs();
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                         tema:'error',
-                        
                     });
                 }
             });  
-
-        });
-    }
-
-    if($(container + ' .scrollable_content').length != 0){
-        $(container + ' .scrollable_content').each(function(index, el){
-            if($(el).data('bottom') == undefined){
-                $(el).css({height:$( window ).height() - $(el).offset().top - 5});
-            }
-        });
-    }
-
-    validateAjax(); 
-    
-    if($("#upload").size() == 1){
-        if(myDropzone){
-            myDropzone.destroy();
-            myDropzone = undefined;
-        }
-        console.log(myDropzone);
-        setupUpload();
-    }
-
-    if($("#uploadPackage").size() == 1){
-        if(fileDropzone){
-            fileDropzone.destroy();
-            fileDropzone = undefined;
-        }
-        setupUploadFinalPackage();
-    }    
-    
-    setupScroll();
-
-    $('.checkAll').click(function(event) {  //on click 
-        if(this.checked) { // check select status
-            $('.'+this.id).each(function() { //loop through each checkbox
-                this.checked = true;  //select all checkboxes with class "checkbox1"               
-            });
-        }else{
-            $('.'+this.id).each(function() { //loop through each checkbox
-                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
-            });         
-        }
-    });
-    
-    $(".populate").change(function(ui) {
-        populateSelect(ui);
-    });
-
-    $(".fone").mask("(99) 9999-9999"); 
-
-    $('.money').autoNumeric('init');
-
-    $(".filter span").unbind('click').bind("click", function(e) {
-        if($(this).parent().children('.filter_panel').css('display') == 'none'){
-            closeFilterPanel();
-        }
-        $(this).parent().children('.filter_panel').fadeToggle(function(){
-            if($(this).parent().children('.filter_panel').css('display') == 'none'){
-                $(this).parent().parent().children('li').css({'background': ''});
-            }
         });
 
-        $(this).parent().parent().children('li').css({'background': '#cccccc'});
         
-    });
 
-    $(".cancelar").unbind('click').bind('click', function() { 
-        closeFilterPanel();
-    });
-
-
-    $("#sortable").sortable({
-        placeholder: "ui-state-highlight",
-        distance: 70,
-        scroll: true, 
-        scrollSensitivity: 100,
-        axis: 'y',
-        update: function (event, ui) {
-            var data = $(this).sortable('serialize');
-            // POST to server using $.post or $.ajax
-            $.ajax({
-                data: data,
-                type: 'POST',
-                timeout: 20000, 
-                url: base_url + '/tasks/reorder'
-            });
-        }
-    }).disableSelection();
-
-    $(".sortable_tags").sortable({
-        placeholder: "ui-state-highlight",
-        distance: 30,
-        scroll: true, 
-        scrollSensitivity: 100,
-        axis: 'y',
-        update: function (event, ui) {
-            var data = $(this).sortable('serialize');
-            // POST to server using $.post or $.ajax
-            $.ajax({
-                data: data,
-                type: 'POST',
-                timeout: 20000, 
-                url: base_url + '/tags/reorder'
-            });
-        }
-    }).disableSelection();
-
-    $(".sortable_status").sortable({
-        placeholder: "ui-state-highlight",
-        distance: 30,
-        scroll: true, 
-        scrollSensitivity: 100,
-        axis: 'y',
-        update: function (event, ui) {
-            var data = $(this).sortable('serialize');
-            // POST to server using $.post or $.ajax
-            $.ajax({
-                data: data,
-                type: 'POST',
-                timeout: 20000, 
-                url: base_url + '/status/reorder'
-            });
-        }
-    }).disableSelection();
-
-    $(".sortable_workflow").sortable({
-        connectWith: ".connect",
-        placeholder: "ui-state-highlight",
-        distance: 30,
-        scroll: true, 
-        scrollSensitivity: 100,
-        update: function (event, ui) {
-        }
-    }).disableSelection();
-
-    $(".sortable_produtoras").sortable({
-        connectWith: ".connect_suppliers",
-        placeholder: "ui-state-highlight",
-        distance: 30,
-        scroll: true, 
-        scrollSensitivity: 100,
-        update: function (event, ui) {
-            
-        },
-        stop: function (event, ui) {
-            item = $('#' + ui.item.attr('id') + " > div.infos");
-            if($(item).closest('ul').hasClass('drop')){
-                item.removeClass('hide');
-            }else{
-                item.addClass('hide');
-            }
-        }
-    }).disableSelection();
-
-
-
-    $("a[rel='load-content']").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        loadContent({url:$(this).attr("href"), container: $(this).data("panel")});
-
-        if($(this).hasClass('menu')){
-            $('#menu li a').removeClass('selected');
-            $(this).addClass('selected');
-        }
-
-        if($(this).hasClass('load')){
-            $('.list_item li a').removeClass('selected');
-            $(this).addClass('selected');
-        }    
-
-        $("li").removeClass("blueSelection");
-        $(this).closest("li").addClass("blueSelection");
-    
-
-        if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("href");// hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
-        }
-    });
-
-    $("a[rel='task_bar']").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        loadContent({url:$(this).attr("href"), container:$(this).data("panel")});
-    
-        $('#menu li a').removeClass('selected');
-        $('#tasks').addClass('selected');
-
-        if($(this).data("refresh") != undefined){
-            window.location.hash = $(this).attr("href");
-        }
-    });
-
-    $(".collapse").unbind('click').bind('click', function () {
-        //$header = $(this);
-        var span = $('.collapse span');
-        var element = $(this).data("show");
-        $('.' + element).fadeToggle(200, function () {
-            $('.' + element).is(":visible") ? span.attr('class', 'collapse_ico') : span.attr('class', 'expand_ico');
+        $("a.close_pop").unbind('click').bind('click', function(e){
+            e.preventDefault();
+            removeDialogs();
         });
-    });
 
-    $('.show').unbind('click').bind('click', function() {
-        $('.hide').slideUp();
+        $('a.popup').unbind('click').bind('click', function(e) {
+            e.preventDefault();
+            var url = this.href;
+            var form;
 
-        var element = $(this).data("show");
-        $('#' + element).slideToggle();
-    });
+            $('#dialog').remove();
 
-    $('.fade').unbind('click').bind('click', function() {
-        var element = $(this).data("show");
-        $('.' + element).fadeToggle();
-    });
+            $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
+            $('#dialog').load(
+                url,  
+                {},           
+                function (responseText, textStatus, XMLHttpRequest) {
+                    $(this).removeClass('loading');
+                    setupAjax('#dialog');
 
-    $('.cancel').unbind('click').bind('click', function() {
-        var element = $(this).data("show");
-        $('#' + element).slideUp();
-    });
+                    var is_json = true;
+                    try{
+                       var response = $.parseJSON(responseText);
+                    }catch(err){
+                       is_json = false;
+                    }   
 
-    $("a:contains('Excluir'), a.excluir").unbind('click').bind('click', function() {        
-        var NewDialog = $('<div id="dialog"><p>Deseja realmente excluir este conteúdo?</p></div>'),
-            btExcluir = this;
-            NewDialog.dialog({
-            modal: true,
-            dialogClass: 'noTitleStuff',
-            show: 'clip',
-            hide: 'clip',
-            resizable:false,
-            buttons: [
-                {text: "excluir", click: function() {
-                    loadContent({url:$(btExcluir).attr('href')});
-                }},
-                {text: "cancelar", click: function() {$(this).dialog("close")}}
-            ]
-        });
-        return false;
-    });
+                    if(is_json){
+                        setMsg({
+                            content: response[0].content, 
+                            tema:'error',
+                        });
+                    }else{
+                        $('#dialog').show('slide', {direction: 'left'}, 300);
 
-    $("a.view_oed").unbind('click').bind('click', function(e) {   
-        e.preventDefault();
-        var url = this.href;
-
-        $('#dialog').remove();
-        $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            timeout: 1000, 
-            dataType : "html",
-            success: function(retorno) {
-                $('#dialog').removeClass('loading');
-                if(retorno != 0){
-                    $('#dialog').addClass('acervo_preview');
-                    $('#dialog').show('slide', {direction: 'left'}, 300, function(){
-                        $('#dialog').append(retorno);
-                        setupAjax('#dialog');
-                    });
-                }else{
-                    setMsg({
-                        content:'Ops!..<br/><br/>Não encontrei este OED.', 
-                        tema:'error',
-                    });
-                }
-            },
-            error: function(e) {
-                $('#dialog').removeClass('loading');
-                console.log(e);
-                setMsg({
-                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',
-                });
-            }
-        });  
-    });
-
-    
-
-    $("a.close_pop").unbind('click').bind('click', function(e){
-        e.preventDefault();
-        removeDialogs();
-    });
-
-    $('a.popup').unbind('click').bind('click', function(e) {
-        e.preventDefault();
-        var url = this.href;
-        var form;
-
-        $('#dialog').remove();
-
-        $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
-        $('#dialog').load(
-            url,  
-            {},           
-            function (responseText, textStatus, XMLHttpRequest) {
-                $(this).removeClass('loading');
-                setupAjax('#dialog');
-
-                var is_json = true;
-                try{
-                   var response = $.parseJSON(responseText);
-                }catch(err){
-                   is_json = false;
-                }   
-
-                if(is_json){
-                    setMsg({
-                        content: response[0].content, 
-                        tema:'error',
-                    });
-                }else{
-                    $('#dialog').show('slide', {direction: 'left'}, 300);
-
-                    setTimeout(function(){
-                        $('#description').ckeditor();
-                        
-                        $('#tag_id, #status_id').unbind('change').bind('change', function(e){
-                            e.preventDefault();
-                            var days = $('#' + e.target.id + ' option:selected').data('days');
+                        setTimeout(function(){
+                            $('#description').ckeditor();
                             
-                            $.ajax({
-                                type: "POST",
-                                url: base_url + '/admin/feriados/getWorkDay/' + days,
-                                timeout: 10000, 
-                                dataType : "html",
-                                success: function(retorno) {
-                                    $('#crono_date').val(retorno);
-                                },
-                                error: function(e) {
-                                    console.log(e);
-                                    setMsg({
-                                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                                        tema:'error',
-                                    });
-                                }
-                            });   
-                        }) 
-                    }, 500);
+                            $('#tag_id, #status_id').unbind('change').bind('change', function(e){
+                                e.preventDefault();
+                                var days = $('#' + e.target.id + ' option:selected').data('days');
+                                
+                                $.ajax({
+                                    type: "POST",
+                                    url: base_url + '/admin/feriados/getWorkDay/' + days,
+                                    timeout: 10000, 
+                                    dataType : "html",
+                                    success: function(retorno) {
+                                        $('#crono_date').val(retorno);
+                                    },
+                                    error: function(e) {
+                                        console.log(e);
+                                        setMsg({
+                                            content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                                            tema:'error',
+                                        });
+                                    }
+                                });   
+                            }) 
+                        }, 500);
+                    }
+                    
                 }
-                
+            );
+            
+            return false;
+        });
+
+        $('.crono').unbind('change').bind('change', function(e){
+            days = $(this).data('days');
+            start = $(this).val();
+            target = $(this).data('target');
+
+            var data_post = [{name: 'from', value:start}];
+
+            $.ajax({
+                type: "POST",
+                url: base_url + '/admin/feriados/getWorkDay/' + days,
+                data: data_post,
+                timeout: 1000, 
+                dataType : "html",
+                success: function(retorno) {
+                    $('#' + target).val(retorno);
+                },
+                error: function(e) {
+                    console.log(e);
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        tema:'error',
+                    });
+                }
+            });  
+        });
+
+        $('#project_segmento, #project_ano').unbind('change').bind('change', function(e){
+            e.preventDefault();
+            var ano = $('#project_ano option:selected').val();
+            var segmento = $('#project_segmento option:selected').val();
+            var project_id = $('#project_id').val();
+            
+            var data_post = [{name: 'ano', value:ano}, {name: 'segmento', value:segmento}];
+
+            $.ajax({
+                type: "POST",
+                url: base_url + '/admin/collections/getCollectionList/' + project_id,
+                data: data_post,
+                timeout: 1000, 
+                dataType : "html",
+                success: function(retorno) {
+                    $('#collections').html(retorno);
+                    setupAjax('#direita');
+                },
+                error: function(e) {
+                    console.log(e);
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        tema:'error',
+                    });
+                }
+            });   
+        }) 
+
+
+        $('.tabs a').unbind('click').bind('click', function(e){
+            e.preventDefault();
+            link = $(this).attr('href');
+
+            if(link != lastURL){
+                $('.tabs li').removeClass('selected');
+                $('.content_hide').each(function(index, element){            
+                    if($(this).hasClass('content_show')){
+                        $(this).removeClass('content_show');
+                    }
+                });            
+
+                if($(this).hasClass('ajax')){
+                    loadContent({url:link, container:'#tabs_content'});
+                    
+                    if($(this).attr('data-clear')){                    
+                        $($(this).attr('data-clear')).html(" ");
+                    }
+                }else{
+                    $($(this).attr('href')).addClass('content_show');
+                }
+
+                $.removeCookie("producao");
+                $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
+                $(this).parent().addClass('selected');
             }
-        );
+        })
         
-        return false;
-    });
+        var tab = $.cookie("producao");
 
-    $('.crono').unbind('change').bind('change', function(e){
-        days = $(this).data('days');
-        start = $(this).val();
-        target = $(this).data('target');
-
-        var data_post = [{name: 'from', value:start}];
-
-        $.ajax({
-            type: "POST",
-            url: base_url + '/admin/feriados/getWorkDay/' + days,
-            data: data_post,
-            timeout: 1000, 
-            dataType : "html",
-            success: function(retorno) {
-                $('#' + target).val(retorno);
-            },
-            error: function(e) {
-                console.log(e);
-                setMsg({
-                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',
-                });
-            }
-        });  
-    });
-
-    $('#project_segmento, #project_ano').unbind('change').bind('change', function(e){
-        e.preventDefault();
-        var ano = $('#project_ano option:selected').val();
-        var segmento = $('#project_segmento option:selected').val();
-        var project_id = $('#project_id').val();
-        
-        var data_post = [{name: 'ano', value:ano}, {name: 'segmento', value:segmento}];
-
-        $.ajax({
-            type: "POST",
-            url: base_url + '/admin/collections/getCollectionList/' + project_id,
-            data: data_post,
-            timeout: 1000, 
-            dataType : "html",
-            success: function(retorno) {
-                $('#collections').html(retorno);
-                setupAjax('#direita');
-            },
-            error: function(e) {
-                console.log(e);
-                setMsg({
-                    content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',
-                });
-            }
-        });   
-    }) 
-
-
-    $('.tabs a').unbind('click').bind('click', function(e){
-        e.preventDefault();
-        link = $(this).attr('href');
-
-        if(link != lastURL){
-            $('.tabs li').removeClass('selected');
-            $('.content_hide').each(function(index, element){            
-                if($(this).hasClass('content_show')){
-                    $(this).removeClass('content_show');
-                }
-            });            
-
-            if($(this).hasClass('ajax')){
-                loadContent({url:link, container:'#tabs_content'});
-                
-                if($(this).attr('data-clear')){                    
-                    $($(this).attr('data-clear')).html(" ");
-                }
+        setTimeout(function(){
+            if($(container + ' ' + tab).length > 0){
+                $(container + ' ' + tab).click(); 
             }else{
-                $($(this).attr('href')).addClass('content_show');
+                $(container + ' a.aba').first().click(); 
             }
+        }, 100);    
 
-            $.removeCookie("producao");
-            $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
-            $(this).parent().addClass('selected');
-        }
-    })
-    
-    var tab = $.cookie("producao");
-
-    setTimeout(function(){
-        if($(container + ' ' + tab).length > 0){
-            $(container + ' ' + tab).click(); 
-        }else{
-            $(container + ' a.ajax').first().click(); 
-        }
-    }, 100);    
-
-    $('.date').live('focus', function () {
-        $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
-    });
+        $('.date').live('focus', function () {
+            $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
+        });
+    }
 }
 
 function CKupdate(){
@@ -860,19 +865,12 @@ function loadContent(args){
             removeDialogs();
         }
 
-        //if($('#dialog').length == 0){
-            var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+        
+        //if($('.loading').length == 0){
+            var NewDialog = $('<div class="ui-dialog loading"><p>aguarde...</p></div>');
             NewDialog.dialog({
                 modal: true,
-                dialogClass: 'noTitleStuff',
-                show: {
-                    effect: "clip",
-                    duration: 0
-                },
-                hide: {
-                    effect: "clip",
-                    duration: 0
-                },
+                dialogClass: 'noTitleStuff',                
                 resizable:false,
             });
         //}
@@ -911,16 +909,17 @@ function loadContent(args){
 }
 
 function updateBar(url){
-    if(logged_in != false){
-        d = new Date();
+    if(current_auth != 'assistente'){
+        if(logged_in != false){
+            d = new Date();
+            url = base_url + '/admin/tasks_status/updateTasksBar', true
 
-        url = base_url + '/admin/tasks_status/updateTasksBar', true
-
-        $("#taskBar").load(url, function() {
-            setupAjax('#taskBar');  
-        });
-    }else{
-        alert("sessão expirada!");
+            $("#taskBar").load(url, function() {
+                setupAjax('#taskBar');  
+            });
+        }else{
+            alert("sessão expirada!");
+        }
     }
 }
 
@@ -937,7 +936,6 @@ function getContent(args, dialog){
         dataType : "json",
         timeout: 20000, 
         success: function(retorno) {
-            //console.log('chamou getContent')
             for(k in retorno){
                 returnData.unshift(retorno[k]);    
             }
@@ -951,8 +949,6 @@ function getContent(args, dialog){
                 tema:'error',
                 
             });
-
-            //alert("ocorreu um erro ao carregar o conteúdo. getContent");
         }
     });  
 }
@@ -962,8 +958,6 @@ function setDataPanels(dialog){
     loading = true;
     if(returnData.length > 0){
         var result = returnData[0];
-        //console.log(result);
-
         returnData.shift();
 
         switch(result.type) {
@@ -981,6 +975,7 @@ function setDataPanels(dialog){
         if(dialog == undefined){   
             removeDialogs();
         }
+        
         loading = false;
     }
 }
@@ -1027,10 +1022,10 @@ function setMsg(args, dialog){
     );
 }
 
-function removeDialogs(){
+function removeDialogs(){   
     if($('.ui-dialog').length != 0){
         var options = {};
-        $('.ui-dialog').effect('clip', options, 200, function(){
+        $('.ui-dialog').fadeOut(200, function(){
             $(this).remove();
         });
     }

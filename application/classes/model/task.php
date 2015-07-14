@@ -16,26 +16,9 @@ class Model_Task extends ORM {
 		'reply' => array('model' => 'tasks_statu', 'foreign_key' => 'task_id'),
 	);
 
-	/*
-	public function getStatus($id){
-		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->order_by('id', 'DESC')->find();
-	}
-
-	
-	public function getReplies($id){
-		return ORM::factory('tasks_statu')->where('task_id', '=', $id)->find_all();
-	}
-	*/
-
 	public function getTasks($id){
 		return ORM::factory('task')->where('task_to', '=', $id)->count_all();
 	}
-
-	public function getUserTasks($id){
-		return ORM::factory('task')->where('task_to', '=', $id)->where('ended', '=', '0')->count_all();
-	}
-
-	
 
 	public function rules()
 	{

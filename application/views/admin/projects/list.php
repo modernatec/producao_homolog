@@ -1,8 +1,8 @@
 <div class="topo" >
 	<div class="tabs_panel">
 		<ul class="tabs">
-			<li class="round"><a class="ajax" id='projects_1' href="<?=URL::base();?>admin/projects/getlist/1">produzindo</a></li>
-			<li class="round"><a class="ajax" id='projects_0' href="<?=URL::base();?>admin/projects/getlist/0">entregues</a></li>
+			<li class="round"><a class="aba ajax" id='projects_1' href="<?=URL::base();?>admin/projects/getlist/1">produzindo</a></li>
+			<li class="round"><a class="aba ajax" id='projects_0' href="<?=URL::base();?>admin/projects/getlist/0">entregues</a></li>
 	    </ul>  
     </div>
 </div>

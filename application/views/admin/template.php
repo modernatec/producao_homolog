@@ -13,6 +13,7 @@
 	    <?php foreach ($styles as $file => $type) echo HTML::style($file, array('media' => $type)), PHP_EOL ?>
         <script>
         	var base_url = "<?=URL::base();?>"
+        	var current_auth = "<?=$current_auth;?>";
         	var logged_in = <?=Auth::instance()->logged_in();?>
         </script>  
         <style type="text/css">

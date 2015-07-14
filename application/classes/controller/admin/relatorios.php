@@ -154,9 +154,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
 			$datas_e = explode("-", $object->envio);
-			$gdocs_fechamento = $object->getGdocs($object->id);
-			var_dump($object->taxonomia);
-			$datas_f = (!is_null($gdocs_fechamento)) ? explode("/", $gdocs_fechamento->fechamento) : null;
+			//$gdocs_fechamento = $object->getGdocs($object->id);
+			//var_dump($object->taxonomia);
+			//$datas_f = $object->planned_date;
 
 			$datas_fc = (!is_null($object->collection_fechamento)) ? explode("-", $object->collection_fechamento) : null;
 
@@ -182,8 +182,9 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'data_envio' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas_e[0], $datas_e[1], $datas_e[2]),
 						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
 						'status' => $object->statu_status, 
-						'fechamento' => ($datas_f[0] != "" && count($datas_f) > 1) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
-						'fechamento_colecao' => (!is_null($datas_f)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_fc[0], $datas_fc[1], $datas_fc[2]) : "-",
+						'fechamento' => '-',
+						//'fechamento' => ($datas_f[0] != "" && count($datas_f) > 1) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
+						'fechamento_colecao' => (!is_null($datas_fc)) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_fc[0], $datas_fc[1], $datas_fc[2]) : "-",
 						'anotacoes' => ($object->status_id != '8') ? $object->getAnotacoes($object->id) : '',
 					);
 			array_push($arr, $line);

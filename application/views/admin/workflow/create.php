@@ -11,9 +11,9 @@
 	    </dd>
 	    <div class="tabs_holder">
 	        <ul class="tabs">
-	            <li class="round"><a id="tab_1" href="#definicao">definição de workflow</a></li>
+	            <li class="round"><a id="tab_1" class="aba" href="#definicao">definição de workflow</a></li>
 	            <?if(count($workflowStatusList) > 0){?>
-	            	<li class="round"><a id="tab_2" href="#tarefas">tarefas por status</a></li>
+	            	<li class="round"><a id="tab_2" class="aba" href="#tarefas">tarefas por status</a></li>
 	            <?}?>
 	        </ul>  
 	    </div>

@@ -2,11 +2,11 @@
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
 		<div class="foto_form team_<?=@$userInfoVO["team_id"]?>" >
 			<?if($userInfoVO["foto"] != ''){?>
-				<img id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>" />
+				<img id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>?c=<?=date('H:i:s');?>" />
 			<?}?>
 		</div>
-		<div id="upload" class="dropzone" data-user="<?=$userInfoVO['id']?>">			
-			<div class="dz-message" data-dz-message><span>clique ou arraste uma nova foto para o seu perfil</span></div>
+		<div id="upload" class="dropzone" data-user="<?=$userInfoVO['id']?>" style="margin-left: 130px;">			
+			<div class="dz-message" data-dz-message><span> <img src='<?=URL::base()?>/public/image/admin/upload.png' valign="middle" /></span></div>
 		</div>
 		
 		<input type="hidden" name="foto" id="userFoto" />
@@ -127,7 +127,7 @@
 	      <a href="<?=URL::base();?>users/editPass" rel="load-content" data-panel="#direita" class="bar_button round">Alterar senha</a>
 	    </dt>              
 	    <dd>
-			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="<?=(@$isUpdate) ? "Salvar" : "Criar"?>" />
+			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
 	    </dd>	
 	  </dl>
 	</form>

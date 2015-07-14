@@ -141,9 +141,11 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$this->auto_render = false;
 		try 
 		{            
-			$objeto = ORM::factory('statu', $id);
+			DB::delete('workflows_status_tags')->where('tag_id','=', $id)->execute();
+
+			$objeto = ORM::factory('tag', $id);
 			$objeto->delete();
-			$msg = "tipo de objeto excluído com sucesso.";
+			$msg = "tipo de tarefa excluída com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
 			$errors = $e->errors('models');
 			$msg = "houveram alguns erros na exclusão dos dados.";
@@ -152,7 +154,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/status/index/ajax'),
+				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/tags/index/ajax'),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

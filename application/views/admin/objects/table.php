@@ -40,7 +40,7 @@
 						<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'à definir'?></span><?=$diff?>
 					</div>
 					<?foreach ($taskList as $task) {
-						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->task_to) : '<div class="round_imgList"><span>?</span></div>';
+						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->to) : '<div class="round_imgList"><span>?</span></div>';
 
 						$task_diff = '';
 		                if($task->diff != 0){

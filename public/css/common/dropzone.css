@@ -206,8 +206,8 @@
     position: relative;
     display: inline-block;
     vertical-align: top;
-    margin-left: 13px;
-    margin-top: 3px;
+    margin-left: -119px;
+    margin-top: 1px;
     min-height: 100px; }
     .dropzone .dz-preview:hover {
       z-index: 1000; }

@@ -339,7 +339,10 @@ a{
 }
 
 .foto_form img{
-	width: 100px;
+	/*width: 100px;*/
+	text-align: center;
+	display: block;
+	margin: 0 auto;
 	height: 100px;
 	position: relative;
 }
@@ -853,7 +856,7 @@ p{
 
 .hist{
     padding:5px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .task{
@@ -1076,7 +1079,13 @@ input[type='text']:focus, input[type='password']:focus{
     background: #ccc;
     width: 25px;
     height: 25px;
+    overflow: hidden;
     position: relative;
+}
+
+.round_imgList img{
+	display: block;
+	margin: 0 auto;
 }
 
 .task_line .list_faixa{

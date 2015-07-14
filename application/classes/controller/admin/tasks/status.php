@@ -65,7 +65,7 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
+					//array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
 					array('type'=>'msg', 'content'=> $msg),
 				)						
 			);
@@ -367,6 +367,7 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
                 ->find_all();
 	    	*/
 
+            /*
 			$query = ORM::factory('task')
 				->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
 				->where('ended', '=', '0')
@@ -374,12 +375,41 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 
 			//somente coordenadores
 			if($this->current_auth != "admin"){
-				$query->where('userInfos.team_id', '=', $this->current_user->userInfos->team_id);
+				$query->where('tasks.team_id', '=', );
+				/*
+				$members_arr = array();
+				$team_members = DB::select('id')->from('userInfos')->where('team_id', '=', $this->current_user->userInfos->team_id)->execute()->as_array();
+				foreach ($team_members as $key => $member) {
+					array_push($members_arr, $member['id']);
+				}
+
+				$query->and_where('tasks.task_to', 'IN', $members_arr);
+				*
 			}	
 	    	$view->has_task = $query->group_by('task_to')->order_by('nome', 'ASC')->find_all();
+	    	*/
+	    	$members_arr = array();
+			$team_members = DB::select('id')->from('userInfos')->where('team_id', '=', $this->current_user->userInfos->team_id)->execute()->as_array();
+			foreach ($team_members as $key => $member) {
+				array_push($members_arr, $member['id']);
+			}
+
+	    	$query = ORM::factory('task')
+                ->select(DB::expr('count(moderna_tasks.id) as total'))
+                ->join('userinfos', 'INNER')->on('task_to', '=', 'userinfos.id')
+                ->where('ended', '=', '0')
+                ->where('task_to', '!=', '0');
+                
+
+            if($this->current_auth != "admin"){
+				$query->and_where('tasks.task_to', 'IN', $members_arr);
+            }	
+            //$query->and_where('tasks.team_id', '=', $this->current_user->userInfos->team_id);
+                
+
+	    	$view->has_task = $query->group_by('userinfos.id')->order_by('userinfos.nome', 'ASC')->find_all();
 
 			$teamsVO = array();
-
 			$query = ORM::factory('team')->order_by('name');
 			if($this->current_auth != "admin"){
 				$query->where('id', '=', $this->current_user->userInfos->team_id);

@@ -18,7 +18,7 @@
 					<span class="list_faixa round light_blue left"><img src="<?=URL::base()?>/public/image/admin/calendar2.png"  height="12" valign='middle' > <?=Utils_Helper::data($collection->fechamento,'d/m/Y')?></span><span class="light_blue round list_faixa left"><?=$collection->segmento->name?></span>
 					<?foreach ($collection->userInfos->find_all() as $key => $userInfo) {?>
 						<div class="left" style="width:25px;">           
-                        <?=Utils_Helper::getUserImage($userInfo->id);?>
+                        <?=Utils_Helper::getUserImage($userInfo);?>
                     	</div>
 					<?}?>
 				</a>

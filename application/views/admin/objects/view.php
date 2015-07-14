@@ -10,6 +10,10 @@
     <?if($current_auth != "assistente"){?>
         <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
     <?}?>
+    <?
+    if($last_status->status_id == '8'){?>
+        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
+    <?}?>
 
         
     </div>  
@@ -18,17 +22,14 @@
         <div class="right">
         <?foreach ($obj->collection->userInfos->find_all() as $key => $userInfo) {?>
             <div class="left" style="width:25px;">           
-            <?=Utils_Helper::getUserImage($userInfo->id);?>
+            <?=Utils_Helper::getUserImage($userInfo);?>
             </div>
         <?}?>
         </div>
         <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <hr style="margin:8px 0;" />
-        <?
-        if($last_status->status_id == '8'){?>
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round right view_oed">visualizar</a>
-        <?}?>
+        
 
         <span class="list_faixa light_blue round left"><?=@$obj->collection->name?></span>
         <span class="list_faixa light_blue round left"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
@@ -42,14 +43,15 @@
         <span class="list_faixa light_blue round left"><?=$origem?></span>
         <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
         
-        <div class="clear">
-        <b>início:</b> <?=Utils_Helper::data(@$obj->crono_date,'d/m/Y')?><br/>
-        <b>entrega:</b> <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
-        </div>
+        
         <div class="clear">
             <?foreach ($suppliersList as $supplier_obj) {?>
                 <span class="list_faixa cyan round left"><?=@$supplier_obj->supplier->empresa;?></span>
             <?}?>
+        </div>
+        <div class="clear">
+            <b>início:</b> <?=Utils_Helper::data(@$obj->crono_date,'d/m/Y')?><br/>
+            <b>entrega:</b> <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
         </div>
     </div>
 
@@ -121,7 +123,11 @@
                             //finalizado
                             if($count == 0 && $object->status_id == '8' && $current_auth != "assistente"){?>
                                 <div id="uploadPackage" data-action="<?=URL::base()?>admin/objects/upload/<?=$object->object_id?>" class="dropzone" >           
-                                    <div class="dz-message" data-dz-message><span>clique ou arraste o pacote de fechamento (.zip)<br/>tamanho max.: 100mb</span></div>                                    
+                                    <div class="dz-message" data-dz-message>
+                                        <div class="clear" style="text-align:center; width:400px; margin:0 auto;">
+                                            <img src='<?=URL::base()?>/public/image/admin/upload.png' valign="top" class="left" /><span class="left">clique ou arraste o pacote de fechamento (.zip)<br/>tamanho max.: 100mb</span>
+                                        </div>                                    
+                                    </div>    
                                 </div>
                             <?}
 
@@ -223,7 +229,7 @@
                                     <div class="replies replies_<?=$task->id;?>"> 
                                         <div style='clear:both'>
                                             <div class='hist'>
-                                                <div class="right"><?=Utils_Helper::getUserImage($task->to->id)?></div>
+                                                <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                 <div class="task_reply round"> 
                                                     <? if($task->status_id == '5'){?>
                                                         <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">

@@ -99,11 +99,11 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			$workflow->save();
 			$w_id = $workflow->id;
 
+			DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
+			DB::delete('workflows_status_tags')->where('workflow_id', '=', $workflow->id)->execute();
+
 			if($this->request->post('item') != ""){
 				$i = '0';
-				DB::delete('workflows_status')->where('workflow_id', '=', $workflow->id)->execute();
-				DB::delete('workflows_status_tags')->where('workflow_id', '=', $workflow->id)->execute();
-				
 				parse_str($this->request->post('item'),$itens); 			
 				foreach($itens['item'] as $status_id){
 					$x = '0';

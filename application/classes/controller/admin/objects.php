@@ -54,59 +54,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		echo 'fim';
 	}
-
-
-	/*
-	* função apenas de transição, remover
-	*/
-	public function action_produtoras(){
-		$this->auto_render = false;  
-
-		$db = Database::instance();
-        $db->begin();
-		
-		try 
-		{     
-			$objects = ORM::factory('object')->find_all();
-			foreach ($objects as $object) {
-				if($object->supplier_id != ""){
-					$supplier_object = ORM::factory('suppliers_object');
-					$supplier_object->supplier_id = $object->supplier_id;
-					$supplier_object->object_id = $object->id;
-					$supplier_object->service_id = '7';
-					$supplier_object->amount = '0';
-					$supplier_object->save();	
-
-					echo $object->taxonomia.'<br/>';
-				}else{
-					echo $object->taxonomia.'*****************<br/>';
-				}
-			}
-			$db->commit();
-			$msg = 'fim';
-
-		}  catch (ORM_Validation_Exception $e) {
-            $errors = $e->errors('models');
-			$erroList = '';
-			foreach($errors as $erro){
-				$erroList.= $erro.'<br/>';	
-			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-            $db->rollback();
-        } catch (Database_Exception $e) {
-            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            $db->rollback();
-        }
-
-		echo $msg;
-	}
-
-
-
-
-
-
-
 	        
 	public function action_index($ajax = null)
 	{	
@@ -514,7 +461,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 					$object->uploaded = '1';
 					$object->save();
-					//echo $file;
+					echo '2';
 				} else {
 					echo '0';
 				}

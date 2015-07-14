@@ -47,7 +47,8 @@ class Controller_Admin_Template extends Controller_Template {
 				//Request::current()->redirect(URL::base().'/admin/#tasks/index/ajax');
 				echo 'você não tem acesso a este conteúdo';
 			}else{
-				Request::current()->redirect('login');
+				//Request::current()->redirect('login');
+				echo 'login';
 			}
 		}
 		
@@ -128,6 +129,7 @@ class Controller_Admin_Template extends Controller_Template {
         }
 
         $this->template->title = " - ".ucfirst($this->request->controller());
+        $this->template->current_auth = $this->current_auth;
         /*rever*/
         $this->template->menu = ($this->current_user) ? View::factory('admin/menu') : '';
 		$this->template->bar = ($this->current_user) ? '<div id="taskBar"></div>' : '';

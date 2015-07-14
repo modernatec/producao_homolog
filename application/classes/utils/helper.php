@@ -50,13 +50,11 @@ class Utils_Helper
     }
 
 
-    public static function getUserImage($user_id = null)
+    public static function getUserImage($user = null)
     {
-        if($user_id != null){
-            $user = ORM::factory('userinfo', $user_id);
-            
+        if($user->id != null){
             if(file_exists($user->foto)){    
-                return "<img class='round_imgList team_".$user->team->id." ' src='".URL::base().$user->foto.'?c='.date('dHis')."' height='20' title='".ucfirst($user->nome)."' />";            
+                return "<div class='round_imgList team_".$user->team->id."'><img src='".URL::base().$user->foto.'?c='.date('dHis')."' height='25' title='".ucfirst($user->nome)."' /></div>";            
             }else{
                 $nomes = explode(" ", $user->nome);
                 $nome = substr($nomes[0], 0, 1);
@@ -64,11 +62,9 @@ class Utils_Helper
                     $nome.=substr($nomes[1], 0, 1);
                 }            
                 return "<div class='round_imgList team_".$user->team->id."' ><span title='$user->nome' >".$nome."</span></div>";
-                //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' alt='".ucfirst($user->nome)."' />";
             }
         }else{
             return "<div class='round_imgList' ><span>?</span></div>";
-            //return "<img class='round_imgList ' src='".URL::base().'public/image/admin/default.png'."' height='20' />";
         }
     }
 
