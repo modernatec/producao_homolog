@@ -25,7 +25,6 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
 		
 		if($ajax == null){
-			//$this->template->content = $view;             
 			return $view;
 		}else{
 			$this->auto_render = false;
@@ -142,7 +141,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			}
 
 			$db->commit();
-			$msg = "workflow salvo com sucesso.";		
+			$msg = "tudo certo!";		
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -151,11 +150,9 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 				$erroList.= $erro.'<br/>';	
 			}
             $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
-		    ///Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
@@ -179,17 +176,13 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('workflow', $id);
 			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
-			$msg = "workflow excluído com sucesso";
+			$msg = "workflow excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
 			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
 		
-		//Request::current()->redirect('admin/materias');
 		header('Content-Type: application/json');
-
 		echo json_encode(
 			array(
 				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/workflows/index/ajax'),

@@ -47,8 +47,8 @@ class Controller_Admin_Template extends Controller_Template {
 				//Request::current()->redirect(URL::base().'/admin/#tasks/index/ajax');
 				echo 'você não tem acesso a este conteúdo';
 			}else{
-				//Request::current()->redirect('login');
-				echo 'login';
+				Request::current()->redirect('login');
+				//echo 'login';
 			}
 		}
 		

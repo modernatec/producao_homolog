@@ -2,7 +2,7 @@
         <form action='<?=URL::base();?>admin/collections/getList/<?=$ano?>' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
             <input type="hidden" name="collection" value="1">
             <div class="left filter">
-                <input type="text" class="round" style="width:310px" name="name" placeholder="nome" value="<?=@$filter_name?>" >
+                <input type="text" class="round" style="width:200px" name="name" placeholder="nome" value="<?=@$filter_name?>" >
             </div>
             <div class="left filter" >
                 <ul>

@@ -37,7 +37,7 @@
         </dd>
     </div>
     <dd>
-      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
+      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
     </dd>
   </dl>
 </form>

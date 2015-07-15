@@ -1,6 +1,6 @@
 <form name="frmCreateTipoObj" id="frmCreateTipoObj" action="<?=URL::base();?>admin/tags/salvar/<?=@$statusVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
-    <label for="tag">tag</label>
+    <label for="tag">tarefa</label>
     <dd>
         <input type="text" class="text required round" placeholder="tag" name="tag" id="tag" style="width:500px;" value="<?=@$statusVO['tag'];?>"/>
         <span class='error'><?=Arr::get($errors, 'status');?></span>

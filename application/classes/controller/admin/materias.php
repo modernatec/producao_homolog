@@ -22,7 +22,7 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 		$view = View::factory('admin/materias/list')
 			->bind('message', $message);
 		
-		$view->materiasList = ORM::factory('materia')->order_by('id','DESC')->find_all();
+		$view->materiasList = ORM::factory('materia')->order_by('name','ASC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             

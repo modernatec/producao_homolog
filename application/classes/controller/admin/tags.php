@@ -14,7 +14,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$view = View::factory('admin/tags/list')
 			->bind('message', $message);
 		
-		$view->list = ORM::factory('tag')->where('type', '=', 'task')->order_by('order','ASC')->find_all();
+		$view->table = $this->getListTags();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -29,6 +29,14 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 	        return false;
 		}           
 	} 
+
+	public function getListTags(){
+		$this->auto_render = false;
+		$table_view = View::factory('admin/tags/table');
+		$table_view->list = ORM::factory('tag')->where('type', '=', 'task')->order_by('order','ASC')->find_all();
+
+		return $table_view;
+	}
 
 	/**
 	**Reordena as tarefas por drag. 	
@@ -48,7 +56,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		}
 	}
 
-	public function action_edit($id)
+	public function action_edit($id, $ajax = null)
     {    
 		$this->auto_render = false;
 		$view = View::factory('admin/tags/create')
@@ -69,13 +77,17 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		}
 		$view->teamsArray = $teamsArray;
 		
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-        return false;		
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+	        return false;		
+	    }
 	}
 
 	public function action_salvar($id = null)
@@ -110,7 +122,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 
 			$db->commit();
 			
-			$msg = "cadastro efetuado com sucesso.";
+			$msg = "tudo certo!";
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -128,7 +140,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/tags/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->getListTags()->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -145,7 +157,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 
 			$objeto = ORM::factory('tag', $id);
 			$objeto->delete();
-			$msg = "tipo de tarefa excluída com sucesso.";
+			$msg = "tarefa excluída com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
 			$errors = $e->errors('models');
 			$msg = "houveram alguns erros na exclusão dos dados.";

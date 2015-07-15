@@ -981,11 +981,16 @@ function setDataPanels(dialog){
 }
 
 function setPanelContent(args, dialog){
-    var data = $.parseJSON(args.content);
+    var data;
+    try{
+        data = $.parseJSON(args.content);
+    }catch(err){
+        data = args.content;
+    }  
+
     var container = args.container;
 
     $(container).html("<div class='loading'>loading...</div>"); 
-    
 
     if($(container + " .mCSB_container").length > 0){
         holder = container + " .mCSB_container";

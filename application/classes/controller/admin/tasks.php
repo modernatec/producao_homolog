@@ -100,9 +100,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		
 		$task = ORM::factory('task', $id);
 		$taskVO = $this->setVO('task', $task);
+		$view->current_auth = $this->current_auth;
+
 
 		$object_status_id = $task->object_status_id;
-		$view->current_auth = $this->current_auth;
 
 		if($id == ""){
 			$taskVO['object_id'] = $this->request->query('object_id');
@@ -113,7 +114,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->taskVO = $taskVO;
 
 		$object_status = ORM::factory('objects_statu', $object_status_id);
-		$object = ORM::factory('object', $object_status->object_id);
+
+		$object = ORM::factory('object', $task->object_id);
 
 		$query_team =  ORM::factory('userInfo')->where('status', '=', '1');
 		
@@ -121,13 +123,13 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->teamList = $query_team->order_by('nome', 'ASC')->find_all(); 
 
 		$query = ORM::factory('tag')
-		->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id')
-		->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
+				->join('workflows_status_tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
 
 		if($this->current_auth != 'admin'){
+			$query->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id');
 			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
 		}
-
+		
 		$view->tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
 		echo $view;

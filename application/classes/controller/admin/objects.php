@@ -565,7 +565,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object_status->values($this->request->post(), array( 
 		                    'object_id', 
 		                    'status_id',
-		                    'prova',
 		                    'description',
 		                    'crono_date',
 							));
