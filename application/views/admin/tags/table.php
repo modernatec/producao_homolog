@@ -1,3 +1,6 @@
+<div class="bar" style='margin-bottom:5px;'>
+	<a href="<?=URL::base();?>admin/tags/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar tarefa</a>
+</div>
 <div class="scrollable_content">
 <ul class="list_item sortable_tags">
             <? foreach($list as $tag){?>

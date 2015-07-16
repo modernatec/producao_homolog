@@ -8,13 +8,14 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
+    
+    /*  
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/tags/list')
 			->bind('message', $message);
 		
-		$view->table = $this->getListTags();
+		//$view->table = $this->getListTags();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -29,13 +30,26 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 	        return false;
 		}           
 	} 
+	*/
 
-	public function getListTags(){
+	public function action_getListTags($ajax = null){
 		$this->auto_render = false;
 		$table_view = View::factory('admin/tags/table');
 		$table_view->list = ORM::factory('tag')->where('type', '=', 'task')->order_by('order','ASC')->find_all();
 
-		return $table_view;
+		if($ajax != null){
+            return $table_view;
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($table_view->render())),
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
+                )                       
+            );
+           
+            return false;
+        }
 	}
 
 	/**
@@ -140,7 +154,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->getListTags()->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListTags(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

@@ -104,6 +104,9 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery.validate.js',
 				'public/js/common/jquery/jquery.cookie.js',
 				'public/js/common/jquery/jquery-dateFormat.min.js',
+				
+				'public/js/common/jquery/jquery.ui.datepicker-pt-br.js',
+
 				'public/js/common/jgrowl/jquery.jgrowl.js',
 				'public/js/common/jquery/jquery.maskedinput.min.js',
 				

@@ -8,8 +8,6 @@
             <?}?>
         </ul>  
      </div>
-    
-    </span>
 </div>
 <div id="esquerda">
     <?if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>

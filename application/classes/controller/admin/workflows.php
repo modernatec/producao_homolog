@@ -22,7 +22,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$view = View::factory('admin/workflow/list')
 			->bind('message', $message);
 		
-		$view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
+		
 		
 		if($ajax == null){
 			return $view;
@@ -189,6 +189,28 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
+	}
+
+	public function action_getList($ajax = null){
+		$this->auto_render = false;
+        $view = View::factory('admin/workflow/table');
+
+        $view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
+        
+        // $this->endProfilling();
+        if($ajax != null){
+            return $view;
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
+                )                       
+            );
+           
+            return false;
+        }
 	}
 
 }

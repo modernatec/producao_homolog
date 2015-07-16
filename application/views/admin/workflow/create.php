@@ -11,14 +11,14 @@
 	    </dd>
 	    <div class="tabs_holder">
 	        <ul class="tabs">
-	            <li class="round"><a id="tab_1" class="aba" href="#definicao">definição de workflow</a></li>
+	            <li class="round selected"><a id="tab_1" href="#definicao">definição de workflow</a></li>
 	            <?if(count($workflowStatusList) > 0){?>
-	            	<li class="round"><a id="tab_2" class="aba" href="#tarefas">tarefas por status</a></li>
+	            	<li class="round"><a id="tab_2" href="#tarefas">tarefas por status</a></li>
 	            <?}?>
 	        </ul>  
 	    </div>
 	    <div class="scrollable_content" >
-		    <div id="definicao" class="content_hide" >
+		    <div id="definicao" >
 		        <div class="left"> 
 		        	<div class="scrollable_content" data-bottom="false" style="height:500px; padding:0 10px;">
 			        	<label>selecione o status</label>

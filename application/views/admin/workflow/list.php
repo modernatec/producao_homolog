@@ -1,20 +1,17 @@
 <div class="topo" >
-	<span class="header"><a href="<?=URL::base();?>admin/workflows/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar workflow</a></span>
+    <div class="tabs_panel">
+        <ul class="tabs">
+            <li class="round"><a class="aba ajax" id="work_1" href='<?=URL::base();?>admin/workflows/getList'>workflows</a></li>
+            <li class="round"><a class="aba ajax" id="work_2" href='<?=URL::base();?>admin/status/getListStatus'>status</a></li>
+            <li class="round"><a class="aba ajax" id="work_3" href='<?=URL::base();?>admin/tags/getListTags'>tarefas</a></li>
+            <li class="round"><a class="aba ajax" id="work_4" href='<?=URL::base();?>admin/feriados/getList'>feriados</a></li>            
+        </ul>  
+        
+     </div>
 </div>
 <div id="esquerda">
-	<div id="tabs_content" class="scrollable_content clear">
-		<ul class="list_item">
-			<? foreach($workflowList as $workflow){?>
-			<li>
-				<div class="left">
-					<a style='display:block' href="<?=URL::base().'admin/workflows/edit/'.$workflow->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$workflow->name?></a>
-				</div>
-				<div class="right">
-					<a class="excluir" href="<?=URL::base().'admin/workflows/delete/'.$workflow->id;?>" title="Excluir">Excluir</a>
-				</div>	
-			</li>
-			<?}?>
-		</ul>
+	<div id="tabs_content">
+		
 	</div>
 </div>
 <div id="direita"></div>

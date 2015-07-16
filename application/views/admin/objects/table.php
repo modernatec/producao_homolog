@@ -19,7 +19,7 @@
     			}	 
 
     			$diff = '';
-                if($objeto->diff != 0){
+                if(!empty($objeto->diff) && $objeto->diff != 0){
                     if($objeto->diff < 0){
                         $diff = '<span class="list_faixa green round">'.$objeto->diff.'</span>';
                         //$status_class = 'green';
@@ -43,7 +43,8 @@
 						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->to) : '<div class="round_imgList"><span>?</span></div>';
 
 						$task_diff = '';
-		                if($task->diff != 0){
+
+		                if(!empty($task->diff) && $task->diff != 0){
                             if($task->diff < 0){
                                 $task_diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
                             }else{

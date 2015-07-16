@@ -37,25 +37,6 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 	        return false;
 		}          
 	} 
-
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/materias/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateMaterias.js");
-		$view->isUpdate = false;  
-		$view->materiaVO = $this->setVO('materia');
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-            $this->salvar();
-		}
-	}
-	*/
         
 	public function action_edit($id)
     {    
@@ -64,11 +45,9 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			->bind('errors', $errors)
 			->bind('message', $message);
 
-		//$this->addValidateJs("public/js/admin/validateMaterias.js");
 		$view->isUpdate = true;  
 		$materia = ORM::factory('materia', $id);
 		$view->materiaVO = $this->setVO('materia', $materia);
-		//$this->template->content = $view;
 
 		header('Content-Type: application/json');
 		echo json_encode(
@@ -94,10 +73,8 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			                
 			$materia->save();
 			$db->commit();
-			//Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
-			//Request::current()->redirect('admin/materias');
-			$msg = "matéria salva com sucesso.";		
 
+			$msg = "tudo certo!";		
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -105,11 +82,9 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 				$erroList.= $erro.'<br/>';	
 			}
             $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
-		    ///Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
@@ -131,10 +106,10 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('materia', $id);
 			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
-			$msg = "matéria excluído com sucesso";
+
+			$msg = "matéria excluída.";
 		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
+
 			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}

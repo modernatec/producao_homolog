@@ -190,8 +190,12 @@ $(document).ready(function()
         }); 
     }
 
+    $.datepicker.setDefaults($.datepicker.regional["pt-br"]);
+
     Dropzone.autoDiscover = false;
     updateBar();
+
+
 });
 
 
@@ -796,7 +800,18 @@ function setupAjax(container){
         }, 100);    
 
         $('.date').live('focus', function () {
-            $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
+            $(this).not('.hasDatePicker').datepicker(
+                {
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+                    nextText: 'Próximo',
+                    prevText: 'Anterior'
+                }
+            ).val();
         });
     }
 }

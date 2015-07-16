@@ -16,27 +16,27 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
+
+	public function action_getList($ajax = null){
+		$this->auto_render = false;
+        $view = View::factory('admin/feriados/table');
+
+        $view->feriadosList = ORM::factory('feriado')->order_by('data','DESC')->find_all();
         
-	public function action_index($ajax = null)
-	{	
-		$view = View::factory('admin/feriados/list')
-			->bind('message', $message);
-		
-		$view->feriadosList = ORM::factory('feriado')->order_by('data','ASC')->find_all();
-		
-		if($ajax == null){
-			$this->template->content = $view;             
-		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-	        return false;
-		}          
-	} 
+        if($ajax != null){
+            return $view;
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
+                )                       
+            );
+           
+            return false;
+        }
+	}
         
 	public function action_edit($id)
     {    
@@ -47,7 +47,6 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 
 		$feriado = ORM::factory('feriado', $id);
 		$view->objVO = $this->setVO('feriado', $feriado);
-		//$this->template->content = $view;
 
 		header('Content-Type: application/json');
 		echo json_encode(
@@ -75,7 +74,7 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 			$feriado->save();
 			$db->commit();
 
-			$msg = "feriado salvo com sucesso.";		
+			$msg = "tudo certo!";		
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -93,7 +92,7 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/feriados/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -109,9 +108,8 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 			$objeto = ORM::factory('feriado', $id);
 			$objeto->delete();
 
-			$msg = "matéria excluído com sucesso";
+			$msg = "feriado excluído.";
 		} catch (ORM_Validation_Exception $e) {
-
 			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
