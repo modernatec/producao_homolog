@@ -1,3 +1,6 @@
+<div class="bar" style='margin-bottom:5px;'>
+	<a href="<?=URL::base();?>admin/contatos/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar contato</a>
+</div>
 	<span class='list_alert light_blue round'>
 	<?
         if(count($contatosList) <= 0){

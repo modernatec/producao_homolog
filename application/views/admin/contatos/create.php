@@ -1,7 +1,7 @@
 	<? if(@$VO['id'] != ""){?>
-	<div class="bar">
+	<!--div class="bar">
 		<a href="<?=URL::base();?>admin/contatos/view/<?=@$VO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
-	</div>
+	</div-->
 	<?}?>
 	<div class="scrollable_content">
 	    <form name="frmContato" id="frmContato" action="<?=URL::base();?>admin/contatos/salvar/<?=$VO['id']?>" method="post" class="form">

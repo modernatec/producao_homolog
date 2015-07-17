@@ -16,27 +16,27 @@ class Controller_Admin_Services extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-	public function action_index($ajax = null)
-	{	
-		$view = View::factory('admin/services/list')
-			->bind('message', $message);
-		
-		$view->list = ORM::factory('service')->order_by('name','ASC')->find_all();
-		
-		if($ajax == null){
-			$this->template->content = $view;             
-		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-	        return false;
-		}          
-	} 
+
+	public function action_getListServices($ajax = null){
+		$this->auto_render = false;
+		$table_view = View::factory('admin/services/table');
+		$table_view->list = ORM::factory('service')->order_by('name','ASC')->find_all();
+
+		if($ajax != null){
+       		return $table_view;
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(
+                array(
+                    array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($table_view->render())),
+                    array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
+                    array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode("")),
+                )                       
+            );
+           
+            return false;
+        }
+	}
 
 	public function action_edit($id)
     {    
@@ -73,7 +73,7 @@ class Controller_Admin_Services extends Controller_Admin_Template {
 			$service->save();
 
 			$db->commit();
-			$msg = "serviço salvo com sucesso.";		
+			$msg = "tudo certo!";		
 
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
@@ -91,7 +91,7 @@ class Controller_Admin_Services extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/services/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListServices(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -106,10 +106,8 @@ class Controller_Admin_Services extends Controller_Admin_Template {
 		{            
 			$objeto = ORM::factory('service', $id);
 			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
-			$msg = "matéria excluído com sucesso";
+			$msg = "serviço excluído.";
 		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
 			$msg = "houveram alguns erros na exclusão dos dados.";
 			$errors = $e->errors('models');
 		}
@@ -117,7 +115,7 @@ class Controller_Admin_Services extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/materias/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListServices(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

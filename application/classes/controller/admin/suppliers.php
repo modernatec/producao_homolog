@@ -19,6 +19,8 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/suppliers/list')
                 ->bind('message', $message);
+
+        $view->current_auth = $this->current_auth;
 		
         if($ajax == null){
 			$this->template->content = $view;             
@@ -28,7 +30,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getSuppliers(true)->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
@@ -141,7 +142,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			}	
 			
 			$db->commit();
-			$msg = "Fornecedor salvo com sucesso.";
+			$msg = "tudo certo!";
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
@@ -161,7 +162,6 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getSuppliers(true)->render())),
 				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_view($id, true)->render())),
-				//array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/suppliers/index/ajax'),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -175,7 +175,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		{            
 			$contact = ORM::factory('supplier', $id);
 			$contact->delete();
-			$msg = "Fornecedor excluído com sucesso.";
+			$msg = "fornecedor excluído.";
 		} catch (ORM_Validation_Exception $e) {
 			$msg = 'Houveram alguns erros na validação dos dados.';
 			$errors = $e->errors('models');
@@ -250,6 +250,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
 				)						
 			);
 	       

@@ -77,7 +77,7 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 			$pastaSegmento = Utils_Helper::limparStr($this->request->post('name'));
 
 			//se nao existir a pasta criamos, se existir renomeamos
-			if(file_exists($rootdir.$segmento->pasta)){
+			if(file_exists($rootdir.$segmento->pasta) && $id != ''){
 				rename($rootdir.$segmento->pasta, $rootdir.$pastaSegmento);
 			}else{
 				mkdir($rootdir.$pastaSegmento,0777);

@@ -14,7 +14,8 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
+    
+    /*   
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/contatos/list')
@@ -35,6 +36,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	        return false;
 		}          
 	} 
+	*/
 
 	public function action_edit($id)
 	{
@@ -173,6 +175,7 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
 				)						
 			);
 	       
