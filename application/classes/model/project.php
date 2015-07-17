@@ -6,6 +6,10 @@ class Model_Project extends ORM {
 		'segmento' => array('model' => 'segmento', 'foreign_key' => 'segmento_id'),		
 	);
 
+	protected $_has_many = array(
+		'collections' => array('model' => 'collection', 'foreign_key' => 'project_id'),		
+	);
+
 	public function rules()
 	{
         return array(

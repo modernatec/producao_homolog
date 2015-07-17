@@ -1,12 +1,5 @@
-<div class="topo" >
-	<div class="tabs_panel">
-		<ul class="tabs">
-	        <? foreach($anosList as $ano){?>
-			<li class="round"><a class="aba ajax" id='collections_<?=$ano->ano?>' href="<?=URL::base();?>admin/collections/getlist/<?=$ano->ano?>"><?=$ano->ano?></a></li>
-			<?}?>
-	    </ul>  
-    </div>
-	<div class="clear" id='filtros'></div>
+<div class="topo form">
+	<div id='filtros'></div>
 </div>
 <div id="esquerda">
     <div class="bar" style='margin-bottom:5px;'>

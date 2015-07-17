@@ -103,7 +103,7 @@ class Controller_Admin_Template extends Controller_Template {
 				'public/js/common/jquery/jquery-ui.min.js',
 				'public/js/common/jquery/jquery.validate.js',
 				'public/js/common/jquery/jquery.cookie.js',
-				'public/js/common/jquery/jquery-dateFormat.min.js',
+				//'public/js/common/jquery/jquery-dateFormat.min.js',
 				
 				'public/js/common/jquery/jquery.ui.datepicker-pt-br.js',
 
@@ -136,6 +136,13 @@ class Controller_Admin_Template extends Controller_Template {
         /*rever*/
         $this->template->menu = ($this->current_user) ? View::factory('admin/menu') : '';
 		$this->template->bar = ($this->current_user) ? '<div id="taskBar"></div>' : '';
+		
+		$hollidays_arr = array();
+		$hollidays = ORM::factory('feriado')->find_all();
+		foreach ($hollidays as $holliday) {
+			array_push($hollidays_arr, $holliday->data);
+		}
+		$this->template->hollidays = json_encode($hollidays_arr);
 
 		/*
 		styles team

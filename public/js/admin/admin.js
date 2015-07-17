@@ -732,6 +732,7 @@ function setupAjax(container){
             });  
         });
 
+        /*
         $('#project_segmento, #project_ano').unbind('change').bind('change', function(e){
             e.preventDefault();
             var ano = $('#project_ano option:selected').val();
@@ -759,6 +760,7 @@ function setupAjax(container){
                 }
             });   
         }) 
+        */
 
 
         $('.tabs a').unbind('click').bind('click', function(e){
@@ -802,14 +804,15 @@ function setupAjax(container){
         $('.date').live('focus', function () {
             $(this).not('.hasDatePicker').datepicker(
                 {
-                    dateFormat: 'dd/mm/yy',
-                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-                    nextText: 'Próximo',
-                    prevText: 'Anterior'
+                    beforeShowDay: function(date){
+                        var day =  date.getDay();
+                        if(day == 0){
+                            return [false];
+                        }else{
+                            var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+                            return (hollidays.indexOf(formattedDate) ==-1) ? [true] : [false];
+                        }
+                    }
                 }
             ).val();
         });

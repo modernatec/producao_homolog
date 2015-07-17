@@ -139,13 +139,20 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		$x = 0;
 		$i = 1;
 
-		if($days > 0){
+		if($days != 0){
+			if($days > 0){
+				$signal = ' + ';
+			}else{
+				$signal = ' - ';
+				$days = $days *-1;
+			}
+
 			while ($x < $days) {
-				$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+				$nextBusinessDay = date('Y-m-d', strtotime($from . $signal . $i . ' Weekday'));
 
 				while (array_key_exists($nextBusinessDay, $feriados)) {
 				    $i++;
-				    $nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
+				    $nextBusinessDay = date('Y-m-d', strtotime($from . $signal . $i . ' Weekday'));
 				}
 				$i++;
 				$x++;
@@ -178,7 +185,7 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		$x = 0;
 		$i = 1;
 
-		if($days > 0){
+		if($days != 0){
 			while ($x < $days) {
 				$nextBusinessDay = date('Y-m-d', strtotime($from . ' +' . $i . ' Weekday'));
 

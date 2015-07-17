@@ -1169,6 +1169,11 @@ input[type='text']:focus, input[type='password']:focus{
 	border-radius:22px;
 }
 
+.hollidays .ui-state-default{
+	color: #ccc !important;
+}
+
+
 
 .red{
 	background: #ff0000;
@@ -1178,6 +1183,10 @@ input[type='text']:focus, input[type='password']:focus{
 .gray{
 	background: #C0C0C0 !important;
 	color: #fff;
+}
+
+.textGray{
+	color: #888;
 }
 
 

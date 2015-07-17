@@ -20,16 +20,16 @@
     </div>  
     <div class="clear left">
       <dt>
-        <label for="target">matéria</label>
+        <label for="project_id">projeto</label>
       </dt>
       <dd>
-        <select name="materia_id" id="materia_id" class="round">
+        <select name="project_id" id="project_id" class="round">
               <option value="">selecione</option>
-              <? foreach($materiaList as $materia){?>
-              <option value="<?=$materia->id?>" <?=((@$collectionVO["materia_id"] == $materia->id)?('selected'):(''))?> ><?=$materia->name?></option>
+              <? foreach($projectList as $project){?>
+              <option value="<?=$project->id?>" <?=((@$collectionVO["project_id"] == $project->id)?('selected'):(''))?> ><?=$project->name?></option>
               <? }?>
           </select>
-          <span class='error'><?=($errors) ? $errors['materia_id'] : '';?></span>
+          <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
       </dd>
     </div>
     <div class="left">
@@ -62,6 +62,20 @@
       </dd>
     </div>
     <div class="left">
+      <dt>
+        <label for="target">matéria</label>
+      </dt>
+      <dd>
+        <select name="materia_id" id="materia_id" class="round">
+              <option value="">selecione</option>
+              <? foreach($materiaList as $materia){?>
+              <option value="<?=$materia->id?>" <?=((@$collectionVO["materia_id"] == $materia->id)?('selected'):(''))?> ><?=$materia->name?></option>
+              <? }?>
+          </select>
+          <span class='error'><?=($errors) ? $errors['materia_id'] : '';?></span>
+      </dd>
+    </div>
+    <div class="left">
         <dt>
           <label for="fechamento">fechamento</label>
         </dt>	    
@@ -75,7 +89,7 @@
         <div class="left">
             <label for="team_<?=$team->id?>">responsável <?=$team->name?></label>
             <dd>
-              <select name="team[]" id="team_<?=$team->id?>" class="round" style="width:200px;">
+              <select name="team[]" id="team_<?=$team->id?>" class="round" style="width:150px;">
                   <option value="">selecione</option>
                   <? 
                     foreach($userList as $user){
@@ -95,7 +109,7 @@
     </dd>
   </dl>
 
-
+<span class="list_faixa light_blue round left"><?=$collection->objects->count_all();?> OED</span>
 <div class="scrollable_content">
   <?
     if(isset($workflows)){
@@ -104,28 +118,30 @@
       $r = $workflow->name;
     ?>
 
-
       <span class='list_alert light_blue round'><?=$workflow->name?> (<?=$workflow->days?> dias)</span>
       <table width="100%" class="gray">
         <thead>
-            <th width="60%">taxonomia</th>
+            <th width="60%">OED</th>
             <th width="20%">início</th>
             <th width="20%">fechamento</th>
         </thead>
         <tbody>
             <? foreach($objectList as $objeto){ 
+
               if($objeto->workflow_id == $workflow->id){?>
             <tr>
                 <td width="60%" class="tl">
-                  <div><p><b><?=$objeto->title;?></b></p></div>
-                  <p><?=$objeto->taxonomia;?></p>
+                  <a class="popup textGray" href="<?=URL::base().'admin/objects/showInfos/'.$objeto->id?>" title="+ informações">
+                    <div><p><b><?=$objeto->title;?></b></p></div>
+                    <p><?=$objeto->taxonomia;?></p>
+                  </a>
                 </td>
                 <td width="20%">
                   <input type="hidden" name="objects[]" value="<?=$objeto->id?>" />
-                  <input type="text" name="start[]" placeholder="início" data-days="<?=$workflow->days?>" data-target="end_<?=$objeto->id?>" class="crono date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->crono_date,'d/m/Y')?>" />
+                  <input type="text" name="start[]" placeholder="início" id="start_<?=$objeto->id?>" data-days="<?=$workflow->days?>" data-target="end_<?=$objeto->id?>" class="crono date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->crono_date,'d/m/Y')?>" />
                 </td>
                 <td width="20%">
-                  <input type="text" name="end[]" placeholder="término" id="end_<?=$objeto->id?>" class="date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->planned_date,'d/m/Y')?>" />
+                  <input type="text" name="end[]" placeholder="término" id="end_<?=$objeto->id?>" data-days="-<?=$workflow->days?>" data-target="start_<?=$objeto->id?>" class="crono date round" style="width:80px;" value="<?=Utils_Helper::data(@$objeto->planned_date,'d/m/Y')?>" />
                 </td>
             </tr>
             <?}}?>

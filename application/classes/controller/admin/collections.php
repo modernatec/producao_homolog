@@ -16,13 +16,12 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-             
+            
+
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/collections/list')
 			->bind('message', $message);
-		
-		$view->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
 		
 		if($ajax == null){
 			$this->template->content = $view;             
@@ -32,6 +31,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;
@@ -46,9 +47,12 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				->bind('message', $message);
 				
 		$collection = ORM::factory('collection', $id);
+		$view->collection = $collection;
 		$view->collectionVO = $this->setVO('collection', $collection);
 		$view->materiaList = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
 		$view->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
+		$view->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();//->where('status', '=','1')
+
 		$view->teamList = ORM::factory('team')->find_all();
 		$view->userList = ORM::factory('userinfo')->where('status', '=', '1')->order_by('nome', 'ASC')->find_all();
 		$view->collection_users = DB::select('userInfo_id')->from('collections_userinfos')->where('collection_id', '=', $id)->execute()->as_array('userInfo_id');
@@ -63,7 +67,6 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			foreach ($collection_workflow as $workflow_item) {
 				array_push($workflows_arr, $workflow_item->workflow_id);
 			}						
-
 			if(count($workflows_arr) > 0){
 				$view->workflows = DB::select('workflows.id', 'name, sum("days") days')->from('workflows')
 					->join('workflows_status')->on('workflows.id', '=', 'workflows_status.workflow_id')
@@ -71,7 +74,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 					->group_by('workflows.id')
 					->as_object()->execute();
 
-				//$view->workflows = ORM::factory('workflow')->find_all();
+
 				$view->objectList = ORM::factory('object')->where('fase', '=', '1')->where('collection_id' , '=', $id)->find_all();	
 			}		
 		}
@@ -98,6 +101,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				'op',
 				'materia_id',
 				'segmento_id',
+				'project_id',
 				'ano',
 				'fechamento',
 				'repositorio',
@@ -179,7 +183,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/collections/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -193,15 +197,24 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	}
 
 	/*******************************************/
-    public function getFiltros($ano){
+    public function getFiltros(){
     	$this->auto_render = false;
     	$viewFiltros = View::factory('admin/collections/filtros');
-    	$viewFiltros->ano = $ano;
 
     	$filtros = Session::instance()->get('kaizen')['filtros'];
 
   		$viewFiltros->filter_segmento = array();
+
+  		if(!isset($view->filter_ano)){
+  			$viewFiltros->filter_ano = array(date('Y'));
+  		}
+
+  		$viewFiltros->filter_materia = array();
+
   		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
+  		$viewFiltros->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+  		$viewFiltros->materiasList = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
+
 
 		foreach ($filtros as $key => $value) {
   			$viewFiltros->$key = json_decode($value);
@@ -210,12 +223,12 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
   		return $viewFiltros;
     }
 
-	public function action_getList($ano, $ajax = null){
+	public function action_getList($ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/collections/table');
 
 		if(count($this->request->post('collection')) > '0' || Session::instance()->get('kaizen')['model'] != 'collection'){
-			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $ano, "collection");
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "collection");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');	
 		}
@@ -227,12 +240,18 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
   			$view->$key = json_decode($value);
   		}
 
-		$query = ORM::factory('collection')->where('ano', '=', $ano);
+  		if(!isset($view->filter_ano)){
+  			$view->filter_ano = array(date('Y'));
+  		}
+
+		$query = ORM::factory('collection');
 
 		(isset($view->filter_segmento)) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_ano)) ? $query->where('ano', 'IN', $view->filter_ano) : '';
+		(isset($view->filter_materia)) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
 		
-		$view->collectionsList = $query->order_by('name','ASC')->find_all();
+		$view->collectionsList = $query->order_by('ano','DESC')->order_by('name','ASC')->find_all();
 		
 		if($ajax != null){
 			return $view;
@@ -241,7 +260,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros($ano)->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
 				)						
 			);
 	       

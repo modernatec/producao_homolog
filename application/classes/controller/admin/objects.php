@@ -17,26 +17,36 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		parent::__construct($request, $response);
 	}
 
-	/*
-	* função apenas de transição, remover
-	*/
-	public function action_geraPastas(){
-		$this->auto_render = false;  
-
+	public function action_uploaded(){
+		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
 		
 		try 
 		{     
-			$objects = ORM::factory('object')->where('fase', '=', '1')->find_all();
-			foreach ($objects as $key => $object) {
-				$projeto = ORM::factory('project', $object->project_id);
-				$obj = ORM::factory('object', $object->id);
-				$pastaObjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$projeto->segmento->pasta.'/'.$projeto->pasta.'/', $object->pasta , trim($object->taxonomia));
-				$obj->pasta = $pastaObjeto;	
-				$obj->save();
-				echo $obj->taxonomia.'<br/>';
+
+			$objects = ORM::factory('objectstatu')->where('fase', '=', '1')->and_where('status_id', '=', '8')->find_all();
+			var_dump(count($objects));
+
+			$basedir = 'public/upload/projetos/';
+			$rootdir = DOCROOT.$basedir;
+
+			foreach ($objects as $object) {
+				$pasta_segmento = $object->project->segmento->pasta;
+
+				$pasta = $pasta_segmento.'/'.$object->project_pasta.'/'.$object->taxonomia;
+				if(file_exists($rootdir.$pasta)){
+					$obj = ORM::factory('object', $object->id);
+					$obj->pasta = $object->taxonomia;
+					$obj->uploaded = '1';
+					$obj->save();
+
+	            	echo 'ok - '.$object->taxonomia.'<br/>';
+	            }else{
+	            	echo '****não existe a pasta => '.$pasta.'<br/>';
+	            }
 			}
+
 			$db->commit();
 
 		}  catch (ORM_Validation_Exception $e) {
@@ -51,8 +61,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
-
-		echo 'fim';
 	}
 	        
 	public function action_index($ajax = null)
@@ -95,7 +103,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-        $view->collections = ORM::factory('collection')->join('collections_projects')->on('collections_projects.collection_id', '=', 'collections.id')->where('collections_projects.project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
+        $view->collections = ORM::factory('collection')->where('project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
         $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
         $view->repoList = ORM::factory('repositorio')->order_by('name', 'DESC')->find_all(); 
@@ -114,6 +122,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			)						
 		);
         return false;
+	}
+
+	public function action_showInfos($id){
+		$view = View::factory('admin/objects/infos');
+		$view->infos = $this->action_view($id, true);
+		echo $view;
 	}
 
 	public function action_view($id, $ajax = null)
@@ -294,11 +308,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     /********************************/
     public function action_getCollections($project_id){
     	$this->auto_render = false;
-    	$query = ORM::factory('Collections_Project')->where('project_id', '=', $project_id)->find_all();
+    	$query = ORM::factory('collection')->where('project_id', '=', $project_id)->find_all();
 
     	$result = array('dados' => array());
     	foreach ($query as $collection) {
-    		array_push($result['dados'], array('id' => $collection->collection_id, 'display' => $collection->collection->name));
+    		array_push($result['dados'], array('id' => $collection->id, 'display' => $collection->name));
     	}
 
     	print json_encode($result);

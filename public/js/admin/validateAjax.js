@@ -1,7 +1,9 @@
 function validateAjax(){
+    /*
     $('.date').live('focus', function () {
         $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
     });
+    */
 
     $("#frmCreateTask2").validate({
         rules: {
@@ -176,10 +178,12 @@ function validateAjax(){
         rules: {
             name: {required:true},
             materia_id: {required:true},
+            project_id: {required:true},
             segmento_id: {required:true},
             ano: {required:true},
             fechamento: {required:true},
         },
+        /*
         messages: {
             name: { required:'Campo não pode ser vazio'},
             materia_id: {required:'Campo não pode ser vazio'},
@@ -187,6 +191,7 @@ function validateAjax(){
             ano: {required:'Campo não pode ser vazio'},
             fechamento: {required:'Campo não pode ser vazio'},
         },
+        */
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
