@@ -207,8 +207,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
                     'sinopse',
                     'taxonomia_reap',
                     'arq_aberto',
-                    'locutor',
-                    'ilustrador',
                     'keywords',
                     'workflow_id',
 
@@ -352,12 +350,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   											->group_by('collections.id')
 											->order_by('name', 'ASC')->find_all();
 
-		$viewFiltros->suppliersList = ORM::factory('supplier')
+		$viewFiltros->suppliersList = array();/*ORM::factory('supplier')
 											->join('objectStatus')->on('objectStatus.supplier_id', '=', 'suppliers.id')
   											->where('objectStatus.fase', '=', '1')
   											->where('objectStatus.project_id', '=', $project_id)
   											->group_by('suppliers.id')											
-											->order_by('empresa', 'ASC')->find_all();
+											->order_by('empresa', 'ASC')->find_all();*/
 
 		$viewFiltros->materiasList = ORM::factory('materia')
 											->join('objectStatus')->on('objectStatus.materia_id', '=', 'materias.id')

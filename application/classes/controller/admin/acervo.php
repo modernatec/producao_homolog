@@ -344,4 +344,63 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		    return false;
 		}		
 	}
+
+	public function action_loadKeyWords(){
+		$this->auto_render = false;
+		ini_set('auto_detect_line_endings',TRUE);
+		//get the csv file
+	    $file = "planilha_keywords.csv";//$_FILES[csv][tmp_name];
+	    $file_path = "public/".$file;
+
+	    if(file_exists(DOCROOT.$file_path)){
+	    	$this->auto_render = false;
+			$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{    
+		    	$fp = fopen($file_path, 'r');
+
+				// get the first (header) line
+				$header = fgetcsv($fp,0,";",'"');
+
+				// get the rest of the rows
+				$data = array();
+				while ($row = fgetcsv($fp,0,";",'"')) {
+				  $arr = array();
+				  foreach ($header as $i => $col)
+				    $arr[$col] = $row[$i];
+				  $data[] = $arr;
+				}
+
+				foreach ($data as $key => $value) {
+					if(strpos($data[$key]['taxonomia'], 'pdf') === false){
+						//$objectList = ORM::factory('object')->where('title', '=', $data[$key]['titulo'])->where('keywords', 'IS', NULL)->find();
+						$objectList = ORM::factory('object')->where('title', '=', $data[$key]['titulo'])->find();
+						if($objectList->id != ''){
+							$objectList->sinopse = $data[$key]['descricao'];
+							$objectList->keywords = $data[$key]['tema'].','.$data[$key]['keywords'];
+							$objectList->save();
+							//echo $data[$key]['titulo'].'<br/>';
+						}else{
+							echo $data[$key]['titulo'].' --- '.$data[$key]['taxonomia'].'<br/>';
+						}
+					}
+				}
+
+				$db->commit();
+			}  catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            echo 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            echo 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $db->rollback();
+	        }
+	    }
+	}
 }

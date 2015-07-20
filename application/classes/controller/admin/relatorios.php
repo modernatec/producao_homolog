@@ -93,7 +93,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		->and_where('objectstatus.project_status', '!=', '0');
 
 		if($id != 'init' && $id != ''){
-			$lista->where('project_id', '=', $id);
+			$lista->where('objectstatus.project_id', '=', $id);
 		}
 
 		$view->collections = $lista->group_by('collections.id')
