@@ -193,14 +193,14 @@ $(document).ready(function()
     $.datepicker.setDefaults($.datepicker.regional["pt-br"]);
 
     Dropzone.autoDiscover = false;
-    //updateBar();
+    updateBar();
 
 
 });
 
 
 setInterval(function() {
-    //updateBar();
+    updateBar();
 }, 5000);
 
 

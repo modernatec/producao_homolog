@@ -20,6 +20,7 @@
 		<ul class="list_item">
 			<? foreach($contatosList as $contato){?>
 			<li>
+				<a class="right excluir" href="<?=URL::base().'admin/contatos/delete/'.$contato->id;?>" title="Excluir">Excluir</a>	
 				<a href="<?=URL::base().'admin/contatos/edit/'.$contato->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div class="left" style="width:90px;">
 						<span class="list_faixa round blue"><?=$contato->service->name?></span>

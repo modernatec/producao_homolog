@@ -126,7 +126,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
 					->where('project_id', '=', $this->request->post('project_id'))
 					->where('status_id', '!=', '8')
-					->where('collection_id', 'IN', DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $this->request->post('project_id')))
+					//->where('collection_id', '=', $this->request->post('project_id'))
 					
 					->order_by('collection_fechamento', 'ASC')
 					->order_by('collection_name', 'ASC')

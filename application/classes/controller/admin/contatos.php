@@ -14,29 +14,6 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-    
-    /*   
-	public function action_index($ajax = null)
-	{	
-		$view = View::factory('admin/contatos/list')
-                ->bind('message', $message);
-		
-        if($ajax == null){
-			$this->template->content = $view;             
-		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getContatos(true)->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
-				)						
-			);
-	        return false;
-		}          
-	} 
-	*/
 
 	public function action_edit($id)
 	{
@@ -107,8 +84,12 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 		
 	public function action_delete($id)
 	{
+		$this->auto_render = false;
 		try 
-		{            
+		{           
+			DB::delete('contatos_objects')->where('contato_id','=', $id)->execute();
+			DB::delete('contatos_suppliers')->where('contato_id','=', $id)->execute();
+
 			$contact = ORM::factory('contato', $id);
 			$contact->delete();
 			$message = "contato excluído com sucesso.";
@@ -117,8 +98,15 @@ class Controller_Admin_Contatos extends Controller_Admin_Template {
 			$errors = $e->errors('models');
 		}
 	
-		Utils_Helper::mensagens('add',$message); 
-		Request::current()->redirect('admin/suppliers');
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getContatos(true)->render())),
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+				array('type'=>'msg', 'content'=> $message),
+			)						
+		);
+		
 	}
 
 

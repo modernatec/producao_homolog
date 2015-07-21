@@ -41,7 +41,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					$obj->uploaded = '1';
 					$obj->save();
 
-	            	echo 'ok - '.$object->taxonomia.'<br/>';
+	            	//echo 'ok - '.$object->taxonomia.'<br/>';
 	            }else{
 	            	echo '****não existe a pasta => '.$pasta.'<br/>';
 	            }

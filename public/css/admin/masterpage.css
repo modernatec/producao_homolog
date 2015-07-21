@@ -16,6 +16,7 @@ body{
 	/*background: url('../../image/admin/bkg.jpg') repeat-x 0 0 fixed;*/
 	/*background: #f1f2f7;*/
 	/*color: #767676;*/
+	overflow: hidden;
 }
 
 em, strong{
