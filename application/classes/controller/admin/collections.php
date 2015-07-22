@@ -39,7 +39,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		}   
 	} 
 
-	public function action_edit($id)
+	public function action_edit($id, $ajax = null)
     {       	      
     	$this->auto_render = false;
 		$view = View::factory('admin/collections/create')
@@ -79,13 +79,17 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			}		
 		}
 
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
-			)						
-		);
-        return false;	
+		if($ajax != null){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
+				)						
+			);
+        	return false;	
+        }
 	}
 
 	public function action_salvar($id = null)
@@ -93,6 +97,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
+
+        $collection_id = $id;
 		
 		try 
 		{            
@@ -107,6 +113,8 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				'repositorio',
 			));
 			$colecao->save();
+
+			$collection_id = $colecao->id;
 
 			$team = DB::delete('collections_userinfos')->where('collection_id','=', $id)->execute();
 
@@ -184,6 +192,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		echo json_encode(
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($collection_id, true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
