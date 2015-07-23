@@ -14,16 +14,16 @@
 		</div>
 	</div>
 	<div class="scrollable_content list_body">
-		<ul class="list_item">
 			<?foreach($objectsList as $objeto){
 				
 			?>
-			<li>
+			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
 
-				<a class="load" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
-					<div>
-						<p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
-						<hr style="margin:8px 0;" />
+				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
+					<div>	
+						<span class="light_blue round list_faixa left" style='position:relative; top:-6px; left:-6px;'><?=$objeto->tipo;?></span>
+						<p class="clear"><b><?=$objeto->title?></b></p>
+						<!--hr style="margin:8px 0;" /-->
 						
 						<p><?=$objeto->collection_name?></p>
 						<?if($objeto->reaproveitamento == 0){ 
@@ -34,14 +34,9 @@
 			                $origem = "reap. integral";
 			            }?>
             
-						<p>
-							<span class="light_blue round list_faixa left "><?=$objeto->tipo;?></span>
-							<span class="light_blue round list_faixa left "><?=$origem?></span>
-							<span class="light_blue round list_faixa"><?=$objeto->collection_ano?></span>
-						</p>
+						
 					</div>
 				</a>
-			</li>
+			</div>
 			<?}?>
-		</ul>
 	</div>

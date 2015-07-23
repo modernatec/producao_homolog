@@ -1,4 +1,6 @@
-<div class="clear">
+<a href="javascript:void(0)" class="close_pop bar_button round right">cancelar</a> 
+<a class="collapse right bar_button round" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
+<div class="clear left" style="width:400px;">
     <div class="scrollable_content clear">  
         <ul class="list_item"> 
             <?
@@ -14,13 +16,8 @@
             <?};?>
         </ul>
         <div class="boxwired_selected round">
-            <a class="collapse right" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
-            
-            <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
-            <span class="wordwrap"><?=@$obj->taxonomia;?></span>
-            <hr style="margin:8px 0;" />
             <?if($obj->uploaded == 1){?>
-            <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round right view_oed">visualizar</a>
+            <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' data-rel="load-content" data-panel="#preview" class="bar_button round right load">visualizar</a>
             <?
                 if($current_auth != "assistente" || $current_auth != "assistente 2"){
                     
@@ -30,6 +27,11 @@
                     }
                 }
             ?>
+            
+            <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
+            <span class="wordwrap"><?=@$obj->taxonomia;?></span>
+            <hr style="margin:8px 0;" />
+            
             <p><?=@$obj->collection->name?></p>
             <?if($obj->reaproveitamento == 0){ 
                 $origem = "novo";
@@ -44,14 +46,13 @@
                 <span class="list_faixa light_blue round left"><?=$origem?></span>
                 <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
                 <span class="list_faixa light_blue round left"><?=@$obj->collection->ano?></span>
-                <span class="list_faixa light_blue round"><?=@$obj->supplier->empresa?></span>
             </div>
             <table class="clear">
                 <thead>
                     <th>formato</th>
-                    <th>interatividade</th>
-                    <th>transcrição locução</th>
-                    <th>arquivos abertos</th>
+                    <th>interativo</th>
+                    <th>legendado</th>
+                    <th>editável</th>
                     <th>cessão</th>
                 </thead>
                 <tbody>
@@ -66,9 +67,9 @@
             </table>
             <table class="clear">
                 <thead>
-                    <th>unidade</th>
-                    <th>capítulo</th>
-                    <th>página</th>
+                    <th>un.</th>
+                    <th>cap.</th>
+                    <th>pág.</th>
                     <th>tamanho</th>
                     <th>duração</th>
                     <th>resultado PNLD</th>
@@ -131,4 +132,6 @@
         <?};?>
         </ul>
     </div> 
+</div>
+<div class="left" id="preview">
 </div>

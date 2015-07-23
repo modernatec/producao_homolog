@@ -537,10 +537,12 @@ function setupAjax(container){
                 $(this).addClass('selected');
             }
 
+            /*
             if($(this).hasClass('load')){
                 $('.list_item li a').removeClass('selected');
-                $(this).addClass('selected');
-            }    
+                //$(this).addClass('selected');
+            } 
+            */   
 
             $("li").removeClass("blueSelection");
             $(this).closest("li").addClass("blueSelection");
@@ -647,6 +649,13 @@ function setupAjax(container){
             e.preventDefault();
             var url = this.href;
             var form;
+
+            
+            if($(this).data('select') != undefined){
+                $('div > .selected').removeClass('selected');
+                $('#' + $(this).data('select')).addClass('selected');
+            }
+           
 
             $('#dialog').remove();
 

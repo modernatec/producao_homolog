@@ -1036,7 +1036,7 @@ p{
 
 .pagination{
     color:#008fc7;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 input[type='submit'], input[type='button']{
@@ -1661,8 +1661,28 @@ a.green{
     border-radius: 8px;
 }
 
+.acervo_item{
+	width: 185px;
+	height: 200px;
+	color: #000;
+	border: 1px solid #ccc;
+	background: #f1f1f1;
+	padding: 5px;
+	float: left;
+	margin: 0 5px 5px 0;
+}
+
+div .selected{
+	border: 1px solid #008fc7 !important;
+}
+
+.acervo_item a{
+	color: #000 !important;
+}
+
 .acervo_preview, .iframe_body{
-	width: 800px;	
+	width: 800px;
+
 }
 
 .iframe_body{

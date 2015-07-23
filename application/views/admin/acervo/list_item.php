@@ -1,19 +1,21 @@
 <div>
-    <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
-    <div class="replies" style="display:none;">
-
-        <hr style="margin:8px 0;" />
-        <?if($objeto->uploaded == 1){?>
+    <?if($objeto->uploaded == 1){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="bar_button round gray right view_oed">visualizar</a>
         <?
             if($current_auth != "assistente" || $current_auth != "assistente 2"){
                 
         ?>
         <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="bar_button round gray right">baixar</a>
-        <?
-                }
+    <?
             }
-        ?>
+        }
+    ?>
+    <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
+    
+    <div class="replies" style="display:none;">
+
+        <hr style="margin:8px 0;" />
+        
         
         <p><?=$objeto->collection->name?></p>
         <?if($objeto->reaproveitamento == 0){ 
@@ -29,15 +31,14 @@
             <span class="list_faixa gray round left"><?=$origem?></span>
             <span class="list_faixa gray round left"><?=@$objeto->typeobject->name;?></span>
             <span class="list_faixa gray round left"><?=@$objeto->collection->ano?></span>
-            <span class="list_faixa gray round"><?=@$objeto->supplier->empresa?></span>
         </div>
 
         <table class="clear gray">
             <thead>
                 <th>formato</th>
-                <th>interatividade</th>
-                <th>transcrição locução</th>
-                <th>arquivos abertos</th>
+                <th>interativo</th>
+                <th>legendado</th>
+                <th>editável</th>
                 <th>cessão</th>
             </thead>
             <tbody>
@@ -52,9 +53,9 @@
         </table>
         <table class=" gray">
             <thead>
-                <th>unidade</th>
-                <th>capítulo</th>
-                <th>página</th>
+                <th>un.</th>
+                <th>cap.</th>
+                <th>pág.</th>
                 <th>tamanho</th>
                 <th>duração</th>
                 <th>resultado PNLD</th>
