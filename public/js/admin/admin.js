@@ -638,6 +638,42 @@ function setupAjax(container){
             });  
         });
 
+        $("a.acervo_view").unbind('click').bind('click', function(e) {   
+            e.preventDefault();
+            var url = this.href;
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                timeout: 1000, 
+                dataType : "html",
+                success: function(retorno) {
+                    //$('#dialog').removeClass('loading');
+                    if(retorno != 0){
+                        $('#acervo_preview').removeClass('hide');
+                        //$('#dialog').addClass('acervo_preview');
+                        //$('#dialog').show('slide', {direction: 'left'}, 300, function(){
+                        $('.iframe_body').attr('src', retorno);
+                        setupAjax('#dialog');
+                        //});
+                    }else{
+                        setMsg({
+                            content:'Ops!..<br/><br/>Não encontrei este OED.', 
+                            tema:'error',
+                        });
+                    }
+                },
+                error: function(e) {
+                    //$('#dialog').removeClass('loading');
+                    console.log(e);
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        tema:'error',
+                    });
+                }
+            });  
+        });
+
         
 
         $("a.close_pop").unbind('click').bind('click', function(e){

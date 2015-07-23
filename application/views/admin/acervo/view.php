@@ -1,5 +1,7 @@
-<a href="javascript:void(0)" class="close_pop bar_button round right">cancelar</a> 
-<a class="collapse right bar_button round" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
+<a href="javascript:void(0)" class="close_pop bar_button round right">fechar</a> 
+<? if(count($array_pathFoward) > 0 || count($array_path) > 0 ){?>
+<a class="collapse left round" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
+<?}?>
 <div class="clear left" style="width:400px;">
     <div class="scrollable_content clear">  
         <ul class="list_item"> 
@@ -17,7 +19,7 @@
         </ul>
         <div class="boxwired_selected round">
             <?if($obj->uploaded == 1){?>
-            <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' data-rel="load-content" data-panel="#preview" class="bar_button round right load">visualizar</a>
+            <a href='<?=URL::base();?>/admin/acervo/acervoPreview/<?=$obj->id?>' data-rel="load-content" data-panel="#preview" class="bar_button round right load acervo_view">visualizar</a>
             <?
                 if($current_auth != "assistente" || $current_auth != "assistente 2"){
                     
@@ -133,5 +135,6 @@
         </ul>
     </div> 
 </div>
-<div class="left" id="preview">
+<div class="left hide" id="acervo_preview">
+    <iframe class="iframe_body" frameBorder="0" scrolling="no" src="" allowtransparency="true" ></iframe>
 </div>

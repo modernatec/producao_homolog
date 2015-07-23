@@ -1667,9 +1667,13 @@ a.green{
 	color: #000;
 	border: 1px solid #ccc;
 	background: #f1f1f1;
-	padding: 5px;
 	float: left;
+	padding: 2px;
 	margin: 0 5px 5px 0;
+}
+
+.item_type{
+	padding: 5px;
 }
 
 div .selected{
@@ -1682,7 +1686,7 @@ div .selected{
 
 .acervo_preview, .iframe_body{
 	width: 800px;
-
+	padding-top: 5px;
 }
 
 .iframe_body{
@@ -1726,7 +1730,7 @@ div.jGrowl div.error {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	min-width: 482px;
+	min-width: 400px;
 	height: auto;
 	padding: 10px;
 	background: #fff url('../../image/admin/bkg.jpg') repeat-x 0 0;

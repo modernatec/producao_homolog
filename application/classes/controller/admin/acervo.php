@@ -244,7 +244,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	}    
 
 
-	public function action_preview($object_id){
+	public function action_preview($object_id, $ajax = null){
 		$this->auto_render = false;
 
 		$view = View::factory('admin/acervo/preview');
@@ -254,11 +254,20 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$file;
 		//var_dump($file_path);
 		if (file_exists(DOCROOT.$file_path)) {
-			$view->src = URL::base().$file_path;
-			echo $view->render();
+			if($ajax != null){
+				echo URL::base().$file_path;
+			}else{
+				$view->src = URL::base().$file_path;
+				echo $view->render();
+			}
 		} else {
 		    echo 0;
 		}
+	}
+
+
+	public function action_acervoPreview($object_id){
+		echo $this->action_preview($object_id, true);
 	}
 
 	public function action_download($object_id){

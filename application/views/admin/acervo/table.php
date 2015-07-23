@@ -21,7 +21,7 @@
 
 				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
 					<div>	
-						<span class="light_blue round list_faixa left" style='position:relative; top:-6px; left:-6px;'><?=$objeto->tipo;?></span>
+						<div class="light_blue round item_type"><?=$objeto->tipo;?></div>
 						<p class="clear"><b><?=$objeto->title?></b></p>
 						<!--hr style="margin:8px 0;" /-->
 						

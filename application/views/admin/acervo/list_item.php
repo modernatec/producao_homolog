@@ -1,6 +1,7 @@
 <div>
+    <div class="replies hide">
     <?if($objeto->uploaded == 1){?>
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="bar_button round gray right view_oed">visualizar</a>
+        <a href='<?=URL::base();?>/admin/acervo/acervoPreview/<?=$objeto->id?>' class="bar_button round gray right acervo_view ">visualizar</a>
         <?
             if($current_auth != "assistente" || $current_auth != "assistente 2"){
                 
@@ -10,9 +11,10 @@
             }
         }
     ?>
+    </div>
     <p><b><?=$objeto->title?></b></p><p><?=$objeto->taxonomia?></p>
     
-    <div class="replies" style="display:none;">
+    <div class="replies hide">
 
         <hr style="margin:8px 0;" />
         
