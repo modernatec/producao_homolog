@@ -141,6 +141,7 @@
                   <input type="text" name="start[]" placeholder="início" id="start_<?=$objeto->id?>" data-days="<?=$workflow->days?>" data-target="end_<?=$objeto->id?>" class="crono date round" value="<?=Utils_Helper::data(@$objeto->crono_date,'d/m/Y')?>" />
                 </td>
                 <td width="20%">
+                  
                   <input type="text" name="end[]" placeholder="término" id="end_<?=$objeto->id?>" data-days="-<?=$workflow->days?>" data-target="start_<?=$objeto->id?>" class="crono date round" value="<?=Utils_Helper::data(@$objeto->planned_date,'d/m/Y')?>" />
                 </td>
             </tr>

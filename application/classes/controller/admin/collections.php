@@ -2,7 +2,7 @@
  
 class Controller_Admin_Collections extends Controller_Admin_Template {
  
-	public $auth_required		= array('login', 'admin');
+	public $auth_required		= array('login', 'coordenador');
  	
 	/*
 	public $secure_actions     	= array(

@@ -33,7 +33,7 @@
                         <span class="round" id="materia">matéria <?=(!empty($filter_materia) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round" >
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>                                
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_materia" /><label for="filter_materia">selecionar tudo</label></li>                                
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul>
@@ -58,7 +58,7 @@
                         <span class="round" id="ano">ano <?=(!empty($filter_ano) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round" >
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>
+                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_ano" /><label for="filter_ano">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul>                                    

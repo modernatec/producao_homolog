@@ -813,7 +813,7 @@ function setupAjax(container){
             link = $(this).attr('href');
 
             if(link != lastURL){
-                $('.tabs li').removeClass('selected');
+                
                 $('.content_hide').each(function(index, element){            
                     if($(this).hasClass('content_show')){
                         $(this).removeClass('content_show');
@@ -821,17 +821,26 @@ function setupAjax(container){
                 });            
 
                 if($(this).hasClass('ajax')){
+                    $('.tabs li').removeClass('selected');
                     loadContent({url:link, container:'#tabs_content'});
                     
                     if($(this).attr('data-clear')){                    
                         $($(this).attr('data-clear')).html(" ");
                     }
+
+                    $.removeCookie("producao");
+                    $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
                 }else{
-                    $($(this).attr('href')).addClass('content_show');
+                    $('.tabs a').each(function(e, ui){
+                        if($('#' + ui.id).data('show') != undefined){
+                            $('#' + ui.id).closest('li').removeClass('selected');
+                        }
+                    });
+
+                    $($(this).data('show')).addClass('content_show');
                 }
 
-                $.removeCookie("producao");
-                $.cookie("producao", '#' + $(this).attr('id'), { expires : 1 });
+                
                 $(this).parent().addClass('selected');
             }
         })
@@ -842,6 +851,17 @@ function setupAjax(container){
             if($(container + ' ' + tab).length > 0){
                 $(container + ' ' + tab).click(); 
             }else{
+                $('.tabs > .selected a').each(function(e, ui){
+                    if($('#' + ui.id).data('show') != undefined){
+                        $($('#' + ui.id).data('show')).addClass('content_show')
+                    }
+                });
+                /*
+                $('.tabs > .selected').data('show');
+                if($('.tabs > .selected').data('show') != ''){
+                    console.log($('.tabs > .selected').data('show'));
+                }
+                */
                 $(container + ' a.aba').first().click(); 
             }
         }, 100);    

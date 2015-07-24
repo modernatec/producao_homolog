@@ -29,6 +29,9 @@ class Controller_Admin_Home extends Controller_Admin_Template {
             // User isn't logged in, redirect to the login form.
             Request::current()->redirect('login');
         }
+
+        //var_dump(Kohana::VERSION);
+		
 		//$this->auto_render = false;
 		/*
 		if(Auth::instance()->logged_in()== 0){	

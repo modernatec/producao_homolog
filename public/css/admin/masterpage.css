@@ -520,7 +520,7 @@ a{
 	/*padding-top: 8px;*/
 }
 
-.tabs li{
+.subtabs li, .tabs li{
 	display: inline;
 	padding: 5px;
 	border: 1px solid #ccc;
@@ -529,25 +529,25 @@ a{
 	border-radius:4px 4px 0 0 !important;
 }
 
-.tabs .selected{
+.subtabs .selected, .tabs .selected{
 	background: #008fc7;	
 	border: 1px solid #008fc7;
 	border-bottom: none;
 }
 
-.tabs .selected a{
+.subtabs .selected a, .tabs .selected a{
 	color: #fff;
 }
 
-.tabs .selected a:hover{
+.subtabs .selected a:hover, .tabs .selected a:hover{
 	color: #fff;
 }
 
-.tabs li a{
+.subtabs li a, .tabs li a{
 	color: #ccc;
 }
 
-.tabs li a:hover{
+.subtabs li a:hover, .tabs li a:hover{
 	color: #008fc7;
 }
 
