@@ -121,33 +121,43 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			                
 			$objeto->save();
 
+			/*
 			$teams = ORM::factory('status_team')->where('status_id', '=', $objeto->id)->find_all();
 			foreach ($teams as $team) {
 				$team->delete();
 			}
+			*/
 
-			foreach ($this->request->post('team') as $team) {
-				$new_team = ORM::factory('status_team');
-				$new_team->status_id = $objeto->id;
-				$new_team->team_id = $team;
-				$new_team->save();
+			DB::delete('status_teams')->where('status_id','=', $objeto->id)->execute();			
+			if($this->request->post('team') != ""){
+				foreach ($this->request->post('team') as $team) {
+					$new_team = ORM::factory('status_team');
+					$new_team->status_id = $objeto->id;
+					$new_team->team_id = $team;
+					$new_team->save();
+				}
 			}
 
 
 			$db->commit();
 			
 			$msg = "tudo certo!";
+			$msg_type = 'normal';
+
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = $erroList;
+            $msg_type = 'error';
 
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $msg_type = 'error';
+
             $db->rollback();
         }
 
@@ -156,7 +166,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			array(	
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListStatus(true)->render())),
 				//array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($id, true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 		

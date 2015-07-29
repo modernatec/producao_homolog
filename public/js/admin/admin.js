@@ -37,7 +37,7 @@ function setupUpload(){
             if(response == '0'){
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>tente novamente...', 
-                    tema:'error'
+                    container:'error'
                 });
                 $('input[type=submit]').attr('disabled', '');
             }else{
@@ -73,7 +73,7 @@ function setupUploadFinalPackage(){
             if(response == '0'){
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao enviar o arquivo.<br/>Verifique o tamanho do pacote e tente novamente...', 
-                    tema:'error'
+                    container:'error'
                 });                
             }else{
                 console.log(response);
@@ -366,7 +366,7 @@ function setupAjax(container){
                         removeDialogs();
                         setMsg({
                             content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                            tema:'error',
+                            container:'error',
                             
                         });
                     }
@@ -623,7 +623,7 @@ function setupAjax(container){
                     }else{
                         setMsg({
                             content:'Ops!..<br/><br/>Não encontrei este OED.', 
-                            tema:'error',
+                            container:'error',
                         });
                     }
                 },
@@ -632,7 +632,7 @@ function setupAjax(container){
                     console.log(e);
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                        tema:'error',
+                        container:'error',
                     });
                 }
             });  
@@ -659,7 +659,7 @@ function setupAjax(container){
                     }else{
                         setMsg({
                             content:'Ops!..<br/><br/>Não encontrei este OED.', 
-                            tema:'error',
+                            container:'error',
                         });
                     }
                 },
@@ -668,7 +668,7 @@ function setupAjax(container){
                     console.log(e);
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                        tema:'error',
+                        container:'error',
                     });
                 }
             });  
@@ -713,7 +713,7 @@ function setupAjax(container){
                     if(is_json){
                         setMsg({
                             content: response[0].content, 
-                            tema:'error',
+                            container:'error',
                         });
                     }else{
                         $('#dialog').show('slide', {direction: 'left'}, 300);
@@ -737,7 +737,7 @@ function setupAjax(container){
                                         console.log(e);
                                         setMsg({
                                             content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                                            tema:'error',
+                                            container:'error',
                                         });
                                     }
                                 });   
@@ -771,7 +771,7 @@ function setupAjax(container){
                     console.log(e);
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                        tema:'error',
+                        container:'error',
                     });
                 }
             });  
@@ -924,7 +924,7 @@ function ajaxPost(form, container, dialog){
             removeDialogs();
             setMsg({
                 content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                tema:'error',
+                container:'error',
                 
             });
         }
@@ -965,7 +965,7 @@ function loadContent(args){
             url: url,
             data: data_post,
             dataType : "json",
-            timeout: 20000, 
+            timeout: 1000, 
             success: function(retorno) {
                 for(k in retorno){
                     returnData.push(retorno[k]);    
@@ -981,7 +981,7 @@ function loadContent(args){
                 removeDialogs();
                 setMsg({
                     content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                    tema:'error',                    
+                    container:'error',                    
                 });
                 setupAjax();
             }
@@ -1029,7 +1029,7 @@ function getContent(args, dialog){
             removeDialogs();
             setMsg({
                 content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                tema:'error',
+                container:'error',
                 
             });
         }
@@ -1096,7 +1096,7 @@ function setPanelContent(args, dialog){
 }
 
 function setMsg(args, dialog){
-    tema = args.tema || 'normal';
+    tema = args.container || 'normal';
     fix = args.fix || false;
     
     $.jGrowl(

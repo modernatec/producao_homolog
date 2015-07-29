@@ -3,10 +3,9 @@
 return array(
             'name' => array(
                 'not_empty' => 'Nome do projeto não pode ser vazio',
-               
             ),
 			'segmento_id' => array(
-                    'not_empty' => 'Segmento do projeto não pode ser vazio',
+                'not_empty' => 'Segmento do projeto não pode ser vazio',
 			),
 			'description' => array(
 				'not_empty' => 'Descrição do projeto não pode ser vazio',

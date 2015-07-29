@@ -19,9 +19,6 @@ class Model_Project extends ORM {
             'segmento_id' => array(
                 array('not_empty'),
             ),
-            'description' => array(
-                array('not_empty'),
-            ),
             'pasta' => array(
                 array('not_empty'),
                 )
