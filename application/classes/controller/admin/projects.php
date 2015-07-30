@@ -23,8 +23,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		$view = View::factory('admin/projects/list')
 			->bind('message', $message);
 		
-		$view->projectsList = ORM::factory('project')->order_by('name','ASC')->find_all();
-		
 		if($ajax == null){
 			$this->template->content = $view;             
 		}else{
@@ -33,10 +31,12 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;
-		}		
+		}  	
 	} 
 
 	public function action_edit($id, $ajax = null)
@@ -91,6 +91,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
+        $msg_type = 'normal';
+        $project_id = $id;
 
         $search = ORM::factory('project')->where('name', '=', $this->request->post('name'))->find_all();
         if(!$id && $search->count() > 0){
@@ -111,6 +113,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$segmento->pasta.'/', $projeto->pasta, $this->request->post('ano').'_'.$this->request->post('name'));
 				$projeto->pasta = $pastaProjeto;                    
 				$projeto->save();
+
+				$project_id = $projeto->id;
 
 				/*
 				$collections = DB::delete('collections_projects')->where('project_id','=', $projeto->id)->execute();
@@ -134,18 +138,22 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 					$erroList.= $erro.'<br/>';	
 				}
 	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $msg_type = 'error';
 	            $db->rollback();
 	        } catch (Database_Exception $e) {
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $msg_type = 'error';
 	            $db->rollback();
 	        }
 	    }
 
-        header('Content-Type: application/json');
+		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/projects/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($project_id, true))),
+				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
 			)						
 		);
         return false;
@@ -175,6 +183,26 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		Request::current()->redirect('admin/projects');
 	}
 
+	public function getFiltros(){
+    	$this->auto_render = false;
+    	$viewFiltros = View::factory('admin/projects/filtros');
+
+    	$filtros = Session::instance()->get('kaizen')['filtros'];
+
+  		$viewFiltros->filter_segmento = array();
+		$viewFiltros->filter_ano = array();
+		$viewFiltros->filter_status = array();
+
+  		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
+  		$viewFiltros->anosList = ORM::factory('project')->group_by('ano')->order_by('ano', 'DESC')->find_all();
+
+		foreach ($filtros as $key => $value) {
+  			$viewFiltros->$key = json_decode($value);
+  		}
+
+  		return $viewFiltros;
+    }
+
 	public function action_collections($id)
     {	
         $callback = $this->request->query('callback');        
@@ -189,12 +217,34 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         exit;
     } 
 
-    public function action_getList($status_id, $ajax = null){
+    public function action_getList($ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/projects/table');
 
-		$query = ORM::factory('project')->where('status', '=', $status_id);		
-		$view->projectsList = $query->order_by('name','ASC')->find_all();
+		if(count($this->request->post('projects')) > '0' || Session::instance()->get('kaizen')['model'] != 'project'){
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "project");
+		}else{
+			$kaizen_arr = Session::instance()->get('kaizen');	
+		}
+		Session::instance()->set('kaizen', $kaizen_arr);
+
+  		$filtros = Session::instance()->get('kaizen')['filtros'];
+  		
+  		foreach ($filtros as $key => $value) {
+  			$view->$key = json_decode($value);
+  		}
+
+  		$query = ORM::factory('project');
+
+		(isset($view->filter_segmento)) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
+		(isset($view->filter_ano)) ? $query->where('ano', 'IN', $view->filter_ano) : '';
+		(isset($view->filter_status)) ? $query->where('status', 'IN', $view->filter_materia) : '';
+		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
+		
+		$view->projectsList = $query->order_by('ano','DESC')->order_by('name','ASC')->find_all();
+
+		//$query = ORM::factory('project')->where('status', '=', $status_id);		
+		//$view->projectsList = $query->order_by('name','ASC')->find_all();
 		
 		if($ajax != null){
 			return $view;
@@ -203,6 +253,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
 				)						
 			);
 	       

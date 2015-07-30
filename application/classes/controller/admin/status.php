@@ -121,13 +121,6 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 			                
 			$objeto->save();
 
-			/*
-			$teams = ORM::factory('status_team')->where('status_id', '=', $objeto->id)->find_all();
-			foreach ($teams as $team) {
-				$team->delete();
-			}
-			*/
-
 			DB::delete('status_teams')->where('status_id','=', $objeto->id)->execute();			
 			if($this->request->post('team') != ""){
 				foreach ($this->request->post('team') as $team) {
@@ -165,7 +158,7 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		echo json_encode(
 			array(	
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListStatus(true)->render())),
-				//array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($id, true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($id, true)->render())),
 				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
@@ -189,7 +182,8 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/status/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListStatus(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);

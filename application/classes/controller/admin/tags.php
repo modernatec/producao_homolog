@@ -109,7 +109,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
-		
+		$msg_type = 'normal';
 		try 
 		{            
 			$tag = ORM::factory('tag', $id)->values($this->request->post(), array(
@@ -137,17 +137,20 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 			$db->commit();
 			
 			$msg = "tudo certo!";
+
 		} catch (ORM_Validation_Exception $e) {
             $errors = $e->errors('models');
 			$erroList = '';
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
+            $msg = $erroList;
+            $msg_type = 'error';
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $msg_type = 'error';
+
             $db->rollback();
         }
 
@@ -155,7 +158,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		echo json_encode(
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListTags(true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 		
@@ -180,8 +183,7 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/tags/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListTags(true)->render())),				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
 	}

@@ -382,6 +382,22 @@ function validateAjax(){
         }
     });
 
+    $("#filter_projects").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    });
+
+    $("#reset_filter_projects").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    });
+
     $("#frm_acervo").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');

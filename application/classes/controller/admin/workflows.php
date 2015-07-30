@@ -88,6 +88,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
         $db->begin();
 
         $w_id = $id;
+        $msg_type = 'normal';
 
 		try 
 		{            
@@ -149,19 +150,23 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
+            $msg = $erroList;
+            $msg_type = 'error';
+
             $db->rollback();
         } catch (Database_Exception $e) {
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $msg_type = 'error';
+
             $db->rollback();
         }
 
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'html', 'content'=> json_encode($this->action_index()->render())),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($w_id, true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 
@@ -185,7 +190,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/workflows/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
