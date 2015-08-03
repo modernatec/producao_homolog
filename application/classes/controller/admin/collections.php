@@ -149,15 +149,16 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 											->where('object_id', '=', $objects[$key])
 											->where('status_id', '=', '1')->limit('1')->find_all(); 
 
-						//cria o status "não iniciado" e habilita o OED para produção
+						//cria o status "não iniciado" e habilita o OED para produção caso não haja.
 						if(count($objectStatus_result) == 0){
 							$objectStatus = ORM::factory('objects_statu');
-					         //não iniciado
-					        //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $this->request->post('ini_date'))));
-					        $objectStatus->planned_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $starts[$key])));
 						}else{
 							$objectStatus = ORM::factory('objects_statu', $objectStatus_result[0]->id);
 						}	
+
+						if($objectStatus->crono_date == ''){
+							$objectStatus->planned_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $starts[$key])));
+						}
 
 						$objectStatus->status_id = '1';
 						$objectStatus->object_id = $objects[$key];

@@ -222,7 +222,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			
 			$object->save();
 
-			/*
+			
 			if(is_null($id) || $id == ""){
 				$objectStatus = ORM::factory('objects_statu');
 		        $objectStatus->object_id = $object->id;
@@ -232,7 +232,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
 				$objectStatus->save();
 			}
-			*/
 			
 			if($this->request->post('repositorio') != ""){
 				DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();

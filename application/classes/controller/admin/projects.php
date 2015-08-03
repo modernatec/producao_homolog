@@ -153,7 +153,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($project_id, true))),
-				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
         return false;
@@ -238,7 +238,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 
 		(isset($view->filter_segmento)) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';
 		(isset($view->filter_ano)) ? $query->where('ano', 'IN', $view->filter_ano) : '';
-		(isset($view->filter_status)) ? $query->where('status', 'IN', $view->filter_materia) : '';
+		(isset($view->filter_status)) ? $query->where('status', 'IN', $view->filter_status) : '';
 		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
 		
 		$view->projectsList = $query->order_by('ano','DESC')->order_by('name','ASC')->find_all();

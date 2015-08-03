@@ -497,15 +497,30 @@ function setupAjax(container){
             }
         }).disableSelection();
 
-        $(".sortable_workflow").sortable({
+        $("#workflow_task").sortable({
             connectWith: ".connect",
             placeholder: "ui-state-highlight",
             distance: 30,
             scroll: true, 
             scrollSensitivity: 100,
             update: function (event, ui) {
+            },
+            helper: function(e,li) {
+                copyHelper = li.clone().insertAfter(li);
+                return li.clone();
+            },
+            stop: function() {
+                copyHelper && copyHelper.remove();
             }
         }).disableSelection();
+
+        $(".sortable_workflow").sortable({
+            receive: function(e,ui) {
+                copyHelper = null;
+            }
+        });
+
+
 
         $(".sortable_produtoras").sortable({
             connectWith: ".connect_suppliers",
@@ -526,6 +541,25 @@ function setupAjax(container){
             }
         }).disableSelection();
 
+        /*
+        $( "#sortable1" ).sortable({
+            connectWith: ".connectedSortable",
+            forcePlaceholderSize: false,
+            helper: function(e,li) {
+                copyHelper= li.clone().insertAfter(li);
+                return li.clone();
+            },
+            stop: function() {
+                copyHelper && copyHelper.remove();
+            }
+        });
+            $(".connectedSortable").sortable({
+                receive: function(e,ui) {
+                    copyHelper= null;
+                }
+        });
+
+        */
 
 
         $("a[rel='load-content']").unbind('click').bind('click', function(e){

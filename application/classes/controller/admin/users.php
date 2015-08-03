@@ -361,7 +361,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         if (HTTP_Request::POST == $this->request->method()) 
         {
             // Attempt to login user
-            $remember = array_key_exists('remember', $this->request->post()) ? (bool) $this->request->post('remember') : FALSE;
+            $remember = array_key_exists('remember', $this->request->post()) ? (bool) $this->request->post('remember') : TRUE;
             $user = Auth::instance()->login($this->request->post('username'), $this->request->post('password'), $remember);
 			
             // If successful, redirect user

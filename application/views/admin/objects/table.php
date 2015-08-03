@@ -37,7 +37,7 @@
 					<hr style="margin:4px 0;" />
 					<div class="clear">
 						<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?></span>
-						<span class="<?=$class_obj?> round list_faixa"><img src="<?=$calendar?>" height="12" valign='middle'> <?=($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'à definir'?></span><?=$diff?>
+						<span class="<?=$class_obj?> round list_faixa"><?=($objeto->retorno != '') ? '<img src="'.$calendar.'" height="12" valign="top"> '.Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição'?></span><?=$diff?>
 					</div>
 					<?foreach ($taskList as $task) {
 						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->to) : '<div class="round_imgList"><span>?</span></div>';

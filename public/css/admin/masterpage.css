@@ -941,8 +941,7 @@ p{
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
 */
 
-
-#sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
+#workflow_task, #sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
 	margin: 5px 0; 
 	padding: 0; 
 	min-height: 70px; 
@@ -957,7 +956,7 @@ p{
     z-index: 1000;
 }
 
-.sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
+#workflow_task, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
 	min-height: 30px; 
 }
 

@@ -7,9 +7,11 @@
         <!--a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a-->       
     <?}?>
 
-    <?if($current_auth != "assistente"){?>
+    <?if($current_auth != "assistente"){
+        if($objects_status[0]->crono_date != ''){
+    ?>
         <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
-    <?}?>
+    <?}}?>
     <?
     if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
@@ -83,7 +85,7 @@
                                                        
                             <div class='line_bottom'>
                                 <div class="left">
-                                    <?if($current_auth != "assistente"){?>
+                                    <?if($current_auth != "assistente" && $object->crono_date != ''){?>
                                         <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
                                     <?
                                     }
@@ -104,7 +106,12 @@
                                     if($object->delivered_date != ''){
                                         $date_faixa = Utils_Helper::data($object->delivered_date, 'd/m/Y');
                                     }else{
-                                        $date_faixa = Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
+                                        if($object->crono_date != ''){
+                                            $date_faixa = Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
+                                        }else{
+                                            $date_faixa = 'aguardando definição';
+                                            $status_class = 'object_late';
+                                        }
                                     }
 
 

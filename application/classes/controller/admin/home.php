@@ -31,6 +31,7 @@ class Controller_Admin_Home extends Controller_Admin_Template {
         }
 
         //var_dump(Kohana::VERSION);
+        //3.1.2
 		
 		//$this->auto_render = false;
 		/*

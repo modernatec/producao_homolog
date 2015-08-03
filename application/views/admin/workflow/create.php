@@ -45,7 +45,7 @@
 		        <div class="left"> 
 		        	<div class="scrollable_content" data-bottom="false" style="height:500px; padding:0 10px;">
 			        	<label>selecione a tarefa</label>
-				        <ul class="list_item connect round sortable_workflow">
+				        <ul class="list_item round sortable_workflow" id="workflow_task">
 				        	<?foreach ($tagsList as $tag) { 
 				        		$dot = ($tag->sync == '1') ? '*' : '';?>
 								<li class="dd-item" id="task-<?=$tag->id?>"><span class="left ball" style="background: <?=$tag->color?>"><?=$tag->days?></span><?=$dot.$tag->tag?></li>
@@ -61,7 +61,7 @@
 				        		<span class="left ball" style="background: <?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?>
 						    </div>
 						    <input type="hidden" name="tasks_status<?=$workflow_status->status_id?>" id="sortable_tasks<?=$workflow_status->status_id?>" />
-					        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$workflow_status->status_id?>" >
+					        <ul class="list_item connect round sortable_workflow" data-fill="sortable_tasks<?=$workflow_status->status_id?>" style="margin-left:25px;" >
 					        	<?
 					        		foreach ($workflowTagsList as $workflow_tag) {
 					        			if($workflow_tag->status_id == $workflow_status->status_id){
