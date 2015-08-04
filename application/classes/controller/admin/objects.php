@@ -320,7 +320,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	$viewFiltros = View::factory('admin/objects/filtros');
     	$viewFiltros->project_id = $project_id;
 
-    	$filtros = Session::instance()->get('kaizen')['filtros'];
+    	/*
+    	if(Session::instance()->get('kaizen')['model'] == 'objects'){
+    		$filtros = Session::instance()->get('kaizen')['filtros'];
+    	}else{
+    		$filtros = array();
+    	}
 
 		$viewFiltros->typeObjectsList = array();
 		$viewFiltros->statusList = array();
@@ -354,7 +359,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   											->where('objectStatus.fase', '=', '1')
   											->where('objectStatus.project_id', '=', $project_id)
   											->group_by('suppliers.id')											
-											->order_by('empresa', 'ASC')->find_all();*/
+											->order_by('empresa', 'ASC')->find_all();*
 
 		$viewFiltros->materiasList = ORM::factory('materia')
 											->join('objectStatus')->on('objectStatus.materia_id', '=', 'materias.id')
@@ -366,6 +371,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		foreach ($filtros as $key => $value) {
   			$viewFiltros->$key = json_decode($value);
   		}
+  		*/
 
   		return $viewFiltros;
     }
