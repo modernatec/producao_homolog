@@ -56,6 +56,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		
 
 		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->where('id', 'NOT IN', $workflow_tags)->find_all();
+		$view->tagsList_sub = ORM::factory('tag')->where('type', '=', 'task')->where('id', 'NOT IN', $workflow_tags)->find_all();
+
 		$view->workflowTagsList = ORM::factory('workflows_status_tag')
 									->join('tags')->on('tags.id', '=', 'tag_id')
 									->where('workflow_id', '=', $id)
@@ -109,8 +111,9 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 					$x = '0';
 					$days = 0;
 					if($this->request->post('tasks_status'.$status_id) != ''){
+						
 						parse_str($this->request->post('tasks_status'.$status_id), $tasks);					
-						foreach($tasks['task'] as $tag_id){
+						foreach($tasks['task'] as $key => $tag_id){
 							/**rever para passar days via post?**/
 							$tag = ORM::factory('tag', $tag_id);
 

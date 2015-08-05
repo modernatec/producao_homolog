@@ -264,10 +264,10 @@
                                                         <?}?>
                                                             <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
                                                         <? if($task->reply->finished != ""){?>
-                                                            <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
+                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
                                                             </a>
                                                         <?}elseif($task->status_id == '6'){?>
-                                                            <span class="round left list_faixa"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
+                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
                                                             </a>
                                                         <?}?>
                                                     </div>

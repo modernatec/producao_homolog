@@ -15,7 +15,7 @@
 	    </dt>
 	    <dd>
 	      <select class="required round" name="status" id="status" style="width:150px;">
-                <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>em produção</option>
+                <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>produzindo</option>
                 <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
             </select>
             <span class='error'><?=($errors) ? $errors['status'] : '';?></span>

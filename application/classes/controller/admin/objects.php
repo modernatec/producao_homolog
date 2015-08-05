@@ -71,7 +71,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 
 		if($ajax == null){
-			$this->template->content = $view;             
+			//$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
 			
@@ -320,19 +320,13 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	$viewFiltros = View::factory('admin/objects/filtros');
     	$viewFiltros->project_id = $project_id;
 
-    	/*
-    	if(Session::instance()->get('kaizen')['model'] == 'objects'){
-    		$filtros = Session::instance()->get('kaizen')['filtros'];
-    	}else{
-    		$filtros = array();
-    	}
-
-		$viewFiltros->typeObjectsList = array();
+    	$viewFiltros->typeObjectsList = array();
 		$viewFiltros->statusList = array();
 		$viewFiltros->collectionList = array();
 		$viewFiltros->suppliersList = array();
 		$viewFiltros->materiasList = array();
 
+		
   		$viewFiltros->typeObjectsList = ORM::factory('typeobject')
   											->join('objectStatus')->on('objectStatus.typeobject_id', '=', 'typeobjects.id')
   											->where('objectStatus.fase', '=', '1')
@@ -354,24 +348,31 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
   											->group_by('collections.id')
 											->order_by('name', 'ASC')->find_all();
 
+		$viewFiltros->materiasList = ORM::factory('materia')
+											//->join('objectStatus')->on('objectStatus.materia_id', '=', 'materias.id')
+  											//->where('objectStatus.fase', '=', '1')
+  											//->where('objectStatus.project_id', '=', $project_id)
+  											->group_by('materias.id')											
+											->order_by('name', 'ASC')->find_all();
+
+
+											/*
 		$viewFiltros->suppliersList = array();/*ORM::factory('supplier')
 											->join('objectStatus')->on('objectStatus.supplier_id', '=', 'suppliers.id')
   											->where('objectStatus.fase', '=', '1')
   											->where('objectStatus.project_id', '=', $project_id)
   											->group_by('suppliers.id')											
-											->order_by('empresa', 'ASC')->find_all();*
+											->order_by('empresa', 'ASC')->find_all();*/
 
-		$viewFiltros->materiasList = ORM::factory('materia')
-											->join('objectStatus')->on('objectStatus.materia_id', '=', 'materias.id')
-  											->where('objectStatus.fase', '=', '1')
-  											->where('objectStatus.project_id', '=', $project_id)
-  											->group_by('materias.id')											
-											->order_by('name', 'ASC')->find_all();
 
-		foreach ($filtros as $key => $value) {
-  			$viewFiltros->$key = json_decode($value);
-  		}
-  		*/
+		//if(Session::instance()->get('kaizen')['model'] == 'objects'){
+    		$filtros = Session::instance()->get('kaizen')['filtros'];
+
+    		foreach ($filtros as $key => $value) {
+	  			$viewFiltros->$key = json_decode($value);
+	  		}
+    	//} 
+
 
   		return $viewFiltros;
     }

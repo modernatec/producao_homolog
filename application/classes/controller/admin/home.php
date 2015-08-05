@@ -22,6 +22,13 @@ class Controller_Admin_Home extends Controller_Admin_Template {
 	{
 		if (Auth::instance()->logged_in())
         {
+        	/*
+            if($this->current_auth == 'editor 1'){
+            	Request::current()->redirect('admin/#acervo/index/ajax');
+            }else{
+            	Request::current()->redirect('admin/#tasks/index/ajax');
+            }
+            */
             // User is logged in, continue on
         }
         else

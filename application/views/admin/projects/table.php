@@ -16,7 +16,7 @@
 			<li>
 				<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>"  rel="load-content" data-panel="#direita" title="Editar">
 					<p><?=$projeto->name?></p>
-					<span class="left <?=$list_class?> round list_faixa"><?=($projeto->status == 0) ? "finalizado" : "em produção"?></span>
+					<span class="left <?=$list_class?> round list_faixa"><?=($projeto->status == 0) ? "finalizado" : "produzindo"?></span>
 					<span class="left <?=$list_class?> round list_faixa"><?=$projeto->segmento->name?></span>
 					<span class="left <?=$list_class?> round list_faixa"><?=count($projeto->collections->find_all())?> coleções</span>
 				</a>

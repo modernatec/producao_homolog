@@ -509,8 +509,32 @@ function setupAjax(container){
                 copyHelper = li.clone().insertAfter(li);
                 return li.clone();
             },
-            stop: function() {
+            stop: function(event, ui) {
                 copyHelper && copyHelper.remove();
+                console.log(ui.item.attr('rel'));
+
+                item = $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos");
+                
+                ul = $(item).closest('ul.drop');
+                if(ul){
+                    var status_id = $(ul).data('status');
+                    console.log(status_id);
+                    /*
+                    $('.drop #' + ui.item.attr('id') + " > div.infos").removeClass('hide');
+
+                    $('.drop #' + ui.item.attr('id') + " > div.infos .info").each(function(e, ui){
+                        switch($(ui).attr('name')){
+                            case 'days':
+                                $(ui).attr('name', 'days_' + status_id + '[]');
+                            break;
+                        }
+                        console.log(ui)
+                    })
+*/
+                    item.removeClass('hide');
+                }else{
+                    item.addClass('hide');
+                }
             }
         }).disableSelection();
 
@@ -999,7 +1023,7 @@ function loadContent(args){
             url: url,
             data: data_post,
             dataType : "json",
-            timeout: 1000, 
+            timeout: 5000, 
             success: function(retorno) {
                 for(k in retorno){
                     returnData.push(retorno[k]);    
@@ -1026,7 +1050,7 @@ function loadContent(args){
 }
 
 function updateBar(url){
-    if(current_auth != 'assistente'){
+    if(current_auth != 'assistente' && current_auth !== 'editor 1'){
         if(logged_in != false){
             d = new Date();
             url = base_url + '/admin/tasks_status/updateTasksBar', true
