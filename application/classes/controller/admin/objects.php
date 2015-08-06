@@ -615,7 +615,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				
 				if($object_status->status->tag_id != '0' && $id == ''){
 					
-					$tag = ORM::factory('tag', $object_status->status->tag_id);
+					//$tag = ORM::factory('tag', $object_status->status->tag_id);
 
 		            $new_task = ORM::factory('task');
 	            	$new_task->object_id = $object_status->object_id;

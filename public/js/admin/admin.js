@@ -513,25 +513,23 @@ function setupAjax(container){
                 copyHelper && copyHelper.remove();
                 console.log(ui.item.attr('rel'));
 
-                item = $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos");
+                item = $('ul.drop > [rel=' + ui.item.attr('rel') + "]");
                 
                 ul = $(item).closest('ul.drop');
                 if(ul){
                     var status_id = $(ul).data('status');
                     console.log(status_id);
-                    /*
-                    $('.drop #' + ui.item.attr('id') + " > div.infos").removeClass('hide');
+                    
+                    //$('.drop #' + ui.item.attr('id') + " > div.infos").removeClass('hide');
 
-                    $('.drop #' + ui.item.attr('id') + " > div.infos .info").each(function(e, ui){
-                        switch($(ui).attr('name')){
-                            case 'days':
-                                $(ui).attr('name', 'days_' + status_id + '[]');
-                            break;
-                        }
+                    $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos .info").each(function(e, ui){
+                        name = $(ui).attr('name');
+                        $(ui).attr('name', name + '_' + status_id + '[]');
                         console.log(ui)
                     })
-*/
-                    item.removeClass('hide');
+
+                    $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos").removeClass('hide');
+                    item.attr('rel', status_id);
                 }else{
                     item.addClass('hide');
                 }
@@ -543,6 +541,15 @@ function setupAjax(container){
                 copyHelper = null;
             }
         });
+
+        $(".sortable_status_workflow").sortable({
+            connectWith: ".connect",
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
+            scrollSensitivity: 100,
+            
+        }).disableSelection();
 
 
 

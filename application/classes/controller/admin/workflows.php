@@ -48,15 +48,17 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$workflow = ORM::factory('workflow', $id);
 		$view->workflowVO = $this->setVO('workflow', $workflow);
 
+		
 		$workflow_status = DB::select('status_id')->from('workflows_status')->where('workflow_id', '=', $id)->execute()->as_array();
 		$workflow_status = (count($workflow_status) == 0) ? array('0') : $workflow_status;
 
+		/*
 		$workflow_tags = DB::select('tag_id')->from('workflows_status_tags')->where('workflow_id', '=', $id)->execute()->as_array();
 		$workflow_tags = (count($workflow_tags) == 0) ? array('0') : $workflow_tags;
-		
+		*/
 
-		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->where('id', 'NOT IN', $workflow_tags)->find_all();
-		$view->tagsList_sub = ORM::factory('tag')->where('type', '=', 'task')->where('id', 'NOT IN', $workflow_tags)->find_all();
+		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->find_all();
+		$view->tagsList_sub = ORM::factory('tag')->where('type', '=', 'task')->find_all();
 
 		$view->workflowTagsList = ORM::factory('workflows_status_tag')
 									->join('tags')->on('tags.id', '=', 'tag_id')
@@ -109,17 +111,24 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 				parse_str($this->request->post('item'),$itens); 			
 				foreach($itens['item'] as $status_id){
 					$x = '0';
-					$days = 0;
+					$days_cycle = 0;
 					if($this->request->post('tasks_status'.$status_id) != ''){
+						
+						$days = $this->request->post('days_'.$status_id);
+						$sync = $this->request->post('sync_'.$status_id);
+						$next_tag_id = $this->request->post('next_tag_id_'.$status_id);
+						$to = $this->request->post('to_'.$status_id);
 						
 						parse_str($this->request->post('tasks_status'.$status_id), $tasks);					
 						foreach($tasks['task'] as $key => $tag_id){
 							/**rever para passar days via post?**/
-							$tag = ORM::factory('tag', $tag_id);
+							
+							//$tag = ORM::factory('tag', $tag_id);
 
-							if($tag->sync == '0'){
-								$days += $tag->days;
+							if($sync[$key] == '0'){
+								$days_cycle += $days[$key];
 							}
+							
 							/****/
 
 							$workflow_tags = ORM::factory('workflows_status_tag');
@@ -127,6 +136,12 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 							$workflow_tags->workflow_id = $workflow->id;
 							$workflow_tags->tag_id = $tag_id;				
 							$workflow_tags->order = $x;
+
+							$workflow_tags->days = $days[$key];
+							$workflow_tags->sync = $sync[$key];
+							$workflow_tags->next_tag_id = $next_tag_id[$key];
+							$workflow_tags->to = $to[$key];
+							
 							$workflow_tags->save();
 
 							$x++;
@@ -137,7 +152,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 					$workflow_status->status_id = $status_id;
 					$workflow_status->workflow_id = $workflow->id;				
 					$workflow_status->order = $i;
-					$workflow_status->days = $days;
+					$workflow_status->days = $days_cycle;
 					$workflow_status->save();
 
 					$i++;

@@ -22,7 +22,7 @@
 		        <div class="left"> 
 		        	<div class="scrollable_content" data-bottom="false" style="height:500px; padding:0 10px;">
 			        	<label>selecione o status</label>
-				        <ul class="list_item connect round sortable_workflow" >
+				        <ul class="list_item connect round sortable_status_workflow" >
 				        	<?foreach ($statusList as $status) {?>
 								<li class="dd-item" id="item-<?=$status->id?>"><span class="left ball" style="background: <?=$status->color?>"></span><?=$status->status?></li>
 							<?}?>
@@ -33,7 +33,7 @@
 			    	<div class="scrollable_content" data-bottom="false" style="height:500px; padding:0 10px;">
 				    	<label>workflow</label>
 				    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
-				        <ul class="list_item connect round sortable_workflow" data-fill="sortable_workflow_itens" >
+				        <ul class="list_item connect round sortable_status_workflow" data-fill="sortable_workflow_itens" >
 				        	<?foreach ($workflowStatusList as $workflow_status) {?>
 								<li class="dd-item" id="item-<?=$workflow_status->statu->id?>"><span class="left ball" style="background: <?=$workflow_status->statu->color?>"><?=$workflow_status->days?></span><?=$workflow_status->statu->status?></li>
 							<?}?>
@@ -55,7 +55,7 @@
 										<div class="left">
 									        <label for="days">nº de dias</label>
 									        <dd>
-									            <input type="text" class="text required info round" placeholder="nº de dias" name="days" id="days" style="width:60px;" value=""/>
+									            <input type="text" class="text required info round" placeholder="nº de dias" name="days" id="days" style="width:60px;" value="0"/>
 									            <span class='error'><?=Arr::get($errors, 'days');?></span>
 									        </dd>   
 									    </div>
@@ -111,15 +111,15 @@
 					        	<?
 					        		foreach ($workflowTagsList as $workflow_tag) {
 					        			if($workflow_tag->status_id == $workflow_status->status_id){
-					        				$dot = ($workflow_tag->tag->sync == '1') ? '*' : '';
+					        				
 					        	?>
 					        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>">
-					        			<div class="list_faixa_workflow round" style="background: <?=$workflow_tag->tag->color?>"><?=$dot.$workflow_tag->tag->tag?></div>
+					        			<div class="list_faixa_workflow round" style="background: <?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->tag?></div>
 					        			<div class="infos">
 											<div class="left">
 										        <label for="days">nº de dias</label>
 										        <dd>
-										            <input type="text" class="text required info round" placeholder="nº de dias" name="days_<?=$workflow_status->status_id?>[]" id="days" style="width:60px;" value=""/>
+										            <input type="text" class="text required info round" placeholder="nº de dias" name="days_<?=$workflow_status->status_id?>[]" id="days" style="width:60px;" value="<?=$workflow_tag->days?>"/>
 										            <span class='error'><?=Arr::get($errors, 'days');?></span>
 										        </dd>   
 										    </div>
@@ -127,8 +127,8 @@
 										        <label for="sync">concomitante</label>
 										        <dd>
 										            <select class="required info round" name="sync_<?=$workflow_status->status_id?>[]" id="sync" >
-										                <option value='0' >não</option>
-										                <option value='1' >sim</option>
+										                <option value='0' <?=($workflow_tag->sync == '0') ? 'selected="selected"' : ''?> >não</option>
+										                <option value='1' <?=($workflow_tag->sync == '1') ? 'selected="selected"' : ''?> >sim</option>
 										            </select>
 										            <span class='error'><?=Arr::get($errors, 'sync');?></span>
 										        </dd>  
@@ -139,7 +139,7 @@
 										            <select class="required info round" name="next_tag_id_<?=$workflow_status->status_id?>[]" id="next_tag_id" >
 										                <option value='0' >nenhuma</option>
 										                <?foreach ($tagsList_sub as $tag_sub) {?>
-										                    <option value='<?=$tag_sub->id?>' ><?=$tag_sub->tag?></option>
+										                    <option value='<?=$tag_sub->id?>' <?=($workflow_tag->next_tag_id == $tag_sub->id ) ? 'selected="selected"' : '';?> ><?=$tag_sub->tag?></option>
 										                <?}?>
 										                
 										            </select>
@@ -150,8 +150,8 @@
 										        <label for="to">responsável</label>
 										        <dd>
 										            <select class="required info round" name="to_<?=$workflow_status->status_id?>[]" id="to" >
-										                <option value='0' >em aberto</option>
-										                <option value='1' >responsável pela coleção</option>
+										                <option value='0' <?=($workflow_tag->to == '0') ? 'selected="selected"' : ''?> >em aberto</option>
+										                <option value='1' <?=($workflow_tag->to == '1') ? 'selected="selected"' : ''?> >responsável pela coleção</option>
 										                
 										            </select>
 										            <span class='error'><?=Arr::get($errors, 'sync');?></span>

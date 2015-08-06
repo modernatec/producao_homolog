@@ -115,10 +115,6 @@ class Controller_Admin_Tags extends Controller_Admin_Template {
 			$tag = ORM::factory('tag', $id)->values($this->request->post(), array(
 				'tag',
 				'color',
-				'days',
-				'sync',
-				'next_tag_id',
-				'to',
 			));
 			$tag->type = 'task';
 			$tag->save();
