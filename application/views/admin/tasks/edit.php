@@ -15,8 +15,8 @@
     	        <dd>
     	            <select name="tag_id" id="tag_id" class="required round" style="width:150px;">
     	                <option value="">selecione</option>
-    	                <? foreach($tagList as $tag){?>
-    	                    <option value="<?=$tag->id?>" data-days="<?=$tag->days?>" <?=($taskVO['tag_id'] == $tag->id) ? "selected" : ""?> ><?=$tag->tag?></option>
+    	                <? foreach($status_tagList as $status_tag){?>
+    	                    <option value="<?=$status_tag->tag_id?>" data-days="<?=$status_tag->days?>" <?=($taskVO['tag_id'] == $status_tag->tag_id) ? "selected" : ""?> ><?=$status_tag->tag->tag?></option>
     	                <?}?>
     	            </select>
     	            <span class='error'><?=Arr::get(@$errors, 'tag_id');?></span>
@@ -72,12 +72,12 @@
     <div class="suggestions">
         <?
         $x = 0;
-        foreach ($tagList as $tag) {
-            $class = ($tag->sync == '0') ? 'list_view' : 'list_view_sub';
-            if($tag->sync == '0'){$x++;}
-            $display = ($tag->sync == '0') ? $x : '';
+        foreach ($status_tagList as $status_tag) {
+            $class = ($status_tag->sync == '0') ? 'list_view' : 'list_view_sub';
+            if($status_tag->sync == '0'){$x++;}
+            $display = ($status_tag->sync == '0') ? $x : '';
         ?>
-            <span class="<?=$class?> round clear"><span class="left ball gray"><?=$display;?></span><?=$tag->tag;?></span>
+            <span class="<?=$class?> round clear"><span class="left ball gray"><?=$display;?></span><?=$status_tag->tag->tag;?></span>
         <?}?>
     </div>
     <?}

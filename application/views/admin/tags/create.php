@@ -3,7 +3,7 @@
     <div class="left">
         <label for="tag">tarefa</label>
         <dd>
-            <input type="text" class="text required round" placeholder="tag" name="tag" id="tag" style="width:200px;" value="<?=@$statusVO['tag'];?>"/>
+            <input type="text" class="text required round" placeholder="tarefa" name="tag" id="tag" style="width:200px;" value="<?=@$statusVO['tag'];?>"/>
             <span class='error'><?=Arr::get($errors, 'status');?></span>
         </dd>  
     </div>

@@ -117,20 +117,38 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            /*
 	            * abre próx. tarefa automaticamente.
 	            */
-	            if($task->tag->next_tag_id != '0'){
+	            $object = ORM::factory('object', $task->object_id);
+	            $object_status = ORM::factory('objects_statu', $task->object_status_id);
+
+	            $workflow_status_tag = ORM::factory('workflows_status_tag')
+	            						->where('workflow_id', '=', $object->workflow_id)
+	            						->and_where('status_id', '=', $object_status->status_id)
+	            						->and_where('tag_id', '=', $task->tag_id)
+	            						->find();
+
+	            if($workflow_status_tag->next_tag_id != '0' && $workflow_status_tag->id != ''){
 		            $new_task = ORM::factory('task');
 	            	$new_task->object_id = $task->object_id;
 	            	$new_task->object_status_id = $task->object_status_id;
-	            	$new_task->tag_id = $task->tag->next_tag_id;
+	            	$new_task->tag_id = $workflow_status_tag->next_tag_id;
 	            	$new_task->team_id = $task->team_id;
 
-	            	$dates = date('Y-m-d', strtotime(str_replace('/', '-', Controller_Admin_Feriados::getNextWorkDay($new_task->tag->days))));
+	            	/*
+		            * procura qtd de dias da próx. tag.
+		            */
+	            	$workflow_next_tag = ORM::factory('workflows_status_tag')
+	            						->where('workflow_id', '=', $object->workflow_id)
+	            						->and_where('status_id', '=', $object_status->status_id)
+	            						->and_where('tag_id', '=', $workflow_status_tag->next_tag_id)
+	            						->find();
+
+	            	$dates = date('Y-m-d', strtotime(str_replace('/', '-', Controller_Admin_Feriados::getNextWorkDay($workflow_next_tag->days))));
 	            	$new_task->crono_date = $dates;
 	            	$new_task->planned_date = $dates;//Controller_Admin_Feriados::getNextWorkDay($task->tag->days);
 
 	            	//$new_task->topic = '1';
 	            	//$new_task->description = $description;
-	            	switch ($task->tag->to) {
+	            	switch ($workflow_status_tag->to) {
 	            		case '1':
 	            			/*
 	            			* busca usuário do time, responsável pela coleção

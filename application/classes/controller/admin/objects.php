@@ -529,7 +529,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}else{
 			$object = ORM::factory('object', $object_id);
 
-
 			$object_all_status = DB::select('status_id')->from('objects_status')->where('object_id', '=', $object->id)->execute()->as_array('status_id');
 			
 			$status_arr = array();
@@ -539,9 +538,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				}
 			}
 
-			$query = ORM::factory('statu')
-			->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id')
-			->join('workflows_status', 'INNER')->on('status.id', '=', 'workflows_status.status_id');
+			$query = ORM::factory('workflows_statu')
+			->join('status', 'INNER')->on('status.id', '=', 'workflows_status.status_id')
+			->join('status_teams', 'INNER')->on('status.id', '=', 'status_teams.status_id');
 
 			if($this->current_auth != 'admin'){
 				$query->where('status_teams.team_id', '=', $this->current_user->userInfos->team_id);
@@ -616,13 +615,17 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				if($object_status->status->tag_id != '0' && $id == ''){
 					
 					//$tag = ORM::factory('tag', $object_status->status->tag_id);
+					
+					/**
+					** REVER
+					**/
 
 		            $new_task = ORM::factory('task');
 	            	$new_task->object_id = $object_status->object_id;
 	            	$new_task->object_status_id = $object_status->id;
-	            	$new_task->tag_id = $tag->id;
+	            	$new_task->tag_id = $object_status->status->tag_id;
 	            	$new_task->team_id = $object_status->status->team_id;
-	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay($tag->days);
+	            	$new_task->crono_date = Controller_Admin_Feriados::getNextWorkDay(0);
 	            	$new_task->planned_date = $new_task->crono_date;
 
 	            	//$new_task->topic = '1';
