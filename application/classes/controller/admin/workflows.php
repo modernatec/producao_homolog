@@ -75,12 +75,15 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			return $view;
 		}else{
 			$this->auto_render = false;
+			/*
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
 					array('container' => $this->request->post('container'), 'type'=>'html', 'content'=> json_encode($view->render())),
 				)						
 			);
+			*/
+			echo $view;
 	        return false;
 		}   			
 	}

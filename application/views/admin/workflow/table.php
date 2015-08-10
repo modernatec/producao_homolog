@@ -6,7 +6,7 @@
 		<? foreach($workflowList as $workflow){?>
 		<li>
 			<div class="left">
-				<a style='display:block' href="<?=URL::base().'admin/workflows/edit/'.$workflow->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$workflow->name?></a>
+				<a style='display:block' href="<?=URL::base().'admin/workflows/edit/'.$workflow->id;?>" class="popup" title="Editar"><?=$workflow->name?></a>
 			</div>
 			<div class="right">
 				<a class="excluir" href="<?=URL::base().'admin/workflows/delete/'.$workflow->id;?>" title="Excluir">Excluir</a>

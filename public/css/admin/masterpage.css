@@ -1383,6 +1383,7 @@ a.green{
 
 .list_item{
 	width: auto;
+	overflow: hidden;
 }
 
 .list_item li, .dd-item{
