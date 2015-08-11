@@ -22,8 +22,6 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$view = View::factory('admin/workflow/list')
 			->bind('message', $message);
 		
-		
-		
 		if($ajax == null){
 			return $view;
 		}else{
@@ -57,8 +55,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$workflow_tags = (count($workflow_tags) == 0) ? array('0') : $workflow_tags;
 		*/
 
-		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->find_all();
-		$view->tagsList_sub = ORM::factory('tag')->where('type', '=', 'task')->find_all();
+		$view->tagsList = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();
+		$view->tagsList_sub = ORM::factory('tag')->where('type', '=', 'task')->order_by('tag', 'ASC')->find_all();
 
 		$view->workflowTagsList = ORM::factory('workflows_status_tag')
 									->join('tags')->on('tags.id', '=', 'tag_id')
@@ -186,7 +184,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		echo json_encode(
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($w_id, true)->render())),
+				//array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($w_id, true)->render())),
 				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
 			)						
 		);

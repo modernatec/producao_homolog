@@ -178,7 +178,8 @@ span .div{
 a.remover{ 
 	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
 	width: 20px; height: 20px; 
-	padding: 0 !important;
+	padding: 0!important;
+	margin: 3px;
 	position: relative;
 	cursor: pointer;
 	text-indent: -200px;
@@ -188,7 +189,7 @@ a.remover{
 
 
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; display: block;}
-a.excluir{ 
+a.excluir { 
 	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
 	width: 20px; height: 20px; 
 	padding: 0 !important;
@@ -289,6 +290,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 	padding: 8px;
 	height: 30px;
 }
+
 
 .line{
 	line-height: 30px;
@@ -890,7 +892,7 @@ p{
 
 
 .hide{
-	display: none;
+	display: none !important;
 }
 
 .anexos{
@@ -1402,6 +1404,7 @@ a.green{
 
 .dd-item{
 	min-width: 250px;
+	overflow: auto;
 }
 
 

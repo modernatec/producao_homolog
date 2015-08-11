@@ -22,7 +22,7 @@
 	    <div class="scrollable_content" >
 		    <div id="definicao" class="content_hide" >
 		        <div class="left"> 
-		        	<div class="scrollable_content" data-bottom="false" style="height:600px; padding:0 10px;">
+		        	<div class="scrollable_content" data-bottom="false" style="height:600px;">
 			        	<label>selecione o status</label>
 				        <ul class="list_item connect round sortable_status_workflow" >
 				        	<?foreach ($statusList as $status) {?>
@@ -32,7 +32,7 @@
 			        </div>
 			    </div>
 			    <div class="left">
-			    	<div class="scrollable_content" data-bottom="false" style="height:600px; padding:0 10px;">
+			    	<div class="scrollable_content" data-bottom="false" style="height:600px;">
 				    	<label>workflow</label>
 				    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
 				        <ul class="list_item connect round sortable_status_workflow" data-fill="sortable_workflow_itens" >
@@ -45,36 +45,38 @@
 			</div>
 			<div id="tarefas" class="content_hide" >  
 		        <div class="left"> 
-		        	<div class="scrollable_content" data-bottom="false" style="height:600px; padding:0 5px;">
+		        	<div class="scrollable_content" data-bottom="false" style="height:600px;">
 			        	<label>selecione a tarefa</label>
-				        <ul class="list_item round sortable_workflow" id="workflow_task">
+				        <ul class="list_item round connect sortable_workflow" id="workflow_task">
 				        	<?
 
 				        	foreach ($tagsList as $tag) {?>
 								<li class="dd-item" id="task-<?=$tag->id?>" rel="task-<?=$tag->id?>">
+									<a class="remover hide right" href="javascript:void(0)" title="remover item">remover</a>
 									<div class="list_faixa_workflow round" style="background: <?=$tag->color?>"><?=$tag->tag?></div>
 									<div class="infos hide">
-										<div class="left">
-									        <label for="days">nº de dias</label>
+										<div class="clear left">
+									        <label for="days">qtd. dias</label>
 									        <dd>
-									            <input type="text" class="text required info round" placeholder="nº de dias" name="days" id="days" style="width:60px;" value="0"/>
+									            <input type="text" class="text required info round" placeholder="qtd. dias" name="days" id="days" style="width:40px;" value="0"/>
 									            <span class='error'><?=Arr::get($errors, 'days');?></span>
 									        </dd>   
 									    </div>
 									    <div class="left">
-									        <label for="sync">concomitante</label>
+									    	<label for="sync">concomitante</label>
 									        <dd>
 									            <select class="required info round" name="sync" id="sync" >
-									                <option value='0' >não</option>
+									                <option value='0'  >não</option>
 									                <option value='1' >sim</option>
 									            </select>
 									            <span class='error'><?=Arr::get($errors, 'sync');?></span>
 									        </dd>  
 									    </div>
-									    <div class="clear left">
+									    
+									    <div class="left">
 									        <label for="next_tag_id">ação automática</label>
 									        <dd>
-									            <select class="required info round" name="next_tag_id" id="next_tag_id" >
+									            <select class="required info round" style="width:120px;" name="next_tag_id" id="next_tag_id" >
 									                <option value='0' >nenhuma</option>
 									                <?foreach ($tagsList_sub as $tag_sub) {?>
 									                    <option value='<?=$tag_sub->id?>' ><?=$tag_sub->tag?></option>
@@ -87,7 +89,7 @@
 									    <div class="left">
 									        <label for="to">responsável</label>
 									        <dd>
-									            <select class="required info round" name="to" id="to" >
+									            <select class="required info round" style="width:120px;"  name="to" id="to" >
 									                <option value='0' >em aberto</option>
 									                <option value='1' >responsável pela coleção</option>
 									                
@@ -102,31 +104,41 @@
 				    </div>
 			    </div>
 			    <div class="left">
-			    	<div class="scrollable_x" data-bottom="false" style="width:820px; height:600px; padding:0 10px;">
+			    	<div class="scrollable_x" data-bottom="false" style="width:850px; height:600px;">
 			    	<label>workflow</label>
-			    	<div style="width:<?=count($workflowStatusList) * 345;?>px;">
+			    	<div style="width:<?=count($workflowStatusList) * 420;?>px;">
 				        <?foreach ($workflowStatusList as $workflow_status) {?>
-				        	<div class="left" style="width:340px;">
+				        	<div class="left" style="width:415px;">
 					        	<div >
 					        		<div class="list_faixa_workflow round" style="background: <?=$workflow_status->statu->color?>"><?=$workflow_status->days?> - <?=$workflow_status->statu->status?></div>
 							    </div>
 							    <input type="hidden" name="tasks_status<?=$workflow_status->status_id?>" id="sortable_tasks<?=$workflow_status->status_id?>" />
 						        <ul class="list_item connect round sortable_workflow drop" data-fill="sortable_tasks<?=$workflow_status->status_id?>" data-status="<?=$workflow_status->status_id?>" >
 						        	<?
-						        		foreach ($workflowTagsList as $workflow_tag) {
+						        		foreach ($workflowTagsList as $key=> $workflow_tag) {
 						        			if($workflow_tag->status_id == $workflow_status->status_id){
 						        				
 						        	?>
 						        		<li class="dd-item" id="task-<?=$workflow_tag->tag->id?>">
-						        			<div >
+						        			<a class="remover right" href="javascript:void(0)" title="remover item">remover</a>
 						        			<div class="list_faixa_workflow round" style="background: <?=$workflow_tag->tag->color?>"><?=$workflow_tag->tag->tag?></div>
-						        			<div class="infos">
-												<div class="left">
+						        			<div class="infos">						        				
+												<div class="clear left">
 											        <label for="days">qtd. dias</label>
 											        <dd>
 											            <input type="text" class="text required info round" placeholder="qtd. dias" name="days_<?=$workflow_status->status_id?>[]" id="days" style="width:40px;" value="<?=$workflow_tag->days?>"/>
 											            <span class='error'><?=Arr::get($errors, 'days');?></span>
 											        </dd>   
+											    </div>
+											    <div class="left">
+											    	<label for="sync_<?=$key?>">concomitante</label>
+											        <dd>
+											            <select class="required info round" name="sync_<?=$workflow_status->status_id?>[]" id="sync_<?=$key?>" >
+											                <option value='0' <?=($workflow_tag->sync == '0') ? 'selected="selected"' : ''?> >não</option>
+											                <option value='1' <?=($workflow_tag->sync == '1') ? 'selected="selected"' : ''?> >sim</option>
+											            </select>
+											            <span class='error'><?=Arr::get($errors, 'sync');?></span>
+											        </dd>  
 											    </div>
 											    
 											    <div class="left">
@@ -153,17 +165,8 @@
 											            <span class='error'><?=Arr::get($errors, 'sync');?></span>
 											        </dd>  
 											    </div>
-											    <div class="clear">
-											    	<input type="checkbox" id="sync" value="1" <?=($workflow_tag->sync == '1') ? 'checked="checked"' : ''?>><label for="sync">concomitante</label>
-											        <!--dd>
-											            <select class="required info round" name="sync_<?=$workflow_status->status_id?>[]" id="sync" >
-											                <option value='0' <?=($workflow_tag->sync == '0') ? 'selected="selected"' : ''?> >não</option>
-											                <option value='1' <?=($workflow_tag->sync == '1') ? 'selected="selected"' : ''?> >sim</option>
-											            </select>
-											            <span class='error'><?=Arr::get($errors, 'sync');?></span>
-											        </dd-->  
-											    </div>
-											</div>
+											    
+											
 											</div>
 						        		</li>
 						        	<?}}?>

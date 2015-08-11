@@ -221,6 +221,7 @@ function setupScroll(){
         theme:"dark-3",
         axis:"yx",
         scrollInertia: 0,
+        scrollTo:0,
         
         advanced:{
             autoScrollOnFocus: false,
@@ -514,6 +515,8 @@ function setupAjax(container){
                 console.log(ui.item.attr('rel'));
 
                 item = $('ul.drop > [rel=' + ui.item.attr('rel') + "]");
+
+                $('ul.drop > [rel=' + ui.item.attr('rel') + "] > .remover").removeClass('hide');
                 
                 ul = $(item).closest('ul.drop');
                 if(ul){
@@ -591,6 +594,11 @@ function setupAjax(container){
         });
 
         */
+
+        $('.remover').unbind('click').bind('click', function(e){
+            e.preventDefault();
+            $(this).closest("li").remove();
+        });
 
 
         $("a[rel='load-content']").unbind('click').bind('click', function(e){

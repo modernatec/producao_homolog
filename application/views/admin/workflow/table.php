@@ -1,5 +1,5 @@
 <div class="bar" style='margin-bottom:5px;'>
-	<a href="<?=URL::base();?>admin/workflows/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar workflow</a>
+	<a href="<?=URL::base();?>admin/workflows/edit/" class="popup bar_button round">cadastrar workflow</a>
 </div>
 <div class="scrollable_content">	
 	<ul class="list_item">
