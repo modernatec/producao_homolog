@@ -220,7 +220,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 		$this->auto_render = false;
         $view = View::factory('admin/workflow/table');
 
-        $view->workflowList = ORM::factory('workflow')->order_by('id','DESC')->find_all();
+        $view->workflowList = ORM::factory('workflow')->order_by('name','ASC')->find_all();
         
         // $this->endProfilling();
         if($ajax != null){
