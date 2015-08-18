@@ -18,7 +18,7 @@
                      
         echo '<ul class="list_item" id="'.$id.'">';
         foreach($taskList as $key=>$task){?>
-            <li class="dd-item" id="item-<?=$task->id?>">
+            <li class="dd-item step_<?=$task->status->type?>_status<?=$task->status->id?>" id="item-<?=$task->id?>">
                 <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
                     <?
                         $diff = '';
@@ -52,7 +52,7 @@
                         </div>
                         <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>                    
                         <span class="round list_faixa left tag" style="background:<?=$class_obj?>"><?=Utils_Helper::data($task->crono_date)?></span>
-                        <span class="<?=$task->status->type?>_status<?=$task->status->id?> round left list_faixa"><?=$task->status->status;?></span>
+                        <!--span class="<?=$task->status->type?>_status<?=$task->status->id?> round left list_faixa"><?=$task->status->status;?></span-->
                     </div>
                 </a>
             </li>

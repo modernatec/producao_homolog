@@ -367,7 +367,11 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             // If successful, redirect user
             if ($user) 
             {
-				Request::current()->redirect('admin/#acervo/index/ajax');
+                if (Auth::instance()->logged_in("editor 1")){
+                    Request::current()->redirect('admin/#acervo/index/ajax');
+                }else{
+                    Request::current()->redirect('admin/#tasks/index/ajax');
+                }
             } 
             else
             {

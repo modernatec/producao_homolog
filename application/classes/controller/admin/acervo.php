@@ -132,7 +132,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$viewFiltros->collectionList = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
 		$viewFiltros->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
 		$viewFiltros->typeList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-		$viewFiltros->suppliersList = ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();
+		//$viewFiltros->suppliersList = ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();
 
 		foreach ($filtros as $key => $value) {
   			$viewFiltros->$key = json_decode($value);

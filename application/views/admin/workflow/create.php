@@ -19,10 +19,10 @@
 	            <?}?>
 	        </ul>  
 	    </div>
-	    <div class="scrollable_content" >
+	    <div class="scrollable_content"  >
 		    <div id="definicao" class="content_hide" >
-		        <div class="left"> 
-		        	<div class="scrollable_content" data-bottom="false" style="height:600px;">
+		        <div class="left" > 
+		        	<div style="width:300px;">
 			        	<label>selecione o status</label>
 				        <ul class="list_item connect round sortable_status_workflow" >
 				        	<?foreach ($statusList as $status) {?>
@@ -31,9 +31,10 @@
 				        </ul>
 			        </div>
 			    </div>
-			    <div class="left">
-			    	<div class="scrollable_content" data-bottom="false" style="height:600px;">
-				    	<label>workflow</label>
+			    <div class="left" style="padding:0 5px;">
+			    	<label>workflow</label>
+			    	<div style="width:300px;">
+				    	
 				    	<input type="hidden" name="item" id="sortable_workflow_itens" />			    
 				        <ul class="list_item connect round sortable_status_workflow" data-fill="sortable_workflow_itens" >
 				        	<?foreach ($workflowStatusList as $workflow_status) {?>
@@ -45,7 +46,7 @@
 			</div>
 			<div id="tarefas" class="content_hide" >  
 		        <div class="left"> 
-		        	<div class="scrollable_content" data-bottom="false" style="height:600px;">
+		        	<div class="scrollable_content" data-bottom="false" >
 			        	<label>selecione a tarefa</label>
 				        <ul class="list_item round connect sortable_workflow" id="workflow_task">
 				        	<?
@@ -104,7 +105,7 @@
 				    </div>
 			    </div>
 			    <div class="left">
-			    	<div class="scrollable_x" data-bottom="false" style="width:850px; height:600px;">
+			    	<div class="scrollable_content" style="width:850px; ">
 			    	<label>workflow</label>
 			    	<div style="width:<?=count($workflowStatusList) * 420;?>px;">
 				        <?foreach ($workflowStatusList as $workflow_status) {?>

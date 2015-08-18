@@ -3,7 +3,7 @@
         <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_acervo" data-panel="#tabs_content" method="post" class="form">
             <input type="hidden" name="acervo" value="1">
             <div class="filter">
-                <input type="text" class="round left" style="width:135px" name="taxonomia" placeholder="tax. ou título" value="<?=@$filter_taxonomia?>" >                
+                <input type="text" class="round left" style="width:200px" name="taxonomia" placeholder="título ou palavra-chave" value="<?=@$filter_taxonomia?>" >                
             </div>
             <div class="filter" >
                 <ul>
@@ -34,7 +34,7 @@
                     <li class="round" >
                         <span class="round" id="collection">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round">
-                            <ul style="width:400px;">
+                            <ul style="width:550px;">
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_collection" /><label for="filter_collection">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
@@ -116,7 +116,7 @@
                     <li class="round" >
                         <span class="round" id="typeobject">tipos de OED's <?=(!empty($filter_tipo) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
                         <div class="filter_panel round " style="width:200px;" >                        
-                            <ul >
+                             <ul style="width:300px;">
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" style="color:#fff">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
@@ -138,32 +138,7 @@
                 </ul>
             </div>
             
-            <div class="left filter" >
-                <ul>
-                    <li class="round" >
-                        <span id="supplier">produtora <?=(!empty($filter_supplier) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-                        <div class="filter_panel round " >
-                            <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_supplier" /><label for="filter_supplier">selecionar tudo</label></li>
-                            </ul>
-                            <div class="scrollable_content" data-bottom="false">
-                                <ul>
-                                    <? foreach ($suppliersList as $supplier) {?>
-                                    <li>
-                                        <input class="filter_supplier" type="checkbox" name="supplier[]" value="<?=$supplier->id?>" id="s_<?=$supplier->id?>" <?if(isset($filter_supplier)){ if(in_array($supplier->id, $filter_supplier)){ echo "checked";}}?> />
-                                        <label for="s_<?=$supplier->id?>"><?=$supplier->empresa?></label>
-                                    </li>
-                                    <?}?>                                   
-                                </ul>
-                            </div>
-                            <p>
-                                <input type="submit" class="round bar_button" value="buscar" /> 
-                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
-                            </p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            
             <div class="left" >
                 <input type="submit" class="round bar_button left" value="buscar"> 
             </div>

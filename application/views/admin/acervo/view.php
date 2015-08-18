@@ -3,7 +3,7 @@
 <a class="collapse left round" data-show="replies" title="abrir/fechar infos"><span class="expand_ico">contrair</span></a>
 <?}?>
 <div class="clear left" style="width:400px;">
-    <div class="scrollable_content clear">  
+    <div class="clear">  
         <ul class="list_item"> 
             <?
             foreach ($array_pathFoward as $objeto) {?>

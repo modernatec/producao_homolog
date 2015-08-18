@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+	<?php defined('SYSPATH') or die('No direct script access.');
  
 class Controller_Admin_Template extends Controller_Template {
  
@@ -167,7 +167,7 @@ class Controller_Admin_Template extends Controller_Template {
 				color:#fff;
 			}
 			.step_'.$statu->type.'_status'.$statu->id.'{
-				border-left:5px solid '.$statu->color.';
+				border-left:5px solid '.$statu->color.' !important;
 			}';
 		}	
 
