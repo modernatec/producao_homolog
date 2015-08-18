@@ -238,8 +238,18 @@
                                             <div class='hist'>
                                                 <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                 <div class="task_reply round"> 
-                                                    <? if($task->status_id == '5'){?>
-                                                        <form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
+                                                    <? 
+                                                        if($task->status_id == '5'){
+                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                                    $start = false;
+                                                                }else{?>
+                                                                    <div style="padding:5px 0;">
+                                                                        <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
+                                                                    </div>
+                                                                <?}
+                                                        }
+                                                    ?>
+                                                        <!--form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
                                                             <input type="hidden" name='task_id' value="<?=$task->id?>" />
                                                             <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
                                                             <?  
@@ -254,8 +264,8 @@
                                                                     <input type="submit" class="bar_button round" value="iniciar">
                                                             <?}?>
 
-                                                        </form>
-                                                    <?}
+                                                        </form-->
+                                                    <?//}
                                                 
                                                 if($task->reply->id != '') {?>
                                                     <div class='line_bottom'>

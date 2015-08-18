@@ -760,11 +760,57 @@ function setupAjax(container){
             });  
         });
 
-        
-
         $("a.close_pop").unbind('click').bind('click', function(e){
             e.preventDefault();
             removeDialogs();
+        });
+
+        $('a.startTask').unbind('click').bind('click', function(e, ui) {
+            e.preventDefault();
+            var url = this.href;
+            var task_id = $(this).data('taskid');
+            var object_id = $(this).data('objectid');
+
+            var data_post = [];
+            data_post.push({name: 'task_id', value: task_id});
+            data_post.push({name: 'object_id', value: object_id});
+
+            var dialog = dialog;
+
+            if(dialog == undefined){        
+                removeDialogs();
+                var NewDialog = $('<div id="dialog" class="ui-dialog loading"><p>aguarde...</p></div>');
+                NewDialog.dialog({
+                    modal: true,
+                    dialogClass: 'noTitleStuff',
+                    show: 'clip',
+                    hide: 'clip',
+                    resizable:false,
+                });
+            }
+            
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data_post,
+                timeout: 20000, 
+                dataType : "json",
+                success: function(retorno) {
+                    returnData = retorno;
+                    setDataPanels(dialog);
+                    $('input[type=submit]').prop("disabled", '' );
+                },
+                error: function(e) {
+                    console.log(e);
+                    removeDialogs();
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        container:'error',
+                        
+                    });
+                }
+            }); 
+            
         });
 
         $('a.popup').unbind('click').bind('click', function(e) {
@@ -787,7 +833,7 @@ function setupAjax(container){
                 {},           
                 function (responseText, textStatus, XMLHttpRequest) {
                     $(this).removeClass('loading');
-                    
+                    setupAjax('#dialog');
 
                     var is_json = true;
                     try{
@@ -818,9 +864,6 @@ function setupAjax(container){
                                     dataType : "html",
                                     success: function(retorno) {
                                         $('#crono_date').val(retorno);
-
-
-
                                     },
                                     error: function(e) {
                                         console.log(e);
@@ -833,9 +876,7 @@ function setupAjax(container){
                             }) 
                         }, 500);
                         
-                        setTimeout(function(){
-                            setupAjax('#dialog');
-                        },600);
+                        
                     }
                     
                 }
@@ -1232,9 +1273,10 @@ function (value, element) {
     }
     var ok = true;
     try {
-        $.datepicker.parseDate('dd/mm/yy', value);
+        $.datepicker.parseDate('dd/mm/yy', $.trim(value));
     }
     catch (err) {
+        console.log(err)
         ok = false;
     }
     return ok;

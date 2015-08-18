@@ -966,7 +966,7 @@ p{
 }
 
 .connect, .connect_suppliers{
-	min-width: 250px;
+	/*min-width: 250px;*/
 	min-height: 30px;
 	border: 1px dotted #ccc;
 	padding: 0 5px;
@@ -1406,8 +1406,8 @@ a.green{
 }
 
 .dd-item{
-	min-width: 250px;
-	overflow: auto;
+	min-width: 100px;
+	overflow: hidden;
 }
 
 
@@ -1852,9 +1852,8 @@ div.jGrowl div.error {
 }
 
 .scrollable_content{
-	overflow-y: auto;
+	overflow: auto;
 	position: relative;
-	overflow-x: hidden;
 }
 
 

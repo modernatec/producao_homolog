@@ -144,7 +144,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->user = $this->current_user->userInfos;                          
 		
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS??
-        $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->find_all();
 		$view->last_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('id', 'DESC')->limit('1')->find();
 
 		$view->taskList = ORM::factory('task')

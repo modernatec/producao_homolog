@@ -45,6 +45,7 @@ function validateAjax(){
         }
     })
 
+
     $("#frmStatus2").validate({
         rules: {
             status_id: {required:true},
@@ -144,6 +145,7 @@ function validateAjax(){
         }
     });
 
+    /*
     $("#startTask").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
@@ -151,6 +153,7 @@ function validateAjax(){
             return false;       
         }
     });
+    */
 
     $("#frmEditTask").validate({
         submitHandler: function(form) {

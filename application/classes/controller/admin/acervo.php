@@ -415,4 +415,171 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	        }
 	    }
 	}
+
+	public function action_loadCollections(){
+		$this->auto_render = false;
+		ini_set('auto_detect_line_endings',TRUE);
+		//get the csv file
+	    $file = "listas_enciclopedia.csv";//$_FILES[csv][tmp_name];
+
+	    
+	    $file_path = "public/".$file;
+
+	    if(file_exists(DOCROOT.$file_path)){
+	    	$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{    
+		    	$row = 1;
+				$handle = fopen ($file_path,"r");
+				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+				    $num = count ($data);
+				    echo "<p> $num campos na linha $row: <br /></p>\n";
+				    $row++;
+
+				    $new_object = ORM::factory('object');
+				    for ($c=0; $c < $num; $c++) {
+				    	switch ($c) {
+				    		case '0':
+				    			$new_object->title = $data[$c];
+				    			break;
+				    		case '1':
+				    			$new_object->taxonomia = $data[$c];
+				    			$new_object->pasta = $data[$c];
+				    			break;
+				    		case '2':
+				    			$new_object->project_id = trim(explode('-', $data[$c])[0]);
+				    			break;
+				    		case '3':
+				    			$new_object->collection_id = trim(explode('-', $data[$c])[0]);
+				    			break;
+				    		case '4':
+				    			$new_object->typeobject_id = trim(explode('-', $data[$c])[0]);
+				    			break;	
+				    		case '5':
+				    			$new_object->reaproveitamento = trim(explode('-', $data[$c])[0]);
+				    			break;	
+				    		case '6':
+				    			$new_object->format_id = trim(explode('-', $data[$c])[0]);
+				    			break;	
+				    		case '7':
+				    			$new_object->arq_aberto = trim(explode('-', $data[$c])[0]);
+				    			break;
+				    		case '8':
+				    			$new_object->interatividade = trim(explode('-', $data[$c])[0]);
+				    			break;
+				    		case '9':
+				    			$new_object->cap = trim($data[$c]);
+				    			break;
+				    		case '10':
+				    			$new_object->uni = trim($data[$c]);
+				    			break;	
+				    		case '11':
+				    			$new_object->tamanho = trim($data[$c]);
+				    			break;														
+				    		case '12':
+				    			$new_object->duracao = trim($data[$c]);
+				    			break;								
+				    	}
+				    }
+
+				    $new_object->country_id = '1';
+				    $new_object->workflow_id = '1';//novos
+				    $new_object->uploaded = '1';
+				    $new_object->fase = '1';
+
+				    $new_object->crono_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $new_object->planned_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $new_object->delivered_date = date("Y-m-d H:i:s");
+
+				    $new_object->save();
+
+
+					$ini_objectStatus = ORM::factory('objects_statu');
+			        $ini_objectStatus->object_id = $new_object->id;
+			        $ini_objectStatus->status_id = '1'; //não iniciado
+			        $ini_objectStatus->crono_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $ini_objectStatus->planned_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $ini_objectStatus->delivered_date = date("Y-m-d H:i:s");
+					$ini_objectStatus->userInfo_id = $this->current_user->userInfos->id;	
+					$ini_objectStatus->save();
+
+					$objectStatus = ORM::factory('objects_statu');
+			        $objectStatus->object_id = $new_object->id;
+			        $objectStatus->status_id = '8'; //finalizado
+			        $objectStatus->crono_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $objectStatus->planned_date = date("Y-m-d H:i:s"); //date('Y-m-d H:i:s', strtotime(str_replace('/', '-', '18/08/2015')));
+			        $objectStatus->delivered_date = date("Y-m-d H:i:s");
+					$objectStatus->userInfo_id = $this->current_user->userInfos->id;	
+					$objectStatus->save();
+					
+					echo $new_object->taxonomia . "<br/>\n";
+				}
+				fclose ($handle);
+				$db->commit();
+
+			}  catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            echo 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            echo 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $db->rollback();
+	        }
+	    	/*
+			$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{    
+		    	$fp = fopen($file_path, 'r');
+
+				// get the first (header) line
+				$header = fgetcsv($fp,0,";",'"');
+
+				// get the rest of the rows
+				$data = array();
+				while ($row = fgetcsv($fp,0,";",'"')) {
+				  $arr = array();
+				  foreach ($header as $i => $col)
+				    $arr[$col] = $row[$i];
+				  $data[] = $arr;
+				}
+
+				foreach ($data as $key => $value) {
+					if(strpos($data[$key]['taxonomia'], 'pdf') === false){
+						//$objectList = ORM::factory('object')->where('title', '=', $data[$key]['titulo'])->where('keywords', 'IS', NULL)->find();
+						$objectList = ORM::factory('object')->where('title', '=', $data[$key]['titulo'])->find();
+						if($objectList->id != ''){
+							$objectList->sinopse = $data[$key]['descricao'];
+							$objectList->keywords = $data[$key]['tema'].','.$data[$key]['keywords'];
+							$objectList->save();
+							//echo $data[$key]['titulo'].'<br/>';
+						}else{
+							echo $data[$key]['titulo'].' --- '.$data[$key]['taxonomia'].'<br/>';
+						}
+					}
+				}
+
+				$db->commit();
+			}  catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            echo 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            echo 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $db->rollback();
+	        }
+	        */
+	    }
+	}
 }
