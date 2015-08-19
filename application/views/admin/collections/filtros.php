@@ -82,7 +82,7 @@
         <div class="left filter">
             <form action='<?=URL::base();?>admin/collections/getList/' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
                 <input type="hidden" name="collection" value="true">
-                <input type="submit" class="bar_button round green" value="limpar filtros" />
+                <input type="submit" class="bar_button round" value="limpar filtros" />
             </form>
         </div>
     </div>

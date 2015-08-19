@@ -8,7 +8,7 @@
 		            <label for="status_id">status:</label>
 		        </dt>
 		        <dd>
-		            <select name="status_id" id="status_id" class="required round" style="width:150px;" >
+		            <select name="status_id" id="status_id" data-workflow="<?=$obj->workflow_id?>" class="required round" style="width:150px;" >
 		                <option value="">selecione</option>
 		                <? foreach($statusList as $workflow_status){?>
 		                    <option value="<?=$workflow_status->statu->id?>" data-days="<?=$workflow_status->days?>" <?=($objVO['status_id'] == $workflow_status->status_id) ? "selected" : ""?> ><?=$workflow_status->statu->status?></option>
@@ -36,11 +36,11 @@
 	            </dd>
             </div>
             <dd>
-              <input type="submit" class="round green" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
-              <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>      
+              <input type="submit" class="round bar_button left" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
+              <a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a>      
             </dd>	    
 	</form>
 </div>
-<div class="left">
-	
+<div class="append left" id="sequence">
+
 </div>

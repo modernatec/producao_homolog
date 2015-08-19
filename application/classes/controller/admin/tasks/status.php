@@ -218,7 +218,7 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
+					//array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
 					array('type'=>'msg', 'content'=> $msg),
 				)						
 			);

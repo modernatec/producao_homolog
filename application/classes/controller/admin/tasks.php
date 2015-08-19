@@ -134,6 +134,30 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		}
 
 		$view->status_tagList = $query->where('workflows_status_tags.workflow_id', '=', $object->workflow_id)->where('workflows_status_tags.status_id', '=', $object_status->status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
+		
+		$view_sequence = View::factory('admin/tasks/sequence');
+		$view_sequence->status_tagList = $view->status_tagList;
+		$view->sequence = $view_sequence;
+
+		echo $view;
+	}
+
+	/**repetição??**/
+	public function action_getSequenceList($workflow_id){
+		$this->auto_render = false;
+		$view = View::factory('admin/tasks/sequence');
+
+		$status_id = $this->request->post('status_id');
+
+		$query = ORM::factory('workflows_status_tag')
+				->join('tags', 'INNER')->on('tags.id', '=', 'workflows_status_tags.tag_id');
+
+		if($this->current_auth != 'admin'){
+			$query->join('tags_teams', 'INNER')->on('tags.id', '=', 'tags_teams.tag_id');
+			$query->where('tags_teams.team_id', '=', $this->current_user->userInfos->team_id);
+		}
+
+		$view->status_tagList = $query->where('workflows_status_tags.workflow_id', '=', $workflow_id)->where('workflows_status_tags.status_id', '=', $status_id)->where('type', '=', 'task')->group_by('tags.id')->order_by('workflows_status_tags.order', 'ASC')->find_all(); 
 
 		echo $view;
 	}

@@ -35,7 +35,17 @@
                         <div class="right"><?=$diff?></div>
                     </div>
                     <hr style="margin:5px 0;" class="clear" />
+                    <!--div class="clear" style="margin:5px 0;">
+                        <span class="round list_faixa tag" style="background:<?=$task->tag->color?>">
+                            <?
+                                $last_status = $task->object->status->order_by('id', 'DESC')->find();
+                                echo $last_status->status;
+                            ?>
+                        </span> 
+                    </div-->
+
                     <div class="clear">
+                                           
                         <?
                             if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
                                 $class_obj = "#ff0000";                            

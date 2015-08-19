@@ -515,7 +515,7 @@ function setupAjax(container){
             connectWith: ".connect",
             placeholder: "ui-state-highlight",
             distance: 30,
-            scroll: true, 
+            scroll: false, 
             scrollSensitivity: 100,
             update: function (event, ui) {
             },
@@ -553,6 +553,9 @@ function setupAjax(container){
         }).disableSelection();
 
         $(".sortable_workflow").sortable({
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: true, 
             receive: function(e,ui) {
                 copyHelper = null;
             }
@@ -562,7 +565,7 @@ function setupAjax(container){
             connectWith: ".connect",
             placeholder: "ui-state-highlight",
             distance: 30,
-            scroll: true, 
+            scroll: false, 
             scrollSensitivity: 100,
             
         }).disableSelection();
@@ -856,6 +859,7 @@ function setupAjax(container){
                             $('#tag_id, #status_id').unbind('change').bind('change', function(e){
                                 e.preventDefault();
                                 var days = $('#' + e.target.id + ' option:selected').data('days');
+
                                 
                                 $.ajax({
                                     type: "POST",
@@ -872,7 +876,34 @@ function setupAjax(container){
                                             container:'error',
                                         });
                                     }
-                                });   
+                                });
+
+                                //getSequenceList($workflow_id)
+                                if($(this).attr('id') == 'status_id'){
+                                    var workflow_id = $(this).data('workflow');
+                                    var status_id = $('#' + e.target.id + ' option:selected').val();
+
+                                    var data_post = [{name: 'status_id', value:status_id}];
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: base_url + '/admin/tasks/getSequenceList/' + workflow_id,
+                                        data: data_post,
+                                        timeout: 10000, 
+                                        dataType : "html",
+                                        success: function(retorno) {
+                                            $('#sequence').html(retorno);
+                                            setupAjax();
+                                        },
+                                        error: function(e) {
+                                            console.log(e);
+                                            setMsg({
+                                                content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                                                container:'error',
+                                            });
+                                        }
+                                    });
+                                }   
                             }) 
                         }, 500);
                         

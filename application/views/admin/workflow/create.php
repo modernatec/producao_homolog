@@ -92,7 +92,7 @@
 									        <label for="to">responsável</label>
 									        <dd>
 									            <select class="required info round" style="width:120px;"  name="to" id="to" >
-									                <option value='0' >em aberto</option>
+									                <option value='0' >time</option>
 									                <option value='1' >responsável pela coleção</option>
 									                
 									            </select>
@@ -161,7 +161,7 @@
 											        <label for="to">responsável</label>
 											        <dd>
 											            <select class="required info round" style="width:120px;"  name="to_<?=$workflow_status->status_id?>[]" id="to" >
-											                <option value='0' <?=($workflow_tag->to == '0') ? 'selected="selected"' : ''?> >em aberto</option>
+											                <option value='0' <?=($workflow_tag->to == '0') ? 'selected="selected"' : ''?> >time</option>
 											                <option value='1' <?=($workflow_tag->to == '1') ? 'selected="selected"' : ''?> >responsável pela coleção</option>
 											                
 											            </select>

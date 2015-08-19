@@ -241,7 +241,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 		(isset($view->filter_status)) ? $query->where('status', 'IN', $view->filter_status) : '';
 		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
 		
-		$view->projectsList = $query->order_by('ano','DESC')->order_by('name','ASC')->find_all();
+		$view->projectsList = $query->order_by('name','ASC')->order_by('name','ASC')->find_all();
 
 		//$query = ORM::factory('project')->where('status', '=', $status_id);		
 		//$view->projectsList = $query->order_by('name','ASC')->find_all();

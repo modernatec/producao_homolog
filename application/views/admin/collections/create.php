@@ -110,7 +110,7 @@
   </dl>
 
 <span class="list_faixa light_blue round left"><?=$collection->objects->count_all();?> OED</span>
-<div class="scrollable_content">
+<div class="scrollable_content clear">
   <?
     if(isset($workflows)){
     foreach ($workflows as $workflow) {

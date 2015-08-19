@@ -50,6 +50,9 @@
             <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
 	    </dd>
 	</div>
+	<dd class="clear">
+		<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />		      
+    </dd>
 	
     <div class="clear"> 
     	<? 
@@ -61,7 +64,7 @@
     	?>	
     	<span class="list_faixa light_blue round left"><?=count($collections)?> coleções</span>	
     	<span class="list_faixa light_blue round left"><?=$qtd_oed;?> OED</span>
-			<div class="scrollable_content" data-bottom="false" style="height:300px;">
+			<div class="scrollable_content clear">
 				<table class="list">
 					<thead>
 						<th width="10%">op</th>
@@ -83,7 +86,5 @@
 				</table>
 			</div>
 	</div>
-    <dd class="clear">
-		<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />		      
-    </dd>
+    
 </form>

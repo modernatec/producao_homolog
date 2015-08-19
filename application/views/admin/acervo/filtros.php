@@ -137,16 +137,12 @@
                     </li>
                 </ul>
             </div>
-            
-            
-            <div class="left" >
-                <input type="submit" class="round bar_button left" value="buscar"> 
-            </div>
+            <input type="submit" class="round bar_button left" value="buscar"> 
         </form> 
         <div class="left filter">
             <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_reset_acervo" data-panel="#tabs_content" method="post" class="form">
                 <input type="hidden" name="acervo" value="true">
-                <input type="submit" class="bar_button round green" value="limpar filtros" />
+                <input type="submit" class="bar_button round" value="limpar filtros" />
             </form>
         </div>
     </div>

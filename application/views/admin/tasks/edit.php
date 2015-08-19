@@ -1,6 +1,6 @@
 <label><b>tarefas</b></label><hr/>
 <div class="left" style="min-width:478px;">
-    <a class="collapse right" data-show="append" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a>
+    <!--a class="collapse right" data-show="append" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a-->
         
     <form name="frmCreateTask2" id="frmCreateTask2"  data-panel="#direita" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
     	
@@ -60,26 +60,16 @@
             </div>
             <!--input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label-->
             <dd>
-              <input type="submit" class="round green" value="salvar" />  
-              <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a>                  
+              <input type="submit" class="round bar_button left" value="salvar" />  
+              <a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a>                  
             </dd>	    
     	</dl>
     </form>
 </div>
 <div class="append left">
-    <?if($current_auth != "assistente"){?>
-    <div class="clear"><label>sugestão de tarefas  </label></div>
-    <div class="suggestions">
-        <?
-        $x = 0;
-        foreach ($status_tagList as $status_tag) {
-            $class = ($status_tag->sync == '0') ? 'list_view' : 'list_view_sub';
-            if($status_tag->sync == '0'){$x++;}
-            $display = ($status_tag->sync == '0') ? $x : '';
-        ?>
-            <span class="<?=$class?> round clear"><span class="left ball gray"><?=$display;?></span><?=$status_tag->tag->tag;?></span>
-        <?}?>
-    </div>
-    <?}
-    ?>  
+    <?
+        if($current_auth != "assistente"){
+            echo $sequence;
+        }
+    ?>
 </div>
