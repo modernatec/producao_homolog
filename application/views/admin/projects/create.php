@@ -59,7 +59,7 @@
     		$collections = $project->collections->find_all();
     		$qtd_oed = 0;
     		foreach($collections as $collection){
-	        	$qtd_oed += $collection->objects->count_all();
+	        	$qtd_oed += $collection->objects->where('fase', '=', '1')->count_all();
 	       	}
     	?>	
     	<span class="list_faixa light_blue round left"><?=count($collections)?> coleções</span>	
@@ -74,7 +74,7 @@
 					<tbody>
 				        <? 				        
 				        foreach($collections as $collection){
-				        	$qtd_oed_collection = $collection->objects->count_all();
+				        	$qtd_oed_collection = $collection->objects->where('fase', '=', '1')->count_all();
 				        ?>
 				        <tr>
 				            <td width="10%"><?=$collection->op?></td>

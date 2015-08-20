@@ -555,7 +555,7 @@ function setupAjax(container){
         $(".sortable_workflow").sortable({
             placeholder: "ui-state-highlight",
             distance: 30,
-            scroll: true, 
+            scroll: false, 
             receive: function(e,ui) {
                 copyHelper = null;
             }
@@ -576,7 +576,7 @@ function setupAjax(container){
             connectWith: ".connect_suppliers",
             placeholder: "ui-state-highlight",
             distance: 30,
-            scroll: true, 
+            scroll: false, 
             scrollSensitivity: 100,
             update: function (event, ui) {
                 

@@ -3,7 +3,7 @@
 	<form action="<?=URL::base();?>admin/contatos/getListContatos" id="frm_listContatos" data-panel="#contatosList" method="post" class="form">
 		<input type="hidden" name="contatos" value="true">
 			<div class="left" style="margin-bottom:4px;">
-				<input type="text" class="round" style="width:200px" placeholder="nome ou email" name="nome" value="<?=@$filter_nome?>" >
+				<input type="text" class="round" style="width:150px" placeholder="nome ou email" name="nome" value="<?=@$filter_nome?>" >
 	   		</div>
 	   		<div class="left filter" >
                 <ul>
@@ -32,14 +32,14 @@
 	</form>	
 	<form action='<?=URL::base();?>admin/contatos/getListContatos' id="frm_reset_listContatos" data-panel="#contatosList" method="post" class="form">
 		<input type="hidden" name="contatos" value="true">
-		<input type="submit" class="bar_button round green" value="limpar filtros" />
+		<input type="submit" class="bar_button round" value="limpar filtros" />
 	</form>
 
 </div>
 
-<div id="contatosList">
+<div id="contatosList" class="clear">
 	<!---->
-	<div class="scrollable_content" data-bottom="false" style="overflow:auto; height:600px;padding:10px 0;">
+	<div class="scrollable_content">
 		<ul class="list_item connect round sortable_workflow" style="border:none;">
 			<?foreach ($contatosList as $contato) {?>
 				<li class="dd-item" id="contato-<?=$contato->id?>">

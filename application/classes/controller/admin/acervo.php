@@ -420,7 +420,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$this->auto_render = false;
 		ini_set('auto_detect_line_endings',TRUE);
 		//get the csv file
-	    $file = "listas_enciclopedia.csv";//$_FILES[csv][tmp_name];
+	    $file = "listas_acervo_buriti_mirim.csv";//$_FILES[csv][tmp_name];
 
 	    
 	    $file_path = "public/".$file;
@@ -480,7 +480,14 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				    			break;														
 				    		case '12':
 				    			$new_object->duracao = trim($data[$c]);
-				    			break;								
+				    			break;
+				    		case '13':
+				    			if(trim($data[$c]) != ''){
+				    				$object_source = ORM::factory('object')->where('taxonomia', '=', trim($data[$c]))->find();				
+									$new_object->object_id = $object_source->id;	
+									$new_object->taxonomia_reap = trim($data[$c]);
+				    			};
+				    			break;									
 				    	}
 				    }
 

@@ -9,14 +9,13 @@
 	</form>	
 	<form action='<?=URL::base();?>admin/suppliers/getListSuppliers' id="frm_reset_listSuppliers" method="post" class="form">
 		<input type="hidden" name="suppliers" value="true">
-		<input type="submit" class="bar_button round green" value="limpar filtros" />
+		<input type="submit" class="bar_button round" value="limpar filtros" />
 	</form>
 
 </div>
 
-<div id="contatosList">
-	<!---->
-	<div class="scrollable_content" data-bottom="false" style="overflow:auto; height:600px;padding:10px 0;">
+<div id="contatosList" class="clear">
+	<div class="scrollable_content" >
 		<ul class="list_item connect_suppliers round sortable_produtoras form" style="border:none;">
 			<?foreach ($suppliersList as $supplier) {?>
 				<li class="dd-item" id="supplier-<?=$supplier->id?>">

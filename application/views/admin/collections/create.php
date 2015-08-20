@@ -109,7 +109,7 @@
     </dd>
   </dl>
 
-<span class="list_faixa light_blue round left"><?=$collection->objects->count_all();?> OED</span>
+<span class="list_faixa light_blue round left"><?=$collection->objects->where('fase', '=', '1')->count_all();?> OED</span>
 <div class="scrollable_content clear">
   <?
     if(isset($workflows)){
