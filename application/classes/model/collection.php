@@ -18,10 +18,10 @@ class Model_Collection extends ORM {
             return array(
                 'name' => array(
                     array('not_empty'),
+                    array(array($this, 'unique_collection'), array(':validation', ':field')),
                 ),
                 'op' => array(
-                    array('not_empty'),
-                    array(array($this, 'name_available'), array(':validation', ':field')),
+                    array('not_empty'),                    
                 ),
                 'materia_id' => array(
                     array('not_empty'),
@@ -56,18 +56,18 @@ class Model_Collection extends ORM {
 	}
 
 	/**
-	 * Does the reverse of unique_key_exists() by triggering error if folder exists.
+	 * Does the reverse of unique_key_exists() by triggering error if email exists.
 	 * Validation callback.
 	 *
 	 * @param   Validation  Validation object
-	 * @param   string      Field folder
+	 * @param   string      Field name
 	 * @return  void
 	 */
-	public function name_available(Validation $validation, $field)
-	{	
-		if ($this->unique_name_exists($validation[$field], 'name'))
+	public function unique_collection(Validation $validation, $field)
+	{
+		if ($this->unique_key_exists($validation[$field], 'name'))
 		{
-			$validation->error($field, 'name_available', array($validation[$field]));
+			$validation->error($field, 'unique_collection', array($validation[$field]));
 		}
 	}
 
@@ -78,11 +78,12 @@ class Model_Collection extends ORM {
 	 * @param   string   field name
 	 * @return  boolean
 	 */
-	public function unique_name_exists($value, $field = NULL)
-	{
+	public function unique_key_exists($value, $field = NULL)
+	{	
 		return (bool) DB::select(array('COUNT("*")', 'total_count'))
 			->from($this->_table_name)
 			->where($field, '=', $value)
+			->where($this->_primary_key, '!=', $this->pk())
 			->execute($this->_db)
 			->get('total_count');
 	}

@@ -127,7 +127,7 @@
             <div class="clear">
                 <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>créditos (roteiristas &bullet; locutores &bullet; ilustradores)</span></a></dt>
                 <input type="hidden" name="creditos" id="sortable_creditos" />
-                <ul class="list_item connect round sortable_workflow" data-fill="sortable_creditos" >
+                <ul class="list_item connect_contacts round sortable_creditos" data-fill="sortable_creditos" >
                     <?foreach ($contatosList as $contato) {?>
                         <li class="dd-item" id="contato-<?=$contato->id?>">
                             <div class="left" style="width:90px;">

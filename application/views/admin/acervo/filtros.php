@@ -10,7 +10,7 @@
                     <li class="round" >
 
                         <span class="round" id="segmento">segmento <?=(!empty($filter_segmento) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-                        <div class="filter_panel round scrollable_content" data-bottom="false">
+                        <div class="filter_panel round" data-bottom="false">
                             <ul>
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>
                                 <? foreach ($segmentoList as $segmento) {?>

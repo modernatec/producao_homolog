@@ -99,6 +99,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
         $db->begin();
 
         $collection_id = $id;
+        $msg_type = 'normal';
 		
 		try 
 		{            
@@ -182,9 +183,11 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+			$msg_type = 'error';
+            $msg = $erroList;
             $db->rollback();
         } catch (Database_Exception $e) {
+        	$msg_type = 'error';
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
@@ -194,7 +197,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($collection_id, true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 

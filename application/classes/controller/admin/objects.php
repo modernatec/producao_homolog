@@ -177,6 +177,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
+        $object_saved = false;
+        $msg_type = 'normal';
 		
 		$object = ORM::factory('object', $id);
 		try 
@@ -220,7 +222,10 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 				$object->object_id = null;
 			}	
 			
-			$object->save();
+			if($object->save()){
+				$object_saved = true;
+			}
+
 
 			
 			if(is_null($id) || $id == ""){
@@ -284,21 +289,31 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
-            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+			$msg_type = 'error';
+            $msg = $erroList;
             $db->rollback();
         } catch (Database_Exception $e) {
+        	$msg_type = 'error';
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
         
         header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object->id, true)->render())),
-				array('type'=>'msg', 'content'=> $msg),
-			)						
-		);
-       
+        if($object_saved){
+        	echo json_encode(
+	        	array(
+					array('container' => '#direita', 'type'=>'html', 'content'=>  json_encode($this->action_view($object->id, true)->render())),
+					array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
+				)	
+			);
+        }else{
+        	echo json_encode(
+	        	array(
+					array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),	
+				)
+			);
+        }
+
         return false;
 	}
 

@@ -47,13 +47,6 @@ class Model_Workflow extends ORM {
 	 */
 	public function unique_key_exists($value, $field = NULL)
 	{	
-		/*
-		if ($field === NULL)
-		{
-			$field = 'status';
-		}
-		*/
-
 		return (bool) DB::select(array('COUNT("*")', 'total_count'))
 			->from($this->_table_name)
 			->where($field, '=', $value)

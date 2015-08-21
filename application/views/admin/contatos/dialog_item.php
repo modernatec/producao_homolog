@@ -40,16 +40,17 @@
 <div id="contatosList" class="clear">
 	<!---->
 	<div class="scrollable_content">
-		<ul class="list_item connect round sortable_workflow" style="border:none;">
+		<ul class="list_item round sortable_creditos" style="border:none;">
 			<?foreach ($contatosList as $contato) {?>
 				<li class="dd-item" id="contato-<?=$contato->id?>">
-					<div class="left" style="width:90px;">
-						<span class="list_faixa round blue"><?=$contato->service->name?></span>
-					</div>
+					
 					<div>
 						 <b><?=$contato->nome?></b><br/>
 						<?=$contato->email?>
 					</div>
+					
+						<span class="list_faixa round blue" style="margin:5px 0;"><?=$contato->service->name?></span>
+					
 				</li>
 			<?}?>
 		</ul>

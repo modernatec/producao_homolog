@@ -8,10 +8,10 @@
     <?}?>
 
     <?if($current_auth != "assistente"){
-        if($objects_status[0]->crono_date != ''){
+        //if($objects_status[0]->crono_date != ''){
     ?>
         <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
-    <?}}?>
+    <?}//}?>
     <?
     if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>

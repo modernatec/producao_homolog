@@ -185,7 +185,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				//array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($w_id, true)->render())),
-				array('container' => $msg_type,'type'=>'msg', 'content'=> $msg),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 

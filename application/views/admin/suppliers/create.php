@@ -1,10 +1,11 @@
 	<? if(@$VO['id'] != ""){?>
-	<div class="bar">
-		<a href="<?=URL::base();?>admin/suppliers/view/<?=@$VO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
-	</div>
+		<div class="bar">
+			<a href="<?=URL::base();?>admin/suppliers/view/<?=@$VO['id'];?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
+		</div>
 	<?}?>
 	<div class="scrollable_content">
 	    <form name="frmSupplier" id="frmSupplier" action="<?=URL::base();?>admin/suppliers/salvar/<?=$VO['id']?>" method="post" class="form" enctype="multipart/form-data">
+	    
 	    	<div class="left">
 				<label for="empresa">empresa</label>
 			    <dd>
@@ -54,19 +55,17 @@
 			    </dd>
 	    		<a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>contatos</span></a>                           
 			    				
-				<div class="clear">
-					
+				<div class="clear">					
 					<input type="hidden" name="contatos" id="sortable_contacts" />
-					<ul class="list_item connect round sortable_workflow" data-fill="sortable_contacts" >
+					<ul class="list_item connect_contacts round sortable_creditos" data-fill="sortable_contacts" >
 			        	<?foreach ($contatos_suppliers as $cs) {?>
 			        		<li class="dd-item" id="contato-<?=$cs->contato->id?>">
-			        			<div class="left" style="width:90px;">
-									<span class="list_faixa round blue"><?=$cs->contato->service->name?></span>
-								</div>
+			        			
 								<div>
 									 <b><?=$cs->contato->nome?></b><br/>
 									<?=$cs->contato->email?>
-								</div>			        			
+								</div>		
+								<span class="list_faixa round blue" style="margin:5px 0;"><?=$cs->contato->service->name?></span>	        			
 			        		</li>
 			        	<?}?>
 			        </ul>

@@ -570,8 +570,6 @@ function setupAjax(container){
             
         }).disableSelection();
 
-
-
         $(".sortable_produtoras").sortable({
             connectWith: ".connect_suppliers",
             placeholder: "ui-state-highlight",
@@ -589,6 +587,15 @@ function setupAjax(container){
                     item.addClass('hide');
                 }
             }
+        }).disableSelection();
+
+        $(".sortable_creditos").sortable({
+            connectWith: ".connect_contacts",
+            placeholder: "ui-state-highlight",
+            distance: 30,
+            scroll: false, 
+            scrollSensitivity: 100,
+            
         }).disableSelection();
 
         /*

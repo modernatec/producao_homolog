@@ -961,11 +961,11 @@ p{
     z-index: 1000;
 }
 
-#workflow_task, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
+#workflow_task, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight, .sortable_creditos .ui-state-highlight{
 	min-height: 30px; 
 }
 
-.connect, .connect_suppliers{
+.connect, .connect_suppliers, .connect_contacts{
 	/*min-width: 250px;*/
 	min-height: 30px;
 	border: 1px dotted #ccc;

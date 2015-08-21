@@ -22,14 +22,15 @@
 			<li>
 				<a class="right excluir" href="<?=URL::base().'admin/contatos/delete/'.$contato->id;?>" title="Excluir">Excluir</a>	
 				<a href="<?=URL::base().'admin/contatos/edit/'.$contato->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
-					<div class="left" style="width:90px;">
-						<span class="list_faixa round blue"><?=$contato->service->name?></span>
-					</div>
-					<div class="left" >
+					
+					<div>
 						<b><?=$contato->nome?></b><br/>				
 						<?=$contato->email?><br/>
 						<?=$contato->telefone?>
 					</div>
+					
+						<span class="list_faixa round blue" style="margin:5px 0;"><?=$contato->service->name?></span>
+					
 				</a>
 			</li>
 			<?}?>

@@ -93,59 +93,57 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
         $db->begin();
         $msg_type = 'normal';
         $project_id = $id;
+        
+		try 
+		{         
+			$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
+				'name',
+				'segmento_id',
+				'status',
+				'ssid',
+				'ano'
+			));
 
-        $search = ORM::factory('project')->where('name', '=', $this->request->post('name'))->find_all();
-        if(!$id && $search->count() > 0){
-        	$msg = 'Já existe um projeto com este nome';
-        }else{
-			try 
-			{         
-				$projeto = ORM::factory('project', $id)->values($this->request->post(), array(
-					'name',
-					'segmento_id',
-					'status',
-					'ssid',
-					'ano'
-				));
-
-				$segmento = ORM::factory('segmento', $this->request->post('segmento_id'));
-
+			$segmento = ORM::factory('segmento', $this->request->post('segmento_id'));
+			$rs = $projeto->save();
+			if($rs){
 				$pastaProjeto = Utils_Helper::criaPasta('public/upload/projetos/'.$segmento->pasta.'/', $projeto->pasta, $this->request->post('ano').'_'.$this->request->post('name'));
 				$projeto->pasta = $pastaProjeto;                    
 				$projeto->save();
+			}
 
-				$project_id = $projeto->id;
+			$project_id = $projeto->id;
 
-				/*
-				$collections = DB::delete('collections_projects')->where('project_id','=', $projeto->id)->execute();
+			/*
+			$collections = DB::delete('collections_projects')->where('project_id','=', $projeto->id)->execute();
 
-				if($this->request->post('selected') != ''){
-					foreach ($this->request->post('selected') as $collection) {
-						$new_collection = ORM::factory('collections_project');
-						$new_collection->project_id = $projeto->id;
-						$new_collection->collection_id = $collection;
-						$new_collection->save();
-					}
+			if($this->request->post('selected') != ''){
+				foreach ($this->request->post('selected') as $collection) {
+					$new_collection = ORM::factory('collections_project');
+					$new_collection->project_id = $projeto->id;
+					$new_collection->collection_id = $collection;
+					$new_collection->save();
 				}
-				*/
-							
-				$db->commit();
-				$msg = "projeto salvo com sucesso.";
-			} catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-	            $msg_type = 'error';
-	            $db->rollback();
-	        } catch (Database_Exception $e) {
-	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	            $msg_type = 'error';
-	            $db->rollback();
-	        }
-	    }
+			}
+			*/
+						
+			$db->commit();
+			$msg = "projeto salvo com sucesso.";
+		} catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = $erroList;
+            $msg_type = 'error';
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $msg_type = 'error';
+            $db->rollback();
+        }
+	    
 
 		header('Content-Type: application/json');
 		echo json_encode(

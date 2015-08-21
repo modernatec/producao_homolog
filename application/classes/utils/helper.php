@@ -72,8 +72,8 @@ class Utils_Helper
         $result = array();
         $result['filtros'] = array();
         foreach ($postList as $key => $item) {
-            if($item != ''){
-                $result['filtros']['filter_'.$key] = json_encode($item);
+            if($item != '' && strpos($key, 'filter_') !== FALSE){
+                $result['filtros'][$key] = json_encode($item);
             }           
         }
         $result['parameters'] = $parameters;

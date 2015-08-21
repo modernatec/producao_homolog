@@ -38,7 +38,7 @@ class Model_Object extends ORM {
 			),
 			'taxonomia' => array(
 				array('not_empty'),
-				array(array($this, 'name_available'), array(':validation', ':field')),
+				array(array($this, 'unique_taxonomia'), array(':validation', ':field')),
 			),
 			'collection_id' => array(
 				array('not_empty'),
@@ -97,18 +97,18 @@ class Model_Object extends ORM {
 	}
 
 	/**
-	 * Does the reverse of unique_key_exists() by triggering error if folder exists.
+	 * Does the reverse of unique_key_exists() by triggering error if email exists.
 	 * Validation callback.
 	 *
 	 * @param   Validation  Validation object
-	 * @param   string      Field folder
+	 * @param   string      Field name
 	 * @return  void
 	 */
-	public function name_available(Validation $validation, $field)
-	{	
-		if ($this->unique_name_exists($validation[$field], 'taxonomia'))
+	public function unique_taxonomia(Validation $validation, $field)
+	{
+		if ($this->unique_key_exists($validation[$field], 'taxonomia'))
 		{
-			$validation->error($field, 'name_available', array($validation[$field]));
+			$validation->error($field, 'unique_taxonomia', array($validation[$field]));
 		}
 	}
 
@@ -119,11 +119,12 @@ class Model_Object extends ORM {
 	 * @param   string   field name
 	 * @return  boolean
 	 */
-	public function unique_name_exists($value, $field = NULL)
-	{
+	public function unique_key_exists($value, $field = NULL)
+	{	
 		return (bool) DB::select(array('COUNT("*")', 'total_count'))
 			->from($this->_table_name)
 			->where($field, '=', $value)
+			->where($this->_primary_key, '!=', $this->pk())
 			->execute($this->_db)
 			->get('total_count');
 	}

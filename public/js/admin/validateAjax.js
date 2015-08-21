@@ -73,7 +73,7 @@ function validateAjax(){
            
         },
         submitHandler: function(form) {
-            $('.sortable_workflow, .sortable_status_workflow').each(function(index, element){ 
+            $('.sortable_creditos').each(function(index, element){ 
                 var fill = $(element).data('fill');
                 if(fill != undefined){
                     var data = $(element).sortable('serialize');
@@ -82,8 +82,8 @@ function validateAjax(){
             });  
 
             $('input[type=submit]').attr('disabled', 'disabled');
-            //ajaxPost(form, $(form).data("panel"));
-            //return false;       
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
         }
     })
 
