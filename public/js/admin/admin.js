@@ -645,19 +645,23 @@ function setupAjax(container){
         
 
             if($(this).data("refresh") != undefined){
-                window.location.hash = $(this).attr("href");// hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
+                window.location.hash = $(this).attr("href");
+                //hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
             }
         });
 
-        
-
         $(".collapse").unbind('click').bind('click', function () {
-            //$header = $(this);
             var span = $('.collapse span');
             var element = $(this).data("show");
-            $('.' + element).fadeToggle(200, function () {
-                $('.' + element).is(":visible") ? span.attr('class', 'collapse_ico') : span.attr('class', 'expand_ico');
-            });
+            $('.' + element).each(function(ev, ui){
+                if($(ui).hasClass('hide')){
+                    $(ui).removeClass('hide');
+                    span.attr('class', 'collapse_ico');
+                }else{
+                    $(ui).addClass('hide');
+                    span.attr('class', 'expand_ico');
+                }
+            })
         });
 
         $('.show').unbind('click').bind('click', function() {

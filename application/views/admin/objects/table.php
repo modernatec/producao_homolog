@@ -11,12 +11,20 @@
 		<ul class="list_item">
 			<?foreach($objectsList as $objeto){
 	    		$calendar = URL::base().'/public/image/admin/calendar2.png';
+	    		$class_obj = "object_late";
 
+	    		//$status = $objeto->status->order_by('id', 'DESC')->limit(1)->find();
+	    		/*
+	    		$last_status = ORM::factory('objects_statu')->where('object_id', '=', $objeto->id)->order_by('id', 'DESC')->limit('1')->find();
+	    		//var_dump($last_status->status->status);
+				*/
+	    		
 	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s")) && $objeto->status_id != '8'){
         			$class_obj = "object_late";
         		}else{
-    				$class_obj 	= $objeto->statu_type."_status".$objeto->status_id;
-    			}	 
+    				$class_obj 	= "object_status".$objeto->status_id;
+    			}
+    			
 
     			$diff = '';
                 if(!empty($objeto->diff) && $objeto->diff != 0){

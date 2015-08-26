@@ -6,7 +6,7 @@
 	   		</div>
 	   		<div class="filter" >
 			    <ul>
-			        <li class="round" >
+			        <li class="round <?=(!empty($filter_team)) ? 'filter_selected' : ''; ?>" >
 			            <span class="round" id="team">time <?=(!empty($filter_team) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 			            <div class="filter_panel round" data-bottom="false">
 				            <ul>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="filter" >
 			    <ul>
-			        <li class="round" >
+			        <li class="round <?=(!empty($filter_status)) ? 'filter_selected' : ''; ?>" >
 			            <span class="round" id="team">status <?=(!empty($filter_status) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
 			            <div class="filter_panel round" data-bottom="false">
 				            <ul>

@@ -229,12 +229,12 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 		
 		//$this->startProfilling();
 		$view->teams = ORM::factory('team')->find_all();
-var_dump(count($this->request->post('suppliers_filter')));
+//var_dump(count($this->request->post('suppliers_filter')));
 
 		if(count($this->request->post('suppliers_filter')) > '0' || Session::instance()->get('kaizen')['model'] != 'suppliers'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "suppliers");
 		}else{
-			var_dump("expression");
+			//var_dump("expression");
 			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 

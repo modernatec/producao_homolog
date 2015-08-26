@@ -8,7 +8,7 @@
     ?>
 	</span>
 	<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
-		<input type="text" class="round left" style="width:140px" placeholder="nome ou email" name="search" value="<?=@$filter_search?>" >
+		<input type="text" class="round left" style="width:140px" placeholder="nome ou email" name="filter_search" value="<?=@$filter_search?>" >
 		<input type="submit" class="round bar_button left" value="buscar"> 
 		
 	</form>	
@@ -28,7 +28,8 @@
 			<li>
 				<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
-					<span class='round list_faixa team_<?=$usuario->team->id?> left'><?=$usuario->nome?></span><span class='round list_faixa team_<?=$usuario->team->id?>'><?=$usuario->team->name?></span>
+					<span class='round list_faixa team_<?=$usuario->team->id?> left'><?=$usuario->nome?></span>
+					<span class='round list_faixa team_<?=$usuario->team->id?>'><?=$usuario->team->name?></span>
 					<div class="clear">
 						<p>e-mail: <?=$usuario->email?></p>
 						<p>ramal: <?=$usuario->ramal?></p>

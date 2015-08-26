@@ -1346,6 +1346,7 @@ a.green{
 	padding: 4px 5px;
 	display: inline-block;
 	color: #fff;
+	border: none !important;
 	/*line-height: 30px !important*/
 }
 
@@ -1530,6 +1531,7 @@ a.green{
 
 	width: auto !important;
 	min-width: 180px;
+	margin: 5px 0;
 }
 
 .filter ul li{
@@ -1544,6 +1546,10 @@ a.green{
 }
 
 .filter ul li:hover{
+	background: #fff;
+}
+
+.filter_selected {
 	background: #fff;
 }
 

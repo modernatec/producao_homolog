@@ -79,19 +79,6 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
  		$view->current_auth = $this->current_auth;
 
  		echo $view;
- 		/*
- 		if($ajax != null){
- 			return $view;
- 		}else{
-	        header('Content-Type: application/json');		
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-	        return false;
-	    }
-	    */
 	}
 
 	public function searchPathFoward(&$array, $id){
@@ -126,17 +113,73 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$viewFiltros->filter_typeobject = array();
   		$viewFiltros->filter_supplier = array();
   		$viewFiltros->filter_origem = array();
+  		$viewFiltros->filter_tipo = array();
 
-
-  		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
-		$viewFiltros->collectionList = ORM::factory('collection')->order_by('name', 'ASC')->find_all();
-		$viewFiltros->projectList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
-		$viewFiltros->typeList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-		//$viewFiltros->suppliersList = ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();
-
-		foreach ($filtros as $key => $value) {
+  		foreach ($filtros as $key => $value) {
   			$viewFiltros->$key = json_decode($value);
   		}
+
+  		$tax_coloum = "";
+		$tax_order = "";
+		$order_by = "";
+
+		if(isset($viewFiltros->filter_taxonomia)){
+    		$list = explode(' ',addslashes($viewFiltros->filter_taxonomia));
+    		$string = join('* +*',$list);
+
+			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
+			$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
+			$order_by = "ORDER BY relevance DESC";
+		}
+
+    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode(',', $viewFiltros->filter_segmento)."')" : "";
+    	$supplier = (count($viewFiltros->filter_supplier) > 0) ? "AND a.supplier_id IN ('".implode("','",$viewFiltros->filter_supplier)."')" : '';
+    	$origem = (count($viewFiltros->filter_origem) > 0) ? "AND a.reaproveitamento IN ('".implode("','",$viewFiltros->filter_origem)."')" : '';
+    	$project = (count($viewFiltros->filter_project ) > 0) ? "AND a.project_id IN ('".implode("','",$viewFiltros->filter_project)."')" : '';
+    	$collection = (count($viewFiltros->filter_collection ) > 0) ? "AND a.collection_id IN ('".implode("','",$viewFiltros->filter_collection)."')" : '';
+    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? "AND a.typeobject_id IN ('".implode(',',$viewFiltros->filter_tipo)."')" : '';
+    	
+		$sql = "SELECT 
+					a.*, 
+					b.id as collection_id, 
+					b.name as collection_name, 
+					b.segmento_id as segmento_id, 
+					b.ano as collection_ano, 
+					c.name as tipo
+					".$tax_coloum."       				
+				FROM moderna_objects a 
+				INNER JOIN moderna_collections b ON a.collection_id = b.id
+				INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
+				INNER JOIN moderna_objects_status d ON a.id = d.object_id
+				WHERE fase = '1' AND d.status_id = '8' 
+				".$segmento." 
+				 
+				".$origem." 
+				".$project." 
+				".$collection." 
+				".$tipo." 
+				".$tax_order.
+				" GROUP BY a.id ".$order_by;
+
+		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
+
+		$collections_arr = array();
+		$segmentos_arr = array();
+		$projects_arr = array();
+		$type_arr = array();
+
+		foreach ($result as $value) {
+			array_push($collections_arr, $value->collection_id);
+			array_push($segmentos_arr, $value->segmento_id);
+			array_push($projects_arr, $value->project_id);
+			array_push($type_arr, $value->typeobject_id);
+		}
+
+  		$viewFiltros->segmentoList = ORM::factory('segmento')->where('id', 'IN', array_unique($segmentos_arr))->order_by('name', 'ASC')->find_all();
+		$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collections_arr))->order_by('name', 'ASC')->find_all();
+		$viewFiltros->projectList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->order_by('name', 'ASC')->find_all();
+		$viewFiltros->typeList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
+		$viewFiltros->suppliersList = array();//= ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();		
 
   		return $viewFiltros;
     }
