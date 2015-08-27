@@ -336,8 +336,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     public function getFiltros(){
     	$this->auto_render = false;
     	$viewFiltros = View::factory('admin/objects/filtros');
-    	//$viewFiltros->project_id = $project_id;
-
     	
 		$viewFiltros->filter_tipo = array();
 		$viewFiltros->filter_status = array();
@@ -349,7 +347,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$viewFiltros->filter_segmento = array();
 		$viewFiltros->filter_materia = array();
 		$viewFiltros->filter_project = array();
-
 
 		$viewFiltros->filter_taxonomia = "";
 
@@ -390,6 +387,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	  		}
   		}
 
+  		/*
 		$taxonomia = (count($viewFiltros->filter_taxonomia) > 0) ? "AND (taxonomia LIKE '%".$viewFiltros->filter_taxonomia."%' OR title LIKE '%".$viewFiltros->filter_taxonomia."%') " : '';
     	$materia = (count($viewFiltros->filter_materia) > 0) ? " AND materia_id IN ('".implode("','", $viewFiltros->filter_materia)."')" : "";
     	$segmento = (count($viewFiltros->filter_segmento) > 0) ? " AND segmento_id IN ('".implode("','", $viewFiltros->filter_segmento)."')" : "";
@@ -432,7 +430,18 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($collection_arr, $value->collection_id);
 			array_push($projects_arr, $value->project_id);
 		}
+		*/
 
+		$viewFiltros->typeObjectsList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
+  		$viewFiltros->statusList = ORM::factory('statu')->join('workflows_status', 'INNER')->on('workflows_status.status_id', '=', 'status.id')->where('type', '=', 'object')->group_by('status.id')->order_by('order', 'ASC')->find_all();
+		$viewFiltros->collectionList = ORM::factory('collection')->join('projects', 'INNER')->on('collections.project_id', '=', 'projects.id')->where('projects.status', '=', '1')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->materiasList = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
+		$viewFiltros->projectsList = ORM::factory('project')->and_where('status', '=', '1')->order_by('name', 'ASC')->find_all();
+		
+		$viewFiltros->suppliersList = array();
+		
+
+		/*
   		$viewFiltros->typeObjectsList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
   		$viewFiltros->statusList = ORM::factory('statu')->where('id', 'IN', array_unique($status_arr))->order_by('status', 'ASC')->find_all();
 		$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collection_arr))->order_by('name', 'ASC')->find_all();
@@ -440,6 +449,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$viewFiltros->projectsList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->and_where('status', '=', '1')->order_by('name', 'ASC')->find_all();
 		
 		$viewFiltros->suppliersList = array();
+		*/
+
 		/*
 		ORM::factory('supplier')
 			->join('objectStatus')->on('objectStatus.supplier_id', '=', 'suppliers.id')
@@ -495,7 +506,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($collections_arr, $collection->collection_id);
 		}
 
-  		if(!isset($view->filter_collection)){
+
+
+  		if(count($this->request->post('filter_collection')) == '0'){
   			if($this->current_auth != 'admin' && $this->current_auth != 'coordenador'){
 	  			$view->filter_collection = json_decode(json_encode($collections_arr));
 	  		}
