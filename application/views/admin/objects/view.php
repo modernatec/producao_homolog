@@ -217,7 +217,7 @@
                                                         </a> 
                                                 </div>
                                                 <? if($task->task_to != "0"){?>
-                                                    <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                    <!--div class="left"><?=Utils_Helper::getUserImage($task->to)?></div-->
                                                 <?}?>
                                                 <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
                                             </div>

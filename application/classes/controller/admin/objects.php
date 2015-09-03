@@ -529,6 +529,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 					*					      				
 				FROM moderna_objectstatus
 				WHERE fase = '1' 
+				AND project_status = '1' 
 				".$taxonomia." 
 				".$materia." 
 				".$segmento." 
