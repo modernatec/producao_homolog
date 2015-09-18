@@ -239,61 +239,56 @@
                                                 <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                 <div class="task_reply round"> 
                                                     <? 
-                                                        if($task->status_id == '5'){
-                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                                    $start = false;
-                                                                }else{?>
-                                                                    <div style="padding:5px 0;">
-                                                                        <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
-                                                                    </div>
-                                                                <?}
+                                                        $show_init = true;
+                                                        if($task->to != ""){
+                                                            if($task->to != $user->id){
+                                                                $show_init = false;    
+                                                            }                                                                
                                                         }
-                                                    ?>
-                                                        <!--form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
-                                                            <input type="hidden" name='task_id' value="<?=$task->id?>" />
-                                                            <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                            <?  
-                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                                    $start = false;
-                                                                }else{
-                                                                    $start = true;
-                                                                }
 
-                                                                if($start){
-                                                            ?>
-                                                                    <input type="submit" class="bar_button round" value="iniciar">
-                                                            <?}?>
-
-                                                        </form-->
-                                                    <?//}
-                                                
-                                                if($task->reply->id != '') {?>
-                                                    <div class='line_bottom'>
-                                                        <? if($current_auth != "assistente"){?>
-                                                            <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
-                                                        <?}?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                                        <? if($task->reply->finished != ""){?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
-                                                            </a>
-                                                        <?}elseif($task->status_id == '6'){?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
-                                                            </a>
-                                                        <?}?>
-                                                    </div>
-                                                    <div class="clear">
-                                                    <?if(!empty($task->reply->description)){ ?>
-                                                        <span class="wordwrap description"><?=$task->reply->description;?></span>
-                                                    <?}?>
-                                                    </div>
-                                                    <div class="options description" >
-                                                        <? if($task->status_id == '6' && $task->to->id == $user->id){?>
-                                                            <div class="right" style="min-height:20px; padding-top:10px">
-                                                                <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
+                                                        if($show_init && $task->status_id == '5'){
+                                                        ?>
+                                                            <div style="padding:5px 0;">
+                                                                <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
                                                             </div>
-                                                        <?}?>
-                                                    </div>
-                                                <?}?>
+                                                        <?}else{?>
+                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
+                                                        <?}                                                    
+                                                
+                                                        if($task->reply->id != '') {?>
+                                                            <div class='line_bottom'>
+                                                                <? if($current_auth != "assistente"){?>
+                                                                    <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
+                                                                <?}?>
+                                                                    <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
+                                                                <? if($task->reply->finished != ""){?>
+                                                                    <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
+                                                                    </a>
+                                                                <?}elseif($task->status_id == '6'){?>
+                                                                    <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
+                                                                    </a>
+                                                                <?}?>
+                                                            </div>
+                                                            <div class="clear">
+                                                            <?if(!empty($task->reply->description)){ ?>
+                                                                <span class="wordwrap description"><?=$task->reply->description;?></span>
+                                                            <?}?>
+                                                            </div>
+                                                            <div class="options description" >
+                                                                <? if($task->status_id == '6' && $task->to->id == $user->id){?>
+                                                                    <div class="right" style="min-height:20px; padding-top:10px">
+                                                                        <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
+                                                                    </div>
+                                                                <?}?>
+
+                                                                <? if($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id){?>
+                                                                    <div style="padding:5px 0;">
+                                                                        <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/validate" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >validar</a>
+                                                                    </div>
+                                                                <?}?>
+                                                            </div>
+                                                        <?}
+                                                    ?>
                                                 </div> 
                                             </div>
                                         </div>  
