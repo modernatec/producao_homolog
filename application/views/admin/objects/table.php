@@ -37,7 +37,7 @@
                     }
                 }
 
-    			$taskList = $objeto->tasks->where('ended', '=', '0')->find_all();
+    			$taskList = array();//$objeto->tasks->where('ended', '=', '0')->find_all();
 			?>
 			<li>
 				<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">

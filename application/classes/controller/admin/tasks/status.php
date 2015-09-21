@@ -14,28 +14,33 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	*/
 	public function action_start(){
 		$this->auto_render = false;
-
-		$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->find_all();
+		/*
+		$task_ini = ORM::factory('tasks_statu')->where('task_id', '=',$this->request->post('task_id'))->where('status_id', '=', '6')->find_all();
 		if(count($task_ini) > 0){
 			$msg = "Tarefa já foi iniciada ".$this->request->post('task_id'); 
 		}else{
+		*/	
 			$db = Database::instance();
 	        $db->begin();
 			
-			try {  					
-				$task_statu = ORM::factory('tasks_statu');
-				$task_statu->task_id = $this->request->post('task_id');
-				$task_statu->description = $this->request->post('description'); 
+			try {  			
+				/**procura pelo status em aberto e o atualiza**/		
+				$task_statu = ORM::factory('tasks_statu', $this->request->query('sid'));
+				//$task_statu->task_id = $this->request->post('task_id');
+				//$task_statu->description = $this->request->post('description'); 
 				$task_statu->started = date("Y-m-d H:i:s");
+				$task_statu->to = $this->current_user->userInfos->id;
+				$task_statu->status_id = '6';
 				$task_statu->save();
 
 				/*
 				* atualiza tarefa com info do user que a iniciou
-				*/
+				
 				$task = ORM::factory('task', $this->request->post('task_id'));
 				$task->task_to = $this->current_user->userInfos->id;
 				$task->status_id = '6';
 	            $task->save();
+	            */
 	            
 	            $db->commit();
 				
@@ -52,24 +57,14 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            $db->rollback();
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	        }
-		}
+		//}
 
-		if($this->request->post('from') == "tasks/index/ajax"){
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
-		}else{
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					//array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
-		}
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$task_statu->task->object_id),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
 
 		/*
 		header('Content-Type: application/json');		
@@ -85,179 +80,35 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	}
 
 	/*
-	* entrega uma tarefa
-	*/
-	public function action_delivery(){
-		$this->auto_render = false;
-		$task_end = ORM::factory('task')->where('id', '=', $this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
-		
-		if(count($task_end) > 0){
-			$msg = "tarefa já foi entregue";
-		}else{
-			$db = Database::instance();
-	        $db->begin();
-			
-			try {  					
-				$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $this->request->post('task_id'))->find();
-				$task_statu->task_id = $this->request->post('task_id');
-				$task_statu->description = $this->request->post('description'); 
-				$task_statu->finished = date("Y-m-d H:i:s");
-				$task_statu->save();
-	            
-	            /*
-				* atualiza flag ended, encerrando a tarefa para o user
-				
-				$task = ORM::factory('task', $this->request->post('task_id'));
-				$task->delivered_date = date('Y-m-d', strtotime("now"));
-				$task->diff = Utils_Helper::dataDiff($task->delivered_date, $task->planned_date);
-				//$task->ended = '1';
-				$task->status_id = '7';
-	            $task->save();
-	            */
-
-	            /*
-	            * abre próx. tarefa automaticamente.
-	            */
-	            $object = ORM::factory('object', $task->object_id);
-	            $object_status = ORM::factory('objects_statu', $task->object_status_id);
-
-	            $workflow_status_tag = ORM::factory('workflows_status_tag')
-	            						->where('workflow_id', '=', $object->workflow_id)
-	            						->and_where('status_id', '=', $object_status->status_id)
-	            						->and_where('tag_id', '=', $task->tag_id)
-	            						->find();
-
-	            if($workflow_status_tag->next_tag_id != '0' && $workflow_status_tag->id != ''){
-		            $new_task = ORM::factory('task');
-	            	$new_task->object_id = $task->object_id;
-	            	$new_task->object_status_id = $task->object_status_id;
-	            	$new_task->tag_id = $workflow_status_tag->next_tag_id;
-	            	$new_task->team_id = $task->team_id;
-
-	            	/*
-		            * procura qtd de dias da próx. tag.
-		            */
-	            	$workflow_next_tag = ORM::factory('workflows_status_tag')
-	            						->where('workflow_id', '=', $object->workflow_id)
-	            						->and_where('status_id', '=', $object_status->status_id)
-	            						->and_where('tag_id', '=', $workflow_status_tag->next_tag_id)
-	            						->find();
-
-	            	$dates = date('Y-m-d', strtotime(str_replace('/', '-', Controller_Admin_Feriados::getNextWorkDay($workflow_next_tag->days))));
-	            	$new_task->crono_date = $dates;
-	            	$new_task->planned_date = $dates;//Controller_Admin_Feriados::getNextWorkDay($task->tag->days);
-
-	            	//$new_task->topic = '1';
-	            	//$new_task->description = $description;
-	            	switch ($workflow_status_tag->to) {
-	            		case '1':
-	            			/*
-	            			* busca usuário do time, responsável pela coleção
-	            			*/
-	            			$userInfo = ORM::factory('userInfo', $task->userInfo_id);
-	            			$object = ORM::factory('object', $task->object_id);
-
-	            			$user_collection = ORM::factory('collections_userinfo')
-	            								->where('collection_id', '=', $object->collection_id)
-	            								->and_where('team_id', '=', $userInfo->team_id)->find();
-
-	            			$task_to = $user_collection->userInfo_id;
-	            			break;
-	            		case '2':
-	            			/*
-							* fazer buscar usuário do time, menos atarefado
-							* verificar se vale a pena - coordenadores sao usuários tbm!
-							* SELECT 
-									u.nome, 
-									(SELECT COUNT(*) FROM moderna_tasks WHERE task_to = u.id AND ended = '0') AS t,
-									u.team_id
-								FROM moderna_userinfos u
-								WHERE u.team_id = '1' 
-	            			*/
-
-	            			$task_to = '0';
-	            			break;
-	            		default:
-	            			$task_to = '0';
-	            			break;
-	            	}
-
-	            	$new_task->task_to = $task_to;
-	            	$new_task->status_id = '5'; //aberto
-	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
-		            $new_task->save(); 
-		        }
-				
-	            $db->commit();
-				
-	            $msg = "tarefa finalizada com sucesso."; 
-	        } catch (ORM_Validation_Exception $e) {
-	            $errors = $e->errors('models');
-				$erroList = '';
-				foreach($errors as $erro){
-					$erroList.= $erro.'<br/>';	
-				}
-	            $db->rollback();
-	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-	        } catch (Database_Exception $e) {
-	            $db->rollback();
-	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-	            
-	        }
-		}
-
-		header('Content-Type: application/json');
-
-		if($this->request->post('from') == "tasks/index/ajax"){
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
-		}else{
-			echo json_encode(
-				array(
-					array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
-					//array('container' => '#tabs_content', 'type'=>'url', 'content'=> URL::base().'admin/objects/getObjects/'.$task->object->project_id),
-					array('type'=>'msg', 'content'=> $msg),
-				)						
-			);
-		}
-
-        return false;
-	}
-
-	/*
 	* encerra uma tarefa
 	*/
 	public function action_end(){
 		$this->auto_render = false;
+		/*
 		$task_end = ORM::factory('task')->where('id', '=', $this->request->post('task_id'))->and_where('status_id', '=', '7')->find_all();
 		
 		if(count($task_end) > 0){
 			$msg = "Tarefa já foi entregue";
 		}else{
+		*/	
 			$db = Database::instance();
 	        $db->begin();
 			
 			try {  					
-				$task_statu = ORM::factory('tasks_statu')->where('task_id', '=', $this->request->post('task_id'))->find();
-				$task_statu->task_id = $this->request->post('task_id');
+				$task_statu = ORM::factory('tasks_statu', $this->request->post('task_status_id'));
 				$task_statu->description = $this->request->post('description'); 
 				$task_statu->finished = date("Y-m-d H:i:s");
+				$task_statu->status_id = '7';
 				$task_statu->save();
 	            
 	            /*
 				* atualiza flag ended, encerrando a tarefa para o user
-				
-				$task = ORM::factory('task', $this->request->post('task_id'));
+				*/
+
+				$task = ORM::factory('task', $task_statu->task_id);
 				$task->delivered_date = date('Y-m-d', strtotime("now"));
 				$task->diff = Utils_Helper::dataDiff($task->delivered_date, $task->planned_date);
-				//$task->ended = '1';
-				$task->status_id = '7';
 	            $task->save();
-	            */
 
 	            /*
 	            * abre próx. tarefa automaticamente.
@@ -272,6 +123,10 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            						->find();
 
 	            if($workflow_status_tag->next_tag_id != '0' && $workflow_status_tag->id != ''){
+	            	/**atualiza status da ultima task e abre uma nova**/
+	            	$task->step = '1';
+		            $task->save();
+
 		            $new_task = ORM::factory('task');
 	            	$new_task->object_id = $task->object_id;
 	            	$new_task->object_status_id = $task->object_status_id;
@@ -319,17 +174,42 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 								WHERE u.team_id = '1' 
 	            			*/
 
-	            			$task_to = '0';
+	            			$task_to = '';
 	            			break;
 	            		default:
-	            			$task_to = '0';
+	            			$task_to = '';
 	            			break;
 	            	}
 
-	            	$new_task->task_to = $task_to;
-	            	$new_task->status_id = '5'; //aberto
+	            	//$new_task->task_to = $task_to;
+	            	//$new_task->status_id = '5'; //aberto
 	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
 		            $new_task->save(); 
+
+		            /**inicia o primeiro status da tarefa**/
+		            $new_task_statu = ORM::factory('tasks_statu');
+					$new_task_statu->userInfo_id = $this->current_user->userInfos->id;
+					$new_task_statu->status_id = '5';
+					$new_task_statu->task_id = $new_task->id;
+					$new_task_statu->description = 'tarefa aberta automaticamente...'; 
+					$new_task_statu->to = $task_to; 
+					$new_task_statu->save();
+
+		        }else{
+
+					/**nao ha prox. tarefa altomatica, validar**/		
+					if($task->step == '0'){
+						$task->step = '1';
+						$task->save();
+
+						$new_task_statu = ORM::factory('tasks_statu');
+						$new_task_statu->userInfo_id = $this->current_user->userInfos->id;
+						$new_task_statu->status_id = '5';
+						$new_task_statu->task_id = $task->id;
+						$new_task_statu->description = 'validar...'; 
+						$new_task_statu->to = $task->userInfo_id; 
+						$new_task_statu->save();
+					}
 		        }
 				
 	            $db->commit();
@@ -348,7 +228,7 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
 	            
 	        }
-		}
+		//}
 
 		header('Content-Type: application/json');
 
@@ -559,16 +439,17 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 				array_push($members_arr, $member['id']);
 			}
 
-	    	$query = ORM::factory('task')
-                ->select(DB::expr('count(moderna_tasks.id) as total'))
-                ->join('userinfos', 'INNER')->on('task_to', '=', 'userinfos.id')
-                ->where('ended', '=', '0')
-                ->where('task_to', '!=', '0');
+	    	$query = ORM::factory('tasks_statu')
+                ->select(DB::expr('count(moderna_tasks_status.id) as total'))
+                ->join('userinfos', 'INNER')->on('to', '=', 'userinfos.id')
+                ->where('tasks_status.finished', 'IS', NULL)
+                ->where('to', '!=', '');
                 
-
+            /*
             if($this->current_auth != "admin"){
 				$query->and_where('tasks.task_to', 'IN', $members_arr);
-            }	
+            }
+            */	
             //$query->and_where('tasks.team_id', '=', $this->current_user->userInfos->team_id);
                 
 
@@ -582,7 +463,10 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 
 			$teams = $query->find_all();
 			foreach($teams as $key => $team) {
-				$team_qtd = ORM::factory('task')->where('ended', '=', '0')->where('team_id', '=', $team->id)->count_all();
+				$team_qtd = ORM::factory('tasks_statu')
+								->join('tasks')->on('task_id', '=', 'tasks.id')
+								->where('finished', 'IS', NULL)->and_where('team_id', '=', $team->id)->count_all();
+								
 				if($team_qtd > 0){
 					$teamsVO[$key]['id'] = $team->id;
 					$teamsVO[$key]['name'] = $team->name;

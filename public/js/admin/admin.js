@@ -782,13 +782,15 @@ function setupAjax(container){
         $('a.startTask').unbind('click').bind('click', function(e, ui) {
             e.preventDefault();
             var url = this.href;
+            /*
             var task_id = $(this).data('taskid');
             var object_id = $(this).data('objectid');
 
             var data_post = [];
             data_post.push({name: 'task_id', value: task_id});
             data_post.push({name: 'object_id', value: object_id});
-
+            */
+            
             var dialog = dialog;
 
             if(dialog == undefined){        

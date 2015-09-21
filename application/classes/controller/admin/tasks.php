@@ -44,7 +44,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$name = explode(" ", $team->name);
 
         	$view->title = "tarefas - ".$name[0];
-        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
+        	$view->filter = "?team=".$team->id;
         }
 
 		$view->current_auth = $this->current_auth;	
@@ -174,7 +174,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->bind('errors', $errors)
 			->bind('message', $message);
 		
-		$view->task = ORM::factory('task', $id);
+		$view->task_status = ORM::factory('tasks_statu', $id);
 
 		echo $view;
 	}
@@ -211,22 +211,31 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 					'topic',
 					'crono_date',
 					'description',
-					'task_to',
+					//'task_to',
 				)); 
 				
+				/**para não atualizar o criador da tarefa no update**/
 				if(empty($id)){				
-					/**para não atualizar o criador da tarefa no update**/
 					$task->planned_date = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
 					$task->userInfo_id = $this->current_user->userInfos->id;
 					$task->team_id = $this->current_user->userInfos->team_id;
-					$task->status_id = '5';
+					
 	            }
+
 	            $date1 = date('Y-m-d', strtotime(str_replace('/', '-', $this->request->post('crono_date'))));
 				$task->diff = Utils_Helper::dataDiff($date1, $task->planned_date);
 
 	            $task->save();  
 	            $object_id = $task->object_id;
 
+	            /**inicia o primeiro status da tarefa**/
+	            $task_statu = ORM::factory('tasks_statu');
+				$task_statu->userInfo_id = $this->current_user->userInfos->id;
+				$task_statu->status_id = '5';
+				$task_statu->task_id = $task->id;
+				$task_statu->description = $this->request->post('description'); 
+				$task_statu->to = $this->request->post('task_to'); 
+				$task_statu->save();
 
 	            $db->commit();
 
@@ -311,19 +320,20 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		$view->filter_task_to = $this->request->query('to');  
 		$view->filter_team = $this->request->query('team');          
 
-        $query = ORM::factory('task');
+        $query = ORM::factory('tasks_statu');
 
-        /***Filtros***/
+        /***Filtros**
         if($this->current_auth == "assistente" || $this->current_auth == "assistente 2"){
 			$status_arr = array('5');
 		}else{
 			$status_arr = array('5', '6');
 		}	
+		*/
 
-        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
-        (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
-
-        $view->taskList = $query->and_where('ended', '=', '0')->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
+        //(isset($view->filter_status)) ? $query->where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
+        (isset($view->filter_task_to)) ? $query->where('to', '=', $view->filter_task_to) : '';
+        //and_where('ended', '=', '0')
+        $view->taskList = $query->and_where('finished', 'IS', NULL)->find_all();//->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
                
         //$this->endProfilling();
         header('Content-Type: application/json');

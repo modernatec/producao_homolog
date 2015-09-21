@@ -41,7 +41,7 @@
                         <? foreach($teams as $team){?>
                             <optgroup label="<?=$team->name?>">
                             <? foreach($teamList as $userInfo){ if($userInfo->team_id == $team->id){?>
-                                    <option value="<?=$userInfo->id?>" <?=($taskVO['task_to'] == $userInfo->id) ? "selected" : ""?> ><?=$userInfo->nome?></option>
+                                    <option value="<?=$userInfo->id?>" <?=(@$taskVO['task_to'] == $userInfo->id) ? "selected" : ""?> ><?=$userInfo->nome?></option>
                                 <?}}?>
                             </optgroup>
                         <?}?>                    

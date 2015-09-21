@@ -5,16 +5,23 @@ class Model_Task extends ORM {
 
 	protected $_belongs_to  = array(
 		'object' => array('foreign_key' => 'object_id'),
-		'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
+		//'priority' => array('model' => 'priority', 'foreign_key' => 'priority_id'),
 		'userInfo' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
-    	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
-    	'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
+    	//'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
+    	//'to' => array('model' => 'userInfo', 'foreign_key' => 'task_to'),
     	'tag' => array('model' => 'tag', 'foreign_key' => 'tag_id'),
 	);	
 
+	/*
 	protected $_has_one = array(
 		'reply' => array('model' => 'tasks_statu', 'foreign_key' => 'task_id'),
 	);
+	*/
+
+	protected $_has_many = array(
+		'status' => array('model' => 'tasks_statu', 'foreign_key' => 'task_id' ),		
+	);
+
 
 	public function getTasks($id){
 		return ORM::factory('task')->where('task_to', '=', $id)->count_all();
