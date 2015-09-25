@@ -5,6 +5,6 @@ class Model_Tasks_Statu extends ORM {
     	'task' => array('foreign_key' => 'task_id'),
     	'userInfo' => array('foreign_key' => 'userInfo_id'),
     	'status' => array('model' => 'statu', 'foreign_key' => 'status_id'),
-    	'user' => array('model' => 'userInfo', 'foreign_key' => 'to'),
+    	'to' => array('model' => 'userInfo', 'foreign_key' => 'userInfo_id'),
     );
 }

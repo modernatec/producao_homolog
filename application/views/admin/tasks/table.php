@@ -17,45 +17,52 @@
         }
                      
         echo '<ul class="list_item" id="'.$id.'">';
-        foreach($taskList as $key=>$task_status){?>
-            <li class="dd-item step_<?=$task_status->status->type?>_status<?=$task_status->status_id?>" id="item-<?=$task_status->id?>">
-                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task_status->task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
+        foreach($taskList as $key=>$task){?>
+            <li class="dd-item step_<?=$task->status->type?>_status<?=$task->status->id?>" id="item-<?=$task->id?>">
+                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
                     <?
                         $diff = '';
-                        if($task_status->task->diff != 0){
-                            if($task_status->task->diff < 0){
-                                $diff = '<span class="list_faixa green round">'.$task_status->task->diff.'</span>';
+                        if($task->diff != 0){
+                            if($task->diff < 0){
+                                $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
                             }else{
-                                $diff = '<span class="list_faixa red round">+'.$task_status->task->diff.'</span>';
+                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
                             }
                         }
                     ?>
                     <div class="clear" style="overflow:auto;" >
-                        <div class="left"><b><?=$task_status->task->object->taxonomia;?></b></div>
+                        <div class="left"><b><?=$task->object->taxonomia;?></b></div>
                         <div class="right"><?=$diff?></div>
                     </div>
                     <hr style="margin:5px 0;" class="clear" />
-                    
+                    <!--div class="clear" style="margin:5px 0;">
+                        <span class="round list_faixa tag" style="background:<?=$task->tag->color?>">
+                            <?
+                                $last_status = $task->object->status->order_by('id', 'DESC')->find();
+                                echo $last_status->status;
+                            ?>
+                        </span> 
+                    </div-->
 
                     <div class="clear">
                                            
                         <?
-                            if(strtotime($task_status->task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
+                            if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
                                 $class_obj = "#ff0000";                            
                             }else{
-                                $class_obj  = $task_status->task->tag->color;
+                                $class_obj  = $task->tag->color;
                             }
                         ?>
                         <div class="left" style="width:25px;position:relative;top:-3px;">           
                             <? 
                                 //if($task->task_to != "0"){
-                                    echo Utils_Helper::getUserImage($task_status->user);   
+                                    echo Utils_Helper::getUserImage($task->to);   
                                 //}
                             ?>
                         </div>
-                        <span class="round list_faixa left tag" style="background:<?=$task_status->task->tag->color?>"><?=$task_status->task->tag->tag?></span>                    
-                        <span class="round list_faixa left tag" style="background:<?=$class_obj?>"><?=Utils_Helper::data($task_status->task->crono_date)?></span>
-                        
+                        <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>                    
+                        <span class="round list_faixa left tag" style="background:<?=$class_obj?>"><?=Utils_Helper::data($task->crono_date)?></span>
+                        <!--span class="<?=$task->status->type?>_status<?=$task->status->id?> round left list_faixa"><?=$task->status->status;?></span-->
                     </div>
                 </a>
             </li>

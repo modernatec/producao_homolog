@@ -12,8 +12,8 @@
 <?foreach ($has_task as $user_task) {?>
 <div class="task_bar_item">
 	<div class="icon_team">
-		<a class="load" href="tasks/index/ajax?to=<?=$user_task->to?>" rel="task_bar" data-panel="#content" data-refresh="true" title="<?=ucfirst($user_task->user->nome);?>">
-			<div class="left"><?=Utils_Helper::getUserImage($user_task->user)?></div>
+		<a class="load" href="tasks/index/ajax?to=<?=$user_task->to->id?>" rel="task_bar" data-panel="#content" data-refresh="true" title="<?=ucfirst($user_task->to->nome);?>">
+			<div class="left"><?=Utils_Helper::getUserImage($user_task->to)?></div>
 			<div class="badge orange"><?=$user_task->total?></div>			
 		</a>
 	</div>

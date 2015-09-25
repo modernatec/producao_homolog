@@ -463,7 +463,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$this->auto_render = false;
 		ini_set('auto_detect_line_endings',TRUE);
 		//get the csv file
-	    $file = "listas_acervo_buriti_mirim.csv";//$_FILES[csv][tmp_name];
+	    $file = "listas_acervo_moderna_plus_2011.csv";//$_FILES[csv][tmp_name];
 
 	    
 	    $file_path = "public/".$file;
