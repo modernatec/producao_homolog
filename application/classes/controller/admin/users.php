@@ -353,10 +353,12 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	*/ 
     public function action_login() 
     {
+        $this->auto_render = false;
     	$styles = array('public/css/admin/login.css' => 'screen');
-    	$this->template->styles 	= array_merge( $styles, $this->template->styles );
-		
-        $this->template->content 	= View::factory('admin/login')->bind('message', $message);
+    	$this->template->styles = array_merge( $styles, $this->template->styles );
+        $view = View::factory('admin/login')->bind('message', $message);
+
+        echo $view;
 		    
         if (HTTP_Request::POST == $this->request->method()) 
         {
@@ -377,19 +379,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             {
                 Utils_Helper::mensagens('add','Usuário ou senha desconhecidos');
             }
-        }
-
-        /*
-        if (Auth::instance()->logged_in())
-        {
-            // User is logged in, continue on
-        }
-        else
-        {
-            // User isn't logged in, redirect to the login form.
-        }
-        */
-		
+        }		
     }
      
 	 

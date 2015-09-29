@@ -48,7 +48,6 @@ class Controller_Admin_Template extends Controller_Template {
 				echo 'você não tem acesso a este conteúdo';
 			}else{
 				Request::current()->redirect('login');
-				//echo 'login';
 			}
 		}
 		
@@ -94,8 +93,6 @@ class Controller_Admin_Template extends Controller_Template {
 				
 				'public/css/admin/jquery.minicolors.css' => 'screen',
 				'public/css/admin/masterpage.css' => 'screen',
-				'public/css/admin/login.css' => 'screen',
-
             );
 
             $scripts = array(

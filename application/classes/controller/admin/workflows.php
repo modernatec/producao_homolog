@@ -21,6 +21,8 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 	{	
 		$view = View::factory('admin/workflow/list')
 			->bind('message', $message);
+
+		$view_abas = View::factory('admin/workflow/abas');
 		
 		if($ajax == null){
 			return $view;
@@ -30,6 +32,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($view_abas->render())),
 				)						
 			);
 	        return false;

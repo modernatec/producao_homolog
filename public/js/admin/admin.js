@@ -300,7 +300,7 @@ function setupAjax(container){
     }else{
 
         if($('.topo').length != 0 && container == '#content'){
-            $('#esquerda, #direita, #page').css({top:$('.topo').height() + 'px'});
+            $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
             $('#esquerda, #direita, #page').fadeIn(1000);
         }
 

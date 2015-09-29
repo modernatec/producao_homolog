@@ -1,4 +1,4 @@
-<div class="topo" >
+<!--div class="topo" >
     <div class="tabs_panel">
         <ul class="tabs">
             <li class="round"><a class="aba ajax" id="work_1" href='<?=URL::base();?>admin/workflows/getList'>workflows</a></li>
@@ -8,7 +8,7 @@
         </ul>  
         
      </div>
-</div>
+</div-->
 <div id="esquerda">
 	<div id="tabs_content">
 		
