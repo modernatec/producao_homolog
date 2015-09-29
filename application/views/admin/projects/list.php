@@ -1,8 +1,5 @@
-<div class="topo form">
-	<div id='filtros'></div>
-</div>
 <div id="esquerda">
-    <div class="bar" style='margin-bottom:5px;'>
+    <div class="list_bar">
 		<a href="<?=URL::base();?>admin/projects/edit" rel="load-content" data-panel="#direita" class="bar_button round">criar projeto</a>		
 	</div>    
     <div id="tabs_content">

@@ -153,7 +153,18 @@ class Controller_Admin_Template extends Controller_Template {
 				color:#fff;
 				border: 2px solid '.$team->color.' !important;
 			}
-			';
+			.team_step_'.$team->id.'{
+				background:'.$team->color.';
+				color:#fff;
+				overflow:auto;
+				padding:5px;
+			}
+			.team_comment_'.$team->id.'{
+				background:'.$team->color.';
+				color:#fff;
+				overflow:auto;
+				padding:5px;
+			}';
 		}	
 
 		$status = ORM::factory('statu')->find_all();

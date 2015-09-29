@@ -1,4 +1,4 @@
-	<span class='list_alert light_blue round'>
+	<span class='list_alert cyan'>
 	<?
         if(count($objectsList) <= 0){
             echo 'não encontrei objetos com estes critérios.';    
@@ -42,10 +42,9 @@
 			<li>
 				<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<p><b><?=$objeto->title?></b><br/><?=$objeto->taxonomia?></p>
-					<hr style="margin:4px 0;" />
+					
 					<div class="clear">
-						<span class="<?=$class_obj?> round list_faixa left"><?=$objeto->statu_status?></span>
-						<span class="<?=$class_obj?> round list_faixa"><?=($objeto->retorno != '') ? '<img src="'.$calendar.'" height="12" valign="top"> '.Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição'?></span><?=$diff?>
+						<?=$objeto->statu_status?> | <?=($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição'?> <?=$diff?>
 					</div>
 					<?foreach ($taskList as $task) {
 						$task_to = ($task->task_to != 0) ? Utils_Helper::getUserImage($task->to) : '<div class="round_imgList"><span>?</span></div>';

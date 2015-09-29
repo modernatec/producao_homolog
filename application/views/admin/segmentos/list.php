@@ -1,7 +1,7 @@
-<div class="topo" >
-	<span class="header"><a href="<?=URL::base();?>admin/segmentos/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar segmento</a></span>
-</div>
 <div id="esquerda">
+	<div class="list_bar">
+		<a href="<?=URL::base();?>admin/segmentos/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar segmento</a>
+	</div>
 	<div id="tabs_content" class="scrollable_content clear">
 		<ul class="list_item">
 			<? foreach($segmentosList as $segmento){?>

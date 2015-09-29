@@ -681,7 +681,7 @@ function setupAjax(container){
             $('#' + element).slideUp();
         });
 
-        $("a:contains('Excluir'), a.excluir").unbind('click').bind('click', function() {        
+        $("a:contains('Excluir'), a.icon_excluir").unbind('click').bind('click', function() {        
             var NewDialog = $('<div id="dialog"><p>Deseja realmente excluir este conteúdo?</p></div>'),
                 btExcluir = this;
                 NewDialog.dialog({
@@ -1019,7 +1019,7 @@ function setupAjax(container){
                 }
 
                 
-                $(this).parent().addClass('selected');
+                $(this).closest('li').addClass('selected');
 
                 setupScroll();
             }

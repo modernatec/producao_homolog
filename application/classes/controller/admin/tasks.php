@@ -15,7 +15,10 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/tasks/list');
-		$view->userInfo_id = $this->current_user->userInfos->id;
+		//$view->userInfo_id = $this->current_user->userInfos->id;
+
+		$view_abas = View::factory('admin/tasks/abas');
+		$view_abas->userInfo_id = $this->current_user->userInfos->id;
 
         //$query = ORM::factory('taskView')
         //						->join('userInfos', 'INNER')->on('userInfos.id', '=', 'task_to')
@@ -30,8 +33,8 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$tasks_of = ORM::factory('userInfo', $this->request->query('to'));	
         	$nome = explode(" ", $tasks_of->nome);
         	
-        	$view->title = "tarefas - ".$nome[0];
-        	$view->filter = "?to=".$tasks_of->id;
+        	$view_abas->title = "tarefas - ".$nome[0];
+        	$view_abas->filter = "?to=".$tasks_of->id;
         }else{
         	
         	if($this->request->query('team') != ''){
@@ -43,11 +46,11 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
         	$team = ORM::factory('team', $team_id);
         	$name = explode(" ", $team->name);
 
-        	$view->title = "tarefas - ".$name[0];
-        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
+        	$view_abas->title = "tarefas - ".$name[0];
+        	$view_abas->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
         }
 
-		$view->current_auth = $this->current_auth;	
+		$view_abas->current_auth = $this->current_auth;	
 	  	
 	  	/*alert de nova tarefa*/
 	  	//$view->update = false;
@@ -64,6 +67,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($view_abas->render())),
 				)						
 			);
 	        return false;

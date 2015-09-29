@@ -1,7 +1,7 @@
-<div class="topo" >
-	<span class="header"><a href="<?=URL::base();?>admin/repositorios/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar repositório</a></span>
-</div>
 <div id="esquerda">
+	<div class="list_bar">
+		<a href="<?=URL::base();?>admin/repositorios/edit/" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar repositório</a>
+	</div>
 	<div id="tabs_content" class="scrollable_content clear">
 		<ul class="list_item">
 			<? foreach($repositoriosList as $repositorio){?>

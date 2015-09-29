@@ -1,17 +1,9 @@
 <div class="clear">
-    <div class="bar">
-    <?if($current_auth != "assistente"){?>
-        <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" class="bar_button round">editar OED</a>       
-    <?}?>
-    <?if($current_auth == "coordenador" || $current_auth == "admin"){?>
-        <!--a href="<?=URL::base();?>admin/custos/view/<?=$obj->id?>" class="bar_button round">custos</a-->       
-    <?}?>
 
-    <?if($current_auth != "assistente"){
-        //if($objects_status[0]->crono_date != ''){
-    ?>
-        <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup bar_button round">alterar status</a>                           
-    <?}//}?>
+
+
+    <div class="bar">
+    
     <?
     if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
@@ -19,41 +11,26 @@
 
         
     </div>  
-    <div class="boxwired round" >
-        <a class="collapse right" data-show="replies" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a>
+    <div class="oed_info">
+        <span class="wordwrap"><b><?=@$obj->title;?></b></span><br/>
+        <span class="wordwrap"><?=@$obj->taxonomia;?></span>
         <div class="right">
+            <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
+            <a href="" title="infos" class="popup icon icon_info">infos</a>
+        </div>
+        <hr class="clear" style="margin:8px 0;" />
+        <div class="left">
         <?foreach ($obj->collection->userInfos->find_all() as $key => $userInfo) {?>
             <div class="left" style="width:25px;">           
             <?=Utils_Helper::getUserImage($userInfo);?>
             </div>
         <?}?>
         </div>
-        <b><span class="wordwrap"><?=@$obj->title;?></span></b><br/>
-        <span class="wordwrap"><?=@$obj->taxonomia;?></span>
-        <hr style="margin:8px 0;" />
-        
-
-        <span class="list_faixa light_blue round left"><?=@$obj->collection->name?></span>
-        <span class="list_faixa light_blue round left"><?=Utils_Helper::data(@$obj->collection->fechamento,'d/m/Y')?></span>
-        <?if($obj->reaproveitamento == 0){ 
-            $origem = "novo";
-        }elseif($obj->reaproveitamento == 1){
-            $origem = "reap.";
-        }else{
-            $origem = "reap. integral";
-        }?>
-        <span class="list_faixa light_blue round left"><?=$origem?></span>
-        <span class="list_faixa light_blue round left"><?=@$obj->typeobject->name;?></span>
-        
-        
-        <div class="clear">
-            <?foreach ($suppliersList as $supplier_obj) {?>
-                <span class="list_faixa cyan round left"><?=@$supplier_obj->supplier->empresa;?></span>
+        <div class="right">
+            <?if($current_auth != "assistente"){?>
+                <a href="<?=URL::base();?>admin/tasks/update/" title="criar tarefa" class="popup icon icon_task">nova tarefa</a>
+                <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup icon icon_status">alterar status</a>                           
             <?}?>
-        </div>
-        <div class="clear">
-            <b>início:</b> <?=Utils_Helper::data(@$obj->crono_date,'d/m/Y')?><br/>
-            <b>entrega:</b> <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
         </div>
     </div>
 
@@ -62,69 +39,58 @@
             $count = 0;
             foreach($objects_status as $object){
                 ?>                          
-                    <div style='clear:both' >
-                        <div class='hist round step step_<?=$object->status->type?>_status<?=$object->status->id?>' >
+                    <div style='clear:both' class="step">
+                        <div class="team_step_<?=$object->status->team_id?> roundTop">
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
-                                    <a class="excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
+                                    <a class="icon icon_excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
                                 </div>
                             <?}?>
 
                             <div class="right">
-                                <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações" class="popup note">anotacao</a>
+                                <a class="popup icon icon_comment" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
                             </div> 
-                            <? if($count == 0){
-                                    if($current_auth != "assistente"){?>
-                                        <div class="right">
-                                            <a href="<?=URL::base();?>admin/tasks/update/?object_id=<?=@$obj->id?>&object_status_id=<?=$object->id?>" title="criar tarefa" class="popup task_icon">nova tarefa</a> &bull;
-                                        </div>
-                            <?      
-                                    }    
+
+                            <div>
+                                <?if($current_auth != "assistente" && $object->crono_date != ''){?>
+                                    <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
+                                <?
                                 }
-                            ?>
-                                                       
-                            <div class='line_bottom'>
-                                <div class="left">
-                                    <?if($current_auth != "assistente" && $object->crono_date != ''){?>
-                                        <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
-                                    <?
-                                    }
 
-                                    $diff = '';
-                                    $status_class = $object->status->type.'_status'.$object->status->id;
-                                    if($object->diff != 0){
+                                $diff = '';
+                                $status_class = $object->status->type.'_status'.$object->status->id;
+                                if($object->diff != 0){
 
-                                        if($object->diff < 0){
-                                            $diff = '<span class="list_faixa green round">'.$object->diff.'</span>';
-                                            //$status_class = 'green';
-                                        }else{
-                                            $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
-                                            $status_class = 'red';
-                                        }
-                                    }
-
-                                    if($object->delivered_date != ''){
-                                        $date_faixa = Utils_Helper::data($object->delivered_date, 'd/m/Y');
+                                    if($object->diff < 0){
+                                        $diff = '<span class="list_faixa green round">'.$object->diff.'</span>';
+                                        //$status_class = 'green';
                                     }else{
-                                        if($object->crono_date != ''){
-                                            $date_faixa = Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
-                                        }else{
-                                            $date_faixa = 'aguardando definição';
-                                            $status_class = 'object_late';
-                                        }
+                                        $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
+                                        $status_class = 'red';
                                     }
+                                }
+
+                                if($object->delivered_date != ''){
+                                    $date_faixa = Utils_Helper::data($object->delivered_date, 'd/m/Y');
+                                }else{
+                                    if($object->crono_date != ''){
+                                        $date_faixa = Utils_Helper::data($object->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($object->crono_date).')';
+                                    }else{
+                                        $date_faixa = 'aguardando definição';
+                                        $status_class = 'object_late';
+                                    }
+                                }
 
 
-                                    ?>
-                                    <span class="list_faixa round left <?=$object->status->type.'_status'.$object->status->id?>"><?=$object->status->status;?></span>
-                                    <span class="list_faixa round left <?=$status_class?>"><?=$date_faixa?></span><?=$diff?>
-                                        </a>
-                                </div>
-                                
+                                ?>
+                                <?=$object->status->status;?> | <?=$date_faixa?> <?=$diff?>
+                                    </a>
                             </div>
-                            
+                        
+                        </div>    
+                        <div class='hist roundBottom' >                                
                             <?if(!empty($object->description)){ ?>
-                                <span class="wordwrap description"><?=$object->description;?></span>
+                                <span class="wordwrap description team_comment_<?=$object->status->team_id?>"><?=$object->description;?></span>
                             <?}
 
                             //finalizado
@@ -142,6 +108,7 @@
 
                             foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
                                 <div class="clear">
+
                                     <div class="left">
                                         <?=Utils_Helper::getUserImage($anotacao->userInfo)?>
                                     </div>
@@ -179,7 +146,7 @@
                             foreach ($task_tags as $task) {?> 
                             
                                 <div style='clear:both'>
-                                    <div class='hist'>
+                                    <div >
                                         <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
                                         <div class="task round">
                                             <?if($current_auth != "assistente"){?>
@@ -235,7 +202,7 @@
                                     </div>
                                     <div class="replies replies_<?=$task->id;?>"> 
                                         <div style='clear:both'>
-                                            <div class='hist'>
+                                            <div >
                                                 <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                 <div class="task_reply round"> 
                                                     <? 
@@ -297,7 +264,8 @@
                                                 </div> 
                                             </div>
                                         </div>  
-                                    </div>                                    
+                                    </div>  
+                                    <hr class="clear" style="margin:8px 0;" />                              
                                 </div>
                             <?}?>
                         </div> 

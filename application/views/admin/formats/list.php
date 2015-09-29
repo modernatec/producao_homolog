@@ -1,8 +1,8 @@
-<div class="topo" >
-	<span class="header"><a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a></span>
-</div>
 <div id="esquerda">
-    <div id="tabs_content" class="scrollable_content clear">
+	<div class="list_bar">
+		<a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a>    
+	</div>
+	<div id="tabs_content" class="scrollable_content clear">
 		<ul class="list_item">
 			<? foreach($sfwprodsList as $sfwprod){?>
 			<li>

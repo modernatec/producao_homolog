@@ -90,7 +90,6 @@ a{
 */
 
 #filtros{
-	padding: 0 5px;
 	margin-left: 150px;
 }
 
@@ -105,8 +104,8 @@ a{
     top:46px;
     bottom: 0;
     left: 151px;
-    border-right: 1px solid #f3f3f3;
-    padding: 5px;
+    border-right: 1px solid #AFBCBF;
+    padding: 0 5px;
 }
 
 
@@ -149,7 +148,7 @@ hr {
 	display: block; 
 	height: 1px;
     border: 0; 
-    border-top: 1px solid #008fc7;
+    border-top: 1px solid #AFBCBF;
     margin: 0; 
     padding: 0; 
     font-style: bold;
@@ -174,12 +173,7 @@ a.remover{
 
 
 a.editar, a.excluir, a.download, a.active, a.preview, a.excluir_todos{ background: transparent url(../../image/admin/editar.png) no-repeat 0 0; width: 12px; height: 20px; text-indent: -5000px; display: block;}
-a.excluir { 
-	background: transparent url(../../image/admin/excluir.png) no-repeat 0 0; 
-	width: 20px; height: 20px; 
-	padding: 0 !important;
-	position: relative;
-}
+
 a.download{ background: transparent url(../../image/admin/download.png) no-repeat 0 0; }
 a.active{ background: transparent url(../../image/admin/active.png) no-repeat 0 0; }
 a.preview{ background: transparent url(../../image/admin/preview.png) no-repeat 0 0; width: 16px; height: 16px; }
@@ -416,6 +410,7 @@ a{
 	cursor: pointer;
 }
 
+/*
 .note {
 	background: url('../../image/admin/note.png') no-repeat;	
 	width: 20px;
@@ -430,6 +425,7 @@ a{
 	padding-left: 20px;
 	color: #000;	
 }
+*/
 
 
 .content{
@@ -452,7 +448,7 @@ a{
 	color: #008fc7;
 }
 
-
+/*
 .bar{
 	overflow:hidden;
 	margin: 0;
@@ -461,17 +457,23 @@ a{
 .bar a{
 	float: left;
 }
+*/
 
-.bar_button{
-	background:#008fc7;
-	padding:5px;
-	margin-right:5px;
-	color:#FFF !important;
-	position: relative;
-	cursor: pointer;
-	/*box-shadow:#999 2px 2px 2px;*/
+.list_bar{
+	padding: 5px 0;
 }
 
+.bar_button{
+	border: 1px #69C3D1 solid;
+	padding:5px;
+	margin-right:5px;
+	color:#4F4F4F !important;
+	position: relative;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+/*
 .round_button{
 	width: 22px;
 	height: 22px;
@@ -485,6 +487,7 @@ a{
     border-radius: 22px;
     background: #008fc7;
 }
+*/
 
 .pagination .bar_button{
 	margin: 0 !important;
@@ -495,19 +498,24 @@ a{
 }
 
 .bar_button:hover{
-	background: #008fc7 !important;
+	color:#69C3D1 !important;
 }
 
 
 .tabs_panel{
+	height: 44px;
+	display: block;
 	line-height: 44px;
 }
 
+/*
 .tabs_holder{
 	height: 30px;
 	overflow: hidden;
 	border-bottom: 2px solid #008fc7;
 }
+*/
+
 /*
 .tabs_holder .tabs{
 	margin-top: 12px;
@@ -519,16 +527,13 @@ a{
 */
 
 .subtabs li, .tabs li{
-	display: inline-block;
-	word-spacing: -1px;
-	padding: 0 8px;
-	background: #fff;
-	line-height: 43px;
+	float: left;
+	line-height: 44px;
 }
 
 .subtabs .selected, .tabs .selected{
 	background: #C0E9F0;
-	border: none !important;	
+	border: none !important;
 }
 
 .subtabs .selected a, .tabs .selected a{
@@ -536,19 +541,33 @@ a{
 }
 
 .subtabs li a, .tabs li a{
-	display: block;
 	color: #404040;
+	padding: 0 8px;
 }
+
+.subtabs li span, .tabs li span{
+	border-right: 1px #ccc solid;
+	padding: 10px 0;
+	position: relative;
+}
+
+
+
+.subtabs li:last-child span, .tabs li:last-child span{
+	border-right: none;
+}
+
+
 
 /*
 .subtabs .selected a:hover, .tabs .selected a:hover{
 	color: #fff;
 }
-
-.subtabs li a:hover, .tabs li a:hover{
-	color: #008fc7;
-}
 */
+.subtabs li:hover, .tabs li:hover{
+	background: #C0E9F0;
+}
+
 
 .content_hide{
 	display: none;
@@ -856,6 +875,8 @@ p{
 .hist{
     padding:5px;
     overflow: hidden;
+    border: 1px #AFBCBF solid;
+    border-top: none;
 }
 
 .task{
@@ -1063,8 +1084,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 
 .step{
-	margin-bottom: 5px;
-	background: #dfe9f3;
+	margin-bottom: 10px;
 }
 
 .round_imgList{
@@ -1169,10 +1189,8 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #ccc !important;
 }
 
-
-
 .red{
-	background: #ff0000;
+	background: #D94638;
 	color: #fff;
 }
 
@@ -1375,7 +1393,7 @@ a.green{
 .list_alert{
 	display: block;
 	text-align: center;
-	margin-bottom: 5px;
+	margin: 5px 0;
 	padding: 5px;
 }
 
@@ -1385,22 +1403,77 @@ a.green{
 }
 
 .list_item li, .dd-item{
-	margin: 5px 0;
 	background: #fff; 
+	color: #4F4F4F;
 	overflow: auto;
 	width: auto !important;
 	line-height: normal !important;
-
-	-o-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -khtml-border-radius: 4px;
-    border-radius: 4px;
 }
 
 .dd-item{
 	min-width: 100px;
 	overflow: hidden;
+}
+
+.icon{
+	width: 23px;
+	height: 23px;
+	overflow: hidden;
+	text-indent: -2000px;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.icon_status{
+	background: url('../../image/admin/icons.png') no-repeat -124px -26px;
+}
+
+.icon_task{
+	background: url('../../image/admin/icons.png') no-repeat -98px -27px;
+}
+
+.icon_info{
+	background: url('../../image/admin/icons.png') no-repeat -72px -27px;
+}
+
+.icon_excluir{
+	background: url('../../image/admin/icons.png') no-repeat -151px 0;
+}
+
+.icon_comment{
+	background: url('../../image/admin/icons.png') no-repeat -124px 0;
+}
+
+.list_icon{
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	bottom: 12px;
+	margin-left: 4px;
+}
+
+
+.list_aberto{
+	background: url('../../image/admin/icons.png') no-repeat -72px 0;
+}
+
+.list_iniciada{
+	background: url('../../image/admin/icons.png') no-repeat -97px 0;
+}
+
+.list_entregue{
+
+}
+
+.list_status{
+	bottom: 0;
+	right: 0;
+	width: 30px;
+	height: 60px;
+}
+
+.item_content{
+	padding: 5px 0 0 10px;
 }
 
 
@@ -1409,15 +1482,27 @@ a.green{
 }
 
 .list_item li{ 
-	background: #f6f6f6; 
-	border: 1px #ddd solid;
-	padding: 5px;
+	border-bottom: 1px #AFBCBF solid;
+	/*padding: 5px 0;*/
 }
 
 .list_item li.blueSelection{
-	background: #dfe9f3 !important;
-	border: 1px #008fc7 solid;
+	background: #25B6CC !important;
+	color: #fff;
 }
+
+.list_item li.blueSelection a{
+	color: #fff;
+}
+
+.list_item li.blueSelection .list_iniciada, .list_iniciada_white{
+	background: url('../../image/admin/icons.png') no-repeat -48px 0;
+}
+
+.list_item li.blueSelection .list_aberto, .list_aberto_white{
+	background: url('../../image/admin/icons.png') no-repeat 0 0;
+}
+
 
 
 .load{
@@ -1429,6 +1514,11 @@ a.green{
 	display: block;
 }
 
+
+.oed_info{
+	padding: 8px 0;
+	overflow: auto;
+}
 
 .observacoes_gdocs{
 	max-width: 345px;
@@ -1627,7 +1717,6 @@ a.green{
 .description{
 	padding-top: 5px;
 	display: block;
-	border-top: 1px dotted #CCC;
 }
 
 .description p{
