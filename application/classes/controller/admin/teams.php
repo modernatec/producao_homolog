@@ -73,6 +73,7 @@ class Controller_Admin_Teams extends Controller_Admin_Template {
 				'name', 
 				'userInfo_id',
 				'color',
+				'color2',
 			)); 
 			
 			$team->save();

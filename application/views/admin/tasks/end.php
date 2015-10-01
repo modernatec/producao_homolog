@@ -1,3 +1,6 @@
+<div class="header">
+    <div class="icon icon_task_white">tarefas</div> Entregar tarefa
+</div>
 <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks_status/end" method="post" class="form">
     <input type="hidden" name='task_id' value="<?=$task->id?>" />
     <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
@@ -10,11 +13,9 @@
         <span class='error'><?=Arr::get($errors, 'description');?></span>
     </dd>
     <? if($task->tag_id == '1'){?>
-        <input type="submit" value="liberar" id="submit_btn" class="green round" />
-        <!--a href='#' class="bar_button round red" id="correcao" >solicitar correção</a-->
+        <input type="submit" value="liberar" id="submit_btn" class="bar_button round" />
     <?}else{?>
-        <input type="submit" value="entregar" class="green round" />
-        
+        <input type="submit" value="entregar" class="bar_button round" />
     <?}?>
     <a href="javascript:void(0)" class="close_pop bar_button round">cancelar</a> 
 </form>

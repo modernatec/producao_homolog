@@ -14,9 +14,12 @@
     <div class="oed_info">
         <span class="wordwrap"><b><?=@$obj->title;?></b></span><br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
+
         <div class="right">
-            <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
             <a href="" title="infos" class="popup icon icon_info">infos</a>
+        </div>
+        <div class="line right">
+            <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>
         </div>
         <hr class="clear" style="margin:8px 0;" />
         <div class="left">
@@ -39,19 +42,18 @@
             $count = 0;
             foreach($objects_status as $object){
                 ?>                          
-                    <div style='clear:both' class="step">
+                    <div class="step clear">
                         <div class="team_step_<?=$object->status->team_id?> roundTop">
                             <?if($current_auth != "assistente"){?>
                                 <div class="right">
-                                    <a class="icon icon_excluir" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
+                                    <a class="icon icon_excluir_white" href="<?=URL::base()?>admin/objects/deleteStatus/<?=$object->id?>" title="excluir" data-panel="#direita">Excluir</a>
                                 </div>
                             <?}?>
-
                             <div class="right">
-                                <a class="popup icon icon_comment" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
+                                <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
                             </div> 
-
                             <div>
+                                <a class="left icon icon_collapse" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
                                 <?if($current_auth != "assistente" && $object->crono_date != ''){?>
                                     <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
                                 <?
@@ -62,10 +64,10 @@
                                 if($object->diff != 0){
 
                                     if($object->diff < 0){
-                                        $diff = '<span class="list_faixa green round">'.$object->diff.'</span>';
+                                        $diff = '<span class="badge_line border_white round">'.$object->diff.'</span>';
                                         //$status_class = 'green';
                                     }else{
-                                        $diff = '<span class="list_faixa red round">+'.$object->diff.'</span>';
+                                        $diff = '<span class="badge_line border_white round">+'.$object->diff.'</span>';
                                         $status_class = 'red';
                                     }
                                 }
@@ -83,14 +85,14 @@
 
 
                                 ?>
-                                <?=$object->status->status;?> | <?=$date_faixa?> <?=$diff?>
+                                <p><?=$object->status->status;?> | <?=$date_faixa?> <?=$diff?></p>
                                     </a>
                             </div>
                         
                         </div>    
                         <div class='hist roundBottom' >                                
                             <?if(!empty($object->description)){ ?>
-                                <span class="wordwrap description team_comment_<?=$object->status->team_id?>"><?=$object->description;?></span>
+                                <div class="wordwrap description team_comment_<?=$object->status->team_id?>"><?=$object->description;?></div>
                             <?}
 
                             //finalizado
@@ -108,32 +110,29 @@
 
                             foreach ($object->anotacoes->order_by('id', 'desc')->find_all() as $anotacao) {?> 
                                 <div class="clear">
-
-                                    <div class="left">
-                                        <?=Utils_Helper::getUserImage($anotacao->userInfo)?>
-                                    </div>
-                                    <div class="hist anotacoes round"> 
-                                        
-                                        <div class="left">
-                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup black"><?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?></a><br/>  
-                                            
-                                        </div>
+                                    
+                                    <div class="anotacoes"> 
                                         <?if($current_auth != "assistente"){?>                                        
                                         <div class="right">
-                                            <a class="excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" data-panel="#direita" title="Excluir">Excluir</a>
+                                            <a class="icon icon_excluir" href="<?=URL::base()?>admin/anotacoes/delete/<?=$anotacao->id?>" title="excluir" data-panel="#direita">Excluir</a>
                                         </div>
                                         <?}?>
-                                        <hr class="clear" style="margin:8px 0;" />
-                                        <div class="clear">                                            
-                                            <span class="wordwrap description"><?=$anotacao->anotacao?></span>
+                                        <div class="left icon icon_comment">anotações</div>
+                                        <div class="left">
+                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup black">
+                                                <p><?=$anotacao->userInfo->nome;?> | <?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?></p>
+                                            </a>  
+                                            <div class="clear">                                            
+                                                <span class="wordwrap"><?=$anotacao->anotacao?></span>
+                                            </div>                                          
                                         </div>
                                     </div> 
                                 </div>
-
                             <?}  
 
                             /*
                             * Verificar como melhorar...
+                            * Lista de tarefas
                             */
                             $query = $object->tasks->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id');
                                         
@@ -142,132 +141,103 @@
                             }
 
                             $task_tags = $query->group_by('tasks.id')->order_by('tasks.id', 'desc')->find_all();
-
-                            foreach ($task_tags as $task) {?> 
-                            
-                                <div style='clear:both'>
-                                    <div >
-                                        <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
-                                        <div class="task round">
+                            ?>
+                            <div class="task_list">
+                            <?
+                                foreach ($task_tags as $task) {?>   
+                                    <div class="task_item clear">                                                          
+                                        <div class="task">
+                                            <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
                                             <?if($current_auth != "assistente"){?>
                                                 <div class="right">
-                                                    <a class="excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
+                                                    <a class="icon icon_excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
                                                 </div>
                                             <?}?>
-                                            <div class='line_bottom'>
-                                                <div class="left">
-                                                    <?if($current_auth != "assistente"){?>
-                                                        <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
-                                                    <?}
+                                            <span class="right icon icon_<?=$task->status->status?>"><?=$task->status->status?></span>
+                                            <?
+                                            if($current_auth != "assistente"){?>
+                                                <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
+                                            <?}
 
-                                                    $diff = '';
-                                                    $color = $task->tag->color;
-                                                    if($task->diff != 0){
-                                                        if($task->diff < 0){
-                                                            $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
-                                                            //$color = $task->tag->color;
-                                                        }else{
-                                                            $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
-                                                            $color = 'red';
-                                                        }
-                                                    }
-
-                                                    if($task->delivered_date != ''){
-                                                        $date_faixa = Utils_Helper::data($task->delivered_date, 'd/m/Y');
+                                                $diff = '';
+                                                $color = $task->tag->color;
+                                                if($task->diff != 0){
+                                                    if($task->diff < 0){
+                                                        $diff = '<span class="badge_line green round">'.$task->diff.'</span>';
+                                                        //$color = $task->tag->color;
                                                     }else{
-                                                        $date_faixa = Utils_Helper::data($task->crono_date, 'd/m/Y').' ('.Utils_Helper::getday($task->crono_date).')';
+                                                        $diff = '<span class="badge_line red round">+'.$task->diff.'</span>';
+                                                        $color = 'red';
                                                     }
+                                                }
 
-                                                    ?>
-                                                    <span class="round list_faixa left tag" style="background:<?=$task->tag->color?>"><?=$task->tag->tag?></span>
-                                                    <span class="round list_faixa left tag" style="background:<?=$color?>"><?=$date_faixa?></span><?=$diff?>
-                                                        </a> 
-                                                </div>
-                                                <? if($task->task_to != "0"){?>
-                                                    <!--div class="left"><?=Utils_Helper::getUserImage($task->to)?></div-->
-                                                <?}?>
-                                                <span class="round right list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                            </div>
-                                            <div class="clear" style="padding-top:5px;">
+                                                if($task->delivered_date != ''){
+                                                    $date_faixa = Utils_Helper::data($task->delivered_date, 'd/m/Y');
+                                                }else{
+                                                    $date_faixa = Utils_Helper::data($task->crono_date, 'd/m/Y');
+                                                }
+
+                                                ?>
+                                                <p class="task_topic"><b><?=$task->tag->tag?> | <?=$date_faixa?></b> <?=$diff?></p>
+                                            </a>                                         
+                                            <div class="task_description">
                                                 <?if(!empty($task->description)){ ?>
-                                                    <span class="wordwrap description replies replies_<?=$task->id;?>"><?=$task->description;?></span>
+                                                    <span class="wordwrap replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
                                             </div> 
-                                            <div class="options">
-                                                <? if($task->status_id != '5'){?>
-                                                    <!--a class="down_button fade" data-show="replies_<?=$task->id;?>"><img src="<?=URL::base();?>public/image/admin/down.png" title="detalhar tarefa" /></a-->                          
-                                                <?}?>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                    <div class="replies replies_<?=$task->id;?>"> 
-                                        <div style='clear:both'>
-                                            <div >
-                                                <div class="right"><?=Utils_Helper::getUserImage($task->to)?></div>
-                                                <div class="task_reply round"> 
-                                                    <? 
-                                                        if($task->status_id == '5'){
-                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                                    $start = false;
-                                                                }else{?>
-                                                                    <div style="padding:5px 0;">
-                                                                        <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
-                                                                    </div>
-                                                                <?}
-                                                        }
-                                                    ?>
-                                                        <!--form action="<?=URL::base();?>admin/tasks_status/start" id="startTask" method="post" class="form">
-                                                            <input type="hidden" name='task_id' value="<?=$task->id?>" />
-                                                            <input type="hidden" name='object_id' value="<?=$task->object_id?>" />
-                                                            <?  
-                                                                if($task->tag_id == '7' && $current_auth == "assistente"){
-                                                                    $start = false;
-                                                                }else{
-                                                                    $start = true;
+                                            <!--respostas-->
+                                            <div class="task_reply replies_<?=$task->id;?>"> 
+                                                <div style='clear:both'>
+                                                    <div >
+                                                        <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
+                                                        <div> 
+                                                            <? 
+                                                                if($task->status_id == '5'){
+                                                                    if($task->tag_id == '7' && $current_auth == "assistente"){
+                                                                        $start = false;
+                                                                    }else{?>
+                                                                        <div style="padding:8px 0;">
+                                                                            <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
+                                                                        </div>
+                                                                    <?}
                                                                 }
+                                                            
+                                                                if($task->reply->id != '') {
+                                                                    if($task->reply->finished != ""){
+                                                                        $data = Utils_Helper::data($task->reply->finished, 'd/m/Y');
+                                                                    }elseif($task->status_id == '6'){
+                                                                        $data = Utils_Helper::data($task->reply->created_at, 'd/m/Y');
+                                                                    }
 
-                                                                if($start){
+                                                                    if($current_auth != "assistente"){?>
+                                                                        <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
+                                                                    <?}?>
+                                                                            <p class="task_topic"><b><?=$task->status->status?> | <?=$data?></b></p>
+                                                                        </a>
+                                                                    <div class="task_description">
+                                                                        <?if(!empty($task->reply->description)){ ?>
+                                                                            <span class="wordwrap replies replies_<?=$task->id;?>"><?=$task->reply->description;?></span>
+                                                                        <?}?>
+                                                                        <div class="options" >
+                                                                            <? if($task->status_id == '6' && $task->to->id == $user->id){?>
+                                                                                <div style="min-height:25px;">
+                                                                                    <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
+                                                                                </div>
+                                                                            <?}?>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                <?}
                                                             ?>
-                                                                    <input type="submit" class="bar_button round" value="iniciar">
-                                                            <?}?>
-
-                                                        </form-->
-                                                    <?//}
-                                                
-                                                if($task->reply->id != '') {?>
-                                                    <div class='line_bottom'>
-                                                        <? if($current_auth != "assistente"){?>
-                                                            <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
-                                                        <?}?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=$task->status->status?></span>
-                                                        <? if($task->reply->finished != ""){?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->finished, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->finished)?>)</span>
-                                                            </a>
-                                                        <?}elseif($task->status_id == '6'){?>
-                                                            <span class="round left list_faixa <?=$task->status->type?>_status<?=$task->status->id?>"><?=Utils_Helper::data($task->reply->created_at, 'd/m/Y')?> (<?=Utils_Helper::getday($task->reply->created_at)?>)</span>
-                                                            </a>
-                                                        <?}?>
+                                                        </div> 
                                                     </div>
-                                                    <div class="clear">
-                                                    <?if(!empty($task->reply->description)){ ?>
-                                                        <span class="wordwrap description"><?=$task->reply->description;?></span>
-                                                    <?}?>
-                                                    </div>
-                                                    <div class="options description" >
-                                                        <? if($task->status_id == '6' && $task->to->id == $user->id){?>
-                                                            <div class="right" style="min-height:20px; padding-top:10px">
-                                                                <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
-                                                            </div>
-                                                        <?}?>
-                                                    </div>
-                                                <?}?>
-                                                </div> 
+                                                </div>  
                                             </div>
-                                        </div>  
-                                    </div>  
-                                    <hr class="clear" style="margin:8px 0;" />                              
-                                </div>
-                            <?}?>
+
+                                        </div>
+                                    </div>                                                                 
+                                <?}?>
+                            </div>
                         </div> 
                     </div>
                 <?               

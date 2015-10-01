@@ -10,10 +10,16 @@
     <div class="left">
         <label for="hidden-input">cor</label>
         <dd>
-            <input type="hidden" id="hidden-input" name="color" class="pickcolor" value="<?=@$teamVO['color'];?>">
+            <input type="text" id="hue-demo" name="color" class="pickcolor round" value="<?=@$teamVO['color'];?>">
             <span class='error'><?=Arr::get($errors, 'color');?></span>
         </dd>  
-
+    </div>
+    <div class="left">
+        <label for="hidden-input">cor 2</label>
+        <dd>
+            <input type="text" id="hue-demo" name="color2" class="pickcolor round" value="<?=@$teamVO['color2'];?>">
+            <span class='error'><?=Arr::get($errors, 'color2');?></span>
+        </dd>  
     </div>
     <div class="clear">
       <dt>

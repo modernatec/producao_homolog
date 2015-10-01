@@ -160,8 +160,7 @@ class Controller_Admin_Template extends Controller_Template {
 				padding:5px;
 			}
 			.team_comment_'.$team->id.'{
-				background:'.$team->color.';
-				color:#fff;
+				background:'.$team->color2.';
 				overflow:auto;
 				padding:5px;
 			}';

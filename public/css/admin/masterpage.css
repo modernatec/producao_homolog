@@ -68,6 +68,8 @@ a{
 	background: #EBEEF0;
 }
 
+
+
 /*
 .topo .tabs{
 	position: relative;
@@ -141,7 +143,6 @@ a{
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */ 
-    margin-right: 8px;
 }
 
 hr { 
@@ -265,7 +266,7 @@ a.link:hover{color:#666; text-decoration: underline;}
 
 
 .line{
-	line-height: 30px;
+	line-height: 25px;
 }
 
 a{
@@ -437,9 +438,14 @@ a{
 }
 
 /*Content itens*/
+.header{
+	height: 44px;
+	display:block;
+	color: #fff;
+	background: #25B6CC;
+}
 
-
-
+/*
 .header{
 	padding:5px 0;
 	margin: 0 5px;
@@ -447,6 +453,7 @@ a{
 	display:block;
 	color: #008fc7;
 }
+*/
 
 /*
 .bar{
@@ -470,7 +477,6 @@ a{
 	color:#4F4F4F !important;
 	position: relative;
 	cursor: pointer;
-	text-transform: uppercase;
 }
 
 /*
@@ -782,6 +788,10 @@ table tbody td table tbody tr:hover {
 
 /*****Forms****/
 
+form{
+	margin: 5px 10px;
+}
+
 .form dl, .form dt, .form dd{
 	padding:5px 0;
 }
@@ -813,7 +823,7 @@ input[type='submit'], input[type='button']{
 label
 {
 	margin-bottom: 8px;
-	color:#008fc7;
+	color:#25B6CC;
 }
 
 
@@ -873,25 +883,40 @@ p{
 }
 
 .hist{
-    padding:5px;
     overflow: hidden;
     border: 1px #AFBCBF solid;
     border-top: none;
+    color: #4F4F4F;
 }
 
 .task{
-	border: 1px solid #008fc7;
-	margin-left: 35px;
+	position: relative;
+	margin-left: 34px;
 	padding: 5px;
 	background: #fff;
 }
 
+.task_item{
+	border-bottom: 1px #AFBCBF solid
+}
+
+.task_list .task_item:last-child{
+	border-bottom: none;
+}
+
+.task a{
+	color: #4F4F4F;
+}
+
+.task_topic{
+	line-height: 25px;
+	color: #333 !important;
+	font-size: 14px;
+}
+
 .task_reply{
-	border: 1px solid #ccc;
-	margin-right: 40px;
-	padding: 5px;
-	background: #f3f3f3;
-	color: #585858;
+	margin-left: 34px;
+	padding-top: 5px;
 	overflow: auto;
 }
 
@@ -902,10 +927,6 @@ p{
 
 
 
-.anotacoes{
-	background: #a0d0d4;
-	margin: 5px;
-}
 
 
 .hide{
@@ -1059,6 +1080,13 @@ p{
 
 input[type='submit'], input[type='button']{
 	cursor: pointer;
+	border: 1px #69C3D1 solid;
+	padding:5px;
+	margin-right:5px;
+	color:#4F4F4F !important;
+	position: relative;
+	cursor: pointer;
+	background: none !important;
 }
 
 
@@ -1145,7 +1173,15 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #fff;
 }
 
+.border_white{
+	border: 1px #fff solid;
+}
 
+.badge_line{
+	font-size: 12px;
+	padding: 2px 5px;
+	margin-left: 8px;
+}
 
 .badge{
 	position: absolute;
@@ -1416,21 +1452,26 @@ a.green{
 }
 
 .icon{
-	width: 23px;
+	width: 26px;
 	height: 23px;
 	overflow: hidden;
 	text-indent: -2000px;
 	display: inline-block;
-	margin-right: 5px;
+	margin-left: 5px;
 }
 
 .icon_status{
-	background: url('../../image/admin/icons.png') no-repeat -124px -26px;
+	background: url('../../image/admin/icons.png') no-repeat -203px -53px;
 }
 
 .icon_task{
-	background: url('../../image/admin/icons.png') no-repeat -98px -27px;
+	background: url('../../image/admin/icons.png') no-repeat -176px -53px;
 }
+
+.icon_task_white{
+	background: url('../../image/admin/icons.png') no-repeat -228px -53px;
+}
+
 
 .icon_info{
 	background: url('../../image/admin/icons.png') no-repeat -72px -27px;
@@ -1441,7 +1482,31 @@ a.green{
 }
 
 .icon_comment{
-	background: url('../../image/admin/icons.png') no-repeat -124px 0;
+	background: url('../../image/admin/icons.png') no-repeat -192px -26px;
+}
+
+.icon_collapse{
+	background: url('../../image/admin/icons.png') no-repeat -210px 0;
+}
+
+.icon_comment_white{
+	background: url('../../image/admin/icons.png') no-repeat -124px -26px;
+}
+
+.icon_excluir_white{
+	background: url('../../image/admin/icons.png') no-repeat -151px -26px;
+}
+
+.icon_aberto{
+	background: url('../../image/admin/icons.png') no-repeat 2px -26px;
+}
+
+.icon_iniciada{
+	background: url('../../image/admin/icons.png') no-repeat -46px -26px;
+}
+
+.icon_entregue{
+	background: url('../../image/admin/icons.png') no-repeat -22px -26px;
 }
 
 .list_icon{
@@ -1461,9 +1526,7 @@ a.green{
 	background: url('../../image/admin/icons.png') no-repeat -97px 0;
 }
 
-.list_entregue{
 
-}
 
 .list_status{
 	bottom: 0;
@@ -1714,14 +1777,42 @@ a.green{
 	color:#fff;
 }
 
-.description{
-	padding-top: 5px;
-	display: block;
+.task_description{
+	padding-left: 34px;
 }
 
-.description p{
-	margin-bottom: 10px;
+.task_description p {
+	width: 600px;
+	color: #808080 !important;
 }
+
+.description{
+	border-bottom: 1px solid #AFBCBF;
+	padding-left: 34px !important;
+	color:#808080 !important;
+}
+
+.description p {
+	width: 660px;
+}
+
+.anotacoes{
+	background: #f4f4f4;
+	border-bottom: 1px solid #AFBCBF;
+	padding: 5px 4px 5px 34px;
+	overflow: auto;
+	color:#808080 !important;
+}
+
+.anotacoes a{
+	color:#808080 !important;
+}
+
+.anotacoes p{
+	width: 600px;
+}
+
+
 
 .down_button{
 	text-align: center;
@@ -1752,13 +1843,11 @@ a.green{
 	overflow: auto;
 }
 
-.noTitleStuff .ui-dialog-titlebar {display:none}
+.noTitleStuff .ui-dialog-titlebar {
+	display:none;
+}
 .ui-corner-all{
-	-o-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    border-radius: 8px;
+    border-radius: 2px;
 }
 
 .acervo_item{
@@ -1832,8 +1921,7 @@ div.jGrowl div.error {
 	bottom: 0;
 	min-width: 400px;
 	height: auto;
-	padding: 10px;
-	background: #fff url('../../image/admin/bkg.jpg') repeat-x 0 0;
+	background: #fff;
 	z-index: 10;
 	display: none;
 	box-shadow:#333 1px 5px 15px;
