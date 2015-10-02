@@ -651,17 +651,42 @@ function setupAjax(container){
         });
 
         $(".collapse").unbind('click').bind('click', function () {
-            var span = $('.collapse span');
+            var el = $(this);
             var element = $(this).data("show");
-            $('.' + element).each(function(ev, ui){
-                if($(ui).hasClass('hide')){
-                    $(ui).removeClass('hide');
-                    span.attr('class', 'collapse_ico');
+            var pos = (el.hasClass('icon_collapse_white') || el.hasClass('icon_expand_white')) ? '_white' : '';
+
+            if($('.' + element).length > 0){
+                if(el.hasClass('icon_collapse_white') || el.hasClass('icon_collapse')){
+                    el.removeClass('icon_collapse_white icon_collapse');
+
+                    $('.' + element).each(function(ev, ui){
+                        $(ui).addClass('hide');
+                        el.addClass('icon_expand' +  pos);
+                    });
+
+                    if($('.collapse_' + element).length > 0){
+                        $('.collapse_' + element).each(function(ev, ui){
+                            $(ui).removeClass('icon_collapse');
+                            $(ui).addClass('icon_expand');
+                        })
+                    }
+
                 }else{
-                    $(ui).addClass('hide');
-                    span.attr('class', 'expand_ico');
+                    el.removeClass('icon_expand_white icon_expand');
+
+                    $('.' + element).each(function(ev, ui){
+                        $(ui).removeClass('hide');
+                        el.addClass('icon_collapse' + pos);
+                    });
+
+                    if($('.collapse_' + element).length > 0){
+                        $('.collapse_' + element).each(function(ev, ui){
+                            $(ui).removeClass('icon_expand');
+                            $(ui).addClass('icon_collapse');
+                        })
+                    }
                 }
-            })
+            }     
         });
 
         $('.show').unbind('click').bind('click', function() {

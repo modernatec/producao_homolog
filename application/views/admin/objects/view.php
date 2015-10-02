@@ -4,8 +4,6 @@
     if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
     <?}?>
-
-        
     </div>  
     <div class="oed_info">
         <span class="wordwrap"><b><?=@$obj->title;?></b></span><br/>
@@ -39,6 +37,19 @@
     <?if(isset($objects_status)){
             $count = 0;
             foreach($objects_status as $object){
+
+                /*
+                * Verificar como melhorar...
+                * Lista de tarefas
+                */
+                $query = $object->tasks->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id');
+                            
+                if($current_auth != "admin"){
+                    $query->where('tags_teams.team_id', '=', $user->team_id);
+                }
+
+                $task_tags = $query->group_by('tasks.id')->order_by('tasks.id', 'desc')->find_all();
+
                 ?>                          
                     <div class="step clear">
                         <div class="team_step_<?=$object->status->team_id?> roundTop">
@@ -51,8 +62,13 @@
                                 <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>" data-post='<?=$data_tarefa?>' title="criar anotações">anotacao</a>
                             </div> 
                             <div>
-                                <a class="left icon icon_collapse" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
-                                <?if($current_auth != "assistente" && $object->crono_date != ''){?>
+                                <div class="collapse_holder left">
+                                <?if(count($task_tags) > 0){?>
+                                    <a class="collapse icon icon_collapse_white" data-show="infos<?=$object->id?>" title="abrir/fechar infos">collapse</a>
+                                <?}?>
+                                </div>
+                                <?
+                                if($current_auth != "assistente" && $object->crono_date != ''){?>
                                     <a href="<?=URL::base();?>admin/objects/updateForm/<?=$object->id?>" title="editar status" class="popup left">
                                 <?
                                 }
@@ -80,8 +96,6 @@
                                         $status_class = 'object_late';
                                     }
                                 }
-
-
                                 ?>
                                 <p><?=$object->status->status;?> | <?=$date_faixa?> <?=$diff?></p>
                                     </a>
@@ -128,22 +142,15 @@
                                 </div>
                             <?}  
 
-                            /*
-                            * Verificar como melhorar...
-                            * Lista de tarefas
-                            */
-                            $query = $object->tasks->join('tags_teams', 'INNER')->on('tasks.tag_id', '=', 'tags_teams.tag_id');
-                                        
-                            if($current_auth != "admin"){
-                                $query->where('tags_teams.team_id', '=', $user->team_id);
-                            }
-
-                            $task_tags = $query->group_by('tasks.id')->order_by('tasks.id', 'desc')->find_all();
+                            
                             ?>
                             <div class="task_list">
                             <?
-                                foreach ($task_tags as $task) {?>   
-                                    <div class="task_item clear">                                                          
+                                foreach ($task_tags as $task) {?>                                     
+                                    <div class="task_item clear">     
+                                        <div class="collapse_holder left">
+                                            <a class="collapse icon icon_collapse collapse_infos<?=$object->id?>" data-show="replies<?=$task->id?>" title="abrir/fechar infos">collapse</a>
+                                        </div>                                    
                                         <div class="task">
                                             <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
                                             <?if($current_auth != "assistente"){?>
@@ -178,13 +185,13 @@
                                                 ?>
                                                 <p class="task_topic"><b><?=$task->tag->tag?> | <?=$date_faixa?></b> <?=$diff?></p>
                                             </a>                                         
-                                            <div class="task_description">
+                                            <div class="task_description replies<?=$task->id?> infos<?=$object->id?>">
                                                 <?if(!empty($task->description)){ ?>
                                                     <span class="wordwrap replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
                                             </div> 
                                             <!--respostas-->
-                                            <div class="task_reply replies_<?=$task->id;?>"> 
+                                            <div class="task_reply replies<?=$task->id?> infos<?=$object->id?>"> 
                                                 <div style='clear:both'>
                                                     <div >
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>

@@ -1352,8 +1352,13 @@ a.green{
 	padding-left: 10px;
 }
 
+.collapse_holder{
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+}
 
-
+/*
 .collapse_ico, .expand_ico{
 	background: url('../../image/admin/collapse.png') no-repeat;
 	width: 16px;
@@ -1366,6 +1371,7 @@ a.green{
 .expand_ico{
 	background: url('../../image/admin/expand.png') no-repeat;
 }
+*/
 
 .crono td{
 	height: 60px !important;
@@ -1495,7 +1501,20 @@ a.green{
 }
 
 .icon_collapse{
-	background: url('../../image/admin/icons.png') no-repeat -210px 0;
+	background: url('../../image/admin/icons.png') no-repeat -188px  7px;
+}
+
+.icon_expand{
+	background: url('../../image/admin/icons.png') no-repeat -233px 7px;
+}
+
+
+.icon_collapse_white{
+	background: url('../../image/admin/icons.png') no-repeat -215px 0;
+}
+
+.icon_expand_white{
+	background: url('../../image/admin/icons.png') no-repeat -259px 0;
 }
 
 .icon_comment_white{
