@@ -1,4 +1,7 @@
-<label><b>tarefas</b></label><hr/>
+<div class="header">
+    <div class="left icon icon_task_white">tarefas</div>
+    <span><?=$title?></span>
+</div>
 <div class="left" style="min-width:478px;">
     <!--a class="collapse right" data-show="append" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a-->
         

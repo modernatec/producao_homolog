@@ -625,6 +625,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->bind('errors', $errors)
 			->bind('message', $message);
+		$view->title = 'Editar status';
 
 		$objStatus = ORM::factory('objects_statu', $id);
 		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
@@ -634,8 +635,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$object_id = $objStatus->object_id;
 		
 		if($id == ""){
-			$object_id = $this->request->query('object_id');
+			$object_id = $this->request->post('object_id');
 			$arr_objstatus['object_id'] = $object_id;
+			$view->title = 'Alterar status';
 		}	
 
 		$tasks = ORM::factory('task')->where('object_id', '=', $object_id)->where('ended', '=', '0')->find_all();

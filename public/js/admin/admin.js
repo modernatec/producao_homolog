@@ -830,6 +830,8 @@ function setupAjax(container){
         $('a.popup').unbind('click').bind('click', function(e) {
             e.preventDefault();
             var url = this.href;
+            var data = $(this).data('post');
+            
             var form;
 
             
@@ -838,13 +840,12 @@ function setupAjax(container){
                 $('#' + $(this).data('select')).addClass('selected');
             }
            
-
             $('#dialog').remove();
 
             $('<div id="dialog" class="loading form_panel"></div>').appendTo('body');
             $('#dialog').load(
                 url,  
-                {},           
+                data,           
                 function (responseText, textStatus, XMLHttpRequest) {
                     $(this).removeClass('loading');
                     setupAjax('#dialog');
@@ -870,7 +871,6 @@ function setupAjax(container){
                             $('#tag_id, #status_id').unbind('change').bind('change', function(e){
                                 e.preventDefault();
                                 var days = $('#' + e.target.id + ' option:selected').data('days');
-
                                 
                                 $.ajax({
                                     type: "POST",
@@ -1286,7 +1286,7 @@ function setMsg(args, dialog){
         args.content,
         { 
             theme:tema, 
-            position:'bottom-right',
+            position:'top-right',
             sticky: fix,
             open: function() {setDataPanels(dialog);},
         }

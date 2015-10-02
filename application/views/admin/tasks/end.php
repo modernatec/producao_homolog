@@ -1,5 +1,6 @@
 <div class="header">
-    <div class="icon icon_task_white">tarefas</div> Entregar tarefa
+    <div class="left icon icon_task_white">tarefas</div>
+    <span> Entregar tarefa</span>
 </div>
 <form id="formEndTask" name="formEndTask" action="<?=URL::base();?>admin/tasks_status/end" method="post" class="form">
     <input type="hidden" name='task_id' value="<?=$task->id?>" />

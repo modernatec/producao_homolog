@@ -1,5 +1,7 @@
-<label><b>editar status - <?=$obj->taxonomia;?></b></label>
-<hr class="clear" style="margin:4px 0;" />
+<div class="header">
+    <div class="left icon icon_status_white">tarefas</div>
+    <span><?=$title?></span>
+</div>
 <div class="left" style="min-width:478px;">
 	<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">

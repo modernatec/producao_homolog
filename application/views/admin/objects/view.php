@@ -1,9 +1,5 @@
 <div class="clear">
-
-
-
     <div class="bar">
-    
     <?
     if($last_status->status_id == '8'){?>
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
@@ -30,9 +26,11 @@
         <?}?>
         </div>
         <div class="right">
-            <?if($current_auth != "assistente"){?>
-                <a href="<?=URL::base();?>admin/tasks/update/" title="criar tarefa" class="popup icon icon_task">nova tarefa</a>
-                <a href="<?=URL::base();?>admin/objects/updateForm/?object_id=<?=$obj->id?>" class="popup icon icon_status">alterar status</a>                           
+            <?if($current_auth != "assistente"){
+                $data_tarefa = json_encode(array('object_id' => $obj->id, 'status_id' => $objects_status[0]->id));
+            ?>
+                <a href="<?=URL::base();?>admin/tasks/update/" data-post='<?=$data_tarefa?>' title="criar tarefa" class="popup icon icon_task">nova tarefa</a>
+                <a href="<?=URL::base();?>admin/objects/updateForm/" data-post='<?=$data_tarefa?>' class="popup icon icon_status">alterar status</a>                           
             <?}?>
         </div>
     </div>
@@ -50,7 +48,7 @@
                                 </div>
                             <?}?>
                             <div class="right">
-                                <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>
+                                <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>" data-post='<?=$data_tarefa?>' title="criar anotações">anotacao</a>
                             </div> 
                             <div>
                                 <a class="left icon icon_collapse" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?status_id=<?=$object->id?>" title="criar anotações">anotacao</a>

@@ -109,13 +109,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
 		$object_status_id = $task->object_status_id;
 		$object_id = $task->object_id;
+		$view->title = 'Editar tarefa';
 
 		if($id == ""){
-			$taskVO['object_id'] = $this->request->query('object_id');
-			$taskVO['object_status_id'] = $this->request->query('object_status_id');
+			$taskVO['object_id'] = $this->request->post('object_id');
+			$taskVO['object_status_id'] = $this->request->post('status_id');
 			
-			$object_status_id = $this->request->query('object_status_id');
-			$object_id = $this->request->query('object_id');
+			$object_status_id = $this->request->post('status_id');
+			$object_id = $this->request->post('object_id');
+			$view->title = 'Nova tarefa';
 		}		
 
 		$view->taskVO = $taskVO;

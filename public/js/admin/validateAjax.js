@@ -116,7 +116,7 @@ function validateAjax(){
     
 
     
-
+    /*
     $("#frmAnotacoes").validate({
         rules: {
             anotacoes: {required:true},
@@ -130,13 +130,14 @@ function validateAjax(){
             return false;       
         }
     });
+    */
 
     $("#frmAnotacoes_edit").validate({
         rules: {
-            anotacoes: {required:true},
+            anotacao: {required:true},
         },
         messages: {
-            anotacoes: { required:'Campo não pode ser vazio'},
+            anotacao: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');

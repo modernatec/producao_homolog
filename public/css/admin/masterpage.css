@@ -441,8 +441,13 @@ a{
 .header{
 	height: 44px;
 	display:block;
+	line-height: 43px;
 	color: #fff;
 	background: #25B6CC;
+}
+
+.header .icon{
+	margin-top: 8px;
 }
 
 /*
@@ -1464,6 +1469,11 @@ a.green{
 	background: url('../../image/admin/icons.png') no-repeat -203px -53px;
 }
 
+.icon_status_white{
+	background: url('../../image/admin/icons.png') no-repeat -254px -53px;
+}
+
+
 .icon_task{
 	background: url('../../image/admin/icons.png') no-repeat -176px -53px;
 }
@@ -1471,7 +1481,6 @@ a.green{
 .icon_task_white{
 	background: url('../../image/admin/icons.png') no-repeat -228px -53px;
 }
-
 
 .icon_info{
 	background: url('../../image/admin/icons.png') no-repeat -72px -27px;
