@@ -1,5 +1,5 @@
 <div class="topo" >
-	<div class="tabs_panel">
+    <div class="tabs_panel">
         <ul class="tabs">
             <li class="round"><a class="aba ajax" id="supplier_1" href='<?=URL::base();?>admin/suppliers/getSuppliers'>fornecedores</a></li>
             <?
@@ -8,8 +8,7 @@
             <li class="round"><a class="aba ajax" id="supplier_3" href='<?=URL::base();?>admin/services/getListServices'>serviços</a></li>
             <?}?>
         </ul>  
-     </div>
-
+    </div>
     <div class="clear" id="filtros"></div>
 </div>
 <div id="esquerda">

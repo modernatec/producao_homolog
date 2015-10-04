@@ -1,40 +1,39 @@
 	<div class="list_header round">
 	<?$sql;?>
-		<span class='list_alert light_blue round'>
+		<span class='left text_cyan'>
 		<?
 			if(count($objectsList) <= 0){
                 echo 'não encontrei objetos com estes critérios.';    
             }else{
-                echo 'encontrei: '.$total_objects.' objeto(s)';
+                echo $total_objects.' objeto(s) encontrados';
             }
         ?>
 		</span>
-		<div class="clear">
+		<div class="right">
 			<?=$pagination?>
 		</div>
 	</div>
-	<div class="scrollable_content list_body">
+	<div class="clear scrollable_content list_body">
 			<?foreach($objectsList as $objeto){
-				
+				if($objeto->reaproveitamento == 0){ 
+	                $origem = "N";
+	            }elseif($objeto->reaproveitamento == 1){
+	                $origem = "R";
+	            }else{
+	                $origem = "Ri";
+	            }
+
+	            $tipo = explode('-', $objeto->tipo);
 			?>
 			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
-
 				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
-					<div>	
-						<div class="light_blue round item_type"><?=$objeto->tipo;?></div>
-						<p class="clear"><b><?=$objeto->title?></b></p>
-						<!--hr style="margin:8px 0;" /-->
-						
+					<div class="acervo_item_top">
+						<p><b><?=$objeto->title?></b></p>
 						<p><?=$objeto->collection_name?></p>
-						<?if($objeto->reaproveitamento == 0){ 
-			                $origem = "novo";
-			            }elseif($objeto->reaproveitamento == 1){
-			                $origem = "reap.";
-			            }else{
-			                $origem = "reap. integral";
-			            }?>
-            
-						
+					</div>
+					<div class="acervo_item_bottom">
+						<div class="right ball cyan"><?=$tipo[0];?></div>
+						<div class="right ball cyan"><?=$origem;?></div>
 					</div>
 				</a>
 			</div>

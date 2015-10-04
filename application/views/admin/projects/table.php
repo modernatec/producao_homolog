@@ -1,9 +1,9 @@
-	<span class='list_alert light_blue round'>
+	<span class='list_alert'>
 	<?
         if(count($projectsList) <= 0){
-            echo 'não encontrei projetos com estes critérios.';    
+            echo 'não encontrei projetos com estes critérios';    
         }else{
-            echo 'encontrei '. count($projectsList).' projetos';
+            echo count($projectsList).' projetos encontrados';
         }
     ?>
 	</span>
@@ -14,12 +14,13 @@
 				$list_class = ($projeto->status == 0) ? "object_finished" : "light_blue";
 			?>
 			<li>
-				<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>"  rel="load-content" data-panel="#direita" title="Editar">
-					<p><?=$projeto->name?></p>
-					<span class="left <?=$list_class?> round list_faixa"><?=($projeto->status == 0) ? "finalizado" : "produzindo"?></span>
-					<span class="left <?=$list_class?> round list_faixa"><?=$projeto->segmento->name?></span>
-					<span class="left <?=$list_class?> round list_faixa"><?=count($projeto->collections->find_all())?> coleções</span>
-				</a>
+				<div class="item_content">
+					<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>"  rel="load-content" data-panel="#direita" title="Editar">
+						<b><?=$projeto->name?></b>
+						<p><?=$projeto->segmento->name?> | <?=count($projeto->collections->find_all())?> coleções | <?=($projeto->status == 0) ? "finalizado" : "produzindo"?></p>
+						
+					</a>
+				</div>
 			</li>
 			<?}?>
 		</ul>

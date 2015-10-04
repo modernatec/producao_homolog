@@ -1,6 +1,6 @@
-<!--div class="topo form">
+<div class="topo">
     <div id='filtros'></div>
-</div-->
+</div>
 <div id="esquerda">
     <div class="list_bar">
         <a href="<?=URL::base();?>admin/objects/edit" rel="load-content" data-panel="#direita" class="bar_button round">catalogar objeto</a>

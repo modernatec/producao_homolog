@@ -1,9 +1,9 @@
-    <span class='list_alert cyan'>
+    <span class='list_alert'>
     <?
         if(count($taskList) <= 0){
             echo 'não encontrei tarefas não iniciadas.';    
         }else{
-            echo 'encontrei: '. count($taskList).' tarefas';
+            echo count($taskList).' tarefas encontradas';
         }
     ?>
     </span>

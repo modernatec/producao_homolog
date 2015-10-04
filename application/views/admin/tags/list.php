@@ -1,5 +1,5 @@
-<div class="topo" >
-    <span class="header"><a href="<?=URL::base();?>admin/tags/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar tarefa</a></span>
+<div class="topo">
+    <div id='filtros'></div>
 </div>
 <div id="esquerda">
     <div id="tabs_content" class="clear">

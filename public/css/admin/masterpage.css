@@ -36,7 +36,7 @@ a{
 	width: 150px;
 	position: absolute;
 	height: auto;
-	top:44px;
+	top:0;
 	bottom: 0;
 	color: #000;
 	background: #454A4F;
@@ -59,16 +59,15 @@ a{
 
 
 .topo{
-	height: 44px;
-	position: absolute;
-	right: 0;
-	left: 0;	
+	min-height: 44px;
 	z-index: 4;
-	box-shadow: -1px 0 10px 1px rgba(0,0,0, .8);
-	background: #EBEEF0;
+	background: #DFE4E6;
 }
 
-
+.topo .filters{
+	padding-top: 7px;
+	padding-left: 5px;
+}
 
 /*
 .topo .tabs{
@@ -83,20 +82,18 @@ a{
 */
 
 .filters{
-	padding: 8px 0;
+	padding: 4px 0;
 }
 /*
 .topo .filters{
 	padding-top: 8px;
 }
-*/
+
 
 #filtros{
 	margin-left: 150px;
 }
-
-
-
+*/
 
 #esquerda{
     overflow:hidden;
@@ -105,7 +102,7 @@ a{
     display: none;
     top:46px;
     bottom: 0;
-    left: 151px;
+    /*left: 151px;*/
     border-right: 1px solid #AFBCBF;
     padding: 0 5px;
 }
@@ -115,23 +112,26 @@ a{
     overflow:hidden;
     position: absolute;
     display: none;
-    top:46px;
+    /*top:46px;*/
     bottom: 0;
-    left: 467px;
-    right: 60px;
+    left: 320px;
+    right: 0;
     /*width: 515px;*/
     padding: 5px 10px 5px 0;
 }
 
+
 #page{
+	/*
     overflow:hidden;
     position: absolute;
-    top:46px;
+    top:0;
     bottom: 0;
     left: 151px;
-    right: 60px;
+    right: 60px;*/
     padding: 5px;
 }
+
 
 .mCSB_inside > .mCSB_container {
 	margin-right: 15px;
@@ -251,7 +251,6 @@ a.link:hover{color:#666; text-decoration: underline;}
 	background: #25B6CC;
 	overflow:hidden;
 	text-transform: uppercase;
-	position: absolute;
 }
 
 .logout{
@@ -430,11 +429,14 @@ a{
 
 
 .content{
-	/*position: relative;*/
+	position: absolute;
 	overflow: hidden;
 	/*background: #fafafa;*/
-	/*left: 138px;
-	padding: 4px 8px;*/
+	left: 150px;
+	right: 50px;
+	top: 0;
+	bottom: 0;
+	/*padding: 4px 8px;*/
 }
 
 /*Content itens*/
@@ -444,11 +446,13 @@ a{
 	line-height: 43px;
 	color: #fff;
 	background: #25B6CC;
+	padding: 0 5px;
 }
 
 .header .icon{
 	margin-top: 8px;
 }
+
 
 /*
 .header{
@@ -472,7 +476,7 @@ a{
 */
 
 .list_bar{
-	padding: 5px 0;
+	padding: 8px 0;
 }
 
 .bar_button{
@@ -543,7 +547,7 @@ a{
 }
 
 .subtabs .selected, .tabs .selected{
-	background: #C0E9F0;
+	background: #fff;
 	border: none !important;
 }
 
@@ -576,7 +580,7 @@ a{
 }
 */
 .subtabs li:hover, .tabs li:hover{
-	background: #C0E9F0;
+	background: #fff;
 }
 
 
@@ -615,41 +619,43 @@ table {
     border-radius:6px;
     -moz-border-radius:6px;
     margin: 4px 0;
+    color: #4F4F4F;
 }
 
-td, th {
-    border-left:solid #fff 1px;
-    border-top:solid #fff 1px;
+th {
+	
+    /*
+    border-top:solid #fff 1px;*/
 
     /*padding: 1px;*/
-    color: #008fc7;
     vertical-align: top;
+    background-color: #66b5d7;
+    padding: 4px 0;
 }
 
-th, td{
+th span{
+	border-right: solid #90AAAD 1px;
+	padding: 0 4px;
+	display: block;
+}
+
+td{
 	text-align: center;
 	padding: 4px;
 }
 
-td{
-	background: #f1f1f1;
+
+th:last-of-type span{
+   border-right: none;
 }
 
-th {
-    background-color: #66b5d7;
-    color: #fff;
-    border-top: none;
-}
 
+/*
 th:first-of-type {
    border-radius:6px 0 0 0;
    border-left: none;
 }
 
-th:last-of-type {
-   border-radius:0 6px 0 0;
-   border-right: none;
-}
 
 tr:last-of-type td:last-of-type {
    border-radius:0 0 6px 0;
@@ -664,6 +670,7 @@ tr:last-of-type td:first-of-type {
 td:first-of-type {
     border-left: none;
 }
+*/
 
 table.gray th{
 	background: #C0C0C0 !important;
@@ -792,10 +799,11 @@ table tbody td table tbody tr:hover {
 
 
 /*****Forms****/
-
+/*
 form{
 	margin: 5px 10px;
 }
+*/
 
 .form dl, .form dt, .form dd{
 	padding:5px 0;
@@ -1186,6 +1194,7 @@ input[type='text']:focus, input[type='password']:focus{
 	font-size: 12px;
 	padding: 2px 5px;
 	margin-left: 8px;
+	overflow: auto;
 }
 
 .badge{
@@ -1225,6 +1234,8 @@ input[type='text']:focus, input[type='password']:focus{
     -khtml-border-radius: 22px;
 	border-radius:22px;
 }
+
+
 
 .hollidays .ui-state-default{
 	color: #ccc !important;
@@ -1278,6 +1289,10 @@ input[type='text']:focus, input[type='password']:focus{
 .cyan{
 	background: #25B6CC; /*#49c5bf;*/
 	color:#fff;
+}
+
+.text_cyan{
+	color: #28A5B8;
 }
 
 
@@ -1439,15 +1454,12 @@ a.green{
 
 .list_alert{
 	display: block;
-	text-align: center;
 	margin: 5px 0;
 	padding: 5px;
+	color: #28A5B8;
+	border-bottom: 1px #28A5B8 solid;
 }
 
-.list_item{
-	width: auto;
-	overflow: hidden;
-}
 
 .list_item li, .dd-item{
 	background: #fff; 
@@ -1564,7 +1576,9 @@ a.green{
 }
 
 .item_content{
-	padding: 5px 0 0 10px;
+	padding: 5px 10px;
+	min-height: 25px;
+	overflow: auto;
 }
 
 
@@ -1879,15 +1893,69 @@ a.green{
 }
 
 .acervo_item{
-	width: 185px;
-	height: 200px;
-	color: #000;
-	border: 1px solid #ccc;
-	background: #f1f1f1;
+	width: 330px;
+	overflow: auto;
+	border: 1px solid #AFBCBF;
 	float: left;
-	padding: 2px;
 	margin: 0 5px 5px 0;
 }
+
+.acervo_item .ball{
+	padding: 5px;
+	text-transform: uppercase;
+}
+
+.acervo_item_top{
+	color: #4F4F4F !important;
+	padding: 8px;
+	height: 70px;
+	overflow: auto;
+}
+
+.acervo_item_bottom{
+	border-top: 1px solid #AFBCBF;
+	padding: 4px;
+	background: #F3F4F5;
+	overflow: auto;
+}
+
+.acervo_infos_header{
+	padding: 10px;
+}
+
+.acervo_infos_content{
+	padding: 10px;
+	border: 1px #AFBCBF solid;
+	border-top: none;
+	color: #4F4F4F;
+	overflow: auto;
+}
+
+.acervo_infos_content table th{
+	background: #E6E6E6;
+
+}
+
+.acervo_infos_selected{
+	background: #25B6CC;
+	color: #fff;
+}
+
+.acervo_infos_item{
+	margin-bottom: 5px;
+}
+
+.acervo_repositorios span{
+	padding: 0 4px;
+	display: inline-block;
+	text-align: center;
+	border-right: 1px solid #90AAAD;
+}
+
+.acervo_repositorios span:last-of-type{
+	border-right: none;
+}
+
 
 .item_type{
 	padding: 5px;
@@ -1953,6 +2021,10 @@ div.jGrowl div.error {
 	z-index: 10;
 	display: none;
 	box-shadow:#333 1px 5px 15px;
+}
+
+.panel_content{
+	padding: 5px;
 }
 
 .table_anchor{

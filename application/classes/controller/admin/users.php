@@ -354,8 +354,8 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     public function action_login() 
     {
         $this->auto_render = false;
-    	$styles = array('public/css/admin/login.css' => 'screen');
-    	$this->template->styles = array_merge( $styles, $this->template->styles );
+    	//$styles = array('public/css/admin/login.css' => 'screen');
+    	//$this->template->styles = array_merge( $styles, $this->template->styles );
         $view = View::factory('admin/login')->bind('message', $message);
 
         echo $view;
