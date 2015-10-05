@@ -7,10 +7,11 @@
             <div class="left filter" >
                 <ul>
                     <li class="round" >
-                        <span id="reaproveitamento">status <?=(!empty($filter_status) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                        <span id="reaproveitamento">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <span class="filter_panel_arrow"/>
                         <div class="filter_panel round " >
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_status" /><label for="filter_status">selecionar tudo</label></li>
+                                <li><input type="checkbox" class="checkAll" id="filter_status" /><label for="filter_status" class="text_cyan">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul>
@@ -29,21 +30,25 @@
             <div class="left filter" >
                 <ul>
                     <li class="round" >
-                        <span class="round" id="segmento">segmento <?=(!empty($filter_segmento) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-                        <div class="filter_panel round scrollable_content" data-bottom="false">
+                        <span class="round" id="segmento">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <span class="filter_panel_arrow"/>
+                        <div class="filter_panel round">
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento">selecionar tudo</label></li>
-                                <? foreach ($segmentoList as $segmento) {?>
-                                    <li>
-                                        <input class="filter_segmento" type="checkbox" name="segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(isset($filter_segmento)){ if(in_array($segmento->id, $filter_segmento)){ echo "checked";}}?>  />
-                                        <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
-                                    </li>
-                                <?}?>
-                                <p>
-                                    <input type="submit" class="round bar_button" value="OK" /> 
-                                    <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-                                </p> 
+                                <li><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento" class="text_cyan">selecionar tudo</label></li>
                             </ul>
+                            <div class="scrollable_content" data-bottom="false">
+                                <ul>
+                                    <? foreach ($segmentoList as $segmento) {?>
+                                        <li>
+                                            <input class="filter_segmento" type="checkbox" name="segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(isset($filter_segmento)){ if(in_array($segmento->id, $filter_segmento)){ echo "checked";}}?>  />
+                                            <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
+                                        </li>
+                                    <?}?>
+                                    
+                                </ul>
+                            </div>
+                            <input type="submit" class="round bar_button" value="OK" /> 
+                            <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
                         </div>
                     </li>
                 </ul>
@@ -53,10 +58,11 @@
             <div class="left filter" >
                 <ul>
                     <li class="round" >
-                        <span class="round" id="ano">ano <?=(!empty($filter_ano) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                        <span class="round" id="ano">ano <div class="icon_filtros <?=(!empty($filter_ano)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <span class="filter_panel_arrow"/>
                         <div class="filter_panel round" >
                             <ul>
-                                <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_ano" /><label for="filter_ano">selecionar tudo</label></li>
+                                <li><input type="checkbox" class="checkAll" id="filter_ano" /><label for="filter_ano" class="text_cyan">selecionar tudo</label></li>
                             </ul>
                             <div class="scrollable_content" data-bottom="false">
                                 <ul>                                    

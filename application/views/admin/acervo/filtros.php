@@ -6,8 +6,8 @@
         </div>
         <div class="filter" >
             <ul>
-                <li class="round <?=(!empty($filter_segmento)) ? 'filter_selected' : ''; ?>" >
-                    <span class="round" id="segmento">segmento <?=(!empty($filter_segmento) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                <li class="round">
+                    <span class="round" id="segmento">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
                     <div class="filter_panel round" data-bottom="false">
                         <ul>
@@ -32,8 +32,8 @@
         </div>
         <div class="filter" >
             <ul>
-                <li class="round <?=(!empty($filter_collection)) ? 'filter_selected' : ''; ?>" >
-                    <span class="round" id="collection">coleção <?=(!empty($filter_collection) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                <li class="round" >
+                    <span class="round" id="collection">coleção <div class="icon_filtros <?=(!empty($filter_collection)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
                     <div class="filter_panel round">
                         <ul style="width:550px;">
@@ -62,12 +62,12 @@
 
         <div class="filter" >
             <ul>
-                <li class="round <?=(!empty($filter_origem)) ? 'filter_selected' : ''; ?>" >
-                    <span id="reaproveitamento">origem <?=(!empty($filter_origem) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                <li class="round" >
+                    <span id="reaproveitamento">origem <div class="icon_filtros <?=(!empty($filter_origem)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
                     <div class="filter_panel round " >
                         <ul>
-                            <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_origem" /><label for="filter_origem">selecionar tudo</label></li>
+                            <li><input type="checkbox" class="checkAll" id="filter_origem" /><label for="filter_origem" class="text_cyan">selecionar tudo</label></li>
                         </ul>
                         <div class="scrollable_content" data-bottom="false">
                             <ul>
@@ -87,12 +87,12 @@
 
         <div class="filter" >
             <ul>
-                <li class="round <?=(!empty($filter_project)) ? 'filter_selected' : ''; ?>" >
-                    <span class="round" id="project">projetos <?=(!empty($filter_project) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                <li class="round" >
+                    <span class="round" id="project">projetos <div class="icon_filtros <?=(!empty($filter_project)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
                     <div class="filter_panel round" >
                         <ul style="width:250px;">
-                            <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_project" /><label for="filter_project">selecionar tudo</label></li>
+                            <li><input type="checkbox" class="checkAll" id="filter_project" /><label for="filter_project" class="text_cyan">selecionar tudo</label></li>
                         </ul>
                         <div class="scrollable_content" data-bottom="false">
                             <ul >
@@ -117,12 +117,12 @@
 
         <div class="left filter" >
             <ul>
-                <li class="round <?=(!empty($filter_tipo)) ? 'filter_selected' : ''; ?>" >
-                    <span class="round" id="typeobject">tipos de OED's <?=(!empty($filter_tipo) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
+                <li class="round" >
+                    <span class="round" id="typeobject">tipos de OED's <div class="icon_filtros <?=(!empty($filter_tipo)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
                     <div class="filter_panel round " style="width:200px;" >                        
                          <ul style="width:300px;">
-                            <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" style="color:#fff">selecionar tudo</label></li>
+                            <li><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" class="text_cyan">selecionar tudo</label></li>
                         </ul>
                         <div class="scrollable_content" data-bottom="false">
                             <ul >

@@ -1,5 +1,4 @@
-	<div class="list_header round">
-	<?$sql;?>
+	<div class="acervo_header">
 		<span class='left text_cyan'>
 		<?
 			if(count($objectsList) <= 0){
@@ -9,9 +8,11 @@
             }
         ?>
 		</span>
+
 		<div class="right">
 			<?=$pagination?>
 		</div>
+		<p class='right'>resultados por página</p>
 	</div>
 	<div class="clear scrollable_content list_body">
 			<?foreach($objectsList as $objeto){

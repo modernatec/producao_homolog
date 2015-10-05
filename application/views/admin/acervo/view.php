@@ -25,12 +25,9 @@
         <div class="acervo_infos round">
             <div class="acervo_infos_header acervo_infos_selected roundTop">
                 <?if($obj->uploaded == 1){?>
-                <a href='<?=URL::base();?>/admin/acervo/acervoPreview/<?=$obj->id?>' data-rel="load-content" data-panel="#preview" class="bar_button round right load acervo_view">visualizar</a>
-                <?
-                    if($current_auth != "assistente" || $current_auth != "assistente 2"){
-                        
-                ?>
-                <a href='<?=URL::base();?>/admin/acervo/download/<?=$obj->id?>' class="bar_button round right">baixar</a>
+                <!--a href='<?=URL::base();?>/admin/acervo/acervoPreview/<?=$obj->id?>' data-rel="load-content" data-panel="#preview" class="bar_button round right load acervo_view">visualizar</a-->
+                <?if($current_auth != "assistente" || $current_auth != "assistente 2"){?>
+                <!--a href='<?=URL::base();?>/admin/acervo/download/<?=$obj->id?>' class="bar_button round right">baixar</a-->
                 <?
                         }
                     }
@@ -48,13 +45,29 @@
                     $origem = "reap.";
                 }else{
                     $origem = "reap. integral";
-                }?>
-                <p>
-                    <?=$obj->collection->segmento->name?> | <?=$obj->collection->materia->name?> | 
-                    <?=$origem?> | <?=@$obj->typeobject->name;?> | <?=@$obj->collection->ano?>
-                </p>
-                <table>
+                }
+                $tipo = explode('-', @$obj->typeobject->name);
+
+                ?>
+                <table width="100%">
                     <thead>
+                        <th><span>segmento</span></th>
+                        <th><span>matéria</span></th>
+                        <th><span>origem</span></th>
+                        <th><span>tipo</span></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?=$obj->collection->segmento->name?></td>
+                            <td><?=$obj->collection->materia->name?></td>
+                            <td><?=$origem?></td>
+                            <td><?=$tipo['1']?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%">
+                    <thead>
+                        <th><span>ano de prod.</span></th>
                         <th><span>formato</span></th>
                         <th><span>interativo</span></th>
                         <th><span>legendado</span></th>
@@ -63,6 +76,7 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td><?=@$obj->collection->ano?></td>
                             <td><?=$obj->format->name;?></td>
                             <td><?=(@$obj->interatividade == 0) ? 'não' : 'sim'; ?></td>
                             <td><?=(@$obj->transcricao == 0) ? 'não' : 'sim'; ?></td>
@@ -71,14 +85,14 @@
                         </tr>
                     </tbody>
                 </table>
-                <table class="clear">
+                <table width="100%">
                     <thead>
                         <th><span>unidade</span></th>
                         <th><span>capítulo</span></th>
                         <th><span>página</span></th>
                         <th><span>tamanho</span></th>
                         <th><span>duração</span></th>
-                        <th><span>resultado PNLD</span></th>
+                        <th><span>res. PNLD</span></th>
                     </thead>
                     <tbody>
                         <tr>

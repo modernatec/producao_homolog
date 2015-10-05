@@ -65,8 +65,13 @@ a{
 }
 
 .topo .filters{
-	padding-top: 7px;
+	padding-top: 6px;
 	padding-left: 5px;
+}
+
+.topo .form input[type='text']{
+	border: none !important;
+	padding: 8px 5px;
 }
 
 /*
@@ -502,11 +507,11 @@ a{
     border-radius: 22px;
     background: #008fc7;
 }
-*/
 
 .pagination .bar_button{
 	margin: 0 !important;
 }
+*/
 
 .bar_button label{
 	color: #fff;
@@ -1086,10 +1091,12 @@ p{
     padding:5px 0;
 }
 
+/*
 .pagination{
     color:#008fc7;
-    /*text-align: center;*/
+    /*text-align: center;*
 }
+*/
 
 input[type='submit'], input[type='button']{
 	cursor: pointer;
@@ -1474,13 +1481,27 @@ a.green{
 	overflow: hidden;
 }
 
-.icon{
+.icon, .icon_filtros{
 	width: 26px;
 	height: 23px;
 	overflow: hidden;
 	text-indent: -2000px;
 	display: inline-block;
 	margin-left: 5px;
+}
+
+.icon_filtros{
+	width: 13px;
+	height: 17px;
+	float: right;
+}
+
+.icon_filter{
+	background: url('../../image/admin/icons.png') no-repeat -175px -30px;
+}
+
+.icon_filter_active{
+	background: url('../../image/admin/icons.png') no-repeat -175px -4px;
 }
 
 .icon_status{
@@ -1508,6 +1529,11 @@ a.green{
 	background: url('../../image/admin/icons.png') no-repeat -151px 0;
 }
 
+.icon_excluir_white{
+	background: url('../../image/admin/icons.png') no-repeat -151px -26px;
+}
+
+
 .icon_comment{
 	background: url('../../image/admin/icons.png') no-repeat -192px -26px;
 }
@@ -1533,9 +1559,6 @@ a.green{
 	background: url('../../image/admin/icons.png') no-repeat -124px -26px;
 }
 
-.icon_excluir_white{
-	background: url('../../image/admin/icons.png') no-repeat -151px -26px;
-}
 
 .icon_aberto{
 	background: url('../../image/admin/icons.png') no-repeat 2px -26px;
@@ -1548,6 +1571,39 @@ a.green{
 .icon_entregue{
 	background: url('../../image/admin/icons.png') no-repeat -22px -26px;
 }
+
+/**pagination**/
+.pagination{
+	line-height: 30px;
+}
+
+.pagination select{
+	border:1px #CCC solid;
+	padding:2px 5px;
+	top: -4px;
+	position: relative;
+}
+
+.pagination .icon{
+	margin:0;
+}
+
+.icon_inicio {
+	background: url('../../image/admin/icons.png') no-repeat -257px -23px;
+}
+
+.icon_anterior {
+	background: url('../../image/admin/icons.png') no-repeat -236px -23px;
+}
+
+.icon_prox {
+	background: url('../../image/admin/icons.png') no-repeat -189px -23px;
+}
+
+.icon_ultimo {
+	background: url('../../image/admin/icons.png') no-repeat -215px -23px;
+}
+
 
 .list_icon{
 	width: 23px;
@@ -1595,6 +1651,11 @@ a.green{
 	background: #25B6CC !important;
 	color: #fff;
 }
+
+.list_item li.blueSelection .icon_excluir{
+	background: url('../../image/admin/icons.png') no-repeat -151px -26px;
+}
+
 
 .list_item li.blueSelection a{
 	color: #fff;
@@ -1727,7 +1788,7 @@ a.green{
 	position: absolute;
 	left: 0;
 	border-style: solid;
-	border-width: 0 6px 12px;
+	border-width: 0 8px 12px;
 	border-color: #AFBCBF transparent;
 	width: 0;
 	z-index: 3;
@@ -1737,9 +1798,9 @@ a.green{
     content: "";
     position: absolute;
     top: 2px;
-    left: -6px;
+    left: -8px;
     border-style: solid;
-    border-width: 0 6px 12px;
+    border-width: 0 8px 12px;
     border-color: #fff transparent;
     display: block;
     width: 0;
@@ -1760,13 +1821,7 @@ a.green{
 
 .filter ul li{
 	padding: 5px;
-	margin-right: 5px;
-
-	-o-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -khtml-border-radius: 4px;
-    border-radius: 4px;
+	/*margin-right: 5px;*/
 }
 
 /*
@@ -1931,6 +1986,10 @@ a.green{
     border-radius: 2px;
 }
 
+.acervo_header span{
+	line-height: 30px;
+}
+
 .acervo_item{
 	width: 330px;
 	overflow: auto;
@@ -1948,7 +2007,7 @@ a.green{
 	color: #4F4F4F !important;
 	padding: 8px;
 	height: 70px;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .acervo_item_bottom{
@@ -1972,6 +2031,7 @@ a.green{
 
 .acervo_infos_content table th{
 	background: #E6E6E6;
+	text-align: center;
 
 }
 
