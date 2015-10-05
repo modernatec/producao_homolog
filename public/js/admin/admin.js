@@ -118,6 +118,7 @@ var m_y = 0;
 function closeFilterPanel(){
     $('.filter ul li').css({'background': ''});
     $('.filter_panel').css({'display': 'none'});
+    $('.filter_panel_arrow').css({'display': 'none'});
 }
 
 function populateSelect(ui)
@@ -439,16 +440,29 @@ function setupAjax(container){
         $('.money').autoNumeric('init');
 
         $(".filter span").unbind('click').bind("click", function(e) {
-            if($(this).parent().children('.filter_panel').css('display') == 'none'){
+            var panel = $(this).parent().children('.filter_panel');
+            var arrow = $(this).parent().children('.filter_panel_arrow');
+            
+            if(panel.css('display') == 'none'){
                 closeFilterPanel();
             }
-            $(this).parent().children('.filter_panel').fadeToggle(function(){
-                if($(this).parent().children('.filter_panel').css('display') == 'none'){
-                    $(this).parent().parent().children('li').css({'background': ''});
+
+            button_w = $('#' + e.currentTarget.id).width();
+            panel_w = $(this).parent().children('.filter_panel').width();
+
+            console.log();
+            panel.css('left', '-' + ((panel_w / 2) - (button_w / 2)) + 'px');
+            arrow.css('left', (button_w / 2) + 'px');
+            
+            arrow.fadeToggle();
+
+            panel.fadeToggle(function(){
+                if(panel.css('display') == 'none'){
+                    //$(this).parent().parent().children('li').css({'background': ''});
                 }
             });
 
-            $(this).parent().parent().children('li').css({'background': '#cccccc'});
+            //$(this).parent().parent().children('li').css({'background': '#cccccc'});
             
         });
 

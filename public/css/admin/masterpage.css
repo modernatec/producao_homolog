@@ -1292,7 +1292,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .text_cyan{
-	color: #28A5B8;
+	color: #28A5B8 !important;
 }
 
 
@@ -1689,27 +1689,64 @@ a.green{
 
 .filter{
 	float: left;
-	color:#008fc7;
+	color:#4F4F4F;
 	display: block;
 	cursor: pointer;
 	position: relative;
 }
 
+.filter label{
+	color: #4F4F4F;
+}
+
+
+
+/*https://css-tricks.com/snippets/css/css-triangle/*/
+
 .filter_panel{
+	background: #fff ;
+	border: 1px #AFBCBF solid;
 	position: absolute;
-	background: #ccc;
 	display: none;
 	left: 0;
-	margin-top: 2px;
+	margin-top: 12px;
 	padding: 5px;
 	
 	width: auto !important;
 	min-width: 180px;
 
+	/*
 	overflow-y: auto;
-	overflow-x: hidden; 
+	overflow-x: hidden;
+	*/ 
 	z-index: 2;
 }
+
+.filter_panel_arrow{
+	display: none;
+	position: absolute;
+	left: 0;
+	border-style: solid;
+	border-width: 0 6px 12px;
+	border-color: #AFBCBF transparent;
+	width: 0;
+	z-index: 3;
+}
+
+.filter_panel_arrow:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -6px;
+    border-style: solid;
+    border-width: 0 6px 12px;
+    border-color: #fff transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+}
+
+
 
 
 .filter .scrollable_content{
@@ -1732,6 +1769,7 @@ a.green{
     border-radius: 4px;
 }
 
+/*
 .filter ul li:hover{
 	background: #fff;
 }
@@ -1739,6 +1777,7 @@ a.green{
 .filter_selected {
 	background: #fff;
 }
+*/
 
 .filter ul li > ul li{	
 	display: block;
