@@ -18,6 +18,7 @@
         echo '<ul class="list_item" id="'.$id.'">';
         foreach($taskList as $key=>$task){?>
             <li class="dd-item" id="item-<?=$task->id?>">
+                <div class="item_content">
                 <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
                     <?
                         $object_late = '';
@@ -42,15 +43,14 @@
                     <div class="right list_status <?=$object_late?>">
                         <div class="list_icon <?=$icon_status?>"></div>
                     </div>                 
-
-                    <div class="item_content">
-                        <p><?=$task->object->taxonomia;?></p>
-                        <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           
-                            <?=Utils_Helper::getUserImage($task->to);?>
-                        </div>
-                        <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
+                    <p><?=$task->object->taxonomia;?></p>
+                    <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           
+                        <?=Utils_Helper::getUserImage($task->to);?>
                     </div>
+                    <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
+                    
                 </a>
+                </div>
             </li>
         <?}
         echo '<ul>';

@@ -1,8 +1,11 @@
 <div class="header">
+	<a href="javascript:void(0)" class="close_pop">
+        <div class="right icon icon_excluir_white">fechar</div>
+    </a>
     <div class="left icon icon_status_white">tarefas</div>
     <span><?=$title?></span>
 </div>
-<div class="left" style="min-width:478px;">
+<div class="left panel_content" style="min-width:478px;">
 	<form name="frmStatus2" id="frmStatus2"  data-panel="#direita" action="<?=URL::base();?>admin/objects/updateStatus/<?=$objVO['id']?>" method="post" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="object_id" value="<?=$objVO['object_id']?>">
 			<div class="left">
@@ -43,6 +46,6 @@
             </dd>	    
 	</form>
 </div>
-<div class="append left" id="sequence">
+<div class="panel_append panel_content right" id="sequence">
 
 </div>

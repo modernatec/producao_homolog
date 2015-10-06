@@ -1117,6 +1117,7 @@ function ajaxPost(form, container, dialog){
     data_post.push({name: 'from', value: window.location.hash.replace('#', '')});
     data_post.push({name: 'container', value: container});
     var dialog = dialog;
+    closeFilterPanel();
 
     if(dialog == undefined){        
         removeDialogs();
@@ -1161,6 +1162,8 @@ function loadContent(args){
     url = args.url;
     container = args.container || '';
     removeDialog = args.removeDialog || false;
+
+    closeFilterPanel();
     
     if(logged_in != false){
         d = new Date();

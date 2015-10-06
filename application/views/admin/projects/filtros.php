@@ -47,8 +47,10 @@
                                     
                                 </ul>
                             </div>
-                            <input type="submit" class="round bar_button" value="OK" /> 
-                            <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
+                            <p>
+                                <input type="submit" class="round bar_button" value="buscar" /> 
+                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
+                            </p> 
                         </div>
                     </li>
                 </ul>
@@ -75,8 +77,10 @@
                                     
                                 </ul>
                             </div>
-                            <input type="submit" class="round bar_button" value="OK" /> 
-                            <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
+                            <p>
+                                <input type="submit" class="round bar_button" value="buscar" /> 
+                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
+                            </p> 
                         </div>
                     </li>
                 </ul>

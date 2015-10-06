@@ -1,8 +1,13 @@
 <div class="header">
+    <a href="javascript:void(0)" class="close_pop">
+        <div class="right icon icon_excluir_white">fechar</div>
+    </a>
     <div class="left icon icon_task_white">tarefas</div>
     <span><?=$title?></span>
+
 </div>
-<div class="left" style="min-width:478px;">
+
+<div class="left panel_content" style="min-width:478px;">
     <!--a class="collapse right" data-show="append" title="abrir/fechar infos"><span class="collapse_ico">contrair</span></a-->
         
     <form name="frmCreateTask2" id="frmCreateTask2"  data-panel="#direita" action="<?=URL::base();?>admin/tasks/salvar/<?=@$taskVO['id']?>" method="post" class="form">
@@ -69,7 +74,7 @@
     	</dl>
     </form>
 </div>
-<div class="append left">
+<div class="panel_append panel_content right">
     <?
         if($current_auth != "assistente"){
             echo $sequence;

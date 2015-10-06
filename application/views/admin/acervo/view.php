@@ -49,7 +49,7 @@
                 $tipo = explode('-', @$obj->typeobject->name);
 
                 ?>
-                <table width="100%">
+                <table>
                     <thead>
                         <th><span>segmento</span></th>
                         <th><span>matéria</span></th>
@@ -65,7 +65,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table width="100%">
+                <table>
                     <thead>
                         <th><span>ano de prod.</span></th>
                         <th><span>formato</span></th>
@@ -85,7 +85,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table width="100%">
+                <table>
                     <thead>
                         <th><span>unidade</span></th>
                         <th><span>capítulo</span></th>

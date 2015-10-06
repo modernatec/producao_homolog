@@ -13,15 +13,17 @@
                         <ul>
                             <li><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento" class="text_cyan">selecionar tudo</label></li>
                         </ul>
-                        <ul>
-                            <? foreach ($segmentoList as $segmento) {?>
-                                <li>
-                                    <input class="filter_segmento" type="checkbox" name="filter_segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(isset($filter_segmento)){ if(in_array($segmento->id, $filter_segmento)){ echo "checked";}}?> />
-                                    <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
-                                </li>
-                            <?}?>
-                            
-                        </ul>
+                        <div class="scrollable_content" data-bottom="false">
+                            <ul>
+                                <? foreach ($segmentoList as $segmento) {?>
+                                    <li>
+                                        <input class="filter_segmento" type="checkbox" name="filter_segmento[]" value="<?=$segmento->id?>" id="col_<?=$segmento->id?>" <?if(isset($filter_segmento)){ if(in_array($segmento->id, $filter_segmento)){ echo "checked";}}?> />
+                                        <label for="col_<?=$segmento->id?>"><?=$segmento->name?></label>
+                                    </li>
+                                <?}?>
+                                
+                            </ul>
+                        </div>
                         <p>
                             <input type="submit" class="round bar_button" value="buscar" /> 
                             <input type="button" class="round bar_button cancelar" value="cancelar" /> 
