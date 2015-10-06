@@ -1,4 +1,4 @@
-<div class="filters clear">
+<div class="filters second_filter clear">
 <form action="<?=URL::base();?>admin/contatos/getContatos" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 	<input type="hidden" name="contatos" value="true">
 		<div class="left" style="margin-bottom:4px;">
@@ -7,8 +7,10 @@
    		<div class="filter" >
 		    <ul>
 		        <li class="round">
-		            <span class="round" id="service_id">tipo <?=(!empty($filter_service_id) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-		            <div class="filter_panel round" data-bottom="false">
+		            <span class="round" id="service_id">tipo <div class="icon_filtros <?=(!empty($filter_service_id)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <span class="filter_panel_arrow"/>
+		            <div class="filter_panel round">
+		            	<div class="scrollable_content" data-bottom="false"> 
 			            <ul>
 			                <? foreach ($services as $service) {?>
 			                	<li>
@@ -17,10 +19,11 @@
 			                	</li>
 			                <?}?>
 			                <p>
-				                <input type="submit" class="round bar_button" value="OK" /> 
-				                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-				            </p> 
+                                <input type="submit" class="round bar_button" value="buscar" /> 
+                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
+                            </p>
 			            </ul>
+			            </div>
 			        </div>
 		        </li>
 		    </ul>
@@ -29,7 +32,7 @@
 </form>	
 <form action='<?=URL::base();?>admin/contatos/getContatos' id="frm_reset_contatos" data-panel="#tabs_content" method="post" class="form">
 	<input type="hidden" name="contatos" value="true">
-	<input type="submit" class="bar_button round green" value="limpar filtros" />
+	<input type="submit" class="bar_button round" value="limpar filtros" />
 </form>
 
 </div>

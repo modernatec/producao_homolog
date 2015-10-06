@@ -29,26 +29,26 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		echo 'ok';
 	} 
 	        
-	public function action_index($ajax = null)
+	public function action_index($page = null)
 	{	
 		$view = View::factory('admin/acervo/list')
 			->bind('message', $message);
 
-		if($ajax == null){
-			$this->template->content = $view;             
-		}else{
+		//if($ajax == null){
+			//$this->template->content = $view;             
+		//}else{
 			$this->auto_render = false;
-			
+
 			header('Content-Type: application/json');
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects('0', true)->render())),
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($page, true)->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;
-		}           
+		//}           
 	} 
      
 	public function action_view($id, $ajax = null)
@@ -59,7 +59,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
             ->bind('message', $message);
 
 		$objeto = ORM::factory('object', $id);
-        $view->obj = $objeto;   
+        $view->objeto = $objeto;   
         $view->user = $this->current_user->userInfos;    
 
         $array_path = array();
@@ -184,19 +184,22 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
   		return $viewFiltros;
     }
 
-    public function action_getObjects($page = 1, $ajax = null){
+    public function action_getObjects($page, $ajax = null){
     	$this->auto_render = false;
 
     	//$this->startProfilling();
-    	$page = ($page != "") ? $page : Session::instance()->get('kaizen')['parameters'];
-
-		$view = View::factory('admin/acervo/table');		
+    	
+		$view = View::factory('admin/acervo/table');		       	
 
 		if(count($this->request->post('acervo')) > '0' || Session::instance()->get('kaizen')['model'] != 'acervo'){
-			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), $page, "acervo");
+			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), 1, "acervo");
 		}else{
 			$kaizen_arr = Session::instance()->get('kaizen');
 		}
+		
+		if(Session::instance()->get('kaizen')['model'] == 'acervo' && $page != 'ajax'){
+    		$kaizen_arr['parameters'] = $page;
+    	}
 
   		Session::instance()->set('kaizen', $kaizen_arr);
 
@@ -254,14 +257,18 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$total_objects = count($result);//$query->count_all();
 		$view->total_objects = $total_objects;
 
+		//var_dump(Session::instance()->get('kaizen')['parameters']);
 		// set-up the pagination
+		$view->items_per_page = 60;
+
 		$pagination = Pagination::factory(array(
 		    'total_items' => $total_objects,
-		    'items_per_page' => 50, // this will override the default set in your config
+		    'items_per_page' => $view->items_per_page, // this will override the default set in your config
+		    'current_page' => array('source' => 'route', 'key' => 'page', 'page' => Session::instance()->get('kaizen')['parameters']),
 		));
 
 		$sql .= ' LIMIT '.$pagination->offset.', '.$pagination->items_per_page;
-		$view->sql = $sql;
+		
 
 		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 
@@ -292,6 +299,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		$view = View::factory('admin/acervo/preview');
 		$object = ORM::factory('object', $object_id);
+		$view->object = $object;
 
 		$file = (strpos($object->format->ext, 'index') !== FALSE ) ? $object->format->ext : $object->taxonomia.$object->format->ext;
 		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$file;
@@ -308,10 +316,11 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		}
 	}
 
-
+	/*
 	public function action_acervoPreview($object_id){
 		echo $this->action_preview($object_id, true);
 	}
+	*/
 
 	public function action_download($object_id){
 		$this->auto_render = false;

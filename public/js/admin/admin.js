@@ -299,8 +299,8 @@ function setupAjax(container){
             }
         });
     }else{
-
-        if($('.topo').length != 0 && container == '#content'){
+        if($('.topo').length != 0 && (container == '#content' || container == '#filtros')){
+            console.log('entrou')
             $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
             $('#esquerda, #direita, #page').fadeIn(1000);
         }
@@ -367,14 +367,26 @@ function setupAjax(container){
 
         if($('#pagination').length != 0 && container == '#tabs_content'){
             $('#pagination').on('change', function() {
-                var panel = $(this).data('panel');
+                var args = {url : $(this).val(), container: $(this).data('panel')};
+                loadContent(args);
+
+                /*
                 $.ajax({
                     type: "POST",
                     url: $(this).val(),
                     dataType : "html",
                     timeout: 20000, 
                     success: function(data) {
-                        reloadContent(data, panel);
+                        console.log(data)
+                        //reloadContent(data, panel);
+
+                        for(k in data){
+                            returnData.push(data[k]);    
+                        }
+
+                        //if(loading == false){
+                            setDataPanels();
+                       //}
                     },
                     error: function(e) {
                         console.log(e);
@@ -386,6 +398,7 @@ function setupAjax(container){
                         });
                     }
                 });  
+                */
 
             });
         }
@@ -757,7 +770,7 @@ function setupAjax(container){
                         $('#dialog').addClass('acervo_preview');
                         $('#dialog').show('slide', {direction: 'left'}, 300, function(){
                             $('#dialog').append(retorno);
-                            setupAjax('#dialog');
+                            //setupAjax('#dialog');
                         });
                     }else{
                         setMsg({
@@ -780,37 +793,42 @@ function setupAjax(container){
         $("a.acervo_view").unbind('click').bind('click', function(e) {   
             e.preventDefault();
             var url = this.href;
+            if($(this).hasClass('icon_playing')){
+                $(this).removeClass('icon_playing');
+                $('#acervo_preview').html('');
+            }else{
+                $('.icon_playing').removeClass('icon_playing');
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                timeout: 1000, 
-                dataType : "html",
-                success: function(retorno) {
-                    //$('#dialog').removeClass('loading');
-                    if(retorno != 0){
-                        $('#acervo_preview').removeClass('hide');
-                        //$('#dialog').addClass('acervo_preview');
-                        //$('#dialog').show('slide', {direction: 'left'}, 300, function(){
-                        $('.iframe_body').attr('src', retorno);
-                        setupAjax('#dialog');
-                        //});
-                    }else{
+                $(this).addClass('icon_playing');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    timeout: 1000, 
+                    dataType : "html",
+                    success: function(retorno) {
+                        if(retorno != 0){
+                            $('#acervo_preview').removeClass('hide');
+                            $('#acervo_preview').html(retorno);
+                            //$('.iframe_body').attr('src', retorno);
+                            //setupAjax('#dialog');
+                        }else{
+                            setMsg({
+                                content:'Ops!..<br/><br/>Não encontrei este OED.', 
+                                container:'error',
+                            });
+                        }
+                    },
+                    error: function(e) {
+                        //$('#dialog').removeClass('loading');
+                        console.log(e);
                         setMsg({
-                            content:'Ops!..<br/><br/>Não encontrei este OED.', 
+                            content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                             container:'error',
                         });
                     }
-                },
-                error: function(e) {
-                    //$('#dialog').removeClass('loading');
-                    console.log(e);
-                    setMsg({
-                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
-                        container:'error',
-                    });
-                }
-            });  
+                });  
+            }
         });
 
         $("a.close_pop").unbind('click').bind('click', function(e){
@@ -867,6 +885,7 @@ function setupAjax(container){
         });
 
         $('a.popup').unbind('click').bind('click', function(e) {
+            closeFilterPanel();
             e.preventDefault();
             var url = this.href;
             var data = $(this).data('post');
@@ -1173,7 +1192,6 @@ function loadContent(args){
             removeDialogs();
         }
 
-        
         //if($('.loading').length == 0){
             var NewDialog = $('<div class="ui-dialog loading"><p>aguarde...</p></div>');
             NewDialog.dialog({
@@ -1199,7 +1217,6 @@ function loadContent(args){
                 if(loading == false){
                     setDataPanels();
                 }
-                
             },
             error: function(e) {
                 console.log(e);
@@ -1215,6 +1232,7 @@ function loadContent(args){
         alert("sessão expirada!");
     }
 }
+
 
 function updateBar(url){
     if(current_auth != 'assistente' && current_auth !== 'editor 1'){

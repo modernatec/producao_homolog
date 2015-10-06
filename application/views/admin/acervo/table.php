@@ -10,12 +10,14 @@
 		</span>
 
 		<div class="right">
-			<?=$pagination?>
+			<span class="left"><?=$items_per_page?> OED por página</span>
+			<div class="left"><?=$pagination?></div>
 		</div>
-		<p class='right'>resultados por página</p>
+		
 	</div>
 	<div class="clear scrollable_content list_body">
 			<?foreach($objectsList as $objeto){
+				/*
 				if($objeto->reaproveitamento == 0){ 
 	                $origem = "N";
 	            }elseif($objeto->reaproveitamento == 1){
@@ -25,6 +27,7 @@
 	            }
 
 	            $tipo = explode('-', $objeto->tipo);
+	            */
 			?>
 			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
 				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
@@ -33,8 +36,7 @@
 						<p><?=$objeto->collection_name?></p>
 					</div>
 					<div class="acervo_item_bottom">
-						<div class="right ball cyan"><?=$tipo[0];?></div>
-						<div class="right ball cyan"><?=$origem;?></div>
+						
 					</div>
 				</a>
 			</div>

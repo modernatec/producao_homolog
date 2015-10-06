@@ -1,42 +1,28 @@
-	<span class='list_alert light_blue round'>
+	<span class='list_alert'>
 	<?
         if(count($userinfosList) <= 0){
             echo 'não encontrei usuários com estes critérios.';    
         }else{
-            echo 'encontrei '. count($userinfosList).' usuários';
+            echo count($userinfosList).' usuários encontrados';
         }
     ?>
 	</span>
-	<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
-		<input type="text" class="round left" style="width:140px" placeholder="nome ou email" name="filter_search" value="<?=@$filter_search?>" >
-		<input type="submit" class="round bar_button left" value="buscar"> 
-		
-	</form>	
-	<form action='<?=URL::base();?>admin/users/getUsers' id="frm_reset_oeds" data-panel="#tabs_content" method="post" class="form">
-		<input type="hidden" name="reset_form" value="true">
-		<input type="submit" class="bar_button round green" value="limpar filtros" />
-	</form>
-
 	<div class="clear list_body scrollable_content">
-	    <? 
-		if(count($userinfosList) <= 0){
-			echo '<span class="list_alert round">nenhum registro encontrado</span>';	
-		}else{
-		?>
-		<ul class="list_item">
+	    <ul class="list_item">
 			<? foreach($userinfosList as $usuario){?>
 			<li>
+				<div class="item_content">
 				<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
-					<span class='round list_faixa team_<?=$usuario->team->id?> left'><?=$usuario->nome?></span>
-					<span class='round list_faixa team_<?=$usuario->team->id?>'><?=$usuario->team->name?></span>
+					<span class='left'><?=$usuario->nome?></span>
 					<div class="clear">
+						<p>time: <?=$usuario->team->name?></p>
 						<p>e-mail: <?=$usuario->email?></p>
 						<p>ramal: <?=$usuario->ramal?></p>
 					</div>
 				</a>
+				</div>
 			</li>
 			<?}?>
 		</ul>
-		<?}?>
 	</div>

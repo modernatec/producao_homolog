@@ -1,4 +1,4 @@
-<div class="filters clear">
+<div class="second_filter filters clear">
 	<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 		<input type="hidden" name="suppliers_filter" value="true">
 			<div class="left" style="margin-bottom:4px;">
@@ -6,9 +6,11 @@
 	   		</div>
 	   		<div class="filter" >
 			    <ul>
-			        <li class="round <?=(!empty($filter_team)) ? 'filter_selected' : ''; ?>" >
-			            <span class="round" id="team">time <?=(!empty($filter_team) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-			            <div class="filter_panel round" data-bottom="false">
+			        <li class="round" >
+			            <span class="round" id="team">time <div class="icon_filtros <?=(!empty($filter_team)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+			            <span class="filter_panel_arrow"/>
+			            <div class="filter_panel round">
+			            	<div class="scrollable_content" data-bottom="false"> 
 				            <ul>
 				                <? foreach ($teamList as $team) {?>
 				                	<li>
@@ -17,27 +19,31 @@
 				                	</li>
 				                <?}?>
 				                <p>
-					                <input type="submit" class="round bar_button" value="OK" /> 
-					                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-					            </p> 
+	                                <input type="submit" class="round bar_button" value="buscar" /> 
+	                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
+	                            </p>
 				            </ul>
+				            </div>
 				        </div>
 			        </li>
 			    </ul>
 			</div>
 			<div class="filter" >
 			    <ul>
-			        <li class="round <?=(!empty($filter_status)) ? 'filter_selected' : ''; ?>" >
-			            <span class="round" id="team">status <?=(!empty($filter_status) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-			            <div class="filter_panel round" data-bottom="false">
+			        <li class="round" >
+			            <span class="round" id="team">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+			            <span class="filter_panel_arrow"/>
+			            <div class="filter_panel round">
+			            	<div class="scrollable_content" data-bottom="false"> 
 				            <ul>
 				                <li><input type="checkbox" class="filter_status" name="filter_status[]" value="1" id="o_1" <?if(isset($filter_status)){ if(in_array("1", $filter_status)){ echo "checked";}}?> ><label for="o_1">aprovados</label></li>
 				                <li><input type="checkbox" class="filter_status" name="filter_status[]" value="0" id="o_0" <?if(isset($filter_status)){ if(in_array("0", $filter_status)){ echo "checked";}}?> ><label for="o_0">reprovados</label></li>
 				                <p>
-					                <input type="submit" class="round bar_button" value="OK" /> 
-					                <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-					            </p> 
+	                                <input type="submit" class="round bar_button" value="buscar" /> 
+	                                <input type="button" class="round bar_button cancelar" value="cancelar" />  
+	                            </p> 
 				            </ul>
+				            </div>
 				        </div>
 			        </li>
 			    </ul>
