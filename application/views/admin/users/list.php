@@ -1,13 +1,14 @@
 <div class="topo" >
-    <div class="tabs_panel">
+    <!--div class="tabs_panel">
         <ul class="tabs">
-            <li><span><a class="aba ajax" id="users_1" href='<?=URL::base();?>admin/users/getUsers/1'>ativos</a></span></li>
+            <li><a class="aba ajax" id="users_1" href='<?=URL::base();?>admin/users/getUsers/1'>ativos</a></li>
             <?
             if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>
-            <li><span><a class="aba ajax" id="users_2" href='<?=URL::base();?>admin/users/getUsers/0'>inativos</a></span></li>
+            <li><a class="aba ajax" id="users_2" href='<?=URL::base();?>admin/users/getUsers/0'>inativos</a></li>
             <?}?>
         </ul>  
-     </div>
+     </div-->
+     <div class="clear" id="filtros"></div>
 </div>
 <div id="esquerda">
     <?if($current_auth != "assistente" && $current_auth != "assistente 2" ){?>

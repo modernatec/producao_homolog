@@ -300,7 +300,6 @@ function setupAjax(container){
         });
     }else{
         if($('.topo').length != 0 && (container == '#content' || container == '#filtros')){
-            console.log('entrou')
             $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
             $('#esquerda, #direita, #page').fadeIn(1000);
         }
@@ -325,12 +324,20 @@ function setupAjax(container){
             google.load("visualization", "1", {packages:["corechart"], callback: drawCharts });
             googleLoaded = true;
         }    
-
-        if($('#relatorios_project_id').length != 0 && container == '#content'){
-            $('#relatorios_project_id').on('change', function() {
+        //&& container == '#content'
+        if($('#relatorios_project_id').length != 0 || $('#table_id_list').length != 0){
+            $('#relatorios_project_id, #table_id_list').on('change', function() {
                 loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
             });
         }
+
+        /*
+        if(){
+            $('#table_id_list').on('change', function() {
+                loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
+            });
+        }
+        */
 
         $("#generateStatus").unbind('click').bind('click', function(e){
             e.preventDefault();
@@ -462,19 +469,21 @@ function setupAjax(container){
 
             button_w = $('#' + e.currentTarget.id).width();
             panel_w = $(this).parent().children('.filter_panel').width();
+            
+            //console.log(panel_w + ' - ' + button_w + ' - ' + arrow.width());
 
-            console.log();
             panel.css('left', '-' + ((panel_w / 2) - (button_w / 2)) + 'px');
-            arrow.css('left', (button_w / 2) + 'px');
+            arrow.css('left', ((button_w / 2) - 6) + 'px');
             
             arrow.fadeToggle();
-
-            panel.fadeToggle(function(){
+            panel.fadeToggle();
+            /*
+            function(){
                 if(panel.css('display') == 'none'){
                     //$(this).parent().parent().children('li').css({'background': ''});
                 }
             });
-
+            */
             //$(this).parent().parent().children('li').css({'background': '#cccccc'});
             
         });
@@ -795,11 +804,14 @@ function setupAjax(container){
             var url = this.href;
             if($(this).hasClass('icon_playing')){
                 $(this).removeClass('icon_playing');
+                $(this).closest('.acervo_infos').removeClass('selected');
                 $('#acervo_preview').html('');
             }else{
+                $('.acervo_infos').removeClass('selected');
                 $('.icon_playing').removeClass('icon_playing');
 
                 $(this).addClass('icon_playing');
+                $(this).closest('.acervo_infos').addClass('selected');
 
                 $.ajax({
                     type: "POST",

@@ -22,6 +22,8 @@
                 </li>
             <?};?>
         </ul>
+        <ul class="list_item"> 
+            <li>
         <!--OED escolhido-->
         <?
             $view = View::factory('admin/acervo/list_item');
@@ -31,6 +33,8 @@
             $view->display = 'block';
             echo $view;
         ?>
+            </li>
+        </ul>
         <!--OED histórico para tras-->
         <ul class="list_item">           
         <?

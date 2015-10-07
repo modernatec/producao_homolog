@@ -43,7 +43,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($page, true)->render())),
+					//array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($page, true)->render())),
 					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);

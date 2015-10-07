@@ -32,11 +32,8 @@
 			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
 				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
 					<div class="acervo_item_top">
-						<p><b><?=$objeto->title?></b></p>
+						<p class="text_cyan"><b><?=$objeto->title?></b></p>
 						<p><?=$objeto->collection_name?></p>
-					</div>
-					<div class="acervo_item_bottom">
-						
 					</div>
 				</a>
 			</div>

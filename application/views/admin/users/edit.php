@@ -1,17 +1,18 @@
 <div class="scrollable_content">
     <form name="frmEditUsers" id="frmEditUsers" method="post" class="form" action="<?=URL::base();?>admin/users/salvar/<?=$userInfoVO['id']?>" enctype="multipart/form-data" autocomplete="off">
-		<div class="foto_form team_<?=@$userInfoVO["team_id"]?>" >
-			<?if($userInfoVO["foto"] != ''){?>
-				<img id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>?c=<?=date('H:i:s');?>" />
-			<?}?>
+		<?if($userInfoVO["foto"] != ''){?>
+		<div class="left foto_form team_<?=@$userInfoVO["team_id"]?>" >
+			<img id="foto_atual" src="<?=URL::base();?><?=@$userInfoVO["foto"]?>?c=<?=date('H:i:s');?>" />
 		</div>
-		<div id="upload" class="dropzone" data-user="<?=$userInfoVO['id']?>" style="margin-left: 130px;">			
+		<?}?>
+		<div id="upload" class="dropzone left" data-user="<?=$userInfoVO['id']?>">			
 			<div class="dz-message" data-dz-message><span> <img src='<?=URL::base()?>/public/image/admin/upload.png' valign="middle" /></span></div>
 		</div>
 		
 		<input type="hidden" name="foto" id="userFoto" />
-	  <dl>
-		<div class="left">
+	  	
+
+		<div class="clear">
 		    <dt>
 		      <label for="nome">nome</label>
 		    </dt>
@@ -92,10 +93,6 @@
 		</div>
 		<?}?>
 
-		
-	    
-		
-
 	    <div class="clear left">   
 		    <dt>
 		      <label for="team">equipe</label>
@@ -129,6 +126,5 @@
 	    <dd>
 			<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
 	    </dd>	
-	  </dl>
 	</form>
 </div>

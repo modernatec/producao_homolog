@@ -1,17 +1,18 @@
-<div class="acervo_infos round">
+<div class="acervo_infos roundTop">
     <div class="acervo_infos_header <?=$header_class;?> roundTop">
         <div class="collapse_holder left">
             <?if($header_class == ''){?>
             <a class="collapse icon icon_expand" data-show="infos<?=$objeto->id?>" title="abrir/fechar infos">collapse</a>
             <?}?>
         </div>
-        <div class="left">
+        <div class="left title">
             <b><span class="wordwrap"><?=@$objeto->title;?></span></b><br/>
             <span class="wordwrap"><?=@$objeto->taxonomia;?></span>
         </div>
     </div>
+    <?if($objeto->uploaded == 1){?>
     <div class="acervo_infos_opt infos<?=$objeto->id?> <?=$display?>">
-        <?if($objeto->uploaded == 1){?>
+        
 
         <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' data-rel="load-content" data-panel="#preview" class="icon icon_visualizar right load acervo_view">visualizar</a>
             
@@ -19,14 +20,23 @@
             <?if($current_auth != "assistente" || $current_auth != "assistente 2" || $current_auth != "editor 1"){?>
             <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="icon icon_baixar right">baixar</a>
             <?}?>
-        <?
-            }
-        ?>
+        
     </div>
-    <div class="acervo_infos_content clear roundBottom ">
-        <div class=" infos<?=$objeto->id?> <?=$display?>">
-            
-            <p><?=@$objeto->collection->name?></p>
+    <?}?>
+    <div class="acervo_infos_content clear infos<?=$objeto->id?> <?=$display?>">
+        <div class=" ">
+            <table>
+                <thead>
+                    <th><span>OP</span></th>
+                    <th><span>coleção</span></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?=@$objeto->collection->op?></td>
+                        <td><?=@$objeto->collection->name?></td>
+                    </tr>
+                </tbody>
+            </table>
             <?if($objeto->reaproveitamento == 0){ 
                 $origem = "novo";
             }elseif($objeto->reaproveitamento == 1){

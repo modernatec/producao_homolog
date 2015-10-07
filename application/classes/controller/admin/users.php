@@ -17,7 +17,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 		parent::__construct($request, $response);     
 	}
 	
-    public function action_index($ajax = null)
+    public function action_index()
 	{	
         $view = View::factory('admin/users/list')
             ->bind('message', $message);
@@ -26,19 +26,15 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
 		$view->current_auth = $this->current_auth;    
 
-        if($ajax == null){
-            //$this->template->content = $view;             
-        }else{
-            $this->auto_render = false;
-            header('Content-Type: application/json');
-            echo json_encode(
-                array(
-                    array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-                    //array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($this->current_user->userInfos->id, true)->render())),
-                )                       
-            );
-            return false;
-        }  	
+        $this->auto_render = false;
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+            )                       
+        );
+        return false;
 	} 
         
 	/*
@@ -431,6 +427,27 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     } 
 
     /********************************/
+    public function getFiltros(){
+        $this->auto_render = false;
+        $viewFiltros = View::factory('admin/users/filtros');
+
+        $filtros = Session::instance()->get('kaizen')['filtros'];
+
+        $viewFiltros->filter_team = array();
+        
+        if(!isset($viewFiltros->filter_status)){
+            $viewFiltros->filter_status = array('1');
+        }
+
+        $viewFiltros->teamList = ORM::factory('team')->order_by('name', 'ASC')->find_all();
+
+        foreach ($filtros as $key => $value) {
+            $viewFiltros->$key = json_decode($value);
+        }
+
+        return $viewFiltros;
+    }
+
     public function action_getUsers($status_id, $ajax = null){
         $this->auto_render = false;
         $view = View::factory('admin/users/table');
@@ -448,10 +465,12 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 
         //$this->startProfilling();
 
-        $filtros = Session::instance()->get('kaizen')['filtros'];
+        //$filtros = Session::instance()->get('kaizen')['filtros'];
+        /*
         foreach ($filtros as $key => $value) {
             $view->$key = json_decode($value);
         }
+        */
 
         $query = ORM::factory('userInfo');
 

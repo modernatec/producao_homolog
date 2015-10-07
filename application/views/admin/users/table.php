@@ -14,11 +14,10 @@
 				<div class="item_content">
 				<a href="<?=URL::base().'admin/users/edit/'.$usuario->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
 					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
-					<span class='left'><?=$usuario->nome?></span>
-					<div class="clear">
-						<p>time: <?=$usuario->team->name?></p>
-						<p>e-mail: <?=$usuario->email?></p>
-						<p>ramal: <?=$usuario->ramal?></p>
+					<div class="left">
+						<span class='line'><?=$usuario->nome?></span>
+						<p><?=$usuario->email?></p>
+						<p><?=$usuario->ramal?></p>
 					</div>
 				</a>
 				</div>

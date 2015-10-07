@@ -15,15 +15,12 @@
         }
     ?>
     <div class="clear" style="padding:4px 0;">
-    
-        
         <hr style="margin:8px 0;" />
-        <p>
+        <div class="line_itens">
             <? foreach ($formats as $format) {?>
-                <span class="list_faixa blue round left"><?=$format->format->name?></span> 
+                <span class="line_itens"><?=$format->format->name?></span> 
             <?}?>  
-        </p>
-        
+        </div>        
     <? if($VO['observacoes'] != ""){?> 
         <p class="clear"><span class='text_blue'><b>observações</b></span></p>  
         <?=$VO['observacoes']?>

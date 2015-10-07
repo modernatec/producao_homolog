@@ -52,7 +52,7 @@ hr {
 	display: block; 
 	height: 1px;
     border: 0; 
-    border-top: 1px solid #AFBCBF;
+    border-top: 1px solid #ccc;
     margin: 0; 
     padding: 0; 
     font-style: bold;
@@ -89,7 +89,7 @@ input{
 	text-align: center;
 	width: 50px;
 	right: 0;
-	border-left: 1px solid #AFBCBF;
+	border-left: 1px solid #ccc;
 	border-right: none;
 }
 
@@ -104,10 +104,20 @@ input{
 }
 
 .second_filter{
-	background: #f4f4f4;
-	min-height: 34px !important;
-	/*border-bottom: 1px #ccc solid;*/
+	background: #fff;
+	min-height: 31px !important;
+	border-bottom: 1px #ccc solid;
 }
+
+.second_filter .icon{
+	margin-top: 2px;
+}
+
+/*
+.second_filter .filter ul li{
+	padding: 0;
+}
+*/
 
 .topo .filters{
 	padding-top: 6px;
@@ -115,8 +125,8 @@ input{
 }
 
 .topo .form input[type='text']{
-	border: none !important;
-	padding: 8px 5px;
+	/*border: none !important;*/
+	padding: 6px 5px;
 }
 
 .filters{
@@ -130,7 +140,7 @@ input{
     display: none;
     top:46px;
     bottom: 0;
-    border-right: 1px solid #AFBCBF;
+    border-right: 1px solid #ccc;
     padding: 0 5px;
 }
 
@@ -203,6 +213,7 @@ input{
 }
 
 .user_menu span{
+	padding: 0 5px;
 	line-height: 25px;
 	text-transform: none;
 }
@@ -228,8 +239,9 @@ input{
 
 /***rever**/
 .line{
-	line-height: 25px;
+	line-height: 30px;
 }
+
 
 .foto_form{
 	-o-border-radius: 100px;
@@ -312,7 +324,7 @@ input{
 }
 
 .bar_button{
-	border: 1px #69C3D1 solid;
+	border: 1px #69C3D1 solid !important;
 	padding:5px;
 	margin-right:5px;
 	color:#4F4F4F !important;
@@ -337,6 +349,8 @@ input{
 .subtabs li, .tabs li{
 	float: left;
 	line-height: 44px;
+	min-width: 70px;
+	text-align: center;
 }
 
 .subtabs .selected, .tabs .selected{
@@ -432,39 +446,75 @@ table.gray td{
 }
 
 /*****Forms****/
-.form dl, .form dt, .form dd{
+dl, dt, dd{
 	padding:5px 0;
 }
 
+/*
+.form input[type='text'], .form input[type='password'], input[type='submit'],input[type='button'], .form textarea, .form select, select{
+	border:1px #ccc solid;
+	padding:5px !important;
+    box-shadow: none;
+}
+*/
 
-.form input[type='text'], .form input[type='password'], input[type='submit'],input[type='button'], .form textarea, .form select{
-	border:1px #CCC solid;
-	padding:5px;
+input[type='text'], input[type='password'], input[type='submit'], input[type='button'], textarea, select{
+	border:1px #ccc solid;
+	padding:5px !important;
     box-shadow: none;
 }
 
+
 input[type='submit'], input[type='button']{
-	border: none;
-	box-shadow: none;
+	cursor: pointer;
+	border: 1px #ccc solid;
+	padding:5px;
+	/*margin-right:5px;*/
+	color:#4F4F4F !important;
+	position: relative;
+	cursor: pointer;
+	background: none !important;
 }
 
-.form input[type='text'].error, .form input[type='password'].error, .form select.error, .form textarea.error{
+input[type='text'].error, input[type='password'].error, select.error, textarea.error{
     color:#000;
-    border:1px #fea2a2 solid;
-    background-color: #ebebeb;
-    display:inline;
+    border:1px #D94638 solid;
+    /*background-color: #ebebeb;*/
+    /*display:inline;*/
 }
 
-.form input[type='checkbox']{
+input[type='checkbox']{
 	margin-right:5px;
+}
+
+input[type='text'], input[type='password']{
+	border:1px #ccc solid;
+	color:#666;
+	padding:8px 5px;
+  	/*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;*/
+  	outline: none; 
+}
+
+input[type='text']:hover, input[type='password']:hover{
+	border:1px #ccc solid;
+}
+
+
+input[type='text']:focus, input[type='password']:focus{
+	/*
+	border-color: #00a4e4;
+  	-webkit-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+  	-moz-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+  	box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
+  	*/
 }
 
 .form p{ padding:2px 5px; display:inline-block; }
 
 .error{
     color:#EE0000;
-    margin-left: 5px;
-    display:block;
+    /*margin-left: 5px;
+    display:block;*/
 }
 
 .right{
@@ -513,7 +563,7 @@ input[type='submit'], input[type='button']{
 
 .hist{
     overflow: hidden;
-    border: 1px #AFBCBF solid;
+    border: 1px #ccc solid;
     border-top: none;
     color: #4F4F4F;
 }
@@ -526,7 +576,7 @@ input[type='submit'], input[type='button']{
 }
 
 .task_item{
-	border-bottom: 1px #AFBCBF solid
+	border-bottom: 1px #ccc solid
 }
 
 .task_item .collapse_holder{
@@ -608,39 +658,7 @@ input[type='submit'], input[type='button']{
 	padding: 0 5px;
 }
 
-input[type='submit'], input[type='button']{
-	cursor: pointer;
-	border: 1px #69C3D1 solid;
-	padding:5px;
-	margin-right:5px;
-	color:#4F4F4F !important;
-	position: relative;
-	cursor: pointer;
-	background: none !important;
-}
 
-
-input[type='text'], input[type='password']{
-	border:1px #CCC solid;
-	color:#666;
-	padding:8px 5px;
-  	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
-  	outline: none; 
-}
-
-input[type='text']:hover, input[type='password']:hover{
-	border:1px #00a4e4 solid;
-}
-
-
-input[type='text']:focus, input[type='password']:focus{
-	/*
-	border-color: #00a4e4;
-  	-webkit-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
-  	-moz-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
-  	box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
-  	*/
-}
 
 
 .step{
@@ -936,7 +954,7 @@ a.green{
 	margin: 5px 0;
 	padding: 5px;
 	color: #28A5B8;
-	border-bottom: 1px #28A5B8 solid;
+	border-bottom: 1px #ccc solid;
 }
 
 .list_item li, .dd-item{
@@ -961,20 +979,21 @@ a.green{
 	margin-left: 5px;
 }
 
-.icon_filtros{
-	width: 13px;
-	height: 17px;
+.icon_filtros {
+	width: 16px;
+	height: 21px;
 	float: right;
+	margin: 2px 5px 0 2px;
 }
 
 /**icones**/
 
-.icon_filter{
-	background: url('../../image/admin/icons.png') no-repeat -175px -30px;
+.icon_filter {
+	background: url('../../image/admin/icons.png') no-repeat -175px -27px;
 }
 
 .icon_filter_active{
-	background: url('../../image/admin/icons.png') no-repeat -175px -4px;
+	background: url('../../image/admin/icons.png') no-repeat -175px -1px;
 }
 
 .icon_status{
@@ -1012,11 +1031,11 @@ a.green{
 }
 
 .icon_collapse {
-	background: url('../../image/admin/icons.png') no-repeat -196px -2px;
+	background: url('../../image/admin/icons.png') no-repeat -195px -2px;
 }	
 
 .icon_expand {
-	background: url('../../image/admin/icons.png') no-repeat -241px 1px;
+	background: url('../../image/admin/icons.png') no-repeat -240px 1px;
 }
 
 
@@ -1064,6 +1083,21 @@ a.green{
 	background: url('../../image/admin/icons.png') no-repeat -24px -53px;
 }
 
+.icon_add {
+	background: url('../../image/admin/icons.png') no-repeat -124px -53px;
+}	
+
+.icon_edit {
+	background: url('../../image/admin/icons.png') no-repeat -59px -81px;
+}
+
+.icon_delete {
+	background: url('../../image/admin/icons.png') no-repeat -85px -81px;
+}
+
+.icon_xls {
+	background: url('../../image/admin/icons.png') no-repeat -110px -82px;
+}
 
 
 /**pagination**/
@@ -1146,7 +1180,7 @@ a.green{
 }
 
 .list_item li{ 
-	border-bottom: 1px #AFBCBF solid;
+	border-bottom: 1px #ccc solid;
 }
 
 .blueSelection{
@@ -1256,7 +1290,7 @@ a.green{
 
 .filter_panel{
 	background: #fff ;
-	border: 1px #AFBCBF solid;
+	border: 1px #ccc solid;
 	position: absolute;
 	display: none;
 	left: 0;
@@ -1264,9 +1298,9 @@ a.green{
 	padding: 5px;
 	
 	width: auto !important;
-	min-width: 100px;
+	min-width: 115px;
 	z-index: 2;
-	box-shadow:#353535 0 2px 10px;
+	box-shadow: #515151 1px 2px 7px;
 	overflow: auto;
 }
 
@@ -1276,7 +1310,7 @@ a.green{
 	left: 0;
 	border-style: solid;
 	border-width: 0 8px 12px;
-	border-color: #AFBCBF transparent;
+	border-color: #ccc transparent;
 	width: 0;
 	z-index: 3;
 }
@@ -1304,7 +1338,9 @@ a.green{
 }
 
 .filter ul li{
-	padding: 5px;
+	/*padding: 5px;*/
+	line-height: 25px;
+	overflow: auto;
 }
 
 .filter ul li > ul li{	
@@ -1344,7 +1380,7 @@ a.green{
 }
 
 .description{
-	border-bottom: 1px solid #AFBCBF;
+	border-bottom: 1px solid #ccc;
 	padding-left: 34px !important;
 	color:#808080 !important;
 }
@@ -1355,7 +1391,7 @@ a.green{
 
 .anotacoes{
 	background: #f4f4f4;
-	border-bottom: 1px solid #AFBCBF;
+	border-bottom: 1px solid #ccc;
 	padding: 5px 4px 5px 34px;
 	overflow: auto;
 	color:#808080 !important;
@@ -1402,7 +1438,7 @@ a.green{
 .acervo_item{
 	width: 330px;
 	overflow: auto;
-	border: 1px solid #AFBCBF;
+	border: 1px solid #ccc;
 	float: left;
 	margin: 0 5px 5px 0;
 }
@@ -1420,7 +1456,7 @@ a.green{
 }
 
 .acervo_item_bottom{
-	border-top: 1px solid #AFBCBF;
+	border-top: 1px solid #ccc;
 	padding: 4px;
 	background: #F3F4F5;
 	overflow: auto;
@@ -1430,13 +1466,17 @@ a.green{
 
 .acervo_infos{
 	margin-bottom: 5px;
-	border: 1px #AFBCBF solid;
+	border: 1px #ccc solid;
 }
 
 .acervo_infos_header{
 	padding: 10px 5px;
 	background: #ededed;
 	overflow: hidden;
+}
+
+.acervo_infos_header .title{
+	width: 335px;
 }
 
 .acervo_infos_content{

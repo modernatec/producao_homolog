@@ -10,7 +10,7 @@
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
 
         <div class="right">
-            <a href="" title="infos" class="popup icon icon_info">infos</a>
+            <a class="popup icon icon_info" href="<?=URL::base().'admin/acervo/view/'.$obj->id?>" data-select="obj_<?=$obj->id?>" title="+ informações">infos</a>
         </div>
         <div class="line right">
             <?=Utils_Helper::data(@$obj->planned_date,'d/m/Y')?>

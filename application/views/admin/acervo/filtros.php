@@ -1,4 +1,4 @@
-<div class="filters clear">
+<div class="second_filter filters clear">
     <form action='<?=URL::base();?>admin/acervo/getObjects/' id="frm_acervo" data-panel="#tabs_content" method="post" class="form">
         <input type="hidden" name="acervo" value="1">
         <div class="filter">
