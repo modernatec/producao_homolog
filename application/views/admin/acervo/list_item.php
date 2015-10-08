@@ -12,14 +12,38 @@
     </div>
     <?if($objeto->uploaded == 1){?>
     <div class="acervo_infos_opt infos<?=$objeto->id?> <?=$display?>">
-        
-
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' data-rel="load-content" data-panel="#preview" class="icon icon_visualizar right load acervo_view">visualizar</a>
+        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="icon icon_visualizar right acervo_view">visualizar</a>
             
-        <a href='<?=URL::base();?>/admin/acervo/acervoPreview/<?=$objeto->id?>' data-rel="load-content" class="icon icon_mesa right">mesa de luz</a>
-            <?if($current_auth != "assistente" || $current_auth != "assistente 2" || $current_auth != "editor 1"){?>
-            <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="icon icon_baixar right">baixar</a>
-            <?}?>
+        <div class="filter right" >
+            <ul>
+                <li class="round" >
+                    <span id="mesa<?=$objeto->id?>"><div class="icon icon_mesa" >add</div></span>
+                    <div class="filter_panel_arrow"></div>
+                    <div class="filter_panel round" data-position="right" >
+                        <p class="text_cyan">adicionar à mesa de luz</p>
+                        <div class="scrollable_content" data-bottom="false">
+                            <ul>
+                                <? 
+                                foreach ($tables as $mesa) {
+                                    $data_post = json_encode(array('object_id'=>$objeto->id, 'table_id'=>$mesa->id));
+                                ?>                            
+                                <li>
+                                    <a class="post" href='<?=URL::base();?>/admin/tables/add/<?=$mesa->id?>' data-post='<?=$data_post;?>'><?=$mesa->name;?></a>
+                                </li>
+                                <?}?>
+                            </ul>
+                        </div>  
+                        <div id="nova_mesa<?=$objeto->id?>" style='padding:5px 0; width:233px;'>
+                            <a class="bar_button round createTableLight" href='<?=URL::base();?>/admin/tables/edit/<?=$objeto->id?>' data-panel="#nova_mesa<?=$objeto->id?>" >nova mesa de luz</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <?if($current_auth != "assistente" || $current_auth != "assistente 2" || $current_auth != "editor 1"){?>
+        <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="icon icon_baixar right">baixar</a>
+        <?}?>
         
     </div>
     <?}?>

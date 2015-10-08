@@ -16,19 +16,7 @@
 		
 	</div>
 	<div class="clear scrollable_content list_body">
-			<?foreach($objectsList as $objeto){
-				/*
-				if($objeto->reaproveitamento == 0){ 
-	                $origem = "N";
-	            }elseif($objeto->reaproveitamento == 1){
-	                $origem = "R";
-	            }else{
-	                $origem = "Ri";
-	            }
-
-	            $tipo = explode('-', $objeto->tipo);
-	            */
-			?>
+			<?foreach($objectsList as $objeto){?>
 			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
 				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
 					<div class="acervo_item_top">

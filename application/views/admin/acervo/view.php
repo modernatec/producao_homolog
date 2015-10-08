@@ -14,6 +14,7 @@
                     <?
                         $view = View::factory('admin/acervo/list_item');
                         $view->objeto = $objetoF;
+                        $view->tables = $tables;
                         $view->current_auth = $current_auth;
                         $view->header_class = '';
                         $view->display = 'hide';
@@ -28,6 +29,7 @@
         <?
             $view = View::factory('admin/acervo/list_item');
             $view->objeto = $objeto;
+            $view->tables = $tables;
             $view->current_auth = $current_auth;
             $view->header_class = 'selected';
             $view->display = 'block';
@@ -43,6 +45,7 @@
                     <?
                         $view = View::factory('admin/acervo/list_item');
                         $view->objeto = $objetoB;
+                        $view->tables = $tables;
                         $view->current_auth = $current_auth;
                         $view->header_class = '';
                         $view->display = 'hide';

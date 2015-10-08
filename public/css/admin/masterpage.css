@@ -81,7 +81,7 @@ input{
 	top:0;
 	bottom: 0;
 	background: #454A4F;
-	z-index: 3;
+	/*z-index: 3;*/
 }
 
 #taskBar{
@@ -298,7 +298,7 @@ input{
 
 .content{
 	position: absolute;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	left: 150px;
 	right: 50px;
 	top: 0;
@@ -518,7 +518,7 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .right{
-	float:right;
+	float:right !important;
 	top: 0;
 }
 
@@ -861,6 +861,10 @@ input[type='text']:focus, input[type='password']:focus{
 
 a.green{
 	color: #fff;
+}
+
+a.post{
+	color: #4F4F4F;
 }
 
 /*
@@ -1334,7 +1338,7 @@ a.green{
 
 	width: auto !important;
 	min-width: 180px;
-	margin: 5px 0;
+	/*margin: 5px 0;*/
 }
 
 .filter ul li{
@@ -1482,7 +1486,7 @@ a.green{
 .acervo_infos_content{
 	padding: 5px 10px;
 	color: #4F4F4F;
-	overflow: auto;
+	/*overflow: auto;*/
 }
 
 .acervo_infos_content table{
@@ -1502,8 +1506,22 @@ a.green{
 
 .acervo_infos_opt{
 	background: #f8f8f8;
+	height: 25px;
 	padding: 5px 10px;
-	overflow: auto;
+}
+
+.acervo_infos_opt li{
+	background: none !important;
+}
+
+.acervo_infos_opt li ul li{
+	padding: 5px 0;
+}
+
+
+.acervo_infos_opt .filter .scrollable_content{
+	max-height: 150px !important;
+	margin-bottom: 5px; 
 }
 
 .acervo_infos_item{
@@ -1578,12 +1596,15 @@ div.jGrowl div.error {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	min-width: 400px;
+	left: 0;
+	
+	/*min-width: 400px;*/
 	height: auto;
 	background: #fff;
 	z-index: 10;
 	display: none;
 	box-shadow:#333 1px 5px 15px;
+	overflow: hidden;
 }
 
 .panel_content{

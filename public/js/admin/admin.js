@@ -325,11 +325,11 @@ function setupAjax(container){
             googleLoaded = true;
         }    
         //&& container == '#content'
-        if($('#relatorios_project_id').length != 0 || $('#table_id_list').length != 0){
-            $('#relatorios_project_id, #table_id_list').on('change', function() {
-                loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
-            });
-        }
+        //if($('#relatorios_project_id').length != 0 || $('#table_id_list').length != 0){
+        $('#relatorios_project_id, #table_id_list').unbind('change').bind('change', function() {
+            loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
+        });
+        //}
 
         /*
         if(){
@@ -469,10 +469,16 @@ function setupAjax(container){
 
             button_w = $('#' + e.currentTarget.id).width();
             panel_w = $(this).parent().children('.filter_panel').width();
-            
-            //console.log(panel_w + ' - ' + button_w + ' - ' + arrow.width());
 
-            panel.css('left', '-' + ((panel_w / 2) - (button_w / 2)) + 'px');
+            switch(panel.data('position')){
+                case "right":
+                    console.log('teste');
+                    panel.css('left', '-' + ((panel_w - button_w) - (button_w / 2)) + 'px');
+                break;
+                default:
+                    panel.css('left', '-' + ((panel_w / 2) - (button_w / 2)) + 'px');
+            }
+            
             arrow.css('left', ((button_w / 2) - 6) + 'px');
             
             arrow.fadeToggle();
@@ -761,6 +767,7 @@ function setupAjax(container){
             return false;
         });
 
+        /*
         $("a.view_oed").unbind('click').bind('click', function(e) {   
             e.preventDefault();
             var url = this.href;
@@ -798,6 +805,7 @@ function setupAjax(container){
                 }
             });  
         });
+        */
 
         $("a.acervo_view").unbind('click').bind('click', function(e) {   
             e.preventDefault();
@@ -822,13 +830,11 @@ function setupAjax(container){
                         if(retorno != 0){
                             $('#acervo_preview').removeClass('hide');
                             $('#acervo_preview').html(retorno);
-                            //$('.iframe_body').attr('src', retorno);
-                            //setupAjax('#dialog');
                         }else{
                             setMsg({
                                 content:'Ops!..<br/><br/>Não encontrei este OED.', 
                                 container:'error',
-                            });
+                            },false);
                         }
                     },
                     error: function(e) {
@@ -886,6 +892,63 @@ function setupAjax(container){
                 error: function(e) {
                     console.log(e);
                     removeDialogs();
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        container:'error',
+                        
+                    });
+                }
+            }); 
+            
+        });
+
+        $('a.createTableLight').unbind('click').bind('click', function(e, ui) {
+            e.preventDefault();
+            var url = this.href;
+            var panel = $(this).data('panel');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                timeout: 20000, 
+                dataType : "html",
+                success: function(retorno) {
+                    $(panel).html(retorno);
+                    setupAjax(panel);
+                },
+                error: function(e) {
+                    console.log(e);
+                    //removeDialogs();
+                    setMsg({
+                        content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
+                        container:'error',
+                        
+                    });
+                }
+            }); 
+            
+        });
+
+        $('a.post').unbind('click').bind('click', function(e, ui) {
+            e.preventDefault();
+            var url = this.href;
+            var data_post = $(this).data('post');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data_post,
+                timeout: 20000, 
+                dataType : "html",
+                success: function(retorno) {
+                    setMsg({
+                        content:retorno, 
+                        
+                    },false);
+                    closeFilterPanel();
+                },
+                error: function(e) {
+                    console.log(e);
                     setMsg({
                         content:'Ops!..<br/><br/>Erro ao carregar o conteúdo.<br/>tente novamente...', 
                         container:'error',

@@ -386,6 +386,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     {
         // Log user out
         Auth::instance()->logout();
+        Session::instance()->delete('kaizen');
          
         // Redirect to login page
         Request::current()->redirect('login');

@@ -34,21 +34,15 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$view = View::factory('admin/acervo/list')
 			->bind('message', $message);
 
-		//if($ajax == null){
-			//$this->template->content = $view;             
-		//}else{
-			$this->auto_render = false;
+		$this->auto_render = false;
 
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					//array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($page, true)->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
-				)						
-			);
-	        return false;
-		//}           
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
 	} 
      
 	public function action_view($id, $ajax = null)
@@ -60,7 +54,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 		$objeto = ORM::factory('object', $id);
         $view->objeto = $objeto;   
-        $view->user = $this->current_user->userInfos;    
+        //$view->user = $this->current_user->userInfos;    
 
         $array_path = array();
         if($objeto->object_id != ""){        	
@@ -70,11 +64,16 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
         $array_pathFoward = array();
         $this->searchPathFoward($array_pathFoward, $objeto->id);             
-        $view->array_pathFoward = $array_pathFoward;                  
-		
+        $view->array_pathFoward = $array_pathFoward;      
+
+        /**procura por mesas de luz do user**/            
+        $tables = ORM::factory('table')->where('userInfo_id', '=', $this->current_user->userInfos->id)->find_all();
+		$view->tables = $tables;
+
+				
         //ALTERAR APOS INCLUSAO DAS TASKS NO STATUS
-        $view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
-        $last_status = $view->objects_status[0];
+        //$view->objects_status = ORM::factory('objects_statu')->where('object_id', '=', $id)->order_by('created_at', 'DESC')->find_all();
+        //$last_status = $view->objects_status[0];
         
  		$view->current_auth = $this->current_auth;
 
@@ -106,40 +105,45 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
     	$viewFiltros = View::factory('admin/acervo/filtros');
 
     	$filtros = Session::instance()->get('kaizen')['filtros'];
+  		
+    	try 
+		{ 
+			$viewFiltros->filter_segmento = array();
+			$viewFiltros->filter_collection = array();
+			$viewFiltros->filter_project = array();
+			$viewFiltros->filter_typeobject = array();
+	  		$viewFiltros->filter_supplier = array();
+	  		$viewFiltros->filter_origem = array();
+	  		$viewFiltros->filter_tipo = array();
 
-  		$viewFiltros->filter_segmento = array();
-		$viewFiltros->filter_collection = array();
-		$viewFiltros->filter_project = array();
-		$viewFiltros->filter_typeobject = array();
-  		$viewFiltros->filter_supplier = array();
-  		$viewFiltros->filter_origem = array();
-  		$viewFiltros->filter_tipo = array();
+	  		if(count($filtros) > 0){
+		  		foreach ($filtros as $key => $value) {
+		  			$viewFiltros->$key = json_decode($value);
+		  		}
+		  	}
 
-  		foreach ($filtros as $key => $value) {
-  			$viewFiltros->$key = json_decode($value);
-  		}
+	  		$tax_coloum = "";
+			$tax_order = "";
+			$order_by = "";
 
-  		$tax_coloum = "";
-		$tax_order = "";
-		$order_by = "";
+			if(isset($viewFiltros->filter_taxonomia)){
+	    		$list = explode(' ',addslashes($viewFiltros->filter_taxonomia));
+	    		$string = join('* +*',$list);
 
-		if(isset($viewFiltros->filter_taxonomia)){
-    		$list = explode(' ',addslashes($viewFiltros->filter_taxonomia));
-    		$string = join('* +*',$list);
+				$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
+				$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
+				$order_by = "ORDER BY relevance DESC";
+			}
 
-			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
-			$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
-			$order_by = "ORDER BY relevance DESC";
-		}
+	    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode(',', $viewFiltros->filter_segmento)."')" : "";
+	    	$supplier = (count($viewFiltros->filter_supplier) > 0) ? "AND a.supplier_id IN ('".implode("','",$viewFiltros->filter_supplier)."')" : '';
+	    	$origem = (count($viewFiltros->filter_origem) > 0) ? "AND a.reaproveitamento IN ('".implode("','",$viewFiltros->filter_origem)."')" : '';
+	    	$project = (count($viewFiltros->filter_project ) > 0) ? "AND a.project_id IN ('".implode("','",$viewFiltros->filter_project)."')" : '';
+	    	$collection = (count($viewFiltros->filter_collection ) > 0) ? "AND a.collection_id IN ('".implode("','",$viewFiltros->filter_collection)."')" : '';
+	    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? "AND a.typeobject_id IN ('".implode(',',$viewFiltros->filter_tipo)."')" : '';
+	    	
 
-    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode(',', $viewFiltros->filter_segmento)."')" : "";
-    	$supplier = (count($viewFiltros->filter_supplier) > 0) ? "AND a.supplier_id IN ('".implode("','",$viewFiltros->filter_supplier)."')" : '';
-    	$origem = (count($viewFiltros->filter_origem) > 0) ? "AND a.reaproveitamento IN ('".implode("','",$viewFiltros->filter_origem)."')" : '';
-    	$project = (count($viewFiltros->filter_project ) > 0) ? "AND a.project_id IN ('".implode("','",$viewFiltros->filter_project)."')" : '';
-    	$collection = (count($viewFiltros->filter_collection ) > 0) ? "AND a.collection_id IN ('".implode("','",$viewFiltros->filter_collection)."')" : '';
-    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? "AND a.typeobject_id IN ('".implode(',',$viewFiltros->filter_tipo)."')" : '';
-    	
-		$sql = "SELECT 
+			$sql = "SELECT 
 					a.*, 
 					b.id as collection_id, 
 					b.name as collection_name, 
@@ -161,27 +165,34 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				".$tax_order.
 				" GROUP BY a.id ".$order_by;
 
-		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
+			$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 
-		$collections_arr = array();
-		$segmentos_arr = array();
-		$projects_arr = array();
-		$type_arr = array();
+			$collections_arr = array();
+			$segmentos_arr = array();
+			$projects_arr = array();
+			$type_arr = array();
 
-		foreach ($result as $value) {
-			array_push($collections_arr, $value->collection_id);
-			array_push($segmentos_arr, $value->segmento_id);
-			array_push($projects_arr, $value->project_id);
-			array_push($type_arr, $value->typeobject_id);
-		}
+			foreach ($result as $value) {
+				array_push($collections_arr, $value->collection_id);
+				array_push($segmentos_arr, $value->segmento_id);
+				array_push($projects_arr, $value->project_id);
+				array_push($type_arr, $value->typeobject_id);
+			}
 
-  		$viewFiltros->segmentoList = ORM::factory('segmento')->where('id', 'IN', array_unique($segmentos_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collections_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->projectList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->typeList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->suppliersList = array();//= ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();		
+	  		$viewFiltros->segmentoList = ORM::factory('segmento')->where('id', 'IN', array_unique($segmentos_arr))->order_by('name', 'ASC')->find_all();
+			$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collections_arr))->order_by('name', 'ASC')->find_all();
+			$viewFiltros->projectList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->order_by('name', 'ASC')->find_all();
+			$viewFiltros->typeList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
+			$viewFiltros->suppliersList = array();//= ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();		
 
-  		return $viewFiltros;
+	  		return $viewFiltros;       
+			
+		} catch (ORM_Validation_Exception $e) {
+            return false;
+        } catch (Database_Exception $e) {
+        	//Session::instance()->delete('kaizen');
+            return false;
+        }		
     }
 
     public function action_getObjects($page, $ajax = null){
@@ -197,7 +208,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			$kaizen_arr = Session::instance()->get('kaizen');
 		}
 		
-		if(Session::instance()->get('kaizen')['model'] == 'acervo' && $page != 'ajax'){
+		if(Session::instance()->get('kaizen')['model'] == 'acervo' && $page != 'init'){
     		$kaizen_arr['parameters'] = $page;
     	}
 
@@ -213,84 +224,88 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$tax_coloum = "";
 		$tax_order = "";
 		$order_by = "";
-
-		if(isset($view->filter_taxonomia)){
-    		$list = explode(' ',addslashes($view->filter_taxonomia));
-    		$string = join('* +*',$list);
-
-			$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
-			$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
-			$order_by = "ORDER BY relevance DESC";
-		}
-
-    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode(',', $view->filter_segmento)."')" : "";
-    	$supplier = (isset($view->filter_supplier)) ? "AND a.supplier_id IN ('".implode("','",$view->filter_supplier)."')" : '';
-    	$origem = (isset($view->filter_origem)) ? "AND a.reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
-    	$project = (isset($view->filter_project )) ? "AND a.project_id IN ('".implode("','",$view->filter_project)."')" : '';
-    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode("','",$view->filter_collection)."')" : '';
-    	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode(',',$view->filter_tipo)."')" : '';
     	
+    	try 
+		{
+			if(isset($view->filter_taxonomia)){
+	    		$list = explode(' ',addslashes($view->filter_taxonomia));
+	    		$string = join('* +*',$list);
 
-		$sql = "SELECT 
-					a.*, 
-					b.name as collection_name, 
-					b.ano as collection_ano, 
-					c.name as tipo
-					".$tax_coloum."       				
-				FROM moderna_objects a 
-				INNER JOIN moderna_collections b ON a.collection_id = b.id
-				INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
-				INNER JOIN moderna_objects_status d ON a.id = d.object_id
-				WHERE fase = '1' AND d.status_id = '8' 
-				".$segmento." 
-				".$supplier." 
-				".$origem." 
-				".$project." 
-				".$collection." 
-				".$tipo." 
-				".$tax_order.
-				" GROUP BY a.id ".$order_by;
+				$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
+				$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
+				$order_by = "ORDER BY relevance DESC";
+			}
 
-		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
-		
-		// count number of objects
-		$total_objects = count($result);//$query->count_all();
-		$view->total_objects = $total_objects;
+	    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode(',', $view->filter_segmento)."')" : "";
+	    	$supplier = (isset($view->filter_supplier)) ? "AND a.supplier_id IN ('".implode("','",$view->filter_supplier)."')" : '';
+	    	$origem = (isset($view->filter_origem)) ? "AND a.reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
+	    	$project = (isset($view->filter_project )) ? "AND a.project_id IN ('".implode("','",$view->filter_project)."')" : '';
+	    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode("','",$view->filter_collection)."')" : '';
+	    	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode(',',$view->filter_tipo)."')" : '';
+			$sql = "SELECT 
+						a.*, 
+						b.name as collection_name, 
+						b.ano as collection_ano, 
+						c.name as tipo
+						".$tax_coloum."       				
+					FROM moderna_objects a 
+					INNER JOIN moderna_collections b ON a.collection_id = b.id
+					INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
+					INNER JOIN moderna_objects_status d ON a.id = d.object_id
+					WHERE fase = '1' AND d.status_id = '8' AND uploaded = '1' 
+					".$segmento." 
+					".$supplier." 
+					".$origem." 
+					".$project." 
+					".$collection." 
+					".$tipo." 
+					".$tax_order.
+					" GROUP BY a.id ".$order_by;
 
-		//var_dump(Session::instance()->get('kaizen')['parameters']);
-		// set-up the pagination
-		$view->items_per_page = 60;
+			$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
+			
+			// count number of objects
+			$total_objects = count($result);//$query->count_all();
+			$view->total_objects = $total_objects;
 
-		$pagination = Pagination::factory(array(
-		    'total_items' => $total_objects,
-		    'items_per_page' => $view->items_per_page, // this will override the default set in your config
-		    'current_page' => array('source' => 'route', 'key' => 'page', 'page' => Session::instance()->get('kaizen')['parameters']),
-		));
+			//var_dump(Session::instance()->get('kaizen')['parameters']);
+			// set-up the pagination
+			$view->items_per_page = 60;
 
-		$sql .= ' LIMIT '.$pagination->offset.', '.$pagination->items_per_page;
-		
+			$pagination = Pagination::factory(array(
+			    'total_items' => $total_objects,
+			    'items_per_page' => $view->items_per_page, // this will override the default set in your config
+			    'current_page' => array('source' => 'route', 'key' => 'page', 'page' => Session::instance()->get('kaizen')['parameters']),
+			));
 
-		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
+			$sql .= ' LIMIT '.$pagination->offset.', '.$pagination->items_per_page;			
 
-		$view->objectsList = $result; //$query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
-		$view->pagination = $pagination;
+			$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 
-		//$this->endProfilling();
-		if($ajax != null){
-			return $view;
-		}else{
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
-					
-				)						
-			);
-	       
-	        return false;
-	    }
-	    
+			$view->objectsList = $result; //$query->order_by('title', 'ASC')->offset($pagination->offset)->limit($pagination->items_per_page)->find_all();
+			$view->pagination = $pagination;
+
+			//$this->endProfilling();
+			if($ajax != null){
+				return $view;
+			}else{
+				header('Content-Type: application/json');
+				echo json_encode(
+					array(
+						array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+						array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+						
+					)						
+				);
+		       
+		        return false;
+		    }
+	    } catch (ORM_Validation_Exception $e) {
+            return false;
+        } catch (Database_Exception $e) {
+           	var_dump('expression');
+            return false;
+        }	
 	}    
 
 

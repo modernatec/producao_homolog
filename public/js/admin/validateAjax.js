@@ -167,38 +167,18 @@ function validateAjax(){
     $("#frmCreateTable").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
-            ajaxPost(form, $(form).data("panel"));
+            ajaxPost(form, $(form).data("panel"), false);
             return false;       
         }
     });
 
     $("#frmEditTable").validate({
         submitHandler: function(form) {
-            value = $("#table_id option:selected" ).val();
-            if(!value){
-                setMsg({
-                    content:'selecione uma mesa de luz.', 
-                    container:'error',
-                });
-            }else{
-                action = $(form).attr('action');
-                $(form).attr('action', action + value);
-                console.log($(form).attr('action'));
-                
-                $('input[type=submit]').attr('disabled', 'disabled');
-                ajaxPost(form, $(form).data("panel"));
-            }
-            /*
-
-            
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
             return false;       
-            */
         }
     });
-
-    
-
-
     
 
     $("#frmCreateSegmento").validate({
