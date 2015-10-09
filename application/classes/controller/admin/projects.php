@@ -57,20 +57,7 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			$ano = $projeto->ano;
 		}
 
-		$view->ano = $ano;
-		
-		/*
-		$collection_list = ORM::factory('collection')->where('ano', '=', $ano);
-
-		if($projeto->segmento != ''){
-			$collection_list->where('segmento_id', '=', $projeto->segmento->id);
-		}
-
-		$view_collections = View::factory('admin/collections/select');
-		$view_collections->collectionsList = $collection_list->find_all();
-		$view_collections->collectionsArr = DB::select('collection_id')->from('collections_projects')->where('project_id', '=', $projeto->id)->execute()->as_array('collection_id');
-		*/
-		
+		$view->ano = $ano;		
 		$view->project = $projeto;
 		
 		if($ajax == null){
@@ -231,7 +218,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
   		}
-
   		$query = ORM::factory('project');
 
 		(isset($view->filter_segmento)) ? $query->where('segmento_id', 'IN', $view->filter_segmento) : '';

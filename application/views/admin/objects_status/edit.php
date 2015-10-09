@@ -2,7 +2,6 @@
 	<a href="javascript:void(0)" class="close_pop">
         <div class="right icon icon_excluir_white">fechar</div>
     </a>
-    <div class="left icon icon_status_white">tarefas</div>
     <span><?=$title?></span>
 </div>
 <div class="left panel_content" style="min-width:478px;">
@@ -42,7 +41,7 @@
             </div>
             <dd>
               <input type="submit" class="round bar_button left" name="btnCriar" id="btnCriar" data-form="frmStatus" value="salvar" />             
-              <a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a>      
+              <!--a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a-->      
             </dd>	    
 	</form>
 </div>

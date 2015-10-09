@@ -5,22 +5,11 @@
 	      <label for="name">projeto</label>
 	    </dt>
 	    <dd>
-	      <input type="text" class="text required round" name="name" id="name" style="width:200px;" value="<?=@$projectVO['name'];?>"/>
+	      <input type="text" class="text required round" name="name" id="name" style="width:400px;" value="<?=@$projectVO['name'];?>"/>
 	      <span class='error'><?=Arr::get($errors, 'name');?></span>
 	    </dd>
 	</div>
-    <div class="left">
-	    <dt>
-	      <label for="status">status</label>
-	    </dt>
-	    <dd>
-	      <select class="required round" name="status" id="status" style="width:150px;">
-                <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>produzindo</option>
-                <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
-            </select>
-            <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
-	    </dd>
-    </div>
+    
     <div class="left">
 	    <dt>
 	      <label for="project_ano">ano</label>
@@ -36,7 +25,7 @@
 			<span class='error'><?=($errors) ? $errors['ano'] : '';?></span>
 	    </dd>
    	</div>
-    <div class="left">
+    <div class="clear left">
 	    <dt>
 	      <label for="project_segmento">segmento</label>
 	    </dt>
@@ -50,6 +39,18 @@
             <span class='error'><?=($errors) ? $errors['segmento_id'] : '';?></span>
 	    </dd>
 	</div>
+	<div class="left">
+	    <dt>
+	      <label for="status">status</label>
+	    </dt>
+	    <dd>
+	      <select class="required round" name="status" id="status" style="width:150px;">
+                <option value='1' <?=(($projectVO['status']==1)?('selected="selected"'):(''))?>>produzindo</option>
+                <option value='0' <?=(($projectVO['status']==0)?('selected="selected"'):(''))?>>finalizado</option>
+            </select>
+            <span class='error'><?=($errors) ? $errors['status'] : '';?></span>
+	    </dd>
+    </div>
 	<dd class="clear">
 		<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />		      
     </dd>
@@ -62,13 +63,12 @@
 	        	$qtd_oed += $collection->objects->where('fase', '=', '1')->count_all();
 	       	}
     	?>	
-    	<span class="list_faixa light_blue round left"><?=count($collections)?> coleções</span>	
-    	<span class="list_faixa light_blue round left"><?=$qtd_oed;?> OED</span>
+    	<span class="list_alert"><?=count($collections)?> coleções | <?=$qtd_oed;?> OED</span>	
 			<div class="scrollable_content clear">
-				<table class="list">
+				<table>
 					<thead>
-						<th width="10%">op</th>
-				        <th width="80%">coleção</th>
+						<th width="10%">OP</th>
+				        <th width="80%">Coleção</th>
 				        <th width="10%">qtd. OED</th>	
 					</thead>
 					<tbody>

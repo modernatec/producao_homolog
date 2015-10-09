@@ -23,7 +23,7 @@
         <label for="project_id">projeto</label>
       </dt>
       <dd>
-        <select name="project_id" id="project_id" class="round">
+        <select name="project_id" id="project_id" class="round" style='width:200px;'>
               <option value="">selecione</option>
               <? foreach($projectList as $project){?>
               <option value="<?=$project->id?>" <?=((@$collectionVO["project_id"] == $project->id)?('selected'):(''))?> ><?=$project->name?></option>
@@ -109,7 +109,7 @@
     </dd>
   </dl>
 
-<span class="list_faixa light_blue round left"><?=$collection->objects->where('fase', '=', '1')->count_all();?> OED</span>
+<span class="list_alert"><?=$collection->objects->where('fase', '=', '1')->count_all();?> OED</span>
 <div class="scrollable_content clear">
   <?
     if(isset($workflows)){
@@ -118,8 +118,8 @@
       $r = $workflow->name;
     ?>
 
-      <span class='list_alert light_blue round'><?=$workflow->name?> (<?=$workflow->days?> dias)</span>
-      <table width="100%" class="gray">
+      <span class='list_alert'><?=$workflow->name?> (<?=$workflow->days?> dias)</span>
+      <table>
         <thead>
             <th width="60%">OED</th>
             <th width="20%">início</th>
@@ -148,7 +148,6 @@
             <?}}?>
         </tbody>
     </table>
-    <hr style="margin:8px 0;" />
   <?}}?>
   
 </div>  

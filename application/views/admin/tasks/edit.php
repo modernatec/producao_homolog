@@ -2,7 +2,6 @@
     <a href="javascript:void(0)" class="close_pop">
         <div class="right icon icon_excluir_white">fechar</div>
     </a>
-    <div class="left icon icon_task_white">tarefas</div>
     <span><?=$title?></span>
 
 </div>
@@ -69,7 +68,7 @@
             <!--input type="checkbox" name="sendmail" id="sendmail" value="1"><label for="sendmail">enviar e-mail de atualização</label-->
             <dd>
               <input type="submit" class="round bar_button left" value="salvar" />  
-              <a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a>                  
+              <!--a href="javascript:void(0)" class="close_pop bar_button left round">cancelar</a-->                  
             </dd>	    
     	</dl>
     </form>

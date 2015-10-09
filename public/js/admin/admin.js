@@ -753,7 +753,7 @@ function setupAjax(container){
                 btExcluir = this;
                 NewDialog.dialog({
                 modal: true,
-                dialogClass: 'noTitleStuff',
+                /*dialogClass: 'noTitleStuff',*/
                 show: 'clip',
                 hide: 'clip',
                 resizable:false,
@@ -1277,7 +1277,7 @@ function loadContent(args){
         //}
 
         data_post = {container: container};
-
+        
         $.ajax({
             type: "POST",
             url: url,

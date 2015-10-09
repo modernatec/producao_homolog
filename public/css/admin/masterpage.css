@@ -17,7 +17,7 @@
 
 *{
 	/*font-family: 'MyriadPro',sans-serif;*/
-	font-family: 'Open Sans',sans-serif;
+	font-family: 'Open Sans',sans-serif !important;
 	font-size:13px;
 	text-decoration:none;
 	/*letter-spacing: .2px;*/
@@ -323,21 +323,24 @@ input{
 	padding: 8px 0;
 }
 
-.bar_button{
+button, .bar_button{
 	border: 1px #69C3D1 solid !important;
 	padding:5px;
 	margin-right:5px;
 	color:#4F4F4F !important;
 	position: relative;
 	cursor: pointer;
+	font-weight: normal !important;
+	border-radius: 4px !important;
 }
 
 .bar_button label{
 	color: #fff;
 }
 
-.bar_button:hover{
+button, .bar_button:hover{
 	color:#69C3D1 !important;
+	background: transparent !important;
 }
 
 .tabs_panel{
@@ -359,12 +362,15 @@ input{
 }
 
 .subtabs .selected a, .tabs .selected a{
-	color: #404040;
+	/*color: #404040;*/
+	color: #25B6CC;
+
 }
 
 .subtabs li a, .tabs li a{
 	color: #404040;
 	padding: 0 8px;
+	text-transform: capitalize;
 }
 
 .subtabs li span, .tabs li span{
@@ -378,7 +384,7 @@ input{
 }
 
 .subtabs li:hover, .tabs li:hover{
-	background: #fff;
+	background: #f4f4f4;
 }
 
 .content_hide{
@@ -403,12 +409,15 @@ table {
     -moz-border-radius:6px;
     margin: 4px 0;
     color: #4F4F4F;
+    width: 100%;
 }
 
 th {
     vertical-align: top;
-    background-color: #66b5d7;
+    background-color: #25B6CC;
+    color: #fff;
     padding: 4px 0;
+    text-align: center;
 }
 
 th span{
@@ -420,6 +429,7 @@ th span{
 td{
 	text-align: center;
 	padding: 4px;
+	border-bottom: 1px #ccc solid;
 }
 
 th:last-of-type span{
@@ -490,7 +500,7 @@ input[type='checkbox']{
 input[type='text'], input[type='password']{
 	border:1px #ccc solid;
 	color:#666;
-	padding:8px 5px;
+	padding: 6px 5px !important;
   	/*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;*/
   	outline: none; 
 }
@@ -501,6 +511,7 @@ input[type='text']:hover, input[type='password']:hover{
 
 
 input[type='text']:focus, input[type='password']:focus{
+	border-color: #25B6CC;
 	/*
 	border-color: #00a4e4;
   	-webkit-box-shadow: rgba(0, 164, 228, 0.1) 0px 0px 3px 3px, rgba(0, 0, 0, 0.2) 1px 2px 5px inset;
@@ -888,10 +899,6 @@ a.post{
 	margin-right: 4px;
 }
 
-.list{
-	width:100%;
-}
-
 .title_list{
 	color:#666;
 	font-size: 10px;
@@ -1240,9 +1247,7 @@ a.post{
     width: 25px;
 }
 
-.ui-widget-header{
-	border: none !important;
-}
+
 
 .data, .weekend{
 	width: 30px !important;
@@ -1299,7 +1304,7 @@ a.post{
 	display: none;
 	left: 0;
 	margin-top: 12px;
-	padding: 5px;
+	padding: 5px 8px;
 	
 	width: auto !important;
 	min-width: 115px;
@@ -1418,9 +1423,6 @@ a.post{
 	line-height: 25px;
 }
 
-.ui-widget-overlay{
-	background: #333;
-}
 
 #charts{
 	display: block;
@@ -1428,9 +1430,30 @@ a.post{
 	overflow: auto;
 }
 
+
+.ui-button-text{
+	color: #4F4F4F !important;
+}
+
+.ui-widget-header{
+	border: none !important;
+	background: #25B6CC !important;
+}
+
+.ui-widget-overlay{
+	background: #333;
+}
+
+
 .noTitleStuff .ui-dialog-titlebar {
 	display:none;
 }
+
+.noTitleStuff{
+	background: transparent !important;
+}
+
+
 .ui-corner-all{
     border-radius: 2px;
 }
@@ -1496,6 +1519,11 @@ a.post{
 .acervo_infos_content table th{
 	background: #E6E6E6;
 	text-align: center;
+	color: #4F4F4F !important;
+}
+
+.acervo_infos_content td{
+	border: none !important;
 }
 
 .acervo_infos .selected{
