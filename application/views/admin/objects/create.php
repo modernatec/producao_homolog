@@ -1,7 +1,8 @@
-<div class="clear">
-<div class="bar">
-	<a href="<?=URL::base();?>admin/objects/view/<?=@$objVO["id"]?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
+<? if(@$objVO["id"] != ''){?>
+<div class="list_bar">
+    <a href="<?=URL::base();?>admin/objects/view/<?=@$objVO["id"]?>" rel="load-content" data-panel="#direita" class="bar_button round">Voltar</a>
 </div>
+<?}?>
 <div class="scrollable_content">
     <form name="frmCreateObject" action="<?=URL::base();?>admin/objects/salvar/<?=@$objVO["id"]?>" id="frmCreateObject" method="post" data-panel="#direita" class="form" enctype="multipart/form-data">
       <dl>
@@ -94,9 +95,9 @@
                 </dd>  
             </div>
             <div class="clear">
-                <dt><a href="<?=URL::base();?>admin/suppliers/getListSuppliers/true" class="popup"><span class='add'>produtoras (produção &bullet; áudio &bullet; arte)</span></a></dt>
+                <dt><a href="<?=URL::base();?>admin/suppliers/getListSuppliers/true" class="popup block"><div class="icon icon_add left">add</div><span class='left text_cyan icon_line'>produtoras (produção &bullet; áudio &bullet; arte)</span></a></dt>
                 <input type="hidden" name="produtoras" id="sortable_produtoras" />
-                <ul class="list_item connect_suppliers round sortable_produtoras drop" data-fill="sortable_produtoras" >
+                <ul class="clear list_item connect_suppliers round sortable_produtoras drop" data-fill="sortable_produtoras" >
                     <?foreach ($suppliersList as $supplier_obj) {?>
                         <li class="dd-item" id="supplier-<?=$supplier_obj->supplier->id?>">
                             <div><p><b><?=$supplier_obj->supplier->empresa?></b></p></div>
@@ -125,9 +126,9 @@
                 </ul>                    
             </div>
             <div class="clear">
-                <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup"><span class='add'>créditos (roteiristas &bullet; locutores &bullet; ilustradores)</span></a></dt>
+                <dt><a href="<?=URL::base();?>admin/contatos/getListContatos/true" class="popup block"><div class="icon icon_add left">add</div><span class='text_cyan left icon_line'>créditos (roteiristas &bullet; locutores &bullet; ilustradores)</span></a></dt>
                 <input type="hidden" name="creditos" id="sortable_creditos" />
-                <ul class="list_item connect_contacts round sortable_creditos" data-fill="sortable_creditos" >
+                <ul class="clear list_item connect_contacts round sortable_creditos" data-fill="sortable_creditos" >
                     <?foreach ($contatosList as $contato) {?>
                         <li class="dd-item" id="contato-<?=$contato->id?>">
                             <div class="left" style="width:90px;">
@@ -282,9 +283,8 @@
                 </dd>
             </div>
         <dd>
-          <input type="submit" class="round" name="btnCriar" id="btnCriar" value='salvar' />
+          <input type="submit" class="bar_button round" name="btnCriar" id="btnCriar" value='salvar' />
         </dd>
       </dl>
     </form>
-</div>
 </div>

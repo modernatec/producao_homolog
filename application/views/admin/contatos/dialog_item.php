@@ -1,32 +1,38 @@
-<span class='list_alert light_blue round'>contatos</span>
 <div class="filters clear">
 	<form action="<?=URL::base();?>admin/contatos/getListContatos" id="frm_listContatos" data-panel="#contatosList" method="post" class="form">
 		<input type="hidden" name="contatos" value="true">
 			<div class="left" style="margin-bottom:4px;">
-				<input type="text" class="round" style="width:150px" placeholder="nome ou email" name="nome" value="<?=@$filter_nome?>" >
+				<input type="text" class="round" style="width:150px" placeholder="nome ou email" name="filter_nome" value="<?=@$filter_nome?>" >
 	   		</div>
-	   		<div class="left filter" >
-                <ul>
-                    <li class="round" >
-                        <span class="round" id="service_id">tipo <?=(!empty($filter_service_id) ? "<img src='".URL::base()."public/image/admin/filter_active.png' />": "<img src='".URL::base()."public/image/admin/filter.png' />")?></span>
-                        <div class="filter_panel round scrollable_content" data-bottom="false">
-                            <ul>
+	   		<div class="filter" >
+	            <ul>
+	                <li class="round">
+	                    <span class="round" id="tipo">tipo 2 <div class="icon_filtros <?=(!empty($filter_service_id)) ? 'icon_filter_active': 'icon_filter';?>"></span>
+	                    <span class="filter_panel_arrow"/>
+	                    <div class="filter_panel round">
+	                        <ul>
                                 <li class="round bar_button"><input type="checkbox" class="checkAll" id="filter_tipo" /><label for="filter_tipo">selecionar tudo</label></li>
-                                <?foreach ($services as $service) {?>
-                                <li>
-                                    <input class="filter_tipo" type="checkbox" name="service_id[]" value="<?=$service->id?>" id="col_<?=$service->id?>" <?if(isset($filter_service_id)){ if(in_array($service->id, $filter_service_id)){ echo "checked";}}?>  />
-                                    <label for="col_<?=$service->id?>"><?=$service->name?></label>
-                                </li>
-                                <?}?>
-                                <p>
-                                    <input type="submit" class="round bar_button" value="OK" /> 
-                                    <input type="button" class="round bar_button cancelar" value="Cancelar" /> 
-                                </p> 
                             </ul>
-                        </div>
-                    </li>
-                </ul>	
-            </div>
+	                        <div class="scrollable_content" data-bottom="false">
+	                            <ul>
+	                                <?foreach ($services as $service) {?>
+	                                <li>
+	                                    <input class="filter_tipo" type="checkbox" name="filter_service_id[]" value="<?=$service->id?>" id="col_<?=$service->id?>" <?if(isset($filter_service_id)){ if(in_array($service->id, $filter_service_id)){ echo "checked";}}?>  />
+	                                    <label for="col_<?=$service->id?>"><?=$service->name?></label>
+	                                </li>
+	                                <?}?>
+	                                
+	                            </ul>
+	                        </div>
+	                        <p>
+	                            <input type="submit" class="round bar_button" value="buscar" /> 
+	                            <input type="button" class="round bar_button cancelar" value="cancelar" /> 
+	                        </p> 
+	                    </div>
+	                </li>
+	            </ul>
+	        </div>
+	   		
 	   		
 		<input type="submit" class="round bar_button left" value="buscar">        	
 	</form>	
@@ -43,14 +49,10 @@
 		<ul class="list_item round sortable_creditos" style="border:none;">
 			<?foreach ($contatosList as $contato) {?>
 				<li class="dd-item" id="contato-<?=$contato->id?>">
-					
 					<div>
 						 <b><?=$contato->nome?></b><br/>
-						<?=$contato->email?>
+						<?=$contato->service->name?> | <?=$contato->email?>
 					</div>
-					
-						<span class="list_faixa round blue" style="margin:5px 0;"><?=$contato->service->name?></span>
-					
 				</li>
 			<?}?>
 		</ul>

@@ -2,11 +2,14 @@
     <div class="bar">
     <?
     if($last_status->status_id == '8'){?>
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
+        <a href='<?=URL::base();?>admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
     <?}?>
     </div>  
     <div class="oed_info">
-        <span class="wordwrap"><b><?=@$obj->title;?></b></span><br/>
+        <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" title='editar OED' class="black" >
+            <span class="wordwrap"><b><?=@$obj->title;?></b></span>
+        </a>
+        <br/>
         <span class="wordwrap"><?=@$obj->taxonomia;?></span>
 
         <div class="right">
@@ -28,7 +31,7 @@
                 $data_tarefa = json_encode(array('object_id' => $obj->id, 'status_id' => $objects_status[0]->id));
             ?>
                 <a href="<?=URL::base();?>admin/tasks/update/" data-post='<?=$data_tarefa?>' title="criar tarefa" class="popup icon icon_task">nova tarefa</a>
-                <a href="<?=URL::base();?>admin/objects/updateForm/" data-post='<?=$data_tarefa?>' class="popup icon icon_status">alterar status</a>                           
+                <a href="<?=URL::base();?>admin/objects/updateForm/" data-post='<?=$data_tarefa?>' title="alterar status" class="popup icon icon_status">alterar status</a>                           
             <?}?>
         </div>
     </div>
@@ -59,12 +62,12 @@
                                 </div>
                             <?}?>
                             <div class="right">
-                                <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>" data-post='<?=$data_tarefa?>' title="criar anotações">anotacao</a>
+                                <a class="popup icon icon_comment_white" href="<?=URL::base()?>admin/anotacoes/form" data-post='<?=$data_tarefa?>' title="criar anotação">anotacao</a>
                             </div> 
                             <div>
                                 <div class="collapse_holder left">
                                 <?if(count($task_tags) > 0){?>
-                                    <a class="collapse icon icon_collapse_white" data-show="infos<?=$object->id?>" title="abrir/fechar infos">collapse</a>
+                                    <a class="collapse icon icon_expand_white" data-show="infos<?=$object->id?>" title="abrir/fechar infos">collapse</a>
                                 <?}?>
                                 </div>
                                 <?
@@ -131,7 +134,7 @@
                                         <?}?>
                                         <div class="left icon icon_comment">anotações</div>
                                         <div class="left">
-                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=@$obj->id?>?anotacao_id=<?=$anotacao->id?>&status_id=<?=$object->id?>" title="anotações" class="popup black">
+                                            <a href="<?=URL::base()?>admin/anotacoes/form/<?=$anotacao->id?>" data-post='<?=$data_tarefa?>' title="editar anotação" class="popup left">
                                                 <p><?=$anotacao->userInfo->nome;?> | <?=Utils_Helper::data($anotacao->created_at, 'd/m/Y - H:i')?></p>
                                             </a>  
                                             <div class="clear">                                            
@@ -146,10 +149,14 @@
                             ?>
                             <div class="task_list">
                             <?
-                                foreach ($task_tags as $task) {?>                                     
+                                foreach ($task_tags as $task) {
+                                    $status = $task->status->status;
+                                    $icon_status = ($status == 'entregue') ? 'icon_expand' : 'icon_collapse';
+                                    $status_class = ($status == 'entregue') ? 'hide' : '';
+                            ?>                                     
                                     <div class="task_item clear">     
                                         <div class="collapse_holder left">
-                                            <a class="collapse icon icon_collapse collapse_infos<?=$object->id?>" data-show="replies<?=$task->id?>" title="abrir/fechar infos">collapse</a>
+                                            <a class="collapse icon <?=$icon_status?> collapse_infos<?=$object->id?>" data-show="replies<?=$task->id?>" title="abrir/fechar infos">collapse</a>
                                         </div>                                    
                                         <div class="task">
                                             <div class="left"><?=Utils_Helper::getUserImage($task->userInfo)?></div>
@@ -158,10 +165,10 @@
                                                     <a class="icon icon_excluir" href="<?=URL::base()?>admin/tasks/delete/<?=$task->id?>" data-panel="#direita" title="excluir">Excluir</a>
                                                 </div>
                                             <?}?>
-                                            <span class="right icon icon_<?=$task->status->status?>"><?=$task->status->status?></span>
+                                            <span class="right icon icon_<?=$task->status->status?>" title='<?=$task->status->status?>'><?=$task->status->status?></span>
                                             <?
                                             if($current_auth != "assistente"){?>
-                                                <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="popup">
+                                                <a href="<?=URL::base();?>admin/tasks/update/<?=$task->id?>" title="editar tarefa" class="left popup">
                                             <?}
 
                                                 $diff = '';
@@ -185,13 +192,13 @@
                                                 ?>
                                                 <p class="task_topic"><b><?=$task->tag->tag?> | <?=$date_faixa?></b> <?=$diff?></p>
                                             </a>                                         
-                                            <div class="task_description replies<?=$task->id?> infos<?=$object->id?>">
+                                            <div class="clear task_description replies<?=$task->id?> infos<?=$object->id?> <?=$status_class?>">
                                                 <?if(!empty($task->description)){ ?>
                                                     <span class="wordwrap replies replies_<?=$task->id;?>"><?=$task->description;?></span>
                                                 <?}?>
                                             </div> 
                                             <!--respostas-->
-                                            <div class="task_reply replies<?=$task->id?> infos<?=$object->id?>"> 
+                                            <div class="clear task_reply replies<?=$task->id?> infos<?=$object->id?> <?=$status_class?>"> 
                                                 <div style='clear:both'>
                                                     <div >
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
@@ -214,12 +221,12 @@
                                                                         $data = Utils_Helper::data($task->reply->created_at, 'd/m/Y');
                                                                     }
 
-                                                                    if($current_auth != "assistente"){?>
-                                                                        <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="popup black">
+                                                                    if($current_auth != "assistente" && $task->status_id != '6'){?>
+                                                                        <a href="<?=URL::base();?>admin/tasks/updateReply/<?=$task->reply->id?>" title="editar resposta" class="left popup">
                                                                     <?}?>
                                                                             <p class="task_topic"><b><?=$task->status->status?> | <?=$data?></b></p>
                                                                         </a>
-                                                                    <div class="task_description">
+                                                                    <div class="clear task_description">
                                                                         <?if(!empty($task->reply->description)){ ?>
                                                                             <span class="wordwrap replies replies_<?=$task->id;?>"><?=$task->reply->description;?></span>
                                                                         <?}?>

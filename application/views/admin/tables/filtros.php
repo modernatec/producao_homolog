@@ -15,7 +15,7 @@
                 <div class="filter_panel round" >
                     <ul>
                         <li>
-							<form name="frmCreateTable" id="frmCreateTable" action="<?=URL::base();?>admin/tables/salvar/" method="post" class="form" style='width:233px;'>
+							<form name="frmCreateTable_mesa" id="frmCreateTable_mesa" action="<?=URL::base();?>admin/tables/salvar/" method="post" class="form" style='width:233px;'>
 								<input type="text" class="text required round" placeHolder="nova mesa de luz" name="name" id="name" />
 								<input type="submit" class="right round" name="btnSubmit" id="btnSubmit" value="salvar" />								
 							</form>

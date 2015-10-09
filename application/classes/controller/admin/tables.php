@@ -182,6 +182,33 @@ class Controller_Admin_Tables extends Controller_Admin_Template {
 		);
 	}
 
+	public function action_deleteOED($id)
+	{	
+		$this->auto_render = false;
+		try 
+		{            
+			$table = ORM::factory('objects_table', $id);
+			$mesa_id = $table->table_id;
+			$table->delete();
+
+			$msg = "OED excluído da mesa.";
+		} catch (ORM_Validation_Exception $e) {
+			$msg = "houveram alguns erros na exclusão dos dados.";
+			$errors = $e->errors('models');
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjectsTable($mesa_id, true)->render())),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+	}
+
+
+	
+
 	public function action_getObjectsTable($id, $ajax = null)
 	{	
 		$this->auto_render = false;  

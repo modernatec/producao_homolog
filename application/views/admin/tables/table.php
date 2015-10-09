@@ -24,7 +24,8 @@
 <div class="clear scrollable_content list_body">
     <?foreach($objectsList as $table_obj){?>
     <div class="acervo_item round" id="obj_<?=$table_obj->object->id?>">
-        <a class="popup" href="<?=URL::base().'admin/acervo/view/'.$table_obj->object->id?>" data-select="obj_<?=$table_obj->object->id?>" title="+ informações">
+        <a class="right icon icon_excluir" href="<?=URL::base().'admin/tables/deleteOED/'.$table_obj->id;?>" title="Excluir">Excluir</a>
+        <a class="popup" href="<?=URL::base().'admin/acervo/view/'.$table_obj->object->id?>" data-select="obj_<?=$table_obj->object->id?>" >
             <div class="acervo_item_top">
                 <p class="text_cyan"><b><?=$table_obj->object->title?></b></p>
                 <p><?=$table_obj->object->collection->name?></p>

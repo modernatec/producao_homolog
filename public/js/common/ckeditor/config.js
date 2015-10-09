@@ -31,11 +31,13 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
+	config.title = 'false';
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	config.resize_dir = 'both';
 };
+
 
 CKEDITOR.on( 'instanceReady', function( ev ) {
 	var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ul','li'];

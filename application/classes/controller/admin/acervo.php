@@ -135,12 +135,12 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				$order_by = "ORDER BY relevance DESC";
 			}
 
-	    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode(',', $viewFiltros->filter_segmento)."')" : "";
+	    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode("','", $viewFiltros->filter_segmento)."')" : "";
 	    	$supplier = (count($viewFiltros->filter_supplier) > 0) ? "AND a.supplier_id IN ('".implode("','",$viewFiltros->filter_supplier)."')" : '';
 	    	$origem = (count($viewFiltros->filter_origem) > 0) ? "AND a.reaproveitamento IN ('".implode("','",$viewFiltros->filter_origem)."')" : '';
 	    	$project = (count($viewFiltros->filter_project ) > 0) ? "AND a.project_id IN ('".implode("','",$viewFiltros->filter_project)."')" : '';
 	    	$collection = (count($viewFiltros->filter_collection ) > 0) ? "AND a.collection_id IN ('".implode("','",$viewFiltros->filter_collection)."')" : '';
-	    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? "AND a.typeobject_id IN ('".implode(',',$viewFiltros->filter_tipo)."')" : '';
+	    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? "AND a.typeobject_id IN ('".implode("','",$viewFiltros->filter_tipo)."')" : '';
 	    	
 
 			$sql = "SELECT 
@@ -236,12 +236,12 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				$order_by = "ORDER BY relevance DESC";
 			}
 
-	    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode(',', $view->filter_segmento)."')" : "";
+	    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode("','", $view->filter_segmento)."')" : "";
 	    	$supplier = (isset($view->filter_supplier)) ? "AND a.supplier_id IN ('".implode("','",$view->filter_supplier)."')" : '';
 	    	$origem = (isset($view->filter_origem)) ? "AND a.reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
 	    	$project = (isset($view->filter_project )) ? "AND a.project_id IN ('".implode("','",$view->filter_project)."')" : '';
 	    	$collection = (isset($view->filter_collection )) ? "AND a.collection_id IN ('".implode("','",$view->filter_collection)."')" : '';
-	    	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode(',',$view->filter_tipo)."')" : '';
+	    	$tipo = (isset($view->filter_tipo)) ? "AND a.typeobject_id IN ('".implode("','",$view->filter_tipo)."')" : '';
 			$sql = "SELECT 
 						a.*, 
 						b.name as collection_name, 

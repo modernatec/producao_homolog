@@ -46,6 +46,7 @@ a{
 	cursor: pointer;
 	text-decoration: none;
 	color: #fff;
+	overflow: auto;
 }
 
 hr { 
@@ -323,7 +324,7 @@ input{
 	padding: 8px 0;
 }
 
-button, .bar_button{
+.ui-dialog-buttonset button, .bar_button{
 	border: 1px #69C3D1 solid !important;
 	padding:5px;
 	margin-right:5px;
@@ -333,6 +334,15 @@ button, .bar_button{
 	font-weight: normal !important;
 	border-radius: 4px !important;
 }
+
+.ui-dialog-buttonset button {
+	padding: 0;
+}
+
+button{
+	border: none;
+}
+
 
 .bar_button label{
 	color: #fff;
@@ -362,9 +372,8 @@ button, .bar_button:hover{
 }
 
 .subtabs .selected a, .tabs .selected a{
-	/*color: #404040;*/
-	color: #25B6CC;
-
+	color: #404040;
+	/*color: #25B6CC;*/
 }
 
 .subtabs li a, .tabs li a{
@@ -587,7 +596,8 @@ input[type='text']:focus, input[type='password']:focus{
 }
 
 .task_item{
-	border-bottom: 1px #ccc solid
+	border-bottom: 1px #ccc solid;
+	overflow: auto;
 }
 
 .task_item .collapse_holder{
@@ -644,12 +654,32 @@ input[type='text']:focus, input[type='password']:focus{
 .ui-datepicker .ui-datepicker-today{ background-color: #009f9f;}
 */
 
+/*
 #sortable .ui-state-highlight, .sortable_workflow .ui-state-highlight, .sortable_tags .ui-state-highlight, .sortable_status .ui-state-highlight, .sortable_produtoras .ui-state-highlight{
 	margin: 5px 0; 
 	padding: 0; 
 	min-height: 70px; 
 	background: #f2fbff; 
 	border: 1px dashed #b6bcbf;	
+}
+*/
+
+.ui-state-highlight{
+	margin: 5px 0; 
+	padding: 0; 
+	min-height: 70px; 
+	background: #f2fbff !important; 
+	/*border: 1px dashed #b6bcbf !important;*/
+}
+
+
+.jGrowl .ui-state-highlight{
+	background: #454A4F !important; 
+}
+
+
+.ui-sortable{
+	padding: 5px !important;
 }
 
 .ui-sortable-helper{
@@ -870,9 +900,18 @@ input[type='text']:focus, input[type='password']:focus{
 	border: 2px solid #f6bb42 !important;
 }
 
+.block{
+	display: block;
+}
+
 a.green{
 	color: #fff;
 }
+
+a.black{
+	color: #4F4F4F;
+}
+
 
 a.post{
 	color: #4F4F4F;
@@ -979,6 +1018,12 @@ a.post{
 .dd-item{
 	min-width: 100px;
 	overflow: hidden;
+	border-bottom: 1px #ccc solid !important;
+	padding: 5px 0;
+}
+
+.list_item li:last-of-type{
+	border-bottom: none !important;
 }
 
 .icon, .icon_filtros{
@@ -995,6 +1040,11 @@ a.post{
 	height: 21px;
 	float: right;
 	margin: 2px 5px 0 2px;
+}
+
+.icon_line{
+	margin-top: 4px;
+	display: block;
 }
 
 /**icones**/
@@ -1109,6 +1159,7 @@ a.post{
 .icon_xls {
 	background: url('../../image/admin/icons.png') no-repeat -110px -82px;
 }
+
 
 
 /**pagination**/
@@ -1431,6 +1482,16 @@ a.post{
 }
 
 
+.ui-dialog .ui-dialog-titlebar-close{
+	border: none;
+}
+
+/*
+.ui-state-default .ui-icon{
+	background: none !important;
+}
+*/
+
 .ui-button-text{
 	color: #4F4F4F !important;
 }
@@ -1584,12 +1645,12 @@ div .selected{
 	color: #000 !important;
 }
 
-.acervo_preview, .iframe_body{
+.acervo_preview{
 	width: 800px;
+	margin: 5px;
 }
 
-.iframe_body{
-	margin: 5px 0 5px 0;
+.iframe_body{	
 	height: 600px;
 	padding-bottom: 10px;
 }
@@ -1607,16 +1668,24 @@ div .selected{
 	opacity: .4;
 }
 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+	border: none;
+}
+
+.ui-state-default .ui-icon{
+	background-image: url("../common/jquery-ui/images/ui-icons_ffffff_256x240.png");
+}
+
 
 div.jGrowl div.normal {
     color:#FFF;
-    background: #000;
+    background: #454A4F;
     border-left: 8px solid #008fc7;
 }
 
 div.jGrowl div.error {
     color:#FFF;
-    background: #000;
+    background: #454A4F;
     border-left: 8px solid #ff0000;
 }
 

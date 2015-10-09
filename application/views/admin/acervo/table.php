@@ -18,7 +18,7 @@
 	<div class="clear scrollable_content list_body">
 			<?foreach($objectsList as $objeto){?>
 			<div class="acervo_item round" id="obj_<?=$objeto->id?>">
-				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>" title="+ informações">
+				<a class="popup" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>" data-select="obj_<?=$objeto->id?>">
 					<div class="acervo_item_top">
 						<p class="text_cyan"><b><?=$objeto->title?></b></p>
 						<p><?=$objeto->collection_name?></p>

@@ -1,14 +1,13 @@
-<span class='list_alert light_blue round'>fornecedores</span>
 <div class="filters clear">
 	<form action="<?=URL::base();?>admin/suppliers/getListSuppliers" id="frm_listSuppliers" method="post" class="form">
-		<input type="hidden" name="suppliers" value="true">
+		<input type="hidden" name="suppliers_filter" value="true">
 		<div class="left" style="margin-bottom:4px;">
-			<input type="text" class="round" style="width:200px" placeholder="nome" name="empresa" value="<?=@$filter_empresa?>" >
+			<input type="text" class="round" style="width:200px" placeholder="nome" name="filter_empresa" value="<?=@$filter_empresa?>" >
    		</div>
 		<input type="submit" class="round bar_button left" value="buscar">        	
 	</form>	
 	<form action='<?=URL::base();?>admin/suppliers/getListSuppliers' id="frm_reset_listSuppliers" method="post" class="form">
-		<input type="hidden" name="suppliers" value="true">
+		<input type="hidden" name="suppliers_filter" value="true">
 		<input type="submit" class="bar_button round" value="limpar filtros" />
 	</form>
 

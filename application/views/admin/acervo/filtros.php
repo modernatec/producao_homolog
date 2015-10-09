@@ -9,7 +9,7 @@
                 <li class="round">
                     <span class="round" id="segmento">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
                     <span class="filter_panel_arrow"/>
-                    <div class="filter_panel round" data-bottom="false">
+                    <div class="filter_panel round">
                         <ul>
                             <li><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento" class="text_cyan">selecionar tudo</label></li>
                         </ul>

@@ -196,6 +196,19 @@ $(document).ready(function()
     Dropzone.autoDiscover = false;
     updateBar();
 
+    /*
+    setMsg({
+        content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...',
+        fix:true,
+    });
+
+    setMsg({
+        content:'Ops!..<br/><br/>Selecione um projeto e tente novamente...',
+        fix:true,
+        container:'error',
+    });
+    */
+
 
 });
 
@@ -299,6 +312,7 @@ function setupAjax(container){
             }
         });
     }else{
+        $( document ).tooltip({track: true});
         if($('.topo').length != 0 && (container == '#content' || container == '#filtros')){
             $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
             $('#esquerda, #direita, #page').fadeIn(1000);
@@ -327,7 +341,9 @@ function setupAjax(container){
         //&& container == '#content'
         //if($('#relatorios_project_id').length != 0 || $('#table_id_list').length != 0){
         $('#relatorios_project_id, #table_id_list').unbind('change').bind('change', function() {
-            loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
+            if(this.value != ''){
+                loadContent({url:$('#' + this.id).data('url') + '/' + this.value, container:$('#' + this.id).data('panel')});
+            }
         });
         //}
 
@@ -460,6 +476,7 @@ function setupAjax(container){
         $('.money').autoNumeric('init');
 
         $(".filter span").unbind('click').bind("click", function(e) {
+
             var panel = $(this).parent().children('.filter_panel');
             var arrow = $(this).parent().children('.filter_panel_arrow');
             
@@ -902,7 +919,7 @@ function setupAjax(container){
             
         });
 
-        $('a.createTableLight').unbind('click').bind('click', function(e, ui) {
+        $('a.load_panel').unbind('click').bind('click', function(e, ui) {
             e.preventDefault();
             var url = this.href;
             var panel = $(this).data('panel');
@@ -913,8 +930,12 @@ function setupAjax(container){
                 timeout: 20000, 
                 dataType : "html",
                 success: function(retorno) {
-                    $(panel).html(retorno);
-                    setupAjax(panel);
+                    $(panel).html(retorno).promise().done(function(){
+                        console.log('ok');
+                        console.log($('#frmCreateTable'));
+                        setupAjax(panel);
+                    });                  
+                    
                 },
                 error: function(e) {
                     console.log(e);
@@ -999,7 +1020,8 @@ function setupAjax(container){
                         $('#dialog').show('slide', {direction: 'left'}, 300);
 
                         setTimeout(function(){
-                            $('#description').ckeditor();
+                            $('#description, #anotacao').ckeditor({title:false});
+
                             
                             $('#tag_id, #status_id').unbind('change').bind('change', function(e){
                                 e.preventDefault();

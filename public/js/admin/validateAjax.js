@@ -134,13 +134,18 @@ function validateAjax(){
 
     $("#frmAnotacoes_edit").validate({
         rules: {
-            anotacao: {required:true},
+            anotacao: {required:{
+                depends:function(){
+                   CKupdate();
+                   return true;
+                }
+            }},
         },
         messages: {
             anotacao: { required:'Campo não pode ser vazio'},
         },
         submitHandler: function(form) {
-            $('input[type=submit]').attr('disabled', 'disabled');
+            $('input[type=submit]').attr('disabled', 'disabled');            
             ajaxPost(form, $(form).data("panel"));
             return false;       
         }
@@ -165,6 +170,14 @@ function validateAjax(){
     });
 
     $("#frmCreateTable").validate({
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"), false);
+            return false;       
+        }
+    });
+
+    $("#frmCreateTable_mesa").validate({
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"), false);
@@ -372,6 +385,17 @@ function validateAjax(){
     
 
     $("#formEndTask").validate({
+        rules: {
+            description: {required:{
+                depends:function(){
+                   CKupdate();
+                   return true;
+                }
+            }},
+        },
+        messages: {
+            description: { required:'Campo não pode ser vazio'},
+        },
         submitHandler: function(form) {
             $('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));

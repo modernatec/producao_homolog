@@ -10,14 +10,15 @@
             <span class="wordwrap"><?=@$objeto->taxonomia;?></span>
         </div>
     </div>
-    <?if($objeto->uploaded == 1){?>
+    
     <div class="acervo_infos_opt infos<?=$objeto->id?> <?=$display?>">
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' class="icon icon_visualizar right acervo_view">visualizar</a>
-            
+        <?if($objeto->uploaded == 1){?>
+        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' title="visualizar" class="icon icon_visualizar right acervo_view">visualizar</a>
+        
         <div class="filter right" >
             <ul>
                 <li class="round" >
-                    <span id="mesa<?=$objeto->id?>"><div class="icon icon_mesa" >add</div></span>
+                    <span id="mesa<?=$objeto->id?>"><div class="icon icon_mesa" title="adicionar à mesa" >add</div></span>
                     <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round" data-position="right" >
                         <p class="text_cyan">adicionar à mesa de luz</p>
@@ -34,7 +35,7 @@
                             </ul>
                         </div>  
                         <div id="nova_mesa<?=$objeto->id?>" style='padding:5px 0; width:233px;'>
-                            <a class="bar_button round createTableLight" href='<?=URL::base();?>/admin/tables/edit/<?=$objeto->id?>' data-panel="#nova_mesa<?=$objeto->id?>" >nova mesa de luz</a>
+                            <a class="bar_button round load_panel" href='<?=URL::base();?>/admin/tables/edit/<?=$objeto->id?>' data-panel="#nova_mesa<?=$objeto->id?>" >nova mesa de luz</a>
                         </div>
                     </div>
                 </li>
@@ -42,11 +43,10 @@
         </div>
 
         <?if($current_auth != "assistente" || $current_auth != "assistente 2" || $current_auth != "editor 1"){?>
-        <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' class="icon icon_baixar right">baixar</a>
-        <?}?>
-        
+            <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' title="baixar" class="icon icon_baixar right">baixar</a>
+        <?}}?>
     </div>
-    <?}?>
+    
     <div class="acervo_infos_content clear infos<?=$objeto->id?> <?=$display?>">
         <div class=" ">
             <table>
