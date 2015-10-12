@@ -177,10 +177,10 @@ $(document).ready(function()
     if(window.location.hash != ""){
         var hash_url = window.location.hash.substring(1);
         var url = hash_url.substr(0,hash_url.length)
-        
+        console.log(url);
         if(window.location.href.indexOf('login') == -1){
             loadContent({url:base_url + 'admin/' + url , container:'#content'});
-            $('a[href="'+url+'"]').addClass('selected');
+            setMenu();
         }
     }
 
@@ -217,6 +217,14 @@ setInterval(function() {
     updateBar();
 }, 5000);
 
+
+function setMenu(){
+    var hash_url = window.location.hash.substring(1);
+    var url = hash_url.substr(0,hash_url.length);
+    $('#menu a').removeClass('selected');
+    //$('#menu li').removeClass('blueSelection');
+    $('#menu a[href="'+url+'"]').addClass('selected');
+}
 
 function setupScroll(){
     if($('.scrollable_content').length != 0){
@@ -299,10 +307,12 @@ function setScroll_teste(){
 }
 
 function setupAjax(container){ 
+    setMenu();
     if(container == "#taskBar"){
         $("a[rel='task_bar']").unbind('click').bind('click', function(e){
             e.preventDefault();
-            loadContent({url:$(this).attr("href"), container:$(this).data("panel")});
+            var post = $(this).data('post');
+            loadContent({url:$(this).attr("href"), container:$(this).data("panel"), post:post});
         
             $('#menu li a').removeClass('selected');
             $('#tasks').addClass('selected');
@@ -690,6 +700,9 @@ function setupAjax(container){
             if($(this).hasClass('menu')){
                 $('#menu li a').removeClass('selected');
                 $(this).addClass('selected');
+            }else{
+                $("li").removeClass("blueSelection");
+                $(this).closest("li").addClass("blueSelection");
             }
 
             /*
@@ -699,13 +712,10 @@ function setupAjax(container){
             } 
             */   
 
-            $("li").removeClass("blueSelection");
-            $(this).closest("li").addClass("blueSelection");
         
 
             if($(this).data("refresh") != undefined){
                 window.location.hash = $(this).attr("href");
-                //hash_link + '/index/ajax';//.replace(base_url + 'admin/', '').replace('/index/ajax', '');
             }
         });
 
@@ -1299,6 +1309,9 @@ function loadContent(args){
         //}
 
         data_post = {container: container};
+        if(args.post != ''){
+            data_post.post = args.post;
+        }
         
         $.ajax({
             type: "POST",

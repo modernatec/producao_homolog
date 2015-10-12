@@ -19,24 +19,28 @@ class Controller_Admin_Segmentos extends Controller_Admin_Template {
 
 	public function action_index($ajax = null)
 	{	
+		$this->auto_render = false;
 		$view = View::factory('admin/segmentos/list')
 			->bind('message', $message);
 		
 		$view->segmentosList = ORM::factory('segmento')->order_by('name','ASC')->find_all();
 		
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
+			)						
+		);
+        return false;
+        /*
 		if($ajax == null){
-			$this->template->content = $view;             
+			//$this->template->content = $view;             
 		}else{
 			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
-				)						
-			);
-	        return false;
+			
 		}
+		*/
 	} 
 
 	public function action_edit($id)

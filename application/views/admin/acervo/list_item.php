@@ -42,7 +42,7 @@
             </ul>
         </div>
 
-        <?if($current_auth != "assistente" || $current_auth != "assistente 2" || $current_auth != "editor 1"){?>
+        <?if (strpos($current_auth,'assistente') === false && strpos($current_auth,'editor') === false) {?>
             <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' title="baixar" class="icon icon_baixar right">baixar</a>
         <?}}?>
     </div>

@@ -1,3 +1,6 @@
+<div class="list_bar">
+		<a href="<?=URL::base();?>admin/projects/edit" rel="load-content" data-panel="#direita" class="bar_button round">criar projeto</a>		
+	</div>   
 	<span class='list_alert'>
 	<?
         if(count($projectsList) <= 0){

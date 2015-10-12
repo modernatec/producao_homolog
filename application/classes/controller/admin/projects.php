@@ -17,12 +17,13 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-               
+          
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/projects/list')
 			->bind('message', $message);
-		
+			
+		$view->current_auth = $this->current_auth;	
 		if($ajax == null){
 			$this->template->content = $view;             
 		}else{
@@ -31,8 +32,8 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					//array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;

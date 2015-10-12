@@ -15,19 +15,22 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->typeObjectsjsList = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
+		$this->auto_render = false;
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+			)						
+		);
+        return false;
 		
+		/*
 		if($ajax == null){
 			$this->template->content = $view;             
 		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-	        return false;
-		}           
+			
+		} 
+		*/          
 	} 
 
 	/*

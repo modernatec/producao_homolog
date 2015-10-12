@@ -8,7 +8,7 @@
     </div>
     <div class="clear" id="filtros"></div>
 </div>
-<div id="page" class="scrollable_x">
+<div id="page" class="scrollable_content">
     <table>
         <?
             $begin = new DateTime( '2015-06-01' );

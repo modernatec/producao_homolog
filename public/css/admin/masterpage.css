@@ -1639,7 +1639,7 @@ a.post{
 
 div .selected{
 	border: 1px solid #25B6CC !important;
-}
+}f
 
 .acervo_item a{
 	color: #000 !important;
@@ -1674,6 +1674,10 @@ div .selected{
 
 .ui-state-default .ui-icon{
 	background-image: url("../common/jquery-ui/images/ui-icons_ffffff_256x240.png");
+}
+
+.minicolors-theme-default .minicolors-input{
+	padding-left: 26px !important;
 }
 
 

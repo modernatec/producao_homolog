@@ -1,3 +1,7 @@
+    <div class="list_bar">
+        <a href="<?=URL::base();?>admin/objects/edit" rel="load-content" data-panel="#direita" class="bar_button round">catalogar objeto</a>
+    </div>        
+
 	<span class='list_alert'>
 	<?
         if(count($objectsList) <= 0){

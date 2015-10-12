@@ -17,7 +17,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		parent::__construct($request, $response);	
 	}
             
-
+	/*
 	public function action_index($ajax = null)
 	{	
 		$view = View::factory('admin/collections/list')
@@ -38,6 +38,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	        return false;
 		}   
 	} 
+	*/
 
 	public function action_edit($id, $ajax = null)
     {       	      

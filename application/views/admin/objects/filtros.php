@@ -1,4 +1,4 @@
-<div class="filters clear">
+<div class="second_filter filters clear">
 <form action='<?=URL::base();?>admin/objects/getObjects' id="frm_oeds" data-panel="#tabs_content" method="post" class="form">
 		<input type="hidden" name="objects" value="1">
 		<div class="left">

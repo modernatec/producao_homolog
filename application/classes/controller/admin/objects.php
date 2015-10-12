@@ -68,6 +68,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view = View::factory('admin/objects/list')
 			->bind('message', $message);
 
+		$view->current_auth = $this->current_auth;	
+
 		//$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
 
 		if($ajax == null){
@@ -79,8 +81,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects('0', true)->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
+					//array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects('0', true)->render())),
+					//array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
 				)						
 			);
 	        return false;

@@ -1,7 +1,3 @@
-<div class="topo">
-    <div id='filtros'></div>
-</div>
-<div id="esquerda">
 	<div class="list_bar">
 		<a href="<?=URL::base();?>admin/format/edit" rel="load-content" data-panel="#direita" class="bar_button round">cadastrar formato</a>    
 	</div>
@@ -26,5 +22,3 @@
 			<?}?>
 		</ul>	
 	</div>
-</div>
-<div id="direita"></div>

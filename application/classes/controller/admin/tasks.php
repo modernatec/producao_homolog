@@ -24,27 +24,38 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 		//	$query->where('taskViews.team_id', '=', $this->current_user->userInfos->team_id);
 		//}
         //$view->has_task = $query->where('task_to', '!=', '0')->group_by('task_to')->order_by('nome', 'ASC')->find_all();
+		if(is_array($this->request->post('post'))){
+	        if(array_key_exists('to', $this->request->post('post'))){
+	        	$tasks_of = ORM::factory('userInfo', $this->request->post('post')['to']);	
+	        	$nome = explode(" ", $tasks_of->nome);
+	        	
+	        	$view->title = "tarefas - ".$nome[0];
+	        	$view->filter = "?to=".$tasks_of->id;
+	        }else{
+	        	$team_id = $this->request->post('post')['team'];
+	        	/*
+	        	if($this->request->post('post')['team'] != ''){
+	        		
+	        	}else{
+	        		$team_id = $this->current_user->userInfos->team_id;
+	        	}
+	        	*/
+	        	
+	        	$team = ORM::factory('team', $team_id);
+	        	$name = explode(" ", $team->name);
 
-        if($this->request->query('to')){
-        	$tasks_of = ORM::factory('userInfo', $this->request->query('to'));	
-        	$nome = explode(" ", $tasks_of->nome);
-        	
-        	$view->title = "tarefas - ".$nome[0];
-        	$view->filter = "?to=".$tasks_of->id;
-        }else{
-        	
-        	if($this->request->query('team') != ''){
-        		$team_id = $this->request->query('team');
-        	}else{
-        		$team_id = $this->current_user->userInfos->team_id;
-        	}
-        	
-        	$team = ORM::factory('team', $team_id);
-        	$name = explode(" ", $team->name);
+	        	$view->title = "tarefas - ".$name[0];
+	        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
+	        }
+	    }else{
+	    	$team_id = $this->current_user->userInfos->team_id;
+
+	    	$team = ORM::factory('team', $team_id);
+	        $name = explode(" ", $team->name);
 
         	$view->title = "tarefas - ".$name[0];
         	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
-        }
+	    }
 
 		$view->current_auth = $this->current_auth;	
 	  	

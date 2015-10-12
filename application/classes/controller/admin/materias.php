@@ -23,20 +23,23 @@ class Controller_Admin_Materias extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->materiasList = ORM::factory('materia')->order_by('name','ASC')->find_all();
-		
+		$this->auto_render = false;
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
+			)						
+		);
+        return false;
+
+		/*
 		if($ajax == null){
 			$this->template->content = $view;             
 		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
-				)						
-			);
-	        return false;
-		}          
+			
+		}     
+		*/     
 	} 
         
 	public function action_edit($id)
