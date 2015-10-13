@@ -705,15 +705,6 @@ function setupAjax(container){
                 $(this).closest("li").addClass("blueSelection");
             }
 
-            /*
-            if($(this).hasClass('load')){
-                $('.list_item li a').removeClass('selected');
-                //$(this).addClass('selected');
-            } 
-            */   
-
-        
-
             if($(this).data("refresh") != undefined){
                 window.location.hash = $(this).attr("href");
             }

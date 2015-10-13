@@ -14,35 +14,51 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 	
 	public function __construct(Request $request, Response $response)
 	{
-		parent::__construct($request, $response);     
+		parent::__construct($request, $response);   
+
+
 	}
 	
     public function action_index()
 	{	
-        $view = View::factory('admin/users/list')
-            ->bind('message', $message);
-        
-        $view->filter_nome = ($this->request->post('nome') != "") ? $this->request->post('nome') : "";
-        $view->filter_email = ($this->request->post('email') != "") ? $this->request->post('email') : "";
-		$view->current_auth = $this->current_auth;    
-
         $this->auto_render = false;
+        $view = View::factory('admin/users/list')->bind('message', $message);
+        var_dump($this->request->action());  
+
+        
         header('Content-Type: application/json');
         echo json_encode(
             array(
                 array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getUsers(true)->render())),                
                 array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
             )                       
         );
         return false;
 	} 
+
+    public function action_view($uid){
+        $this->auto_render = false;
+        $view = View::factory('admin/users/view');  
+        $view->user = ORM::factory('userInfo', $uid);
+        $view->current_auth = $this->current_auth;
+
+        $container = $this->request->post('container');
+
+        header('Content-Type: application/json');
+        echo json_encode(
+            array(
+                array('container' => $container, 'type'=>'html', 'content'=> json_encode($view->render())),
+            )                       
+        );
+        return false;
+    }
         
 	/*
     * Editar usuarios *
     */
 	public function action_edit($userInfo_id, $ajax = null)
     {
-        
         $this->auto_render = false;
         if($userInfo_id != $this->current_user->userInfos->id && $this->current_auth != "admin"){
             header('Content-Type: application/json');
@@ -299,7 +315,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         header('Content-Type: application/json');
         echo json_encode(
             array(
-                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getUsers("", true)->render())),
+                array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getUsers(true)->render())),
                 array('container' => '#direita', 'type'=>'html', 'content'=> json_encode($this->action_edit($userInfo_id, true)->render())),
                 array('type'=>'msg', 'content'=> $msg),
             )                       
@@ -449,15 +465,16 @@ class Controller_Admin_Users extends Controller_Admin_Template {
         return $viewFiltros;
     }
 
-    public function action_getUsers($status_id, $ajax = null){
+    public function action_getUsers($ajax = null){
         $this->auto_render = false;
         $view = View::factory('admin/users/table');
+        $view->current_auth = $this->current_auth;
 
-        $status_id = ($status_id != "") ? $status_id : Session::instance()->get('kaizen')['parameters'];
+        //$status_id = ($status_id != "") ? $status_id : Session::instance()->get('kaizen')['parameters'];
 
 
         if(count($this->request->post()) > '0' || Session::instance()->get('kaizen')['model'] != 'users'){
-            $kaizen_arr = Utils_Helper::setFilters($this->request->post(), $status_id, "users");
+            $kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "users");
         }else{
             $kaizen_arr = Session::instance()->get('kaizen');
         }
@@ -466,18 +483,22 @@ class Controller_Admin_Users extends Controller_Admin_Template {
 
         //$this->startProfilling();
 
-        //$filtros = Session::instance()->get('kaizen')['filtros'];
-        /*
+        $filtros = Session::instance()->get('kaizen')['filtros'];
         foreach ($filtros as $key => $value) {
             $view->$key = json_decode($value);
         }
-        */
+
+        if(!isset($view->filter_status)){
+            $view->filter_status = array('1');
+        }
 
         $query = ORM::factory('userInfo');
 
         /***Filtros***/
         (isset($view->filter_search)) ? $query->where_open()->where('nome', 'LIKE', '%'.$view->filter_search.'%')->or_where('email', 'LIKE', '%'.$view->filter_search.'%')->where_close() : '';
-        $view->userinfosList = $query->where('status', '=', $status_id)->order_by('nome','ASC')->find_all();
+        (isset($view->filter_status)) ? $query->and_where('status', 'IN', $view->filter_status) : '';
+        //->where('status', '=', $status_id)
+        $view->userinfosList = $query->order_by('nome','ASC')->find_all();
         
         // $this->endProfilling();
         if($ajax != null){
@@ -487,6 +508,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
             echo json_encode(
                 array(
                     array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+                    array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode($this->getFiltros()->render())),
                 )                       
             );
            

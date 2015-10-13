@@ -252,8 +252,9 @@ input{
     border-radius: 100px;
 	width:100px;
 	height: 100px;
-	left:10px;
-	top:10px;
+
+	/*left:10px;
+	top:10px;*/
 	position:absolute;
 	border:3px #FFF solid;
 	overflow: hidden;
