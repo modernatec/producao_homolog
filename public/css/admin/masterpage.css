@@ -380,7 +380,7 @@ button, .bar_button:hover{
 .subtabs li a, .tabs li a{
 	color: #404040;
 	padding: 0 8px;
-	text-transform: capitalize;
+	/*text-transform: capitalize;*/
 }
 
 .subtabs li span, .tabs li span{
@@ -534,8 +534,8 @@ input[type='text']:focus, input[type='password']:focus{
 
 .error{
     color:#EE0000;
-    /*margin-left: 5px;
-    display:block;*/
+    /*margin-left: 5px;*/
+    display:block;
 }
 
 .right{
@@ -1747,6 +1747,15 @@ div.jGrowl div.error {
 
 #drop input{
     display:none;
+}
+
+.dropzone{
+	position: absolute !important;
+	z-index: 10;
+	margin: 0 !important;
+	width: 105px;
+	border: none !important;
+
 }
 
 #upload ul{

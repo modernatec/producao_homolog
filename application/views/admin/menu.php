@@ -14,12 +14,12 @@
                         <div class="filter_panel round" >
                             <ul>
                                 <li class="user_menu_item">
-                                	<a href="<?=URL::base();?>admin/#users/editInfo" class='user_menu' title="editar perfil">
+                                	<a href="<?=URL::base();?>admin/users/edituser/<?=$user->userInfos->id?>" rel="load-content" data-panel="#content" class='user_menu'>
                                 		<div class="left icon icon_edit"></div> <span>Editar perfil</span>
                                 	</a>
                                 </li>
                                 <li class="user_menu_item">
-                                	<a href="<?=URL::base();?>logout/" class='user_menu' title="logout">
+                                	<a href="<?=URL::base();?>logout/" class='user_menu'>
                                 		<div class="left icon icon_logout"></div> <span>Logout</span>
                                 	</a>
                                 </li>

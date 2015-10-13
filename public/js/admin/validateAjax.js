@@ -627,7 +627,7 @@ function validateAjax(){
                 },
                 role: {required:"Escolha uma permissão"},
                 team: {required:"Escolha uma equipe"},
-                nome: {required:"Digite o nome."}
+                nome: {required:"Digite um nome."}
                 /*,
                 email: {
                     required:"Digite o e-mail.",
@@ -645,17 +645,9 @@ function validateAjax(){
         ignore: ".ignore",
         rules: {
             nome: {required:true},
-            email: {
-                required:true,
-                email:true
-            }
         },
         messages: {
-            nome: {required:"Digite o nome."},
-            email: {
-                required:"Digite o e-mail.",
-                email:"Digite um e-mail válido."
-            }
+            nome: {required:"Digite um nome."},
         },
         submitHandler: function(form){
             $('input[type=submit]').attr('disabled', 'disabled');
@@ -663,6 +655,24 @@ function validateAjax(){
             return false; 
         }
     });
+
+    $("#frmEditinfo").validate({            
+        ignore: ".ignore",
+        rules: {
+            nome: {required:true},
+        },
+        messages: {
+            nome: {required:"Digite um nome."},
+        },
+        submitHandler: function(form){
+            $('input[type=submit]').attr('disabled', 'disabled');
+            checkUpload(form, $(form).data("panel"));
+            return false; 
+        }
+    });
+
+
+    
 
     $("#frmEditPass").validate({            
             ignore: ".ignore",

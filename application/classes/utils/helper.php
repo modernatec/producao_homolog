@@ -53,7 +53,7 @@ class Utils_Helper
     public static function getUserImage($user = null)
     {
         if($user->id != null){
-            if(file_exists($user->foto)){    
+            if(file_exists(trim($user->foto))){    
                 return "<div class='round_imgList team_".$user->team->id."'><img src='".URL::base().$user->foto.'?c='.date('dHis')."' height='25' title='".ucfirst($user->nome)."' /></div>";            
             }else{
                 $nomes = explode(" ", $user->nome);

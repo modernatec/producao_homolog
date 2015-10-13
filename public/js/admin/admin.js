@@ -42,6 +42,7 @@ function setupUpload(){
                 $('input[type=submit]').attr('disabled', '');
             }else{
                 $('#userFoto').attr('value', response);
+                console.log(response);
                 form.submit();
             }
         }
@@ -446,12 +447,12 @@ function setupAjax(container){
 
         validateAjax(); 
         
-        if($("#upload").size() == 1){
+        if($("#upload").length > 0){
             if(myDropzone){
                 myDropzone.destroy();
                 myDropzone = undefined;
             }
-            console.log(myDropzone);
+            console.log('dropzone ' + myDropzone);
             setupUpload();
         }
 
