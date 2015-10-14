@@ -702,8 +702,10 @@ function setupAjax(container){
                 $('#menu li a').removeClass('selected');
                 $(this).addClass('selected');
             }else{
-                $("li").removeClass("blueSelection");
-                $(this).closest("li").addClass("blueSelection");
+                if(!$(this).hasClass('user_menu')){
+                    $("li").removeClass("blueSelection");
+                    $(this).closest("li").addClass("blueSelection");
+                }
             }
 
             if($(this).data("refresh") != undefined){
