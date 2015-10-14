@@ -875,7 +875,7 @@ function setupAjax(container){
             removeDialogs();
         });
 
-        $('a.startTask').unbind('click').bind('click', function(e, ui) {
+        $('a.startFinishTask').unbind('click').bind('click', function(e, ui) {
             e.preventDefault();
             var url = this.href;
             var task_id = $(this).data('taskid');
@@ -1146,20 +1146,22 @@ function setupAjax(container){
         $('.tabs a').unbind('click').bind('click', function(e){
             e.preventDefault();
             link = $(this).attr('href');
-
-
-            if(link != lastURL){
+            console.log('clicou aba')
+            //if(link != lastURL){
                 
                 $('.content_hide').each(function(index, element){            
                     if($(this).hasClass('content_show')){
                         $(this).removeClass('content_show');
 
                     }
-                });            
+                });   
+                console.log('clicou aba 2')         
 
                 if($(this).hasClass('ajax')){
                     $('.tabs li').removeClass('selected');
-                    loadContent({url:link, container:'#tabs_content'});
+                    console.log('clicou aba 3')
+                    
+                    loadContent({url:link, container:'#tabs_content', post:$(this).data('post')});
                     
                     if($(this).attr('data-clear')){                    
                         $($(this).attr('data-clear')).html(" ");
@@ -1181,7 +1183,7 @@ function setupAjax(container){
                 $(this).closest('li').addClass('selected');
 
                 setupScroll();
-            }
+            //}
         })
         
         var tab = $.cookie("producao");
@@ -1284,6 +1286,8 @@ function loadContent(args){
     removeDialog = args.removeDialog || false;
 
     closeFilterPanel();
+
+    console.log('loadcontent')
     
     if(logged_in != false){
         d = new Date();
@@ -1301,6 +1305,7 @@ function loadContent(args){
                 resizable:false,
             });
         //}
+        console.log(args.post);
 
         data_post = {container: container};
         if(args.post != ''){

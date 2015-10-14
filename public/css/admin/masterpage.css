@@ -321,9 +321,11 @@ input{
 	margin-top: 8px;
 }
 
+/*
 .list_bar{
 	padding: 8px 0;
 }
+*/
 
 .ui-dialog-buttonset button, .bar_button{
 	border: 1px #69C3D1 solid !important;
@@ -334,7 +336,9 @@ input{
 	cursor: pointer;
 	font-weight: normal !important;
 	border-radius: 4px !important;
+	line-height: 30px;
 }
+
 
 .ui-dialog-buttonset button {
 	padding: 0;
@@ -494,6 +498,7 @@ input[type='submit'], input[type='button']{
 	position: relative;
 	cursor: pointer;
 	background: none !important;
+	line-height: normal;
 }
 
 input[type='text'].error, input[type='password'].error, select.error, textarea.error{
@@ -705,6 +710,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 .step{
 	margin-bottom: 10px;
+	margin-right: 5px;
 }
 
 .round_imgList{
@@ -1006,6 +1012,10 @@ a.post{
 	padding: 5px;
 	color: #28A5B8;
 	border-bottom: 1px #ccc solid;
+}
+
+.list_item{
+	margin-right: 5px;
 }
 
 .list_item li, .dd-item{

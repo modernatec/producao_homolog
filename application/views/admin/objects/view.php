@@ -27,9 +27,9 @@
         <?}?>
         </div>
         <div class="right">
-            <?if($current_auth != "assistente"){
-                $data_tarefa = json_encode(array('object_id' => $obj->id, 'status_id' => $objects_status[0]->id));
-            ?>
+            <?
+            $data_tarefa = json_encode(array('object_id' => $obj->id, 'status_id' => $objects_status[0]->id));
+            if($current_auth != "assistente"){?>
                 <a href="<?=URL::base();?>admin/tasks/update/" data-post='<?=$data_tarefa?>' title="criar tarefa" class="popup icon icon_task">nova tarefa</a>
                 <a href="<?=URL::base();?>admin/objects/updateForm/" data-post='<?=$data_tarefa?>' title="alterar status" class="popup icon icon_status">alterar status</a>                           
             <?}?>
@@ -151,8 +151,8 @@
                             <?
                                 foreach ($task_tags as $task) {
                                     $status = $task->status->status;
-                                    $icon_status = ($status == 'entregue') ? 'icon_expand' : 'icon_collapse';
-                                    $status_class = ($status == 'entregue') ? 'hide' : '';
+                                    $icon_status = ($task->ended == '1') ? 'icon_expand' : 'icon_collapse';
+                                    $status_class = ($task->ended == '1') ? 'hide' : '';
                             ?>                                     
                                     <div class="task_item clear">     
                                         <div class="collapse_holder left">
@@ -204,13 +204,12 @@
                                                         <div class="left"><?=Utils_Helper::getUserImage($task->to)?></div>
                                                         <div> 
                                                             <? 
+
                                                                 if($task->status_id == '5'){
                                                                     if($task->tag_id == '7' && $current_auth == "assistente"){
                                                                         $start = false;
                                                                     }else{?>
-                                                                        <div style="padding:8px 0;">
-                                                                            <a class="bar_button round startTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
-                                                                        </div>
+                                                                        <a class="bar_button round startFinishTask" href="<?=URL::base();?>admin/tasks_status/start" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >iniciar</a>
                                                                     <?}
                                                                 }
                                                             
@@ -232,9 +231,13 @@
                                                                         <?}?>
                                                                         <div class="options" >
                                                                             <? if($task->status_id == '6' && $task->to->id == $user->id){?>
-                                                                                <div style="min-height:25px;">
-                                                                                    <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
-                                                                                </div>
+                                                                                <a href="<?=URL::base();?>admin/tasks/endtask/<?=$task->id?>" class="popup bar_button round">entregar</a>
+                                                                                
+                                                                            <?}?>
+
+                                                                            <? if($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id){?>
+                                                                                <a class="bar_button round startFinishTask" href="<?=URL::base();?>admin/tasks_status/finish" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >confirmar recebimento</a>
+                                                                                
                                                                             <?}?>
                                                                         </div>
                                                                     </div>

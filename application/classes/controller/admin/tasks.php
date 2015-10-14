@@ -30,22 +30,17 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	        	$nome = explode(" ", $tasks_of->nome);
 	        	
 	        	$view->title = "tarefas - ".$nome[0];
-	        	$view->filter = "?to=".$tasks_of->id;
+	        	$view->data_post = json_encode(array('to' => $tasks_of->id));
 	        }else{
-	        	$team_id = $this->request->post('post')['team'];
 	        	/*
-	        	if($this->request->post('post')['team'] != ''){
-	        		
-	        	}else{
-	        		$team_id = $this->current_user->userInfos->team_id;
-	        	}
-	        	*/
+	        	$team_id = $this->request->post('post')['team'];
 	        	
 	        	$team = ORM::factory('team', $team_id);
 	        	$name = explode(" ", $team->name);
 
 	        	$view->title = "tarefas - ".$name[0];
 	        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
+	        	*/
 	        }
 	    }else{
 	    	$team_id = $this->current_user->userInfos->team_id;
@@ -54,7 +49,7 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	        $name = explode(" ", $team->name);
 
         	$view->title = "tarefas - ".$name[0];
-        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
+        	$view->data_post = json_encode(array('team' => $team->id)); //"?status=".json_encode(array("5")).'&team='.$team->id;
 	    }
 
 		$view->current_auth = $this->current_auth;	
@@ -319,25 +314,47 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 
         //$this->startProfilling();
 
-        $view->filter_status = json_decode($this->request->query('status'));  
-		$view->filter_task_to = $this->request->query('to');  
-		$view->filter_team = $this->request->query('team');          
-
-        $query = ORM::factory('task');
+        $query = ORM::factory('task')->where('ended', '=', '0');
 
         /***Filtros***/
-        if($this->current_auth == "assistente" || $this->current_auth == "assistente 2"){
-			$status_arr = array('5');
-			$query->where('task_to', '=', '0');
-		}else{
-			$status_arr = array('5', '6');
-		}	
+        $status_arr = array('5', '6');
+        if(is_array($this->request->post('post'))){
+	        if(array_key_exists('to', $this->request->post('post'))){
+	        	$view->filter_task_to = $this->request->post('post')['to'];  
 
+	        	$query->and_where('task_to', '=', $view->filter_task_to);
+	        }
 
-        (isset($view->filter_status)) ? $query->where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
-        (isset($view->filter_task_to)) ? $query->where('task_to', '=', $view->filter_task_to) : '';
+	       	if(array_key_exists('team', $this->request->post('post'))){
+	        	$view->filter_team = $this->request->post('post')['team'];  
 
-        $view->taskList = $query->and_where('ended', '=', '0')->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
+	        	$query->and_where('team_id', '=', $view->filter_team);
+
+	        	if(strpos('assistente', $this->current_auth) !== false){
+	        		$query->and_where('task_to', '=', '0');
+					$status_arr = array('5');
+				}
+	        }
+
+	    }
+
+		$query->and_where('status_id', 'IN', $status_arr);
+        //(isset($view->filter_status)) ? $query->and_where('status_id', 'IN', $status_arr)->and_where('team_id', '=', $view->filter_team) : '';
+        //(isset($view->filter_team)) ? $query->and_where('team_id', '=', $view->filter_team) : '';
+        //(isset($view->filter_task_to)) ? $query->and_where('task_to', '=', $view->filter_task_to) : '';
+
+        $view->taskList = $query->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
+
+        /**notificacao de leitura? **/
+        $query2 = ORM::factory('task')
+        			->where('ended', '=', '0')
+        			->and_where('status_id', '=', '7')
+        			->and_where('userInfo_id', '=', $this->current_user->userInfos->id);
+
+        //(isset($view->filter_task_to)) ? $query2 : '';
+
+        $view->notifications = $query2->order_by('order', 'ASC')->order_by('crono_date','ASC')->find_all();
+        			
                
         //$this->endProfilling();
         header('Content-Type: application/json');

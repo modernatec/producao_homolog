@@ -110,9 +110,8 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 				$task = ORM::factory('task', $this->request->post('task_id'));
 				$task->delivered_date = date('Y-m-d', strtotime("now"));
 				$task->diff = Utils_Helper::dataDiff($task->delivered_date, $task->planned_date);
-				$task->ended = '1';
-				$task->status_id = '7';
-	            $task->save();
+				//$task->ended = '1';
+				$task->status_id = '7';	            
 
 	            /*
 	            * abre próx. tarefa automaticamente.
@@ -127,6 +126,8 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 	            						->find();
 
 	            if($workflow_status_tag->next_tag_id != '0' && $workflow_status_tag->id != ''){
+	            	$task->ended = '1';
+
 		            $new_task = ORM::factory('task');
 	            	$new_task->object_id = $task->object_id;
 	            	$new_task->object_status_id = $task->object_status_id;
@@ -183,9 +184,11 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 
 	            	$new_task->task_to = $task_to;
 	            	$new_task->status_id = '5'; //aberto
-	            	$new_task->userInfo_id = $this->current_user->userInfos->id;
+	            	$new_task->userInfo_id = $task->userInfo_id;//$this->current_user->userInfos->id;
 		            $new_task->save(); 
 		        }
+
+		        $task->save();
 				
 	            $db->commit();
 				
@@ -225,6 +228,56 @@ class Controller_Admin_Tasks_Status extends Controller_Admin_Template {
 		}
 
         return false;
+	}
+
+
+	/*
+	* inicia uma tarefa 
+	*/
+	public function action_finish(){
+		$this->auto_render = false;
+
+		$task_ini = ORM::factory('task')->where('ended', '=', '1')->where('task_id', '=',$this->request->post('task_id'))->find_all();
+		if(count($task_ini) > 0){
+			$msg = "Tarefa já foi finalizada ".$this->request->post('task_id'); 
+		}else{
+			$db = Database::instance();
+	        $db->begin();
+			
+			try {  					
+				/*
+				* atualiza tarefa com info do user que a iniciou
+				*/
+				$task = ORM::factory('task', $this->request->post('task_id'));
+				$task->ended = '1';
+	            $task->save();
+	            
+	            $db->commit();
+				
+	            $msg = "recebimento confirmado"; 
+	        } catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            $db->rollback();
+	            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	        } catch (Database_Exception $e) {
+	            $db->rollback();
+	            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	        }
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'url', 'content'=> URL::base().'admin/objects/view/'.$this->request->post('object_id')),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);
+	
+	    return false;
 	}
 
 	/*
