@@ -1018,6 +1018,10 @@ a.post{
 	margin-right: 5px;
 }
 
+.list_item a{
+	color: #4F4F4F;
+}
+
 .list_item li, .dd-item{
 	background: #fff; 
 	color: #4F4F4F !important;
@@ -1030,7 +1034,7 @@ a.post{
 	min-width: 100px;
 	overflow: hidden;
 	border-bottom: 1px #ccc solid !important;
-	padding: 5px 0;
+	padding: 5px;
 }
 
 .list_item li:last-of-type{
@@ -1260,7 +1264,7 @@ a.post{
 	background: #25B6CC !important;
 }
 
-.blueSelection .item_content a{
+.blueSelection a{
 	color: #fff !important;
 }
 

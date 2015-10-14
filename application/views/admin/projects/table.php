@@ -18,7 +18,7 @@
 			?>
 			<li>
 				<div class="item_content">
-					<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>"  rel="load-content" data-panel="#direita" title="Editar">
+					<a style='display:block' href="<?=URL::base().'admin/projects/edit/'.$projeto->id;?>" rel="load-content" data-panel="#direita">
 						<b><?=$projeto->name?></b>
 						<p><?=$projeto->segmento->name?> | <?=count($projeto->collections->find_all())?> coleções | <?=($projeto->status == 0) ? "finalizado" : "produzindo"?></p>
 						

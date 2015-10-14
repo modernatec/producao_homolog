@@ -25,27 +25,53 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		try 
 		{     
 
-			$objects = ORM::factory('objectstatu')->where('fase', '=', '1')->and_where('status_id', '=', '8')->find_all();
+			$objects = ORM::factory('objectstatu')->where('fase', '=', '1')->and_where('status_id', '=', '8')->group_by('id')->find_all();
 			var_dump(count($objects));
 
 			$basedir = 'public/upload/projetos/';
 			$rootdir = DOCROOT.$basedir;
-
+			echo "<table>";
 			foreach ($objects as $object) {
 				$pasta_segmento = $object->project->segmento->pasta;
 
 				$pasta = $pasta_segmento.'/'.$object->project_pasta.'/'.$object->taxonomia;
 				if(file_exists($rootdir.$pasta)){
 					$obj = ORM::factory('object', $object->id);
+
+
+					$file = (strpos($obj->format->ext, 'index') !== FALSE ) ? $obj->format->ext : $obj->taxonomia.$obj->format->ext;
+					$file_path = '/public/upload/projetos/'.$obj->project->segmento->pasta.'/'.$obj->project->pasta.'/'.$obj->pasta.'/'.$file;
+					//var_dump($file_path);
+					if (file_exists(DOCROOT.$file_path)) {
+						
+					} else {
+						if($obj->format->ext == '.pps'){
+							$second_path = '/public/upload/projetos/'.$obj->project->segmento->pasta.'/'.$obj->project->pasta.'/'.$obj->pasta.'/'.$obj->taxonomia.'.ppt';
+							if (file_exists(DOCROOT.$second_path)) {
+								
+							}else{
+								echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+							}
+						}else{
+						    echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+						}
+					}
+					//echo '****pasta => '.$pasta.'<br/>';
+
+					/*
 					$obj->pasta = $object->taxonomia;
 					$obj->uploaded = '1';
 					$obj->save();
+					*/
 
+	            	
 	            	//echo 'ok - '.$object->taxonomia.'<br/>';
 	            }else{
-	            	echo '****não existe a pasta => '.$pasta.'<br/>';
+	            	echo '<tr><td>sem pasta</td><td>-</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+	            	
 	            }
 			}
+			echo "</table>";
 
 			$db->commit();
 

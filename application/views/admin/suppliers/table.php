@@ -16,7 +16,7 @@
 			<? foreach($suppliersList as $supplier){?>
 			<li>
 				<div class="item_content">
-				<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
+				<a href="<?=URL::base().'admin/suppliers/view/'.$supplier->id;?>" rel="load-content" data-panel="#direita">
 					
 						<p><b><?=$supplier->empresa?></b></p>					
 						<div class="line_itens">

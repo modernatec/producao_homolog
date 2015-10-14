@@ -17,7 +17,7 @@
 			<li>
 				<a class="right icon icon_excluir" href="<?=URL::base().'admin/contatos/delete/'.$contato->id;?>" title="Excluir">Excluir</a>	
 				<div class="item_content">	
-				<a href="<?=URL::base().'admin/contatos/edit/'.$contato->id;?>" rel="load-content" data-panel="#direita" title="+ informações">
+				<a href="<?=URL::base().'admin/contatos/edit/'.$contato->id;?>" rel="load-content" data-panel="#direita">
 					<div>
 						<b><?=$contato->nome?></b><br/>				
 						<?=$contato->email?><br/>

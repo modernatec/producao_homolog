@@ -471,6 +471,7 @@ class Controller_Admin_Users extends Controller_Admin_Template {
     public function getFiltros(){
         $this->auto_render = false;
         $viewFiltros = View::factory('admin/users/filtros');
+        $viewFiltros->current_auth = $this->current_auth;
 
         $filtros = Session::instance()->get('kaizen')['filtros'];
 

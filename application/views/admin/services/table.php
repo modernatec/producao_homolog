@@ -7,7 +7,7 @@
         <li>
             <a class="right icon icon_excluir" href="<?=URL::base().'admin/services/delete/'.$service->id;?>" title="Excluir">Excluir</a>
             <div class="item_content">
-                <a style='display:block' href="<?=URL::base().'admin/services/edit/'.$service->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$service->name?></a>
+                <a style='display:block' href="<?=URL::base().'admin/services/edit/'.$service->id;?>" rel="load-content" data-panel="#direita" ><?=$service->name?></a>
             </div>
         </li>
         <?}?>

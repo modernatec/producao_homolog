@@ -17,7 +17,7 @@
 			<li>
 				<a class="right icon icon_excluir" href="<?=URL::base().'admin/collections/delete/'.$collection->id;?>" title="Excluir">Excluir</a>	
 				<div class="item_content">				
-					<a class="check" href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" rel="load-content" data-panel="#direita" title="Editar">
+					<a class="check" href="<?=URL::base().'admin/collections/edit/'.$collection->id;?>" rel="load-content" data-panel="#direita">
 						<p><b><?=$collection->name?></b></p>
 						<p><?=Utils_Helper::data($collection->fechamento,'d/m/Y')?> | <?=$collection->segmento->name?></p>
 						<div class="clear">

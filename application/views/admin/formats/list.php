@@ -14,9 +14,9 @@
 		<ul class="list_item">
 			<? foreach($sfwprodsList as $sfwprod){?>
 			<li>
-				<a class="right icon icon_excluir" href="<?=URL::base().'admin/format/delete/'.$sfwprod->id;?>" title="Excluir">Excluir</a>
+				<a class="right icon icon_excluir" href="<?=URL::base().'admin/formats/delete/'.$sfwprod->id;?>" title="Excluir">Excluir</a>
 				<div class="item_content">
-					<a style='display:block' href="<?=URL::base().'admin/format/edit/'.$sfwprod->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$sfwprod->name?></a>
+					<a style='display:block' href="<?=URL::base().'admin/formats/edit/'.$sfwprod->id;?>" rel="load-content" data-panel="#direita"><?=$sfwprod->name?></a>
 				</div>
 			</li>
 			<?}?>

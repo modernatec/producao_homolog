@@ -87,7 +87,7 @@
 		      	<label for="username">username</label>
 				<dd>
 					<?=@$userInfoVO["username"];?>
-					<a href="<?=URL::base();?>admin/users/editPass/<?=$userInfoVO["user_id"]?>" class="bar_button round left" rel="load-content" data-panel="#direita" >alterar senha</a>
+					<a href="<?=URL::base();?>admin/users/editPass/<?=$userInfoVO["user_id"]?>" class="bar_button round" rel="load-content" data-panel="#direita" >alterar senha</a>
 				</dd>
 			</div>	
 			<div class="clear">	

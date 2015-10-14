@@ -10,7 +10,7 @@
       <?if(strpos('coordenador', $current_auth) !== false || strpos('admin', $current_auth) !== false){?>
       <p><?=$user->telefone?></p>
       <?}?>
-      <?if($user->id == $current_user->id || strpos('assistente', $current_auth) === false){?>
+      <?if(strpos('assistente', $current_auth) === false){?>
       <a href="<?=URL::base();?>admin/users/edit/<?=$user->id?>" class="bar_button round" rel="load-content" data-panel="#direita" >editar</a>
       <?}?>
 </div>

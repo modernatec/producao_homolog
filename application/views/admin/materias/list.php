@@ -16,7 +16,7 @@
 			<li>
 				<a class="right icon icon_excluir" href="<?=URL::base().'admin/materias/delete/'.$materia->id;?>" title="Excluir">Excluir</a>
 				<div class="item_content">
-					<a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$materia->name?></a>
+					<a style='display:block' href="<?=URL::base().'admin/materias/edit/'.$materia->id;?>" rel="load-content" data-panel="#direita"><?=$materia->name?></a>
 				</div>
 			</li>
 			<?}?>

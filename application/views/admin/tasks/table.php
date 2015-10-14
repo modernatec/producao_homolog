@@ -18,8 +18,7 @@
         echo '<ul class="list_item" id="'.$id.'">';
         foreach($notifications as $key=>$task){?>
             <li class="dd-item" id="item-<?=$task->id?>">
-                <div class="item_content">
-                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
+                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">
                     <?
                         $object_late = '';
 
@@ -50,14 +49,12 @@
                     <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
                     
                 </a>
-                </div>
             </li>
         <?}
 
         foreach($taskList as $key=>$task){?>
             <li class="dd-item" id="item-<?=$task->id?>">
-                <div class="item_content">
-                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita" title="+ informações">
+                 <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">
                     <?
                         $object_late = '';
 
@@ -88,7 +85,6 @@
                     <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
                     
                 </a>
-                </div>
             </li>
         <?}
         echo '<ul>';

@@ -16,7 +16,7 @@
 			<li>
 				<a class="right icon icon_excluir" href="<?=URL::base().'admin/segmentos/delete/'.$segmento->id;?>" title="Excluir">Excluir</a>
 				<div class="item_content">
-					<a class="clean" href="<?=URL::base().'admin/segmentos/edit/'.$segmento->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$segmento->name?></a>
+					<a class="clean" href="<?=URL::base().'admin/segmentos/edit/'.$segmento->id;?>" rel="load-content" data-panel="#direita"><?=$segmento->name?></a>
 				</div>
 			</li>
 			<?}?>

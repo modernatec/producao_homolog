@@ -16,7 +16,7 @@
 			<li>
 				<a class="right icon icon_excluir" href="<?=URL::base().'admin/repositorios/delete/'.$repositorio->id;?>" title="Excluir">Excluir</a>
 				<div class="item_content">
-					<a style='display:block' href="<?=URL::base().'admin/repositorios/edit/'.$repositorio->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$repositorio->name?></a>
+					<a style='display:block' href="<?=URL::base().'admin/repositorios/edit/'.$repositorio->id;?>" rel="load-content" data-panel="#direita"><?=$repositorio->name?></a>
 				</div>
 			</li>
 			<?}?>

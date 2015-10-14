@@ -45,7 +45,7 @@
 			?>
 			<li>
 				<div class="item_content">
-					<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita" title="+ informações">
+					<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita">
 						<p><b><?=$objeto->title?></b></p>
 						<p><?=$objeto->taxonomia?></p>
 						<p><?=$objeto->statu_status?> | <?=($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição'?> <?=$diff?></p>
