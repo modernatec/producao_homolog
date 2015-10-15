@@ -16,7 +16,7 @@
         <li>
             <a class="right icon icon_excluir" href="<?=URL::base().'admin/feriados/delete/'.$feriado->id;?>" title="Excluir">Excluir</a>
             <div class="item_content">
-                <a style='display:block' href="<?=URL::base().'admin/feriados/edit/'.$feriado->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=Utils_Helper::data($feriado->data).' - '.$feriado->feriado?></a>
+                <a style='display:block' href="<?=URL::base().'admin/feriados/edit/'.$feriado->id;?>" rel="load-content" data-panel="#direita" ><?=Utils_Helper::data($feriado->data).' - '.$feriado->feriado?></a>
             </div>
         </li>
         <?}?>

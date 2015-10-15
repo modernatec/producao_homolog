@@ -15,10 +15,9 @@
         <? foreach($list as $tag){?>
         <li class="dd-item" id="item-<?=$tag->id?>">
             <a class="right icon icon_excluir" href="<?=URL::base().'admin/tags/delete/'.$tag->id;?>" title="Excluir">Excluir</a>
-            <div class="item_content">
-	            <span class="left ball" style="background:<?=$tag->color;?>"></span>
-	            <a style='display:block' href="<?=URL::base().'admin/tags/edit/'.$tag->id;?>" rel="load-content" data-panel="#direita" title="Editar"><?=$tag->tag?></a>
-	        </div>
+            <span class="left ball" style="background:<?=$tag->color;?>"></span>
+            <a style='display:block' href="<?=URL::base().'admin/tags/edit/'.$tag->id;?>" rel="load-content" data-panel="#direita"><?=$tag->tag?></a>
+        
         </li>
         <?}?>
     </ul>

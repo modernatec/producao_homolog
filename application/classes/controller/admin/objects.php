@@ -25,35 +25,39 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		try 
 		{     
 
-			$objects = ORM::factory('objectstatu')->where('fase', '=', '1')->and_where('status_id', '=', '8')->group_by('id')->find_all();
-			var_dump(count($objects));
+			$objects = ORM::factory('object')
+						->join('objectstatus')->on('objects.id', '=', 'objectstatus.id')
+						->where('objects.fase', '=', '1')->and_where('objectstatus.status_id', '=', '8')->group_by('objects.id')->find_all();
+			//var_dump(count($objects));
 
 			$basedir = 'public/upload/projetos/';
 			$rootdir = DOCROOT.$basedir;
 			echo "<table>";
-			foreach ($objects as $object) {
-				$pasta_segmento = $object->project->segmento->pasta;
+			foreach ($objects as $obj) {
+				//$obj = ORM::factory('object', $object->id);
+				//$pasta_segmento = $object->project->segmento->pasta;
 
-				$pasta = $pasta_segmento.'/'.$object->project_pasta.'/'.$object->taxonomia;
-				if(file_exists($rootdir.$pasta)){
-					$obj = ORM::factory('object', $object->id);
+				$pasta = '/public/upload/projetos/'.$obj->project->segmento->pasta.'/'.$obj->project->pasta.'/'.$obj->pasta;
+				//$pasta_segmento.'/'.$object->project_pasta.'/'.$object->taxonomia;
+				if(file_exists(DOCROOT.$pasta)){
+					
 
 
 					$file = (strpos($obj->format->ext, 'index') !== FALSE ) ? $obj->format->ext : $obj->taxonomia.$obj->format->ext;
-					$file_path = '/public/upload/projetos/'.$obj->project->segmento->pasta.'/'.$obj->project->pasta.'/'.$obj->pasta.'/'.$file;
+					$file_path = $pasta.'/'.$file;
 					//var_dump($file_path);
 					if (file_exists(DOCROOT.$file_path)) {
 						
 					} else {
 						if($obj->format->ext == '.pps'){
-							$second_path = '/public/upload/projetos/'.$obj->project->segmento->pasta.'/'.$obj->project->pasta.'/'.$obj->pasta.'/'.$obj->taxonomia.'.ppt';
+							$second_path = $pasta.'/'.$obj->taxonomia.'.ppt';
 							if (file_exists(DOCROOT.$second_path)) {
 								
 							}else{
-								echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+								echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td><td>'.$obj->pasta.'</td><td>'.$obj->id.'</td><td>'.$second_path.'</td></tr>';
 							}
 						}else{
-						    echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+						    echo '<tr><td>n encontrei o obj na pasta</td><td>'.$obj->format->ext.'</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td><td>'.$obj->pasta.'</td><td>'.$obj->id.'</td><td>'.$file_path.'</td></tr>';
 						}
 					}
 					//echo '****pasta => '.$pasta.'<br/>';
@@ -67,7 +71,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            	
 	            	//echo 'ok - '.$object->taxonomia.'<br/>';
 	            }else{
-	            	echo '<tr><td>sem pasta</td><td>-</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td></tr>';
+	            	echo '<tr><td>sem pasta</td><td>-</td><td>'.$obj->taxonomia.'</td><td>'.$obj->project->name.'</td><td>-</td><td>'.$obj->id.'</td><td>-</td></tr>';
 	            	
 	            }
 			}
