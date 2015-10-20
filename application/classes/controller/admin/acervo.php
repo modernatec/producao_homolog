@@ -155,7 +155,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				INNER JOIN moderna_collections b ON a.collection_id = b.id
 				INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
 				INNER JOIN moderna_objects_status d ON a.id = d.object_id
-				WHERE fase = '1' AND d.status_id = '8' 
+				WHERE fase = '53' AND d.status_id = '8' 
 				".$segmento." 
 				 
 				".$origem." 
@@ -252,7 +252,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 					INNER JOIN moderna_collections b ON a.collection_id = b.id
 					INNER JOIN moderna_typeobjects c ON a.typeobject_id = c.id
 					INNER JOIN moderna_objects_status d ON a.id = d.object_id
-					WHERE fase = '1' AND d.status_id = '8' AND uploaded = '1' 
+					WHERE fase = '53' AND d.status_id = '8' AND uploaded = '1' 
 					".$segmento." 
 					".$supplier." 
 					".$origem." 

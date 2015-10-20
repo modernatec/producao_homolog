@@ -136,6 +136,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         $view->contatosList = $objeto->contatos->find_all();
         $view->suppliersList = $objeto->suppliers_objects->find_all();
 
+        $view->statusList = ORM::factory('statu')->where('type', '=', 'objects')->order_by('order', 'ASC')->find_all(); 
 		$view->workflowList = ORM::factory('workflow')->order_by('name', 'ASC')->find_all();              
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->collections = ORM::factory('collection')->where('project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
@@ -368,6 +369,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     public function getFiltros(){
     	$this->auto_render = false;
     	$viewFiltros = View::factory('admin/objects/filtros');
+    	$viewFiltros->current_auth = $this->current_auth;
     	
 		$viewFiltros->filter_tipo = array();
 		$viewFiltros->filter_status = array();
@@ -379,6 +381,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$viewFiltros->filter_segmento = array();
 		$viewFiltros->filter_materia = array();
 		$viewFiltros->filter_project = array();
+		//$viewFiltros->filter_fase = array();
+
+		
 
 		$viewFiltros->filter_taxonomia = "";
 
@@ -392,7 +397,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
   		//diferente de "finalizado" e "nao iniciado"
 		$status_init = ORM::factory('statu')
-			->where('type', '=', 'object')
+			->where('type', '=', 'workflow')
 			->where('id', 'NOT IN', array('8'))->find_all(); 
 
   		$status_arr = array();
@@ -414,83 +419,29 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		}
 
   		if(count($viewFiltros->filter_collection) == 0){
-  			if($this->current_auth != 'admin' && $this->current_auth != 'coordenador'){
+  			if(strpos($this->current_auth, 'assistente') !== false){
 	  			$viewFiltros->filter_collection = json_decode(json_encode($collections_arr));
 	  		}
   		}
 
-  		/*
-		$taxonomia = (count($viewFiltros->filter_taxonomia) > 0) ? "AND (taxonomia LIKE '%".$viewFiltros->filter_taxonomia."%' OR title LIKE '%".$viewFiltros->filter_taxonomia."%') " : '';
-    	$materia = (count($viewFiltros->filter_materia) > 0) ? " AND materia_id IN ('".implode("','", $viewFiltros->filter_materia)."')" : "";
-    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? " AND segmento_id IN ('".implode("','", $viewFiltros->filter_segmento)."')" : "";
-    	$supplier = (count($viewFiltros->filter_supplier) > 0) ? " AND supplier_id IN ('".implode("','",$viewFiltros->filter_supplier)."')" : '';
-    	$origem = (count($viewFiltros->filter_origem) > 0) ? " AND reaproveitamento IN ('".implode("','",$viewFiltros->filter_origem)."')" : '';
-    	$project = (count($viewFiltros->filter_project ) > 0) ? " AND project_id IN ('".implode("','",$viewFiltros->filter_project)."')" : '';
-    	$collection = (count($viewFiltros->filter_collection ) > 0) ? " AND collection_id IN ('".implode("','",$viewFiltros->filter_collection)."')" : '';
- 
-    	$status = (count($viewFiltros->filter_status) > 0) ? " AND status_id IN ('".implode("','",$viewFiltros->filter_status)."')" : '';
-    	$tipo = (count($viewFiltros->filter_tipo) > 0) ? " AND typeobject_id IN ('".implode("','",$viewFiltros->filter_tipo)."')" : '';
-
-		$sql = "SELECT 
-					*					      				
-				FROM moderna_objectstatus
-				WHERE fase = '1' 
-				".$taxonomia." 
-				".$materia." 
-				".$segmento." 
-
-				".$supplier."  
-	
-				".$origem." 
-				".$project."
-				".$collection."  
-				".$status." 				 
-				".$tipo;
-
-		$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();		
-
-		$type_arr = array();
-		$status_arr = array();
-		$materia_arr = array();
-		$collection_arr = array();
-		$projects_arr = array();
-
-		foreach ($result as $value) {
-			array_push($type_arr, $value->typeobject_id);
-			array_push($status_arr, $value->status_id);
-			array_push($materia_arr, $value->materia_id);
-			array_push($collection_arr, $value->collection_id);
-			array_push($projects_arr, $value->project_id);
-		}
-		*/
-
 		$viewFiltros->typeObjectsList = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
-  		$viewFiltros->statusList = ORM::factory('statu')->join('workflows_status', 'INNER')->on('workflows_status.status_id', '=', 'status.id')->where('type', '=', 'object')->group_by('status.id')->order_by('order', 'ASC')->find_all();
+  		$viewFiltros->statusList = ORM::factory('statu')->join('workflows_status', 'INNER')->on('workflows_status.status_id', '=', 'status.id')->where('type', '=', 'workflow')->group_by('status.id')->order_by('order', 'ASC')->find_all();
 		$viewFiltros->collectionList = ORM::factory('collection')->join('projects', 'INNER')->on('collections.project_id', '=', 'projects.id')->where('projects.status', '=', '1')->order_by('name', 'ASC')->find_all();
 		$viewFiltros->materiasList = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
-		$viewFiltros->projectsList = ORM::factory('project')->and_where('status', '=', '1')->order_by('name', 'ASC')->find_all();
-		
-		$viewFiltros->suppliersList = array();
+		$viewFiltros->faseList = ORM::factory('statu')->where('type', '=', 'objects')->order_by('order', 'ASC')->find_all();
 		
 
-		/*
-  		$viewFiltros->typeObjectsList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
-  		$viewFiltros->statusList = ORM::factory('statu')->where('id', 'IN', array_unique($status_arr))->order_by('status', 'ASC')->find_all();
-		$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collection_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->materiasList = ORM::factory('materia')->where('id', 'IN', array_unique($materia_arr))->order_by('name', 'ASC')->find_all();
-		$viewFiltros->projectsList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->and_where('status', '=', '1')->order_by('name', 'ASC')->find_all();
+		if(strpos($this->current_auth, 'assistente') !== false){
+			$viewFiltros->projectsList = ORM::factory('project')->and_where('status', '=', '1')->order_by('name', 'ASC')->find_all();
+		}else{
+			$viewFiltros->projectsList = ORM::factory('project')->order_by('ano', 'DESC')->find_all();
+		}
 		
 		$viewFiltros->suppliersList = array();
-		*/
 
-		/*
-		ORM::factory('supplier')
-			->join('objectStatus')->on('objectStatus.supplier_id', '=', 'suppliers.id')
-			->where('objectStatus.fase', '=', '1')
-			->where('objectStatus.project_id', '=', $project_id)
-			->group_by('suppliers.id')											
-			->order_by('empresa', 'ASC')->find_all();
-		*/
+		if(!isset($viewFiltros->filter_fase)){
+  			$viewFiltros->filter_fase = json_decode(json_encode(array('53')));
+  		}
 
   		return $viewFiltros;
     }
@@ -517,7 +468,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
   		//diferente de "finalizado" e "nao iniciado"
 		$status_init = ORM::factory('statu')
-			->where('type', '=', 'object')
+			->where('type', '=', 'workflow')
 			->where('id', 'NOT IN', array('8'))->find_all(); 
 
   		$status_arr = array();
@@ -538,12 +489,26 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			array_push($collections_arr, $collection->collection_id);
 		}
 
-
-
-  		if(count($this->request->post('filter_collection')) == '0'){
-  			if($this->current_auth != 'admin' && $this->current_auth != 'coordenador'){
+		if(strpos($this->current_auth, 'assistente') !== false){
+	  		if(count($this->request->post('filter_collection')) == '0'){
 	  			$view->filter_collection = json_decode(json_encode($collections_arr));
 	  		}
+  		}
+  		/*
+  		else{
+  			$projects_init = ORM::factory('project')->where('status', '=', '1')->find_all(); 
+
+	  		$projects_arr = array();
+			foreach ($projects_init as $project) {
+				array_push($projects_arr, $project->id);
+			}
+
+			$view->filter_project = json_decode(json_encode($projects_arr));
+  		}
+  		*/
+
+  		if(!isset($view->filter_fase)){
+  			$view->filter_fase = json_decode(json_encode(array('53')));
   		}
   		
   		$taxonomia = (isset($view->filter_taxonomia)) ? "AND (taxonomia LIKE '%".$view->filter_taxonomia."%' OR title LIKE '%".$view->filter_taxonomia."%') " : '';
@@ -553,6 +518,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	$origem = (isset($view->filter_origem)) ? " AND reaproveitamento IN ('".implode("','",$view->filter_origem)."')" : '';
     	$project = (isset($view->filter_project )) ? " AND project_id IN ('".implode("','",$view->filter_project)."')" : '';
     	$collection = (isset($view->filter_collection )) ? " AND collection_id IN ('".implode("','",$view->filter_collection)."')" : '';
+    	$fase = (isset($view->filter_fase )) ? " AND fase IN ('".implode("','",$view->filter_fase)."')" : '';
  
     	$status = (isset($view->filter_status)) ? " AND status_id IN ('".implode("','",$view->filter_status)."')" : '';
     	$tipo = (isset($view->filter_tipo)) ? " AND typeobject_id IN ('".implode("','",$view->filter_tipo)."')" : '';
@@ -560,8 +526,8 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$sql = "SELECT 
 					*					      				
 				FROM moderna_objectstatus
-				WHERE fase = '1' 
-				AND project_status = '1' 
+				WHERE project_status = '1' 
+				".$fase."
 				".$taxonomia." 
 				".$materia." 
 				".$segmento." 

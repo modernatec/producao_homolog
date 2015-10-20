@@ -219,15 +219,18 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 
   		$viewFiltros->filter_segmento = array();
 
+  		/*
   		if(!isset($view->filter_ano)){
   			$viewFiltros->filter_ano = array(date('Y'));
   		}
+  		*/
 
   		$viewFiltros->filter_materia = array();
 
   		$viewFiltros->segmentoList = ORM::factory('segmento')->order_by('name', 'ASC')->find_all();
   		$viewFiltros->anosList = ORM::factory('collection')->group_by('ano')->order_by('ano', 'DESC')->find_all();
   		$viewFiltros->materiasList = ORM::factory('materia')->order_by('name', 'ASC')->find_all();
+  		$viewFiltros->projetosList = ORM::factory('project')->order_by('name', 'ASC')->find_all();
 
 
 		foreach ($filtros as $key => $value) {
@@ -254,9 +257,11 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
   			$view->$key = json_decode($value);
   		}
 
+  		/*
   		if(!isset($view->filter_ano)){
   			$view->filter_ano = array(date('Y'));
   		}
+  		*/
 
 		$query = ORM::factory('collection');
 
@@ -264,6 +269,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 		(isset($view->filter_ano)) ? $query->where('ano', 'IN', $view->filter_ano) : '';
 		(isset($view->filter_materia)) ? $query->where('materia_id', 'IN', $view->filter_materia) : '';
 		(isset($view->filter_name)) ? $query->where('name', 'LIKE', '%'.$view->filter_name.'%') : '';
+		(isset($view->filter_projects)) ? $query->where('project_id', 'IN', $view->filter_projects) : '';
 		
 		$view->collectionsList = $query->order_by('ano','DESC')->order_by('name','ASC')->find_all();
 		

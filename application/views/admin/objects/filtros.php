@@ -91,8 +91,9 @@
 		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="status">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <span class="round" id="status">status workflow <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
 		            <span class="filter_panel_arrow"/>
+
 		            <div class="filter_panel round" >
 			            <ul>
 			            	<li><input type="checkbox" class="checkAll" id="filter_status" /><label for="filter_status" class="text_cyan">selecionar tudo</label></li>
@@ -111,34 +112,6 @@
 			                <input type="submit" class="round bar_button" value="buscar" /> 
                         	<input type="button" class="round bar_button cancelar" value="cancelar" /> 
 			            </p> 
-		            </div>
-		        </li>
-		    </ul>
-		</div>
-
-		<div class="filter" >
-		    <ul>
-		        <li class="round" >
-		            <span id="supplier">produtora <div class="icon_filtros <?=(!empty($filter_supplier)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
-		            <div class="filter_panel round " >
-			            <ul>
-			            	<li><input type="checkbox" class="checkAll" id="filter_supplier" /><label for="filter_supplier" class="text_cyan">selecionar tudo</label></li>
-			            </ul>
-			            <div class="scrollable_content" data-bottom="false">
-				            <ul>
-				                <? foreach ($suppliersList as $supplier) {?>
-				                <li>
-				                	<input class="filter_supplier" type="checkbox" name="filter_supplier[]" value="<?=$supplier->id?>" id="s_<?=$supplier->id?>" <?if(isset($filter_supplier)){ if(in_array($supplier->id, $filter_supplier)){ echo "checked";}}?> />
-				                	<label for="s_<?=$supplier->id?>"><?=$supplier->empresa?></label>
-				                </li>
-				                <?}?>					                
-				            </ul>
-			            </div>
-			            <p>
-			                <input type="submit" class="round bar_button" value="buscar" /> 
-                        	<input type="button" class="round bar_button cancelar" value="cancelar" />  
-			            </p>
 		            </div>
 		        </li>
 		    </ul>
@@ -194,6 +167,35 @@
 		        </li>
 		    </ul>
 		</div>
+		<?if(strpos($current_auth, 'assistente') === false){?>
+		<div class="filter" >
+		    <ul>
+		        <li class="round" >
+		            <span class="round" id="fase">status <div class="icon_filtros <?=(!empty($filter_fase)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <span class="filter_panel_arrow"/>
+		            <div class="filter_panel round " >
+		            	<ul >
+			                <li><input type="checkbox" class="checkAll" id="filter_fase" /><label for="filter_fase" class="text_cyan">selecionar tudo</label></li>
+			            </ul>
+			            <div class="scrollable_content" data-bottom="false">
+			            	<ul>
+				                <?foreach ($faseList as $fase) {?>
+				                	<li>
+				                		<input class="filter_fase" type="checkbox" name="filter_fase[]" value="<?=$fase->id?>" id="fas_<?=$fase->id?>" <?if(isset($filter_fase)){ if(in_array($fase->id, $filter_fase)){ echo "checked";}}?> />
+				                		<label for="fas_<?=$fase->id?>"><?=$fase->status?></label>
+				                	</li>
+				                <?}?>
+			            	</ul>
+			            </div>
+		            	<p>
+			                <input type="submit" class="round bar_button" value="buscar" /> 
+                        	<input type="button" class="round bar_button cancelar" value="cancelar" />  
+			            </p>
+		            </div>
+		        </li>
+		    </ul>
+		</div>
+		<?}?>
 		<input type="submit" class="round bar_button left" value="buscar"> 
 	</form>		
 	<div class="left">

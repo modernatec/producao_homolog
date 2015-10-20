@@ -44,11 +44,15 @@
             <div class="clear left">
                 <dt> <label for="fase">status</label> </dt>
                 <dd>
-                    <select class="required round" name="fase" id="fase">
-                        <option value='1' <?=(($objVO['fase']== '1')?('selected="selected"'):(''))?>>em produção</option>
-                        <option value='2' <?=(($objVO['fase']== '2')?('selected="selected"'):(''))?>>caiu</option>
+                    <select class="required round" name="fase" id="fase" style="width:200px;">
+                        <option value=''>Selecione</option>
+                        <? foreach($statusList as $status){?>
+                            <option value='<?=$status->id?>' <?=((@$objVO["fase"] == $status->id)?('selected'):(''))?> ><?=$status->status?></option>
+                        <? }?>
                     </select>
                     <span class='error'><?=Arr::get($errors, 'fase');?></span>
+
+                    
                 </dd>  
             </div>
             <div class=" left">
@@ -64,6 +68,18 @@
                 </dd>
             </div>
             <div class="left">
+                <dt> <label for="format_id">formato final</label> </dt>
+                <dd>
+                    <select class="required round" name="format_id" id="format_id">
+                        <option value=''>Selecione</option>
+                        <? foreach($formats as $format){?>
+                            <option value='<?=$format->id?>' <?=((@$objVO["format_id"] == $format->id)?('selected'):(''))?> ><?=$format->name?></option>
+                        <? }?>
+                    </select>
+                    <span class='error'><?=Arr::get($errors, 'format_id');?></span>
+                </dd>
+            </div>  
+            <div class="left">
                 <dt> <label for="workflow_id">workflow</label> </dt>
                 <dd>
                     <select class="required round" name="workflow_id" id="workflow_id">
@@ -75,6 +91,7 @@
                     <span class='error'><?=Arr::get($errors, 'workflow_id');?></span>
                 </dd>
             </div>  
+
             <div class="clear left"> 
                 <dt><label for="reaproveitamento">origem</label></dt>
                 <dd>
@@ -174,18 +191,7 @@
                 </dd>
             </div>
             
-            <div class="left">
-                <dt> <label for="format_id">formato final</label> </dt>
-                <dd>
-                    <select class="required round" name="format_id" id="format_id">
-                        <option value=''>Selecione</option>
-                        <? foreach($formats as $format){?>
-                            <option value='<?=$format->id?>' <?=((@$objVO["format_id"] == $format->id)?('selected'):(''))?> ><?=$format->name?></option>
-                        <? }?>
-                    </select>
-                    <span class='error'><?=Arr::get($errors, 'format_id');?></span>
-                </dd>
-            </div>  
+            
             <div class="left">
                 <dt> <label for="transcricao">transcrição de locução</label> </dt>
                 <dd>

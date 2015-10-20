@@ -1146,7 +1146,6 @@ function setupAjax(container){
         $('.tabs a').unbind('click').bind('click', function(e){
             e.preventDefault();
             link = $(this).attr('href');
-            console.log('clicou aba')
             //if(link != lastURL){
                 
                 $('.content_hide').each(function(index, element){            
@@ -1159,7 +1158,6 @@ function setupAjax(container){
 
                 if($(this).hasClass('ajax')){
                     $('.tabs li').removeClass('selected');
-                    console.log('clicou aba 3')
                     
                     loadContent({url:link, container:'#tabs_content', post:$(this).data('post')});
                     

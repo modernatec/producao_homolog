@@ -8,34 +8,12 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 	{
 		parent::__construct($request, $response);	
 	}
-        
-    /*    
-	public function action_index($ajax = null)
-	{	
-		$view = View::factory('admin/status/list')
-			->bind('message', $message);
-		
-		//$view->table = $this->getListStatus();
-
-		if($ajax == null){
-			return $view;             
-		}else{
-			$this->auto_render = false;
-			header('Content-Type: application/json');
-			echo json_encode(
-				array(
-					array('container' => '#content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				)						
-			);
-	        return false;
-		}           
-	} 
-	*/
-
+    
 	public function action_getListStatus($ajax = null){
 		$this->auto_render = false;
 		$table_view = View::factory('admin/status/table');
-		$table_view->statusList = ORM::factory('statu')->where('type', '=', 'object')->order_by('order','ASC')->find_all();
+
+		$table_view->statusList = ORM::factory('statu')->where('type', '=', 'workflow')->order_by('order','ASC')->find_all();
 
 		if($ajax != null){
        		return $table_view;
@@ -117,12 +95,12 @@ class Controller_Admin_Status extends Controller_Admin_Template {
 				'color',
 				'team_id'
 			));
-			$objeto->type = 'object';
+			$objeto->type = 'workflow';
 			                
 			$objeto->save();
 
-			DB::delete('status_teams')->where('status_id','=', $objeto->id)->execute();			
 			if($this->request->post('team') != ""){
+				DB::delete('status_teams')->where('status_id','=', $objeto->id)->execute();			
 				foreach ($this->request->post('team') as $team) {
 					$new_team = ORM::factory('status_team');
 					$new_team->status_id = $objeto->id;
