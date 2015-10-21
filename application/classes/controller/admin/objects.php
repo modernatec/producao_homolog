@@ -17,6 +17,73 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		parent::__construct($request, $response);
 	}
 
+	public function action_setcessao(){
+		$this->auto_render = false;
+		ini_set('auto_detect_line_endings',TRUE);
+		//get the csv file
+	    $file = "projetos_2015_kaizen_RH.csv";//$_FILES[csv][tmp_name];
+
+	    
+	    $file_path = "public/".$file;
+
+	    if(file_exists(DOCROOT.$file_path)){
+	    	$db = Database::instance();
+	        $db->begin();
+			
+			try 
+			{    
+		    	$row = 1;
+				$handle = fopen ($file_path,"r");
+				echo "<table>";
+				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+				    $num = count ($data);
+				    
+				    $row++;
+
+				    
+				    for ($c=0; $c < $num; $c++) {
+				    	switch ($c) {
+				    		case '0':
+				    			$taxonomia = trim($data[$c]);
+				    			break;
+				    		case '1':
+				    			$cessao = trim(explode('-', $data[$c])[0]);
+				    			break;
+				    	}
+				    }
+
+				    $objeto = ORM::factory('object')->where('taxonomia', '=', $taxonomia)->find();
+				    if($objeto->id){
+				    	$object = ORM::factory('object', $objeto->id);
+					    $object->cessao = $cessao;
+					    $object->save();
+					    echo '<tr><td>ok</td><td>'.$taxonomia.' -- '.$object->taxonomia. "</td></tr>";
+				    }else{
+				    	echo '<tr><td>n encontrei</td><td>'.$taxonomia.' -- '.$cessao. "</td></tr>";
+				    }
+				    //
+					
+				}
+				echo "</table>";
+				fclose ($handle);
+				$db->commit();
+
+			}  catch (ORM_Validation_Exception $e) {
+	            $errors = $e->errors('models');
+				$erroList = '';
+				foreach($errors as $erro){
+					$erroList.= $erro.'<br/>';	
+				}
+	            echo 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+	            $db->rollback();
+	        } catch (Database_Exception $e) {
+	            echo 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+	            $db->rollback();
+	        }
+	    	
+	    }
+	}
+
 	public function action_uploaded(){
 		$this->auto_render = false;
 		$db = Database::instance();
@@ -76,6 +143,48 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 	            }
 			}
 			echo "</table>";
+
+			$db->commit();
+
+		}  catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+	}
+
+
+	public function action_pastasuploaded(){
+		$this->auto_render = false;
+		$db = Database::instance();
+        $db->begin();
+        ini_set('max_execution_time', 300); //max. response para 5 minutos
+		
+		try 
+		{     
+
+			$objects = ORM::factory('object')
+						->join('objectstatus')->on('objects.id', '=', 'objectstatus.id')
+						->where('objects.fase', '=', '1')->where('objectstatus.status_id', '=', '8')->group_by('objects.id')->find_all();
+			
+			//echo Database::instance()->last_query;
+			//echo '<br/><br/>'.count($objects).'<br/><br/>';
+			
+			foreach ($objects as $key => $obj) {
+				$new_obj = ORM::factory('object', $obj->id);
+				$new_obj->uploaded = '1';
+				if($new_obj->save()){
+					echo $key.' - '.$obj->taxonomia. '<br/><br/>';
+				}
+			}
+			
 
 			$db->commit();
 
