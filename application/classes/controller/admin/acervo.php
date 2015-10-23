@@ -179,20 +179,41 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				array_push($type_arr, $value->typeobject_id);
 			}
 
-	  		$viewFiltros->segmentoList = ORM::factory('segmento')->where('id', 'IN', array_unique($segmentos_arr))->order_by('name', 'ASC')->find_all();
-			$viewFiltros->collectionList = ORM::factory('collection')->where('id', 'IN', array_unique($collections_arr))->order_by('name', 'ASC')->find_all();
-			$viewFiltros->projectList = ORM::factory('project')->where('id', 'IN', array_unique($projects_arr))->order_by('name', 'ASC')->find_all();
-			$viewFiltros->typeList = ORM::factory('typeobject')->where('id', 'IN', array_unique($type_arr))->order_by('name', 'ASC')->find_all();
+			$segmento_query = ORM::factory('segmento');
+			$collection_query = ORM::factory('collection');
+			$project_query = ORM::factory('project');
+			$type_query = ORM::factory('typeobject');
+
+			if(count($segmentos_arr) > 0){
+				$segmento_query->where('id', 'IN', array_unique($segmentos_arr));
+			}
+
+			if(count($collections_arr) > 0){
+				$collection_query->where('id', 'IN', array_unique($collections_arr));
+			}
+
+			if(count($projects_arr) > 0){
+				$project_query->where('id', 'IN', array_unique($projects_arr));
+			}
+
+			if(count($type_arr) > 0){
+				$type_query->where('id', 'IN', array_unique($type_arr));
+			}
+
+	  		$viewFiltros->segmentoList = $segmento_query->order_by('name', 'ASC')->find_all();
+			$viewFiltros->collectionList = $collection_query->order_by('name', 'ASC')->find_all();
+			$viewFiltros->projectList = $project_query->order_by('name', 'ASC')->find_all();
+			$viewFiltros->typeList = $type_query->order_by('name', 'ASC')->find_all();
 			$viewFiltros->suppliersList = array();//= ORM::factory('supplier')->order_by('empresa', 'ASC')->find_all();		
 
-	  		return $viewFiltros;       
 			
 		} catch (ORM_Validation_Exception $e) {
-            return false;
+            
         } catch (Database_Exception $e) {
-        	//Session::instance()->delete('kaizen');
-            return false;
+            
         }		
+
+  		return $viewFiltros;       
     }
 
     public function action_getObjects($page, $ajax = null){
@@ -316,9 +337,11 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		$object = ORM::factory('object', $object_id);
 		$view->object = $object;
 
+		$pasta = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta;
+		
 		$file = (strpos($object->format->ext, 'index') !== FALSE ) ? $object->format->ext : $object->taxonomia.$object->format->ext;
-		$file_path = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta.'/'.$file;
-		//var_dump($file_path);
+		$file_path = $pasta.'/'.$file;
+		
 		if (file_exists(DOCROOT.$file_path)) {
 			if($ajax != null){
 				echo URL::base().$file_path;
@@ -327,15 +350,26 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				echo $view->render();
 			}
 		} else {
-		    echo 0;
+			/*
+			if($object->format->ext == '.pps'){
+				$second_path = $pasta.'/'.$object->taxonomia.'.ppt';
+				if (file_exists(DOCROOT.$second_path)) {
+					if($ajax != null){
+						echo URL::base().$second_path;
+					}else{
+						$view->src = URL::base().$second_path;
+						echo $view->render();
+					}
+				}else{
+					echo 0;
+				}
+			}else{
+			     echo 0;
+			}
+			*/
+			echo 0;
 		}
 	}
-
-	/*
-	public function action_acervoPreview($object_id){
-		echo $this->action_preview($object_id, true);
-	}
-	*/
 
 	public function action_download($object_id){
 		$this->auto_render = false;

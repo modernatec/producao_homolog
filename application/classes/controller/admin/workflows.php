@@ -67,7 +67,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 									->order_by('order', 'ASC')->find_all();
 
 		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->where('id', 'NOT IN', $workflow_status)->find_all();
-		$view->workflowStatusList = ORM::factory('workflows_statu')->where('type', '=', 'object')
+		$view->workflowStatusList = ORM::factory('workflows_statu')->where('type', '=', 'workflow')
 									->join('status')->on('status.id', '=', 'status_id')
 									->where('workflow_id', '=', $id)
 									->order_by('order', 'ASC')->find_all();

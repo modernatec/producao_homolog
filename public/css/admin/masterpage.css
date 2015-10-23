@@ -307,6 +307,14 @@ input{
 	bottom: 0;
 }
 
+.workflow_tasks {
+	position: absolute !important;
+	left: 259px;
+	right: 2px;
+	top: 151px;
+	bottom: 0;
+}
+
 /*Content itens*/
 .header{
 	height: 44px;
@@ -594,6 +602,7 @@ input[type='text']:focus, input[type='password']:focus{
     color: #4F4F4F;
 }
 
+
 .task{
 	position: relative;
 	margin-left: 34px;
@@ -833,9 +842,12 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #fff;
 }
 
-.gray{
-	background: #C0C0C0 !important;
-	color: #fff;
+.grayBg{
+	background: #DFE4E6 !important;
+}
+
+.whiteBg{
+	background: #fff !important;
 }
 
 .textGray{
@@ -1388,6 +1400,7 @@ a.post{
 	border-color: #ccc transparent;
 	width: 0;
 	z-index: 3;
+	-moz-box-sizing: border-box;
 }
 
 .filter_panel_arrow:after {
@@ -1401,6 +1414,7 @@ a.post{
     display: block;
     width: 0;
     z-index: 0;
+    -moz-box-sizing: border-box;
 }
 
 .filter .scrollable_content{
@@ -1579,7 +1593,7 @@ a.post{
 }
 
 .acervo_infos_header .title{
-	width: 335px;
+	width: 330px;
 }
 
 .acervo_infos_content{
@@ -1666,7 +1680,9 @@ div .selected{
 }
 
 .iframe_body{	
+	width: 800px;
 	height: 600px;
+	margin-top: 5px;
 	padding-bottom: 10px;
 }
 
@@ -1723,6 +1739,10 @@ div.jGrowl div.error {
 	overflow: hidden;
 }
 
+.fullscreen{
+	right: 50px;
+}
+
 .panel_content{
 	padding: 5px;
 }
@@ -1769,7 +1789,17 @@ div.jGrowl div.error {
 	margin: 0 !important;
 	width: 105px;
 	border: none !important;
+}
 
+.hist .dropzone{
+	position: relative !important;
+	z-index: 10;
+	margin: 5px !important;
+	width: 100%;
+	height: auto !important;
+	border: none !important;
+	overflow: auto;
+	display: block;
 }
 
 #upload ul{

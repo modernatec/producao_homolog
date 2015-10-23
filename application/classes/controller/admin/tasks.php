@@ -31,16 +31,15 @@ class Controller_Admin_Tasks extends Controller_Admin_Template {
 	        	
 	        	$view->title = "tarefas - ".$nome[0];
 	        	$view->data_post = json_encode(array('to' => $tasks_of->id));
-	        }else{
-	        	/*
+	        }elseif(array_key_exists('team', $this->request->post('post'))){
+	        	
 	        	$team_id = $this->request->post('post')['team'];
 	        	
 	        	$team = ORM::factory('team', $team_id);
 	        	$name = explode(" ", $team->name);
 
 	        	$view->title = "tarefas - ".$name[0];
-	        	$view->filter = "?status=".json_encode(array("5")).'&team='.$team->id;
-	        	*/
+	        	$view->data_post = json_encode(array('team' => $team->id));
 	        }
 	    }else{
 	    	$team_id = $this->current_user->userInfos->team_id;

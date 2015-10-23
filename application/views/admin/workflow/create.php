@@ -1,26 +1,36 @@
-<a href="javascript:void(0)" class="close_pop bar_button round right">fechar</a> 
-<div style="width:1150px">
-
+<div class="header">
+	<a href="javascript:void(0)" class="close_pop">
+        <div class="right icon icon_excluir_white"  title="fechar">fechar</div>
+    </a>
+    <span>workflow</span>
+</div>
+<div class="grayBg">
     <form name="frmCreateWorkflow" id="frmCreateWorkflow" action="<?=URL::base();?>admin/workflows/salvar/<?=@$workflowVO["id"]?>"class="form">
-	  <dl>
-	  	<label for="name">nome</label>
-        <dd>
-            <input type="text" class="text required round" placeHolder="nome do workflow" name="name" id="name" style="width:500px;" value="<?=@$workflowVO['name'];?>"/>
-            <span class='error'><?=Arr::get($errors, 'name');?></span>
-        </dd> 
-        <dd class="clear">
-	      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
-	    </dd>
-	    <div class="tabs_holder">
-	        <ul class="tabs">
-	            <li class="round selected"><a id="tab_1" data-show="#definicao">definição de workflow</a></li>
-	            <?if(count($workflowStatusList) > 0){?>
-	            	<li class="round"><a id="tab_2" data-show="#tarefas">tarefas por status</a></li>
-	            <?}?>
-	        </ul>  
+	  
+	  	<div class="panel_content" style="padding-bottom:0">
+		  	<div><label for="name">nome</label></div>
+		  	<div class="left">			  	
+		        <dd>
+		            <input type="text" class="text required round" placeHolder="nome do workflow" name="name" id="name" style="width:500px;" value="<?=@$workflowVO['name'];?>"/>
+		            <span class='error'><?=Arr::get($errors, 'name');?></span>
+		        </dd> 
+		    </div>
+		    <div>
+		        <dd>
+			      <input type="submit" class="bar_button" name="btnSubmit" id="btnSubmit" value="Salvar" />
+			    </dd>
+			</div>
+		    <div class="clear tabs_panel">
+				<ul class="tabs">
+				    <li class="roundTop selected"><a id="tab_1" data-show="#definicao">definição de workflow</a></li>
+		            <?if(count($workflowStatusList) > 0){?>
+		            	<li class="roundTop "><a id="tab_2" data-show="#tarefas">tarefas por status</a></li>
+		            <?}?>
+				</ul>  
+			</div>
 	    </div>
-	    <div >
-		    <div id="definicao" class="content_hide scrollable_content" >
+	    <div class="whiteBg" >
+		    <div id="definicao" class="panel_content content_hide scrollable_content" >
 		        <div class="left" > 
 		        	<div style="width:200px;">
 			        	<label>selecione o status</label>
@@ -44,7 +54,7 @@
 				    </div>
 			    </div>	
 			</div>
-			<div id="tarefas" class="content_hide" >  
+			<div id="tarefas" class="panel_content content_hide" >  
 		        <div class="left"> 
 		        	<label>selecione a tarefa</label>
 		        	<div class="scrollable_content" style="width:250px;">
@@ -105,9 +115,9 @@
 				        </ul>
 				    </div>
 			    </div>
-			    <div class="left">
+			    <div class="left workflow_tasks">
 			    	<label>workflow</label>
-			    	<div class="scrollable_content" style="width:880px; ">
+			    	<div class="scrollable_content" >
 			    	
 			    	<div style="width:<?=count($workflowStatusList) * 420;?>px;">
 				        <?foreach ($workflowStatusList as $workflow_status) {?>
@@ -181,6 +191,5 @@
 			    </div>	
 			</div>
 		</div>
-	  </dl>
 	</form>
 </div>

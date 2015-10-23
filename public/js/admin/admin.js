@@ -42,7 +42,7 @@ function setupUpload(){
                 $('input[type=submit]').attr('disabled', '');
             }else{
                 $('#userFoto').attr('value', response);
-                console.log(response);
+                
                 form.submit();
             }
         }
@@ -77,7 +77,7 @@ function setupUploadFinalPackage(){
                     container:'error'
                 });                
             }else{
-                console.log(response);
+                
                 $('div.dz-preview').remove();
 
                 //$('#uploadPackage').removeClass('dz-started');
@@ -178,7 +178,7 @@ $(document).ready(function()
     if(window.location.hash != ""){
         var hash_url = window.location.hash.substring(1);
         var url = hash_url.substr(0,hash_url.length)
-        console.log(url);
+        
         if(window.location.href.indexOf('login') == -1){
             loadContent({url:base_url + 'admin/' + url , container:'#content'});
             setMenu();
@@ -300,11 +300,6 @@ var drawCharts = function drawChart() {
         chartContainer.splice(0, 1);
         drawChart();
     }
-}
-
-function setScroll_teste(){
-    console.log('chamou')
-    
 }
 
 function setupAjax(container){ 
@@ -452,7 +447,7 @@ function setupAjax(container){
                 myDropzone.destroy();
                 myDropzone = undefined;
             }
-            console.log('dropzone ' + myDropzone);
+            
             setupUpload();
         }
 
@@ -500,7 +495,6 @@ function setupAjax(container){
 
             switch(panel.data('position')){
                 case "right":
-                    console.log('teste');
                     panel.css('left', '-' + ((panel_w - button_w) - (button_w / 2)) + 'px');
                 break;
                 default:
@@ -508,9 +502,11 @@ function setupAjax(container){
             }
             
             arrow.css('left', ((button_w / 2) - 6) + 'px');
+            arrow.css('display', 'block');
+            panel.css('display', 'block');
             
-            arrow.fadeToggle();
-            panel.fadeToggle();
+            //arrow.fadeToggle();
+            //panel.fadeToggle();
             /*
             function(){
                 if(panel.css('display') == 'none'){
@@ -595,7 +591,6 @@ function setupAjax(container){
             },
             stop: function(event, ui) {
                 copyHelper && copyHelper.remove();
-                console.log(ui.item.attr('rel'));
 
                 item = $('ul.drop > [rel=' + ui.item.attr('rel') + "]");
 
@@ -604,14 +599,11 @@ function setupAjax(container){
                 ul = $(item).closest('ul.drop');
                 if(ul){
                     var status_id = $(ul).data('status');
-                    console.log(status_id);
                     
-                    //$('.drop #' + ui.item.attr('id') + " > div.infos").removeClass('hide');
-
                     $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos .info").each(function(e, ui){
                         name = $(ui).attr('name');
                         $(ui).attr('name', name + '_' + status_id + '[]');
-                        console.log(ui)
+                       
                     })
 
                     $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos").removeClass('hide');
@@ -935,8 +927,8 @@ function setupAjax(container){
                 dataType : "html",
                 success: function(retorno) {
                     $(panel).html(retorno).promise().done(function(){
-                        console.log('ok');
-                        console.log($('#frmCreateTable'));
+                        
+                       
                         setupAjax(panel);
                     });                  
                     
@@ -989,6 +981,7 @@ function setupAjax(container){
             e.preventDefault();
             var url = this.href;
             var data = $(this).data('post');
+            var fullscreen = ($(this).hasClass('fullscreen')) ? true : false;
             
             var form;
 
@@ -1008,6 +1001,10 @@ function setupAjax(container){
                     $(this).removeClass('loading');
                     setupAjax('#dialog');
 
+                    if(fullscreen){
+                        $('#dialog').addClass('fullscreen');
+                    }
+
                     var is_json = true;
                     try{
                        var response = $.parseJSON(responseText);
@@ -1022,6 +1019,8 @@ function setupAjax(container){
                         });
                     }else{
                         $('#dialog').show('slide', {direction: 'left'}, 300);
+
+
 
                         setTimeout(function(){
                             $('#description, #anotacao').ckeditor({title:false});
@@ -1154,7 +1153,7 @@ function setupAjax(container){
 
                     }
                 });   
-                console.log('clicou aba 2')         
+                     
 
                 if($(this).hasClass('ajax')){
                     $('.tabs li').removeClass('selected');
@@ -1285,7 +1284,7 @@ function loadContent(args){
 
     closeFilterPanel();
 
-    console.log('loadcontent')
+    
     
     if(logged_in != false){
         d = new Date();
@@ -1303,7 +1302,7 @@ function loadContent(args){
                 resizable:false,
             });
         //}
-        console.log(args.post);
+       
 
         data_post = {container: container};
         if(args.post != ''){

@@ -54,7 +54,7 @@
         <select name="ano" id="ano" class="round">
             <option value="">selecione</option>
             <? 
-            for($i = date("Y") - 5; $i <= date("Y") + 5; $i++){?>
+            for($i = 2009; $i <= date("Y") + 5; $i++){?>
               <option value="<?=$i?>" <?=((@$collectionVO["ano"] == $i)?('selected'):(''))?> ><?=$i;?></option>
             <?}?>
         </select>
@@ -109,7 +109,7 @@
     </dd>
   </dl>
 
-<span class="list_alert"><?=$collection->objects->where('fase', '=', '1')->count_all();?> OED</span>
+<span class="list_alert"><?=$collection->objects->where('fase', '=', '53')->count_all();?> OED</span>
 <div class="scrollable_content clear">
   <?
     if(isset($workflows)){

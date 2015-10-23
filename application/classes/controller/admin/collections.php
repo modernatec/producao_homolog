@@ -60,7 +60,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 
 		if($id != ""){
 			$collection_workflow = ORM::factory('object')
-									->where('fase', '=', '1')
+									->where('fase', '=', '53')
 									->where('collection_id' , '=', $id)
 									->group_by('workflow_id')->find_all();
 
@@ -76,7 +76,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 					->as_object()->execute();
 
 
-				$view->objectList = ORM::factory('object')->where('fase', '=', '1')->where('collection_id' , '=', $id)->find_all();	
+				$view->objectList = ORM::factory('object')->where('fase', '=', '53')->where('collection_id' , '=', $id)->find_all();	
 			}		
 		}
 

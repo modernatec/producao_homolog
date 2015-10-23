@@ -1,10 +1,4 @@
 <div class="clear">
-    <div class="bar">
-    <?
-    if($last_status->status_id == '8'){?>
-        <a href='<?=URL::base();?>admin/acervo/preview/<?=$obj->id?>' class="bar_button round view_oed">visualizar</a>
-    <?}?>
-    </div>  
     <div class="oed_info">
         <a href="<?=URL::base();?>admin/objects/edit/<?=$obj->id?>" rel="load-content" data-panel="#direita" title='editar OED' class="black" >
             <span class="wordwrap"><b><?=@$obj->title;?></b></span>
@@ -235,7 +229,7 @@
                                                                                 
                                                                             <?}?>
 
-                                                                            <? if($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id){?>
+                                                                            <? if(($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id) || strpos($current_auth, 'assistente') === false){?>
                                                                                 <a class="bar_button round startFinishTask" href="<?=URL::base();?>admin/tasks_status/finish" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >confirmar recebimento</a>
                                                                                 
                                                                             <?}?>

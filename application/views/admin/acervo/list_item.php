@@ -12,9 +12,14 @@
     </div>
     
     <div class="acervo_infos_opt infos<?=$objeto->id?> <?=$display?>">
-        <?if($objeto->uploaded == 1){?>
-        <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' title="visualizar" class="icon icon_visualizar right acervo_view">visualizar</a>
-        
+        <?if($objeto->uploaded == 1){
+            if($objeto->format->ext == '.pps'){
+        ?>
+            <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' title="baixar" class="icon icon_baixar right">baixar</a>
+        <?}else{?>
+            <a href='<?=URL::base();?>/admin/acervo/preview/<?=$objeto->id?>' title="visualizar" class="icon icon_visualizar right acervo_view">visualizar</a>
+        <?}?>
+
         <div class="filter right" >
             <ul>
                 <li class="round" >
@@ -42,7 +47,7 @@
             </ul>
         </div>
 
-        <?if (strpos($current_auth,'assistente') === false && strpos($current_auth,'editor') === false) {?>
+        <?if (strpos($current_auth,'assistente') === false && strpos($current_auth,'editor') === false && $objeto->format->ext !== '.pps') {?>
             <a href='<?=URL::base();?>/admin/acervo/download/<?=$objeto->id?>' title="baixar" class="icon icon_baixar right">baixar</a>
         <?}}?>
     </div>
