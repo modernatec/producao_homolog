@@ -21,6 +21,7 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
 				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
 			)						
 		);
         return false;

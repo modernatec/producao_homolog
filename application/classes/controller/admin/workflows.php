@@ -66,7 +66,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 									->where('workflow_id', '=', $id)
 									->order_by('order', 'ASC')->find_all();
 
-		$view->statusList = ORM::factory('statu')->where('type', '=', 'object')->where('id', 'NOT IN', $workflow_status)->find_all();
+		$view->statusList = ORM::factory('statu')->where('type', '=', 'workflow')->where('id', 'NOT IN', $workflow_status)->find_all();
 		$view->workflowStatusList = ORM::factory('workflows_statu')->where('type', '=', 'workflow')
 									->join('status')->on('status.id', '=', 'status_id')
 									->where('workflow_id', '=', $id)
@@ -112,7 +112,7 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 
 			if($this->request->post('item') != ""){
 				$i = '0';
-				parse_str($this->request->post('item'),$itens); 			
+				parse_str($this->request->post('item'), $itens); 			
 				foreach($itens['item'] as $status_id){
 					$x = '0';
 					$days_cycle = 0;
@@ -127,8 +127,6 @@ class Controller_Admin_Workflows extends Controller_Admin_Template {
 						foreach($tasks['task'] as $key => $tag_id){
 							/**rever para passar days via post?**/
 							
-							//$tag = ORM::factory('tag', $tag_id);
-
 							if($sync[$key] == '0'){
 								$days_cycle += $days[$key];
 							}

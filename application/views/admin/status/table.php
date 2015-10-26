@@ -15,7 +15,7 @@
         <? foreach($statusList as $status){?>
         <li class="dd-item" id="item-<?=$status->id?>">
             <a class="right icon icon_excluir" href="<?=URL::base().'admin/status/delete/'.$status->id;?>" title="Excluir">Excluir</a>
-            <span class="left ball" style='background: <?=$status->color;?>'></span>
+            <span class="left ball" style='background: <?=$status->team->color;?>'></span>
             <a style='display:block' href="<?=URL::base().'admin/status/edit/'.$status->id;?>" rel="load-content" data-panel="#direita" ><?=$status->status?></a>
         
         </li>

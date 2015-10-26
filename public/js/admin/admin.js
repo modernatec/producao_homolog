@@ -319,7 +319,7 @@ function setupAjax(container){
         });
     }else{
         $( document ).tooltip({track: true});
-
+        /*
         $(".workflow_tasks_header").scroll(function() {
             console.log('scroll');
             $('.workflow_tasks_header').css({
@@ -327,8 +327,9 @@ function setupAjax(container){
             });
 
         });
+        */
 
-        var topOffset = parseInt($(".workflow_tasks_header").css('top')); //Grab the left position left first
+        //var topOffset = parseInt($(".workflow_tasks_header").css('top')); //Grab the left position left first
 
         if($('.topo').length != 0 && (container == '#content' || container == '#filtros')){
             $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
@@ -602,26 +603,28 @@ function setupAjax(container){
             },
             stop: function(event, ui) {
                 copyHelper && copyHelper.remove();
+                item_id = ui.item.attr('id');
+                ui.item.attr('id', 'dropped_' + item_id);
 
-                item = $('ul.drop > [rel=' + ui.item.attr('rel') + "]");
-
-                $('ul.drop > [rel=' + ui.item.attr('rel') + "] > .remover").removeClass('hide');
+                $('ul.drop .remover').removeClass('hide');
+                $('ul.drop .infos').removeClass('hide');
                 
-                ul = $(item).closest('ul.drop');
+                ul = $('#dropped_' + item_id).closest('ul.drop');
                 if(ul){
+
                     var status_id = $(ul).data('status');
+                    console.log(status_id)
                     
-                    $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos .info").each(function(e, ui){
-                        name = $(ui).attr('name');
-                        $(ui).attr('name', name + '_' + status_id + '[]');
-                       
+                    $('#dropped_' + item_id +' > div.infos .info').each(function(e, ui){
+                        name = $(ui).data('id');
+                        $(ui).attr('name', name + status_id + '[]');    
+                        $(ui).addClass('required');                
                     })
 
-                    $('ul.drop > [rel=' + ui.item.attr('rel') + "] > div.infos").removeClass('hide');
-                    item.attr('rel', status_id);
-                }else{
-                    item.addClass('hide');
+                    setupAjax('#dropped_' + item_id);
+                    ui.item.attr('id', item_id);
                 }
+
             }
         }).disableSelection();
 
@@ -1479,9 +1482,14 @@ function removeDialogs(){
     }
 
     if($('#dialog').length != 0){
+        $('#dialog').fadeOut(200, function(){
+            $(this).remove();
+        });
+        /*
         $('#dialog').hide('slide', {direction: 'left'}, 200, function(){
             $(this).remove();
         });
+        */
     }
 }
 

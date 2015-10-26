@@ -34,9 +34,10 @@
 			<li class="<?=$class_obj?>">
 				<div class="item_content">
 					<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita">
-						<p><b><?=$objeto->title?></b></p>
-						<p><?=$objeto->taxonomia?></p>
-						<p><?=$objeto->statu_status?> | <?=$retorno?> <?=$diff?></p>
+						<p><b><?=$objeto->title?></b></p>						
+						<p>
+                        <span class="subtitle"><?=$objeto->taxonomia?><br/>
+                        <?=$objeto->statu_status?> | <?=$retorno?> <?=$diff?></span></p>
 					</a>
 				</div>
 			</li>

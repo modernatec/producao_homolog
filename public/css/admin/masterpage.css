@@ -71,6 +71,8 @@ input{
 	color: #4f4f4f !important;
 }
 
+
+
 #nav{
 	overflow: hidden;
 }
@@ -93,6 +95,7 @@ input{
 	border-left: 1px solid #ccc;
 	border-right: none;
 }
+
 
 .task_bar_item{
 	padding: 20px 10px;
@@ -313,9 +316,16 @@ input{
 	right: 2px;
 	top: 151px;
 	bottom: 0;
+	border-left: 1px #AFBCBF solid;
+	padding-left: 5px;
+}
+
+.hide_scroll_y{
+	overflow-y: hidden !important;
 }
 
 .workflow_tasks_header{
+	margin: 5px 0;
 	padding: 5px;
 	color: #fff;
 	overflow: auto;
@@ -716,6 +726,8 @@ input[type='text']:focus, input[type='password']:focus{
 
 .connect, .connect_suppliers, .connect_contacts{
 	min-height: 30px;
+	/*border: 1px #ccc dotted;
+	padding: 0 4px;*/
 }
 
 .connect .dd-item, .connect_suppliers .dd-item, .connect_contacts .dd-item{
@@ -1058,8 +1070,12 @@ a.post{
 	padding: 5px;
 }
 
+.subtitle{
+	font-size: 12px;
+}
+
 .card{
-	border: 1px #AFBCBF solid;
+	border: 1px #AFBCBF solid !important;
 	padding: 0 !important;
 }
 
@@ -1068,11 +1084,21 @@ a.post{
 	padding: 10px 5px;
 }
 
+.card_header .icon{
+	margin-top: -5px;
+}
+
 .card_body{
 	background: #fff !important;
 	padding: 5px;
-	overflow: auto;
+	overflow: hidden;
 }
+
+/*
+#dialog .list_item li:last-of-type{
+	border-bottom: 1px #AFBCBF solid !important;
+}
+*/
 
 .list_item li:last-of-type{
 	border-bottom: none !important;
@@ -1269,11 +1295,10 @@ a.post{
 
 
 .list_status{
-	position: relative;
+	position: absolute;
 	bottom: 0;
 	right: 0;
 	width: 30px;
-	height: 50px;
 }
 
 
@@ -1291,6 +1316,7 @@ a.post{
 
 .late{
 	border-right: 5px #D94638 solid;
+	background: #FFE9E7 !important;
 }
 
 .list_colum{

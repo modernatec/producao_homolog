@@ -32,23 +32,16 @@
                 }
 
                 $icon_status = 'list_'.$task->status->status;
-            ?>
-            <li class="dd-item <?=$object_late?>" id="item-<?=$task->id?>">
-                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">   
-                    <div class="right list_status <?=$object_late?>">
-                        <div class="list_icon <?=$icon_status?>" title='<?=$task->status->status?>'></div>
-                    </div>                 
-                    <p><?=$task->object->taxonomia;?></p>
-                    <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           
-                        <?=Utils_Helper::getUserImage($task->to);?>
-                    </div>
-                    <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
-                    
-                </a>
-            </li>
-        <?}
+                
+                $item = View::factory('admin/tasks/task_item')->bind('errors', $errors);
+                $item->task = $task;
+                $item->object_late = $object_late;
+                $item->icon_status = $icon_status;
 
-        foreach($taskList as $key=>$task){
+                echo $item;
+        }
+
+        foreach($taskList as $key => $task){
             $object_late = '';
 
             $diff = '';
@@ -65,21 +58,15 @@
             }
 
             $icon_status = 'list_'.$task->status->status;
-        ?>
-            <li class="dd-item <?=$object_late?>" id="item-<?=$task->id?>">
-                 <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">
-                    <div class="right list_status">
-                        <div class="list_icon <?=$icon_status?>" title='<?=$task->status->status?>'></div>
-                    </div>                 
-                    <p><?=$task->object->taxonomia;?></p>
-                    <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           
-                        <?=Utils_Helper::getUserImage($task->to);?>
-                    </div>
-                    <p><?=$task->tag->tag?> | <?=Utils_Helper::data($task->crono_date)?></p>
-                    
-                </a>
-            </li>
-        <?}
+            
+            $item = View::factory('admin/tasks/task_item')->bind('errors', $errors);
+            $item->task = $task;
+            $item->object_late = $object_late;
+            $item->icon_status = $icon_status;
+
+            echo $item;
+
+        }
         echo '<ul>';
     ?>
     </div>

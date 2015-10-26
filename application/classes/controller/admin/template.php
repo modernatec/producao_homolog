@@ -165,7 +165,7 @@ class Controller_Admin_Template extends Controller_Template {
 				padding:5px;
 			}';
 		}	
-
+		/*
 		$status = ORM::factory('statu')->find_all();
 		
 		foreach ($status as $statu) {
@@ -176,7 +176,8 @@ class Controller_Admin_Template extends Controller_Template {
 			.step_'.$statu->type.'_status'.$statu->id.'{
 				border-left:5px solid '.$statu->color.' !important;
 			}';
-		}	
+		}
+		*/	
 
 		$this->template->team_css = $css;
 

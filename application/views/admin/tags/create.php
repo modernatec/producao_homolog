@@ -7,14 +7,6 @@
             <span class='error'><?=Arr::get($errors, 'status');?></span>
         </dd>  
     </div>
-    <div class="left">
-        <label for="hidden-input">cor</label>
-        <dd>
-            <input type="text" id="hue-demo" name="color" class="pickcolor round" value="<?=@$statusVO['color'];?>">
-            <span class='error'><?=Arr::get($errors, 'color');?></span>
-        </dd>  
-
-    </div>
     <div class="clear">
         <label >visível para:</label>        
         <dd>

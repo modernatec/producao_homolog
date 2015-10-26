@@ -7,13 +7,6 @@
             <span class='error'><?=Arr::get($errors, 'status');?></span>
         </dd>  
     </div>
-    <div class="clear left">
-        <label for="color">cor</label>
-        <dd>
-            <input type="text" id="hue-demo" name="color" class="pickcolor round" value="<?=@$statusVO['color'];?>">
-            <span class='error'><?=Arr::get($errors, 'color');?></span>
-        </dd> 
-    </div>
     <div class="left">
         <label for="project_ano">time responsável</label>
         <dd>
