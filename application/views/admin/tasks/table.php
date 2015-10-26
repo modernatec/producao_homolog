@@ -16,31 +16,27 @@
         }
                      
         echo '<ul class="list_item" id="'.$id.'">';
-        foreach($notifications as $key=>$task){?>
-            <li class="dd-item" id="item-<?=$task->id?>">
-                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">
-                    <?
-                        $object_late = '';
+        foreach($notifications as $key=>$task){
+                $object_late = "";                            
+                $diff = '';
+                if($task->diff != 0){
+                    if($task->diff < 0){
+                        $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
+                    }else{
+                        $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
+                    }
+                }
 
-                        $diff = '';
-                        if($task->diff != 0){
-                            if($task->diff < 0){
-                                $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
-                            }else{
-                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
-                            }
-                        }
+                if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
+                    $object_late = "late";                            
+                }
 
-                        if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
-                            $object_late = "red";                            
-                            $icon_status = 'list_'.$task->status->status.'_white';
-                        }else{
-                            $icon_status = 'list_'.$task->status->status;
-                        }
-                    ?>
-                    
+                $icon_status = 'list_'.$task->status->status;
+            ?>
+            <li class="dd-item <?=$object_late?>" id="item-<?=$task->id?>">
+                <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">   
                     <div class="right list_status <?=$object_late?>">
-                        <div class="list_icon <?=$icon_status?>"></div>
+                        <div class="list_icon <?=$icon_status?>" title='<?=$task->status->status?>'></div>
                     </div>                 
                     <p><?=$task->object->taxonomia;?></p>
                     <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           
@@ -52,31 +48,28 @@
             </li>
         <?}
 
-        foreach($taskList as $key=>$task){?>
-            <li class="dd-item" id="item-<?=$task->id?>">
+        foreach($taskList as $key=>$task){
+            $object_late = '';
+
+            $diff = '';
+            if($task->diff != 0){
+                if($task->diff < 0){
+                    $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
+                }else{
+                    $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
+                }
+            }
+
+            if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
+                $object_late = "late";
+            }
+
+            $icon_status = 'list_'.$task->status->status;
+        ?>
+            <li class="dd-item <?=$object_late?>" id="item-<?=$task->id?>">
                  <a class="load"  href="<?=URL::base();?>admin/objects/view/<?=$task->object_id?>?c=tasks" rel="load-content" data-panel="#direita">
-                    <?
-                        $object_late = '';
-
-                        $diff = '';
-                        if($task->diff != 0){
-                            if($task->diff < 0){
-                                $diff = '<span class="list_faixa green round">'.$task->diff.'</span>';
-                            }else{
-                                $diff = '<span class="list_faixa red round">+'.$task->diff.'</span>';
-                            }
-                        }
-
-                        if(strtotime($task->crono_date) < strtotime(date("Y-m-d H:i:s"))){
-                            $object_late = "red";                            
-                            $icon_status = 'list_'.$task->status->status.'_white';
-                        }else{
-                            $icon_status = 'list_'.$task->status->status;
-                        }
-                    ?>
-                    
-                    <div class="right list_status <?=$object_late?>">
-                        <div class="list_icon <?=$icon_status?>"></div>
+                    <div class="right list_status">
+                        <div class="list_icon <?=$icon_status?>" title='<?=$task->status->status?>'></div>
                     </div>                 
                     <p><?=$task->object->taxonomia;?></p>
                     <div class="left" style="width:25px;position:relative;top:-3px;margin-right:10px;">           

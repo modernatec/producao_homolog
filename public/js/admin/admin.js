@@ -319,6 +319,17 @@ function setupAjax(container){
         });
     }else{
         $( document ).tooltip({track: true});
+
+        $(".workflow_tasks_header").scroll(function() {
+            console.log('scroll');
+            $('.workflow_tasks_header').css({
+                'top': $(this).scrollTop() + topOffset //Use it later
+            });
+
+        });
+
+        var topOffset = parseInt($(".workflow_tasks_header").css('top')); //Grab the left position left first
+
         if($('.topo').length != 0 && (container == '#content' || container == '#filtros')){
             $('#esquerda, #direita, #page').css({top:$('.topo').height() + 5 + 'px'});
             $('#esquerda, #direita, #page').fadeIn(1000);

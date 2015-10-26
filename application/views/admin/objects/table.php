@@ -14,41 +14,29 @@
 	<div class="scrollable_content list_body">
 		<ul class="list_item">
 			<?foreach($objectsList as $objeto){
-	    		$calendar = URL::base().'/public/image/admin/calendar2.png';
-	    		$class_obj = "object_late";
-
-	    		//$status = $objeto->status->order_by('id', 'DESC')->limit(1)->find();
-	    		/*
-	    		$last_status = ORM::factory('objects_statu')->where('object_id', '=', $objeto->id)->order_by('id', 'DESC')->limit('1')->find();
-	    		//var_dump($last_status->status->status);
-				*/
-	    		
 	    		if(strtotime($objeto->retorno) < strtotime(date("Y-m-d H:i:s")) && $objeto->status_id != '8'){
-        			$class_obj = "object_late";
+        			$class_obj = "late";
         		}else{
-    				$class_obj 	= "object_status".$objeto->status_id;
+    				$class_obj 	= "";
     			}
-    			
 
     			$diff = '';
                 if(!empty($objeto->diff) && $objeto->diff != 0){
                     if($objeto->diff < 0){
                         $diff = '<span class="badge_line green round">'.$objeto->diff.'</span>';
-                        //$status_class = 'green';
                     }else{
                         $diff = '<span class="badge_line red round">+'.$objeto->diff.'</span>';
-                        $status_class = 'red';
                     }
                 }
 
-    			$taskList = $objeto->tasks->where('ended', '=', '0')->find_all();
+                $retorno = ($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição';
 			?>
-			<li>
+			<li class="<?=$class_obj?>">
 				<div class="item_content">
 					<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita">
 						<p><b><?=$objeto->title?></b></p>
 						<p><?=$objeto->taxonomia?></p>
-						<p><?=$objeto->statu_status?> | <?=($objeto->retorno != '') ? Utils_Helper::data($objeto->retorno,'d/m/Y') : 'aguardando definição'?> <?=$diff?></p>
+						<p><?=$objeto->statu_status?> | <?=$retorno?> <?=$diff?></p>
 					</a>
 				</div>
 			</li>

@@ -315,6 +315,12 @@ input{
 	bottom: 0;
 }
 
+.workflow_tasks_header{
+	padding: 5px;
+	color: #fff;
+	overflow: auto;
+}
+
 /*Content itens*/
 .header{
 	height: 44px;
@@ -694,7 +700,7 @@ input[type='text']:focus, input[type='password']:focus{
 
 
 .ui-sortable{
-	padding: 5px !important;
+	/*padding: 5px !important;*/
 }
 
 .ui-sortable-helper{
@@ -710,10 +716,13 @@ input[type='text']:focus, input[type='password']:focus{
 
 .connect, .connect_suppliers, .connect_contacts{
 	min-height: 30px;
-	border: 1px dotted #ccc;
-	padding: 0 5px;
 }
 
+.connect .dd-item, .connect_suppliers .dd-item, .connect_contacts .dd-item{
+	border: 1px #AFBCBF solid !important;
+	background: #E6E6E6;
+	margin: 5px 0;
+}
 
 
 
@@ -1027,7 +1036,7 @@ a.post{
 }
 
 .list_item{
-	margin-right: 5px;
+	/*margin-right: 5px;*/
 }
 
 .list_item a{
@@ -1047,6 +1056,22 @@ a.post{
 	overflow: hidden;
 	border-bottom: 1px #ccc solid !important;
 	padding: 5px;
+}
+
+.card{
+	border: 1px #AFBCBF solid;
+	padding: 0 !important;
+}
+
+.card_header{
+	background: #E6E6E6;
+	padding: 10px 5px;
+}
+
+.card_body{
+	background: #fff !important;
+	padding: 5px;
+	overflow: auto;
 }
 
 .list_item li:last-of-type{
@@ -1262,6 +1287,10 @@ a.post{
 .item_content a{
 	color: #4f4f4f !important;
 	display: block;
+}
+
+.late{
+	border-right: 5px #D94638 solid;
 }
 
 .list_colum{
@@ -1744,6 +1773,11 @@ div.jGrowl div.error {
 }
 
 .panel_content{
+	padding: 5px;
+}
+
+.panel_gray{
+	background: #DFE4E6 !important;
 	padding: 5px;
 }
 

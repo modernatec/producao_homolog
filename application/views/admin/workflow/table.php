@@ -16,7 +16,7 @@
 		<li>
 			<a class="right icon icon_excluir" href="<?=URL::base().'admin/workflows/delete/'.$workflow->id;?>" title="Excluir">Excluir</a>
 			<div class="item_content">
-				<a style='display:block' href="<?=URL::base().'admin/workflows/edit/'.$workflow->id;?>" class="popup fullscreen" title="Editar"><?=$workflow->name?></a>
+				<a style='display:block' href="<?=URL::base().'admin/workflows/edit/'.$workflow->id;?>" class="popup fullscreen"><?=$workflow->name?></a>
 			</div>
 		</li>
 		<?}?>
