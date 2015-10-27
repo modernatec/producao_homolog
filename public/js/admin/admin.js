@@ -514,20 +514,11 @@ function setupAjax(container){
             }
             
             arrow.css('left', ((button_w / 2) - 6) + 'px');
-            arrow.css('display', 'block');
-            panel.css('display', 'block');
             
-            //arrow.fadeToggle();
-            //panel.fadeToggle();
-            /*
-            function(){
-                if(panel.css('display') == 'none'){
-                    //$(this).parent().parent().children('li').css({'background': ''});
-                }
-            });
-            */
-            //$(this).parent().parent().children('li').css({'background': '#cccccc'});
-            
+            arrow.toggle();
+            panel.toggle();
+
+            $(this).closest('span');
         });
 
         $(".cancelar").unbind('click').bind('click', function() { 
@@ -775,10 +766,17 @@ function setupAjax(container){
             $('#' + element).slideUp();
         });
 
-        $("a:contains('Excluir'), a.icon_excluir").unbind('click').bind('click', function() {        
-            var NewDialog = $('<div id="dialog"><p>Deseja realmente excluir este conteúdo?</p></div>'),
-                btExcluir = this;
-                NewDialog.dialog({
+        $("a:contains('Excluir'), a.icon_excluir").unbind('click').bind('click', function() {    
+            if($(this).data('message') != undefined){
+                message = $(this).data('message');
+            }else{
+                message = '<p>Deseja realmente excluir este conteúdo?</p>';
+            }
+
+            var NewDialog = $('<div id="dialog">'+ message +'</div>');
+            btExcluir = this;
+            
+            NewDialog.dialog({
                 modal: true,
                 /*dialogClass: 'noTitleStuff',*/
                 show: 'clip',

@@ -5,7 +5,7 @@
             <ul>
                 <li class="round" >
                     <span class="round user_name" id="user"><?$nome = explode(" ", $user->userInfos->nome); echo ucfirst($nome[0]);?></span>
-                    <span class="filter_panel_arrow"></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round" >
                         <ul>
                             <li class="user_menu_item">

@@ -4,7 +4,7 @@
             <span class="wordwrap"><b><?=@$obj->title;?></b></span>
         </a>
         <br/>
-        <span class="wordwrap"><?=@$obj->taxonomia;?></span>
+        <span class="wordwrap subtitle"><?=@$obj->taxonomia;?></span>
 
         <div class="right">
             <a class="popup icon icon_info" href="<?=URL::base().'admin/acervo/view/'.$obj->id?>" data-select="obj_<?=$obj->id?>" title="+ informações">infos</a>
@@ -166,14 +166,14 @@
                                             <?}
 
                                                 $diff = '';
-                                                $color = $task->tag->color;
+                                                //$color = $task->tag->color;
                                                 if($task->diff != 0){
                                                     if($task->diff < 0){
                                                         $diff = '<span class="badge_line green round">'.$task->diff.'</span>';
                                                         //$color = $task->tag->color;
                                                     }else{
                                                         $diff = '<span class="badge_line red round">+'.$task->diff.'</span>';
-                                                        $color = 'red';
+                                                        //$color = 'red';
                                                     }
                                                 }
 

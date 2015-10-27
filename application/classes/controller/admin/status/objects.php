@@ -13,7 +13,7 @@ class Controller_Admin_Status_Objects extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$table_view = View::factory('admin/objects_status/table');
 
-		$table_view->statusList = ORM::factory('statu')->where('type', '=', 'objects')->order_by('order','ASC')->find_all();
+		$table_view->statusList = ORM::factory('statu')->where('type', '=', 'objects')->and_where('id', 'NOT IN', array('53'))->order_by('order','ASC')->find_all();
 
 		if($ajax != null){
        		return $table_view;

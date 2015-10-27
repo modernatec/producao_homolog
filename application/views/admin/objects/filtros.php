@@ -7,8 +7,8 @@
    		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="projects">projetos <div class="icon_filtros <?=(!empty($filter_project)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		            <span id="projects" class="<?=(!empty($filter_project)) ? 'filter_active': '';?>">projetos <div class="icon_filtros <?=(!empty($filter_project)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round " >
 		            	<ul style="width:200px;">
 			                <li ><input type="checkbox" class="checkAll" id="filter_project" /><label for="filter_project" class="text_cyan">selecionar tudo</label></li>
@@ -35,8 +35,8 @@
    		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="materia">matéria <div class="icon_filtros <?=(!empty($filter_materia)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		            <span id="materia" class="<?=(!empty($filter_materia)) ? 'filter_active': '';?>">matéria <div class="icon_filtros <?=(!empty($filter_materia)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round " >
 		            	<ul style="width:200px;">
 			                <li><input type="checkbox" class="checkAll" id="filter_materia" /><label for="filter_materia" class="text_cyan">selecionar tudo</label></li>
@@ -63,8 +63,8 @@
    		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="colecao">coleção <div class="icon_filtros <?=(!empty($filter_collection)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		            <span id="colecao" class="<?=(!empty($filter_collection)) ? 'filter_active': '';?>">coleção <div class="icon_filtros <?=(!empty($filter_collection)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round">
 			            <ul style="width:550px;">
 			                <li><input type="checkbox" class="checkAll" id="filter_collection" /><label for="filter_collection" class="text_cyan">selecionar tudo</label></li>
@@ -91,9 +91,8 @@
 		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="status">status workflow <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
-
+		            <span id="status" class="<?=(!empty($filter_status)) ? 'filter_active': '';?>">status workflow <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round" >
 			            <ul>
 			            	<li><input type="checkbox" class="checkAll" id="filter_status" /><label for="filter_status" class="text_cyan">selecionar tudo</label></li>
@@ -120,8 +119,8 @@
 		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		        	<span id="tipo">tipo <div class="icon_filtros <?=(!empty($filter_tipo)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		        	<span id="tipo" class="<?=(!empty($filter_tipo)) ? 'filter_active': '';?>">tipo <div class="icon_filtros <?=(!empty($filter_tipo)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round " >
 		            	<ul style="width:300px;">	
 			            	<li><input type="checkbox" class="checkAll" id="filter_tipo" /><label for="filter_tipo" class="text_cyan">selecionar tudo</label></li>
@@ -146,8 +145,8 @@
 		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span id="reaproveitamento">origem <div class="icon_filtros <?=(!empty($filter_origem)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		            <span id="reaproveitamento" class="<?=(!empty($filter_origem)) ? 'filter_active': '';?>">origem <div class="icon_filtros <?=(!empty($filter_origem)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round " >
 			            <ul>
 			            	<li><input type="checkbox" class="checkAll" id="filter_origem" /><label for="filter_origem" class="text_cyan">selecionar tudo</label></li>
@@ -171,8 +170,8 @@
 		<div class="filter" >
 		    <ul>
 		        <li class="round" >
-		            <span class="round" id="fase">status <div class="icon_filtros <?=(!empty($filter_fase)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		            <span class="<?=(!empty($filter_fase)) ? 'filter_active': '';?>" id="fase">status <div class="icon_filtros <?=(!empty($filter_fase)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round " >
 		            	<ul >
 			                <li><input type="checkbox" class="checkAll" id="filter_fase" /><label for="filter_fase" class="text_cyan">selecionar tudo</label></li>

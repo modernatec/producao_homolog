@@ -375,6 +375,7 @@ class Utils_Helper
         );
     }
     
+    /*
     public static function preview($file){
         
         $has_preview = false;
@@ -395,6 +396,7 @@ class Utils_Helper
             return '';
         }
     }
+    */
     
     public static function getSize($val)
     {
@@ -447,7 +449,22 @@ class Utils_Helper
         }
     }
 
-    public function rrmdir($dir) {
+    public static function deleteFolder($dir){
+        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        foreach($files as $file) {
+            if ($file->isDir()){
+                rmdir($file->getRealPath());
+            } else {
+                unlink($file->getRealPath());
+            }
+        }
+    
+        rmdir($dir);
+    }
+
+
+    public static function rrmdir($dir) {
         if (is_dir($dir)) {
             $files = scandir($dir);
             foreach ($files as $file)

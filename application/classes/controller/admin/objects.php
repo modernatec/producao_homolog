@@ -202,8 +202,6 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$view->current_auth = $this->current_auth;	
 
-		//$view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
-
 		if($ajax == null){
 			//$this->template->content = $view;             
 		}else{
@@ -455,6 +453,72 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
         return false;
 	}
 
+	public function action_delete($id){   
+		$this->auto_render = false; 
+		$db = Database::instance();
+        $db->begin();
+		
+		$object_status = ORM::factory('objects_statu', $id);
+		$object_id = $object_status->object_id;
+		$project_id = $object_status->object->project_id;
+
+		try {  
+			$object = ORM::factory('object', $id);
+
+			if($object->pasta != '' && $object->uploaded == '1'){
+				$pasta = '/public/upload/projetos/'.$object->project->segmento->pasta.'/'.$object->project->pasta.'/'.$object->pasta;
+				if(file_exists(DOCROOT.$pasta)){
+					Utils_Helper::deleteFolder(DOCROOT.$pasta);
+				}
+			}
+
+			$tasks = ORM::factory('task')->where('object_id', '=', $id)->find_all();
+			foreach($tasks as $task){
+				$task_status = ORM::factory('tasks_statu')->where('task_id', '=', $task->id)->find_all();
+				foreach($task_status as $status){
+					$status->delete();
+				}
+				$task->delete();
+			}
+
+			DB::delete('objects_status')->where('object_id', '=', $id)->execute();
+			DB::delete('anotacoes_objects')->where('object_id', '=', $id)->execute();
+			DB::delete('objects_tables')->where('object_id', '=', $id)->execute();
+			DB::delete('contatos_objects')->where('object_id', '=', $id)->execute();
+			DB::delete('suppliers_objects')->where('object_id', '=', $id)->execute();
+			DB::delete('objects_repositorios')->where('object_id','=', $id)->execute();
+
+			$object->delete();
+
+            $db->commit();
+
+            $msg = "OED excluído."; 
+        } catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+            $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
+        header('Content-Type: application/json');
+        
+    	echo json_encode(
+			array(
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getObjects($project_id, true)->render())),
+				array('type'=>'msg', 'content'=> $msg),
+			)						
+		);	
+
+        return false;		        
+	} 
+
     /********************************/
     public function action_getCollections($project_id){
     	$this->auto_render = false;
@@ -552,7 +616,9 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	//$this->startProfilling();
     	
 		$this->auto_render = false;
-		$view = View::factory('admin/objects/table');		
+		$view = View::factory('admin/objects/table');	
+		$view->current_auth = $this->current_auth;		
+		$view->delete_msg = Kohana::message('models/object', 'delete');
 		
 		if(count($this->request->post('objects')) > '0' || Session::instance()->get('kaizen')['model'] != 'objects'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "objects");

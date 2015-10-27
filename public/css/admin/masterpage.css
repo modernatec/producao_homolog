@@ -856,6 +856,9 @@ input[type='text']:focus, input[type='password']:focus{
 	color: #ccc !important;
 }
 
+.textRed{
+	color: red;
+}
 
 /**colors (rever)**/
 .red{
@@ -1315,7 +1318,7 @@ a.post{
 }
 
 .late{
-	border-right: 5px #D94638 solid;
+	/*border-right: 5px #D94638 solid;*/
 	background: #FFE9E7 !important;
 }
 
@@ -1426,6 +1429,15 @@ a.post{
 
 .filter label{
 	color: #4F4F4F;
+}
+
+.filter span{
+	color: #B3B3B3;
+}
+
+.filter_active{
+	/*font-weight: bold;*/
+	color: #1A1A1A !important;
 }
 
 /*https://css-tricks.com/snippets/css/css-triangle/*/
