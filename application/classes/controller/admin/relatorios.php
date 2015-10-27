@@ -123,7 +123,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		$this->auto_render = false;
 		ini_set('max_execution_time', 300); //max. response para 5 minutos
 
-		$objectList = ORM::factory('objectStatu')->where('fase', '=', '1')
+		$objectList = ORM::factory('objectStatu')->where('fase', '=', '53')
 					->where('project_id', '=', $this->request->post('project_id'))
 					->where('status_id', '!=', '8')
 					//->where('collection_id', '=', $this->request->post('project_id'))
@@ -154,6 +154,8 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 		foreach ($objectList as $object) {
 			$datas = explode("-", $object->retorno);
 			$datas_e = explode("-", $object->envio);
+
+			$retorno = ($datas[0] != '') ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]) : 'aguardando definição';
 			//$gdocs_fechamento = $object->getGdocs($object->id);
 			//var_dump($object->taxonomia);
 			//$datas_f = $object->planned_date;
@@ -180,7 +182,7 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 						'reaproveitamento' => $reap,  
 						 
 						'data_envio' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas_e[0], $datas_e[1], $datas_e[2]),
-						'data_retorno' => PHPExcel_Shared_Date::FormattedPHPToExcel($datas[0], $datas[1], $datas[2]),
+						'data_retorno' => $retorno,
 						'status' => $object->statu_status, 
 						'fechamento' => '-',
 						//'fechamento' => ($datas_f[0] != "" && count($datas_f) > 1) ? PHPExcel_Shared_Date::FormattedPHPToExcel($datas_f[2], $datas_f[0], $datas_f[1]) : "-",
