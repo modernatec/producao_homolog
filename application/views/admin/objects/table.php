@@ -33,7 +33,7 @@
 			?>
 			<li class="<?=$class_obj?>">
                 <?if(strpos($current_auth, 'assistente') === false){?>
-                    <a class="right icon icon_excluir" href="<?=URL::base().'admin/objects/delete/'.$objeto->id;?>" title="Excluir" data-message="<?=$delete_msg?>">Excluir</a>
+                    <a class="right icon icon_excluir" href="<?=URL::base().'admin/objects/delete/'.$objeto->id;?>" data-message="<?=$delete_msg?>">Excluir</a>
                 <?}?>
 				<div class="item_content">
 					<a class="load" href="<?=URL::base().'admin/objects/view/'.$objeto->id?>" rel="load-content" data-panel="#direita">

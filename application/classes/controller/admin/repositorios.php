@@ -19,48 +19,27 @@ class Controller_Admin_Repositorios extends Controller_Admin_Template {
         
 	public function action_index($ajax = null)
 	{	
+		$this->auto_render = false;
 		$view = View::factory('admin/repositorios/list')
 			->bind('message', $message);
-		
+		$view->delete_msg = Kohana::message('models/object', 'repositorio.delete');
 		$view->repositoriosList = ORM::factory('repositorio')->order_by('name','DESC')->find_all();
-		$this->auto_render = false;
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
-			)						
-		);
-        return false;
 		
-		/*
-		if($ajax == null){
-			$this->template->content = $view;             
+		if($ajax != ''){
+			return $view;
 		}else{
-			
-		} 
-		*/         
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				)						
+			);
+	        return false;
+	    }
+		  
 	} 
-
-	/*
-	public function action_create()
-    { 
-		$view = View::factory('admin/materias/create')
-			->bind('errors', $errors)
-			->bind('message', $message);
-
-		$this->addValidateJs("public/js/admin/validateMaterias.js");
-		$view->isUpdate = false;  
-		$view->materiaVO = $this->setVO('materia');
-		$this->template->content = $view;
-		
-		if (HTTP_Request::POST == $this->request->method()) 
-		{           
-            $this->salvar();
-		}
-	}
-	*/
         
 	public function action_edit($id)
     {    
@@ -91,6 +70,7 @@ class Controller_Admin_Repositorios extends Controller_Admin_Template {
 		$db = Database::instance();
         $db->begin();
 
+        $msg_type = 'normal';
 		try 
 		{            
 			$materia = ORM::factory('repositorio', $id)->values($this->request->post(), array(
@@ -99,8 +79,6 @@ class Controller_Admin_Repositorios extends Controller_Admin_Template {
 			                
 			$materia->save();
 			$db->commit();
-			//Utils_Helper::mensagens('add','Matéria '.$materia->name.' salvo com sucesso.');
-			//Request::current()->redirect('admin/materias');
 			$msg = "repositório salvo com sucesso.";		
 
 		} catch (ORM_Validation_Exception $e) {
@@ -109,20 +87,23 @@ class Controller_Admin_Repositorios extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
+			$msg_type = 'error';
             $msg = 'houveram alguns erros na validação <br/><br/>'.$erroList;
-		    ///Utils_Helper::mensagens('add',$message);    
+		    
             $db->rollback();
         } catch (Database_Exception $e) {
+        	$msg_type = 'error';
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
+            
             $db->rollback();
         }
 
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/repositorios/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_index(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 
@@ -130,27 +111,71 @@ class Controller_Admin_Repositorios extends Controller_Admin_Template {
 	}
 	
 	public function action_delete($id)
-	{	
+	{
 		$this->auto_render = false;
-		try 
-		{            
-			$objeto = ORM::factory('repositorio', $id);
-			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
-			$msg = "matéria excluído com sucesso";
-		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add','Houveram alguns erros na exclusão dos dados.'); 
-			$msg = "houveram alguns erros na exclusão dos dados.";
-			$errors = $e->errors('models');
-		}
+		$db = Database::instance();
+        $db->begin();
+
+        $collection_id = $id;
+        $msg_type = 'normal';
 		
+		try 
+		{    
+			if($this->request->post('repositorio_id') != ''){
+				$new = ORM::factory('repositorio', $this->request->post('repositorio_id'));
+				DB::update('objects_repositorios')->set(array('repositorio_id' => $new->id))->where('repositorio_id', '=', $id)->execute();
+			}
+
+			DB::delete('repositorios')->where('id','=', $id)->execute();
+
+			$db->commit();
+			$msg = "repositório excluído com sucesso.";
+
+		} catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+			$msg_type = 'error';
+            $msg = $erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+        	$msg_type = 'error';
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/repositorios/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_index(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
+
+        return false;
+	}
+
+	public function action_deletePanel($id)
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/repositorios/delete')
+					->bind('errors', $errors)
+					->bind('message', $message);
+
+		$view->current_auth = $this->current_auth;
+
+		$objects = ORM::factory('objects_repositorio')->where('repositorio_id', '=', $id)->find_all();
+		$view->total_objects = count($objects);
+		$view->delete_msg = Kohana::message('models/object', 'repositorio.delete');
+		$view->repositorio = ORM::factory('repositorio', $id);
+		$view->repositorioList = ORM::factory('repositorio')
+									->where('id', '!=', $id)
+									->order_by('name', 'ASC')->find_all();
+
+		echo $view;
 	}
 
 }

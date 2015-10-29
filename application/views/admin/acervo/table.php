@@ -8,12 +8,12 @@
             }
         ?>
 		</span>
-
-		<div class="right">
-			<span class="left"><?=$items_per_page?> OED por página</span>
-			<div class="left"><?=$pagination?></div>
-		</div>
-		
+		<?if(count($objectsList) > 0){?>
+			<div class="right">
+				<span class="left"><?=$items_per_page?> OED por página</span>
+				<div class="left"><?=$pagination?></div>
+			</div>
+		<?}?>		
 	</div>
 	<div class="clear scrollable_content list_body">
 			<?foreach($objectsList as $objeto){?>

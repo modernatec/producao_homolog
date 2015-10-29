@@ -3,12 +3,12 @@
     <div>
         <label for="status">status</label>
         <dd>
-            <input type="text" class="text required round" placeholder="status" name="status" id="status" style="width:300px;" value="<?=@$statusVO['status'];?>"/>
+            <input type="text" class="text required round" placeholder="novo status" name="status" id="status" style="width:300px;" value="<?=@$statusVO['status'];?>"/>
             <span class='error'><?=Arr::get($errors, 'status');?></span>
         </dd>  
     </div>
     <dd>
-      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="salvar" />
+      <input type="submit" class="round bar_button" name="btnSubmit" id="btnSubmit" value="salvar" />
     </dd>
   </dl>
 </form>

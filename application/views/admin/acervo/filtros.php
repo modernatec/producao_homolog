@@ -6,9 +6,9 @@
         </div>
         <div class="filter" >
             <ul>
-                <li class="round">
-                    <span class="round" id="segmento">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                    <span class="filter_panel_arrow"/>
+                <li>
+                    <span id="segmento" class="<?=(!empty($filter_segmento)) ? 'filter_active': '';?>">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round">
                         <ul>
                             <li><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento" class="text_cyan">selecionar tudo</label></li>
@@ -34,9 +34,9 @@
         </div>
         <div class="filter" >
             <ul>
-                <li class="round" >
-                    <span class="round" id="collection">coleção <div class="icon_filtros <?=(!empty($filter_collection)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                    <span class="filter_panel_arrow"/>
+                <li>
+                    <span id="collection" class="<?=(!empty($filter_collection)) ? 'filter_active': '';?>">coleção <div class="icon_filtros <?=(!empty($filter_collection)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round">
                         <ul style="width:550px;">
                             <li><input type="checkbox" class="checkAll" id="filter_collection" /><label for="filter_collection" class="text_cyan">selecionar tudo</label></li>
@@ -64,9 +64,9 @@
 
         <div class="filter" >
             <ul>
-                <li class="round" >
-                    <span id="reaproveitamento">origem <div class="icon_filtros <?=(!empty($filter_origem)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                    <span class="filter_panel_arrow"/>
+                <li >
+                    <span id="reaproveitamento" class="<?=(!empty($filter_origem)) ? 'filter_active': '';?>">origem <div class="icon_filtros <?=(!empty($filter_origem)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round " >
                         <ul>
                             <li><input type="checkbox" class="checkAll" id="filter_origem" /><label for="filter_origem" class="text_cyan">selecionar tudo</label></li>
@@ -89,9 +89,9 @@
 
         <div class="filter" >
             <ul>
-                <li class="round" >
-                    <span class="round" id="project">projetos <div class="icon_filtros <?=(!empty($filter_project)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                    <span class="filter_panel_arrow"/>
+                <li>
+                    <span id="project" class="<?=(!empty($filter_project)) ? 'filter_active': '';?>">projetos <div class="icon_filtros <?=(!empty($filter_project)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round" >
                         <ul style="width:250px;">
                             <li><input type="checkbox" class="checkAll" id="filter_project" /><label for="filter_project" class="text_cyan">selecionar tudo</label></li>
@@ -119,9 +119,9 @@
 
         <div class="left filter" >
             <ul>
-                <li class="round" >
-                    <span class="round" id="typeobject">tipos de OED's <div class="icon_filtros <?=(!empty($filter_tipo)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                    <span class="filter_panel_arrow"/>
+                <li>
+                    <span id="typeobject" class="<?=(!empty($filter_tipo)) ? 'filter_active': '';?>">tipos de OED's <div class="icon_filtros <?=(!empty($filter_tipo)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                    <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round " style="width:200px;" >                        
                          <ul style="width:300px;">
                             <li><input type="checkbox" class="checkAll" id="filter_typeobject" /><label for="filter_typeobject" class="text_cyan">selecionar tudo</label></li>

@@ -12,7 +12,7 @@ class Controller_Admin_Status_Objects extends Controller_Admin_Template {
 	public function action_getListStatus($ajax = null){
 		$this->auto_render = false;
 		$table_view = View::factory('admin/objects_status/table');
-
+		$table_view->delete_msg = Kohana::message('models/statu', 'delete');
 		$table_view->statusList = ORM::factory('statu')->where('type', '=', 'objects')->and_where('id', 'NOT IN', array('53'))->order_by('order','ASC')->find_all();
 
 		if($ajax != null){
@@ -121,29 +121,71 @@ class Controller_Admin_Status_Objects extends Controller_Admin_Template {
 		
 		return false;	
 	}
+
+	public function action_deletePanel($id)
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/objects_status/delete')
+					->bind('errors', $errors)
+					->bind('message', $message);
+
+		$view->current_auth = $this->current_auth;
+
+		$collection_objects = ORM::factory('object')->where('fase', '=', $id)->find_all();
+		$view->total_objects = count($collection_objects);
+		$view->delete_msg = Kohana::message('models/statu', 'delete');
+		$view->status = ORM::factory('statu', $id);
+		$view->statusList = ORM::factory('statu')
+									->where('type', '=', 'objects')
+									->and_where('id', '!=', $id)
+									->order_by('status', 'ASC')->find_all();
+
+		echo $view;
+	}
 	
 	public function action_delete($id)
 	{	
 		$this->auto_render = false;
-		/*
+		$db = Database::instance();
+        $db->begin();
+
+        $msg_type = 'normal';
+		
 		try 
-		{            
-			$objeto = ORM::factory('statu', $id);
-			$objeto->delete();
+		{    
+			if($this->request->post('status_id') != ''){
+				$new_status = ORM::factory('statu', $this->request->post('status_id'));
+				DB::update('objects')->set(array('fase' => $new_status->id))->where('fase', '=', $id)->execute();
+			}
+
+			DB::delete('status')->where('id','=', $id)->execute();
+
+			$db->commit();
 			$msg = "status excluído com sucesso.";
 		} catch (ORM_Validation_Exception $e) {
-			$errors = $e->errors('models');
-			$msg = "houveram alguns erros na exclusão dos dados.";
-		}
-		
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+			$msg_type = 'error';
+            $msg = $erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+        	$msg_type = 'error';
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
 				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getListStatus(true)->render())),
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode("")),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
-		*/
+
+        return false;
 	}
 }

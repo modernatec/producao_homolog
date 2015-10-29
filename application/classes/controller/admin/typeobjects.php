@@ -15,16 +15,23 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			->bind('message', $message);
 		
 		$view->typeObjectsjsList = ORM::factory('typeobject')->order_by('name','ASC')->find_all();
+		$view->delete_msg = Kohana::message('models/typeobject', 'delete');
 		$this->auto_render = false;
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
-				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
-			)						
-		);
-        return false;
+
+		if($ajax != ''){
+			return $view;
+		}else{
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
+				)						
+			);
+		}
+	    
+	    return false;
 		
 		/*
 		if($ajax == null){
@@ -80,6 +87,8 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 		$this->auto_render = false;
 		$db = Database::instance();
         $db->begin();
+
+        $msg_type = 'normal';
 		
 		try 
 		{            
@@ -97,21 +106,21 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 			foreach($errors as $erro){
 				$erroList.= $erro.'<br/>';	
 			}
+			$msg_type = 'error';
             $msg = 'Houveram alguns erros na validação <br/><br/>'.$erroList;
-
-		    //Utils_Helper::mensagens('add',$message);    
             $db->rollback();
         } catch (Database_Exception $e) {
+        	$msg_type = 'error';
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
-            //Utils_Helper::mensagens('add',$message);
             $db->rollback();
         }
 
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/typeobjects/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_index(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
 		
@@ -119,26 +128,70 @@ class Controller_Admin_Typeobjects extends Controller_Admin_Template {
 	}
 	
 	public function action_delete($id)
-	{	
+	{
 		$this->auto_render = false;
-		try 
-		{            
-			$objeto = ORM::factory('typeobject', $id);
-			$objeto->delete();
-			//Utils_Helper::mensagens('add',''); 
-			$msg = "tipo de objeto excluído com sucesso.";
-		} catch (ORM_Validation_Exception $e) {
-			//Utils_Helper::mensagens('add',''); 
-			$errors = $e->errors('models');
-			$msg = "houveram alguns erros na exclusão dos dados.";
-		}
+		$db = Database::instance();
+        $db->begin();
+
+        $collection_id = $id;
+        $msg_type = 'normal';
 		
+		try 
+		{    
+			if($this->request->post('typeobject_id') != ''){
+				$new = ORM::factory('typeobject', $this->request->post('typeobject_id'));
+				DB::update('objects')->set(array('typeobject_id' => $new->id))->where('typeobject_id', '=', $id)->execute();
+			}
+
+			DB::delete('typeobjects')->where('id','=', $id)->execute();
+
+			$db->commit();
+			$msg = "tipologia excluída com sucesso.";
+
+		} catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+			$msg_type = 'error';
+            $msg = $erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+        	$msg_type = 'error';
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/typeobjects/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_index(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
+
+        return false;
+	}
+
+	public function action_deletePanel($id)
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/typeobjects/delete')
+					->bind('errors', $errors)
+					->bind('message', $message);
+
+		$view->current_auth = $this->current_auth;
+
+		$objects = ORM::factory('object')->where('typeobject_id', '=', $id)->find_all();
+		$view->total_objects = count($objects);
+		$view->delete_msg = Kohana::message('models/typeobject', 'delete');
+		$view->typeObject = ORM::factory('typeobject', $id);
+		$view->typeList = ORM::factory('typeobject')
+									->where('id', '!=', $id)
+									->order_by('name', 'ASC')->find_all();
+
+		echo $view;
 	}
 }

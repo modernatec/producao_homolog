@@ -20,28 +20,26 @@ class Controller_Admin_Formats extends Controller_Admin_Template {
         
 	public function action_index($ajax = null)
 	{	
+		$this->auto_render = false;
 		$view = View::factory('admin/formats/list')
 			->bind('message', $message);
 		
-		$view->sfwprodsList = ORM::factory('format')->order_by('id','DESC')->find_all();
-		$this->auto_render = false;
-		header('Content-Type: application/json');
-		echo json_encode(
-			array(
-				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
-				array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
-				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
-			)						
-		);
-        return false;
+		$view->delete_msg = Kohana::message('models/format', 'delete');
+		$view->formatList = ORM::factory('format')->order_by('id','DESC')->find_all();
 		
-		/*
-		if($ajax == null){
-			$this->template->content = $view;             
+		if($ajax != ''){
+			return $view;
 		}else{
-			
-		} 
-		*/           
+			header('Content-Type: application/json');
+			echo json_encode(
+				array(
+					array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($view->render())),
+					array('container' => '#filtros', 'type'=>'html', 'content'=> json_encode('')),
+					array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				)						
+			);
+	        return false;
+		}		           
 	} 
         
 	public function action_edit($id)
@@ -109,25 +107,70 @@ class Controller_Admin_Formats extends Controller_Admin_Template {
 	}
 	
 	public function action_delete($id)
-	{	
+	{
 		$this->auto_render = false;
-		try{            
-			$objeto = ORM::factory('format', $id);
-			$objeto->delete();
-			$msg = "formato excluído com sucesso";
+		$db = Database::instance();
+        $db->begin();
+
+        $collection_id = $id;
+        $msg_type = 'normal';
+		
+		try 
+		{    
+			if($this->request->post('format_id') != ''){
+				$new = ORM::factory('format', $this->request->post('format_id'));
+				DB::update('objects')->set(array('format_id' => $new->id))->where('format_id', '=', $id)->execute();
+			}
+
+			DB::delete('formats')->where('id','=', $id)->execute();
+
+			$db->commit();
+			$msg = "formato final excluído com sucesso.";
+
 		} catch (ORM_Validation_Exception $e) {
-			$msg = "houveram alguns erros na exclusão dos dados.";
-			$errors = $e->errors('models');
-		}
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+			$msg_type = 'error';
+            $msg = $erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+        	$msg_type = 'error';
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
 
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/format/index/ajax'),
-				array('type'=>'msg', 'content'=> $msg),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_index(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
 			)						
 		);
-		
-		return false;
+
+        return false;
+	}
+
+	public function action_deletePanel($id)
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/formats/delete')
+					->bind('errors', $errors)
+					->bind('message', $message);
+
+		$view->current_auth = $this->current_auth;
+
+		$objects = ORM::factory('object')->where('format_id', '=', $id)->find_all();
+		$view->total_objects = count($objects);
+		$view->delete_msg = Kohana::message('models/format', 'delete');
+		$view->format = ORM::factory('format', $id);
+		$view->formatList = ORM::factory('format')
+									->where('id', '!=', $id)
+									->order_by('name', 'ASC')->find_all();
+
+		echo $view;
 	}
 }

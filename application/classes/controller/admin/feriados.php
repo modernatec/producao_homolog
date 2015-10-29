@@ -20,7 +20,7 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 	public function action_getList($ajax = null){
 		$this->auto_render = false;
         $view = View::factory('admin/feriados/table');
-
+        $view->delete_msg = Kohana::message('models/feriado', 'delete');
         $view->feriadosList = ORM::factory('feriado')->order_by('data','DESC')->find_all();
         
         if($ajax != null){
@@ -117,10 +117,12 @@ class Controller_Admin_Feriados extends Controller_Admin_Template {
 		header('Content-Type: application/json');
 		echo json_encode(
 			array(
-				array('container' => '#content', 'type'=>'url', 'content'=> URL::base().'admin/feriados/index/ajax'),
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
 				array('type'=>'msg', 'content'=> $msg),
 			)						
 		);
+
+        return false;
 	}
 
 	/*

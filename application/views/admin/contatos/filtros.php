@@ -1,20 +1,20 @@
 <div class="filters second_filter clear">
 <form action="<?=URL::base();?>admin/contatos/getContatos" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 	<input type="hidden" name="contatos" value="true">
-		<div class="left" style="margin-bottom:4px;">
+		<div class="left">
 			<input type="text" class="round" style="width:310px" placeholder="nome ou email" name="nome" value="<?=@$filter_nome?>" >
    		</div>
    		<div class="filter" >
 		    <ul>
-		        <li class="round">
-		            <span class="round" id="service_id">tipo <div class="icon_filtros <?=(!empty($filter_service_id)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		        <li>
+		            <span id="service_id" class="<?=(!empty($filter_service_id)) ? 'filter_active': '';?>">tipo <div class="icon_filtros <?=(!empty($filter_service_id)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round">
 		            	<div class="scrollable_content" data-bottom="false"> 
 			            <ul>
 			                <? foreach ($services as $service) {?>
 			                	<li>
-			                		<input type="checkbox" name="service_id[]" value="<?=$service->id?>" id="service_<?=$service->id?>" <?if(isset($filter_service_id)){ if(in_array($service->id, $filter_service_id)){ echo "checked";}}?>  />
+			                		<input type="checkbox" name="filter_service_id[]" value="<?=$service->id?>" id="service_<?=$service->id?>" <?if(isset($filter_service_id)){ if(in_array($service->id, $filter_service_id)){ echo "checked";}}?>  />
 			                		<label for="service_<?=$service->id?>" ><?=$service->name?></label>
 			                	</li>
 			                <?}?>

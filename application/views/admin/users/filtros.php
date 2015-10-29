@@ -1,12 +1,12 @@
 <div class="filters clear">
 	<form action="<?=URL::base();?>admin/users/getUsers" id="frm_usuarios" data-panel="#tabs_content" method="post" class="form">
-		<input type="text" class="round left" style="width:140px" placeholder="nome ou email" name="filter_search" value="<?=@$filter_search?>" >
+		<input type="text" class="round left" style="width:300px" placeholder="nome ou email" name="filter_search" value="<?=@$filter_search?>" >
 		<?if(strpos('assistente', $current_auth) === false){?>
 		<div class="filter" >
 		    <ul>
-		        <li class="round" >
-		            <span class="round" id="team">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-		            <span class="filter_panel_arrow"/>
+		        <li>
+		            <span id="team" class="<?=(!empty($filter_status)) ? 'filter_active': '';?>">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+		            <div class="filter_panel_arrow"></div>
 		            <div class="filter_panel round">
 		            	<div class="scrollable_content" data-bottom="false"> 
 			            <ul>

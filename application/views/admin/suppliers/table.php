@@ -20,11 +20,7 @@
 					
 						<p><b><?=$supplier->empresa?></b></p>					
 						<div class="line_itens">
-				            <? 
-				            	$formats = $supplier->formats->find_all();
-				            	foreach ($formats as $format) {?>
-				                <span class="line_itens"><?=$format->name?></span> 
-				            <?}?>  
+				            
 				        </div>
 					
 				</a>

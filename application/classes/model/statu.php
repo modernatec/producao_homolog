@@ -6,6 +6,7 @@ class Model_Statu extends ORM {
 		'steps' => array('through' => 'status_tasks'),
 		'taskflows' => array('model' => 'taskflow'),
 		'tags' => array('model' => 'tag', 'through' => 'workflows_status_tags', 'foreign_key' => 'status_id'),	
+		'objects' => array('model' => 'object', 'foreign_key' => 'fase'),
 	);
 
 	protected $_has_one = array(

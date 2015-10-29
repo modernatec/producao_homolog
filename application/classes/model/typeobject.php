@@ -8,6 +8,10 @@
  * @license    MIT
  */
 class Model_Typeobject extends ORM {
+
+    protected $_has_many = array(
+        'objects' => array('model' => 'object', 'foreign_key' => 'typeobject_id'),
+    );
     
 	public function rules()
 	{

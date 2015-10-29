@@ -229,7 +229,7 @@
                                                                                 
                                                                             <?}?>
 
-                                                                            <? if(($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id) || strpos($current_auth, 'assistente') === false){?>
+                                                                            <? if(($task->status_id == '7' && $task->ended == '0' && $task->userInfo_id == $user->id)){?>
                                                                                 <a class="bar_button round startFinishTask" href="<?=URL::base();?>admin/tasks_status/finish" data-taskid="<?=$task->id?>" data-objectid="<?=$task->object_id?>" >confirmar recebimento</a>
                                                                                 
                                                                             <?}?>

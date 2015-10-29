@@ -12,6 +12,7 @@ class Model_Objects_statu extends ORM {
 	protected $_has_many = array(
 		'tasks' => array('model' => 'task', 'foreign_key' => 'object_status_id'),
 		'anotacoes' => array('model' => 'anotacoes_object', 'foreign_key' => 'object_status_id'),
+		
 	);
 
 	public function filters()

@@ -3,7 +3,7 @@
 class Model_Repositorio extends ORM {
         
     protected $_has_many = array(
-		'objects' => array('model' => 'object', 'through' => 'objects_materias'),
+		'objects' => array('model' => 'object', 'through' => 'objects_repositorios', 'foreign_key' => 'repositorio_id'),
 	);
 
 	public function rules()

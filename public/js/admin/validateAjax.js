@@ -1,9 +1,4 @@
 function validateAjax(){
-    /*
-    $('.date').live('focus', function () {
-        $(this).not('.hasDatePicker').datepicker({dateFormat: 'dd/mm/yy'}).val();
-    });
-    */
 
     $("#frmCreateTask2").validate({
         rules: {
@@ -232,6 +227,82 @@ function validateAjax(){
             return false;    
         }
     })
+
+    $("#frmDeleteCollection").validate({
+        rules: {
+            collection_id:{required:true},
+        },
+        messages: {
+            collection_id: { required:'selecione uma opção'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+
+    $("#frmDeleteStatus").validate({
+        rules: {
+            status_id:{required:true},
+        },
+        messages: {
+            status_id: { required:'selecione uma opção'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+
+    $("#frmDeleteTypeObject").validate({
+        rules: {
+            typeobject_id:{required:true},
+        },
+        messages: {
+            typeobject_id: { required:'selecione uma opção'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+
+    $("#frmDeleteFormat").validate({
+        rules: {
+            format_id:{required:true},
+        },
+        messages: {
+            format_id: { required:'selecione uma opção'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+
+    $("#frmDeleteRepositorio").validate({
+        rules: {
+            repositorio_id:{required:true},
+        },
+        messages: {
+            repositorio_id: { required:'selecione uma opção'},
+        },
+        submitHandler: function(form) {
+            $('input[type=submit]').attr('disabled', 'disabled');
+            ajaxPost(form, $(form).data("panel"));
+            return false;       
+        }
+    })
+
+
+    
+
+
+    
 
     $("#frmCreateMaterias").validate({
         rules: {

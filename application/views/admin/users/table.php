@@ -21,8 +21,7 @@
 					<div class="left"><?=Utils_Helper::getUserImage($usuario)?></div>
 					<div class="left">
 						<span class='line'><?=$usuario->nome?></span>
-						<p><?=$usuario->email?></p>
-						<p><?=$usuario->ramal?></p>
+						<p class="subtitle"><?=$usuario->email?><br/><?=$usuario->ramal?></p>
 					</div>
 				</a>
 				</div>

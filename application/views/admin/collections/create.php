@@ -1,27 +1,21 @@
 <form name="frmCreateCollection" id="frmCreateCollection" action="<?=URL::base();?>admin/collections/salvar/<?=@$collectionVO["id"]?>" method="post" class="form" enctype="multipart/form-data">
   <dl>
     <div class="left">
-      <dt>
         <label for="op">op</label>
-      </dt>     
       <dd>
         <input type="text" class="text required round" name="op" id="op" style="width:50px;" value="<?=@$collectionVO['op'];?>"/>
         <span class='error'><?=Arr::get($errors, 'op');?></span>
       </dd>
     </div>
     <div class="left">
-      <dt>
         <label for="name">coleção</label>
-      </dt>
       <dd>
         <input type="text" class="text required round" name="name" id="name" style="width:500px;" value="<?=@$collectionVO['name'];?>"/>
         <span class='error'><?=Arr::get($errors, 'name');?></span>
       </dd>
     </div>  
     <div class="clear left">
-      <dt>
         <label for="project_id">projeto</label>
-      </dt>
       <dd>
         <select name="project_id" id="project_id" class="round" style='width:200px;'>
               <option value="">selecione</option>
@@ -33,9 +27,7 @@
       </dd>
     </div>
     <div class="left">
-      <dt>
         <label for="target">segmento</label>
-      </dt>
       <dd>
         <select name="segmento_id" id="segmento_id" class="round">
               <option value="">selecione</option>
@@ -47,9 +39,7 @@
       </dd>
     </div>
     <div class="left">
-      <dt>
         <label for="ano">ano</label>
-      </dt>     
       <dd>
         <select name="ano" id="ano" class="round">
             <option value="">selecione</option>
@@ -62,9 +52,7 @@
       </dd>
     </div>
     <div class="left">
-      <dt>
         <label for="target">matéria</label>
-      </dt>
       <dd>
         <select name="materia_id" id="materia_id" class="round">
               <option value="">selecione</option>
@@ -75,15 +63,7 @@
           <span class='error'><?=($errors) ? $errors['materia_id'] : '';?></span>
       </dd>
     </div>
-    <div class="left">
-        <dt>
-          <label for="fechamento">fechamento</label>
-        </dt>	    
-        <dd>
-          <input type="text" class="text date round" name="fechamento" id="fechamento" style="width:80px;" value="<?=@$collectionVO['fechamento'];?>"/>
-          <span class='error'><?=Arr::get($errors, 'fechamento');?></span>
-        </dd>
-    </div>
+    
     <div class="clear">
       <?foreach ($teamList as $team) {?>
         <div class="left">
@@ -103,9 +83,16 @@
         </div>
       <?}?>
     </div>
+    <div class="clear">
+          <label for="fechamento">previsão de fechamento</label>
+        <dd>
+          <input type="text" class="text date round" name="fechamento" id="fechamento" style="width:80px;" value="<?=@$collectionVO['fechamento'];?>"/>
+          <span class='error'><?=Arr::get($errors, 'fechamento');?></span>
+        </dd>
+    </div>
 
     <dd class='clear'>
-      <input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Salvar" />
+      <input type="submit" class="round bar_button" name="btnSubmit" id="btnSubmit" value="Salvar" />
     </dd>
   </dl>
 
@@ -131,10 +118,10 @@
               if($objeto->workflow_id == $workflow->id){?>
             <tr>
                 <td width="60%" class="tl">
-                  <a class="popup textGray" href="<?=URL::base().'admin/objects/showInfos/'.$objeto->id?>" title="+ informações">
+                    <a class="popup black" href="<?=URL::base().'admin/acervo/view/'.$objeto->id?>">
                     <div><p><b><?=$objeto->title;?></b></p></div>
                     <p><?=$objeto->taxonomia;?></p>
-                  </a>
+                    </a>
                 </td>
                 <td width="20%">
                   <input type="hidden" name="objects[]" value="<?=$objeto->id?>" />

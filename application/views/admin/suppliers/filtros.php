@@ -1,14 +1,14 @@
 <div class="second_filter filters clear">
 	<form action="<?=URL::base();?>admin/suppliers/getSuppliers" id="frm_suppliers" data-panel="#tabs_content" method="post" class="form">
 		<input type="hidden" name="suppliers_filter" value="true">
-			<div class="left" style="margin-bottom:4px;">
+			<div class="left">
 				<input type="text" class="round" style="width:310px" placeholder="empresa ou contato" name="empresa" value="<?=@$filter_empresa?>" >
 	   		</div>
 	   		<div class="filter" >
 			    <ul>
-			        <li class="round" >
-			            <span class="round" id="team">time <div class="icon_filtros <?=(!empty($filter_team)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-			            <span class="filter_panel_arrow"/>
+			        <li>
+			            <span id="team" class="<?=(!empty($filter_team)) ? 'filter_active': '';?>">time <div class="icon_filtros <?=(!empty($filter_team)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+			            <div class="filter_panel_arrow"></div>
 			            <div class="filter_panel round">
 			            	<div class="scrollable_content" data-bottom="false"> 
 				            <ul>
@@ -30,9 +30,9 @@
 			</div>
 			<div class="filter" >
 			    <ul>
-			        <li class="round" >
-			            <span class="round" id="team">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-			            <span class="filter_panel_arrow"/>
+			        <li>
+			            <span id="team" class="<?=(!empty($filter_status)) ? 'filter_active': '';?>">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+			            <div class="filter_panel_arrow"></div>
 			            <div class="filter_panel round">
 			            	<div class="scrollable_content" data-bottom="false"> 
 				            <ul>

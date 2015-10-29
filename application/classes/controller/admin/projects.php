@@ -88,7 +88,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 				'name',
 				'segmento_id',
 				'status',
-				'ssid',
 				'ano'
 			));
 
@@ -101,19 +100,6 @@ class Controller_Admin_Projects extends Controller_Admin_Template {
 			}
 
 			$project_id = $projeto->id;
-
-			/*
-			$collections = DB::delete('collections_projects')->where('project_id','=', $projeto->id)->execute();
-
-			if($this->request->post('selected') != ''){
-				foreach ($this->request->post('selected') as $collection) {
-					$new_collection = ORM::factory('collections_project');
-					$new_collection->project_id = $projeto->id;
-					$new_collection->collection_id = $collection;
-					$new_collection->save();
-				}
-			}
-			*/
 						
 			$db->commit();
 			$msg = "projeto salvo com sucesso.";

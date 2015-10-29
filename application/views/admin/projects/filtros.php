@@ -6,9 +6,9 @@
             </div>
             <div class="left filter" >
                 <ul>
-                    <li class="round" >
-                        <span id="reaproveitamento">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                        <span class="filter_panel_arrow"/>
+                    <li>
+                        <span id="reaproveitamento" class="<?=(!empty($filter_status)) ? 'filter_active': '';?>">status <div class="icon_filtros <?=(!empty($filter_status)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <div class="filter_panel_arrow"></div>
                         <div class="filter_panel round " >
                             <ul>
                                 <li><input type="checkbox" class="checkAll" id="filter_status" /><label for="filter_status" class="text_cyan">selecionar tudo</label></li>
@@ -29,9 +29,9 @@
             </div>
             <div class="left filter" >
                 <ul>
-                    <li class="round" >
-                        <span class="round" id="segmento">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                        <span class="filter_panel_arrow"/>
+                    <li>
+                        <span id="segmento" class="<?=(!empty($filter_segmento)) ? 'filter_active': '';?>">segmento <div class="icon_filtros <?=(!empty($filter_segmento)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <div class="filter_panel_arrow"></div>
                         <div class="filter_panel round">
                             <ul>
                                 <li><input type="checkbox" class="checkAll" id="filter_segmento" /><label for="filter_segmento" class="text_cyan">selecionar tudo</label></li>
@@ -59,9 +59,9 @@
             
             <div class="left filter" >
                 <ul>
-                    <li class="round" >
-                        <span class="round" id="ano">ano <div class="icon_filtros <?=(!empty($filter_ano)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
-                        <span class="filter_panel_arrow"/>
+                    <li>
+                        <span id="ano" class="<?=(!empty($filter_ano)) ? 'filter_active': '';?>">ano <div class="icon_filtros <?=(!empty($filter_ano)) ? 'icon_filter_active': 'icon_filter';?>"></div></span>
+                        <div class="filter_panel_arrow"></div>
                         <div class="filter_panel round" >
                             <ul>
                                 <li><input type="checkbox" class="checkAll" id="filter_ano" /><label for="filter_ano" class="text_cyan">selecionar tudo</label></li>

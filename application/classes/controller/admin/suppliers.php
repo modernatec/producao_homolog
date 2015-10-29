@@ -123,6 +123,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 				}	
 			}
 
+			/*
 			$delete_formats_suppliers = DB::delete('formats_suppliers')->where('supplier_id', '=', $supplier->id)->execute();
 		 	
 		 	if($this->request->post('formato') != ""){
@@ -134,6 +135,7 @@ class Controller_Admin_Suppliers extends Controller_Admin_Template {
 					$format_supplier->save();			
 				}	
 			}
+			*/
 
 			$delete_teams_suppliers = DB::delete('suppliers_teams')->where('supplier_id', '=', $supplier->id)->execute();
 		 	

@@ -86,14 +86,13 @@ class Controller_Admin_Relatorios extends Controller_Admin_Template {
 
 		/*lista de fechamentos*/
 		$lista = DB::select('name, count("objectstatus.status_id") qtd, fechamento')->from('collections')
-		->join('objectstatus', 'INNER')
-		->on('objectstatus.collection_id', '=', 'collections.id')
+		->join('objectstatus', 'INNER')->on('objectstatus.collection_id', '=', 'collections.id')
 		->where('objectstatus.status_id', '!=', '8')
-		->and_where('objectstatus.fase', '!=', '2')
+		->and_where('objectstatus.fase', '=', '53')
 		->and_where('objectstatus.project_status', '!=', '0');
 
 		if($id != 'init' && $id != ''){
-			$lista->where('objectstatus.project_id', '=', $id);
+			$lista->and_where('objectstatus.project_id', '=', $id);
 		}
 
 		$view->collections = $lista->group_by('collections.id')

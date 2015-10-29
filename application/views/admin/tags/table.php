@@ -14,7 +14,7 @@
 	<ul class="list_item sortable_tags">
         <? foreach($list as $tag){?>
         <li class="dd-item" id="item-<?=$tag->id?>">
-            <a class="right icon icon_excluir" href="<?=URL::base().'admin/tags/delete/'.$tag->id;?>" title="Excluir">Excluir</a>
+            <!--a class="right icon icon_excluir" href="<?=URL::base().'admin/tags/delete/'.$tag->id;?>" title="Excluir">Excluir</a-->
             
             <a style='display:block' href="<?=URL::base().'admin/tags/edit/'.$tag->id;?>" rel="load-content" data-panel="#direita"><?=$tag->tag?></a>
         

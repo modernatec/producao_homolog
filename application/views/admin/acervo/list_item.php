@@ -23,7 +23,7 @@
         <div class="filter right" >
             <ul>
                 <li class="round" >
-                    <span id="mesa<?=$objeto->id?>"><div class="icon icon_mesa" title="adicionar à mesa" >add</div></span>
+                    <span id="mesa<?=$objeto->id?>"><div class="icon icon_mesa" title="adicionar à mesa de luz" >add</div></span>
                     <div class="filter_panel_arrow"></div>
                     <div class="filter_panel round" data-position="right" >
                         <p class="text_cyan">adicionar à mesa de luz</p>

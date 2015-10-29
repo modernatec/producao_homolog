@@ -187,11 +187,14 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 			$msg_type = 'error';
             $msg = $erroList;
             $db->rollback();
+
+            
         } catch (Database_Exception $e) {
         	$msg_type = 'error';
             $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
             $db->rollback();
         }
+
 
 		header('Content-Type: application/json');
 		echo json_encode(
@@ -208,6 +211,72 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	public function action_delete($id)
 	{
 		$this->auto_render = false;
+		$db = Database::instance();
+        $db->begin();
+
+        $collection_id = $id;
+        $msg_type = 'normal';
+		
+		try 
+		{    
+			if($this->request->post('collection_id') != ''){
+				$new_collection = ORM::factory('collection', $this->request->post('collection_id'));
+				DB::update('objects')->set(array('project_id' => $new_collection->project_id, 'collection_id' => $new_collection->id))->where('collection_id', '=', $id)->execute();
+			}
+
+			DB::delete('collections_userinfos')->where('collection_id','=', $id)->execute();
+			DB::delete('collections')->where('id','=', $id)->execute();
+
+			$db->commit();
+			$msg = "coleção excluída com sucesso.";
+
+		} catch (ORM_Validation_Exception $e) {
+            $errors = $e->errors('models');
+			$erroList = '';
+			foreach($errors as $erro){
+				$erroList.= $erro.'<br/>';	
+			}
+			$msg_type = 'error';
+            $msg = $erroList;
+            $db->rollback();
+        } catch (Database_Exception $e) {
+        	$msg_type = 'error';
+            $msg = 'Houveram alguns erros na base <br/><br/>'.$e->getMessage();
+            $db->rollback();
+        }
+
+		header('Content-Type: application/json');
+		echo json_encode(
+			array(
+				array('container' => '#tabs_content', 'type'=>'html', 'content'=> json_encode($this->action_getList(true)->render())),
+				array('container' => '#direita', 'type'=>'html', 'content'=> json_encode('')),
+				array('container' => $msg_type, 'type'=>'msg', 'content'=> $msg),
+			)						
+		);
+
+        return false;
+	}
+
+	public function action_deletePanel($id)
+	{
+		$this->auto_render = false;
+		$view = View::factory('admin/collections/delete')
+					->bind('errors', $errors)
+					->bind('message', $message);
+
+		$view->current_auth = $this->current_auth;
+
+		$collection_objects = ORM::factory('object')->where('collection_id', '=', $id)->find_all();
+		$view->total_objects = count($collection_objects);
+		$view->delete_msg = Kohana::message('models/collection', 'delete');
+		$view->collection = ORM::factory('collection', $id);
+		$view->collectionList = ORM::factory('collection')
+									->join('projects')->on('collections.project_id', '=', 'projects.id')
+									->where('projects.status', '=', '1')
+									->and_where('collections.id', '!=', $id)
+									->order_by('collections.name', 'ASC')->find_all();
+
+		echo $view;
 	}
 
 	/*******************************************/
@@ -243,6 +312,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 	public function action_getList($ajax = null){
 		$this->auto_render = false;
 		$view = View::factory('admin/collections/table');
+		$view->delete_msg = Kohana::message('models/collection', 'delete');
 
 		if(count($this->request->post('collection')) > '0' || Session::instance()->get('kaizen')['model'] != 'collection'){
 			$kaizen_arr = Utils_Helper::setFilters($this->request->post(), '', "collection");
@@ -256,12 +326,6 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
   		foreach ($filtros as $key => $value) {
   			$view->$key = json_decode($value);
   		}
-
-  		/*
-  		if(!isset($view->filter_ano)){
-  			$view->filter_ano = array(date('Y'));
-  		}
-  		*/
 
 		$query = ORM::factory('collection');
 

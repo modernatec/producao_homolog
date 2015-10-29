@@ -217,6 +217,7 @@ class Controller_Admin_Tables extends Controller_Admin_Template {
 			->bind('message', $message);
 
 		$view->table = ORM::factory('table', $id);
+		$view->delete_msg = Kohana::message('models/table', 'delete');
 		$view->objectsList = ORM::factory('objects_table')->where('table_id', '=', $id)->find_all();
 
 		if($ajax != null){

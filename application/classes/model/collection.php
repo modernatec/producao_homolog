@@ -65,8 +65,9 @@ class Model_Collection extends ORM {
 	 */
 	public function unique_collection(Validation $validation, $field)
 	{
-		if ($this->unique_key_exists($validation[$field], 'name'))
+		if ($this->unique_collection_exists($validation[$field], 'name'))
 		{
+			
 			$validation->error($field, 'unique_collection', array($validation[$field]));
 		}
 	}
@@ -78,7 +79,7 @@ class Model_Collection extends ORM {
 	 * @param   string   field name
 	 * @return  boolean
 	 */
-	public function unique_key_exists($value, $field = NULL)
+	public function unique_collection_exists($value, $field = NULL)
 	{	
 		return (bool) DB::select(array('COUNT("*")', 'total_count'))
 			->from($this->_table_name)
