@@ -2,7 +2,7 @@
  
 class Controller_Admin_Tables extends Controller_Admin_Template {
  
-	public $auth_required		= array('login','coordenador'); //Auth is required to access this controller
+	public $auth_required		= array('login'); //Auth is required to access this controller
  	
 	/*
 	public $secure_actions     	= array(
@@ -241,7 +241,7 @@ class Controller_Admin_Tables extends Controller_Admin_Template {
 
 		$objectList = ORM::factory('objects_table')
 					->join('objects')->on('objects_tables.object_id', '=', 'objects.id')
-					->where('objects.fase', '=', '1')
+					->where('objects.fase', '=', '53')
 					->where('objects_tables.table_id', '=', $mesa_id)
 					->order_by('objects.title', 'ASC')
 					->find_all();
