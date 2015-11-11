@@ -132,7 +132,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 				$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
 				$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
-				$order_by = "ORDER BY relevance DESC";
+				$order_by = ", relevance DESC";
 			}
 
 	    	$segmento = (count($viewFiltros->filter_segmento) > 0) ? "AND b.segmento_id IN ('".implode("','", $viewFiltros->filter_segmento)."')" : "";
@@ -163,7 +163,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 				".$collection." 
 				".$tipo." 
 				".$tax_order.
-				" GROUP BY a.id ".$order_by;
+				" GROUP BY a.id ORDER BY b.ano DESC ".$order_by;
 
 			$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 
@@ -254,7 +254,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 
 				$tax_coloum = ", MATCH (title, keywords) AGAINST ('+*".$string."*') AS relevance";
 				$tax_order = "AND MATCH (title, keywords) AGAINST ('+*".$string."*')";
-				$order_by = "ORDER BY relevance DESC";
+				$order_by = ", relevance DESC";
 			}
 
 	    	$segmento = (isset($view->filter_segmento)) ? "AND b.segmento_id IN ('".implode("','", $view->filter_segmento)."')" : "";
@@ -281,7 +281,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 					".$collection." 
 					".$tipo." 
 					".$tax_order.
-					" GROUP BY a.id ".$order_by;
+					" GROUP BY a.id ORDER BY b.ano DESC ".$order_by;
 
 			$result = DB::query(Database::SELECT, $sql)->as_object(true)->execute();
 			
@@ -324,7 +324,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	    } catch (ORM_Validation_Exception $e) {
             return false;
         } catch (Database_Exception $e) {
-           	var_dump('expression');
+           	/*var_dump('expression');*/
             return false;
         }	
 	}    

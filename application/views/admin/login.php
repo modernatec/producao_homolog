@@ -21,13 +21,14 @@
 		<div id='nav_login'>
 		    <div id='login'>
 				<form action="<?=URL::base();?>login/" name="frmAcesso" id="frmAcesso" method="post">
+					
 					<div>
 						<input type="text" class="text required round" placeholder="usuário" name="username" id="username" />
 					</div>
 					<div>
 						<input type="password" class="text required round" placeholder="senha" name="password" id="password" />
 					</div>
-					<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="Acessar" />
+					<input type="submit" class="round" name="btnSubmit" id="btnSubmit" value="acessar" />
 				</form>
 			</div>    
 		</div>

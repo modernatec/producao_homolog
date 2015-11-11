@@ -15,16 +15,13 @@
 }
 
 #login{
-	width: 250px;
+	width: 200px;
 	height: 200px;
 	padding: 5px;
-	left: -125px;
+	left: -100px;
 	top: -100px;
 	position: absolute;
-
 }
-
-
 
 #login .error{
 	display:block;
@@ -34,11 +31,18 @@
 	border:1px #CCC solid;
 	padding:5px;
 	margin: 5px;
-	width: 250px;
+	width: 200px;
 }
 
 #login input[type='submit']{
-	margin-left: 10px;
+	margin: 10px !important;
+	border: 1px #69C3D1 solid !important;
+	color:#fff !important;
+	position: relative;
+	cursor: pointer;
+	font-weight: normal !important;
+	border-radius: 4px !important;
+	background: #69C3D1;
 }
 
 
