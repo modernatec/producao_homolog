@@ -241,7 +241,11 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$view->typeObjects = ORM::factory('typeobject')->order_by('name', 'ASC')->find_all();
         $view->collections = ORM::factory('collection')->where('project_id', '=', $objeto->project_id)->order_by('name', 'ASC')->find_all();  
         $view->formats = ORM::factory('format')->order_by('name', 'ASC')->find_all(); 
-        $view->projectList = ORM::factory('project')->where('status', '=', '1')->order_by('name', 'ASC')->find_all(); 
+        
+        $projects_sql = ORM::factory('project');
+        (strpos($this->current_auth, "assistente") !== false) ? $projects_sql->where('status', '=', '1') : '';
+
+        $view->projectList = $projects_sql->order_by('name', 'ASC')->find_all(); 
         $view->repoList = ORM::factory('repositorio')->order_by('name', 'DESC')->find_all(); 
 
         $objects_repo = ORM::factory('objects_repositorio')->where('object_id','=', $id)->find_all();
@@ -547,9 +551,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 		$viewFiltros->filter_segmento = array();
 		$viewFiltros->filter_materia = array();
 		$viewFiltros->filter_project = array();
-		//$viewFiltros->filter_fase = array();
-
-		
+		//$viewFiltros->filter_fase = array();		
 
 		$viewFiltros->filter_taxonomia = "";
 
@@ -691,23 +693,24 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
     	$status = (isset($view->filter_status)) ? " AND status_id IN ('".implode("','",$view->filter_status)."')" : '';
     	$tipo = (isset($view->filter_tipo)) ? " AND typeobject_id IN ('".implode("','",$view->filter_tipo)."')" : '';
 
+    	$project_status = (strpos($this->current_auth, 'assistente') === false) ? "('1', '0')" : "('1')";
+
 		$sql = "SELECT 
 					*					      				
 				FROM moderna_objectstatus
-				WHERE project_status = '1' 
+				WHERE project_status IN ".$project_status." 
 				".$fase."
 				".$taxonomia." 
 				".$materia." 
 				".$segmento." 
-
-				".$supplier."  
-	
+				".$supplier." 	
 				".$origem." 
 				".$project."
 				".$collection."  
 				".$status." 				 
 				".$tipo." order by crono_date ASC";
-				
+			
+		
 		$view->objectsList = DB::query(Database::SELECT, $sql)->as_object('Model_Object')->execute();
 
 		//$this->endProfilling();

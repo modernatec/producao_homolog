@@ -210,7 +210,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 		} catch (ORM_Validation_Exception $e) {
             
         } catch (Database_Exception $e) {
-            
+            Session::instance()->destroy('kaizen');
         }		
 
   		return $viewFiltros;       
@@ -324,6 +324,7 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 	    } catch (ORM_Validation_Exception $e) {
             return false;
         } catch (Database_Exception $e) {
+           	Session::instance()->destroy('kaizen');
            	/*var_dump('expression');*/
             return false;
         }	
@@ -367,7 +368,9 @@ class Controller_Admin_Acervo extends Controller_Admin_Template {
 			     echo 0;
 			}
 			*/
+			//echo $file_path;
 			echo 0;
+
 		}
 	}
 

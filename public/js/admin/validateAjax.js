@@ -530,7 +530,7 @@ function validateAjax(){
 
     $("#frm_acervo").validate({
         submitHandler: function(form) {
-            $('input[type=submit]').attr('disabled', 'disabled');
+            //$('input[type=submit]').attr('disabled', 'disabled');
             ajaxPost(form, $(form).data("panel"));
             return false;       
         }

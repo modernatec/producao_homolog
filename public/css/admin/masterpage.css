@@ -355,7 +355,7 @@ input{
 	border: 1px #69C3D1 solid !important;
 	padding:5px;
 	margin-right:5px;
-	color:#4F4F4F !important;
+	color:#69C3D1 !important;
 	position: relative;
 	cursor: pointer;
 	font-weight: normal !important;
@@ -518,7 +518,7 @@ input[type='submit'], input[type='button']{
 	border: 1px #ccc solid;
 	padding:5px;
 	/*margin-right:5px;*/
-	color:#4F4F4F !important;
+	color:#69C3D1 !important;
 	position: relative;
 	cursor: pointer;
 	background: none !important;
@@ -2083,4 +2083,50 @@ body::-webkit-scrollbar-corner {
     border: solid #fff;
     border-width: 3px 0 0 3px;
     box-shadow: inset 1px 1px 0 rgba(0,0,0,.14);
+}
+
+
+.ui-tooltip, .arrow:after {
+	background: black;
+	/*border: 2px solid white;*/
+}
+.ui-tooltip {
+	/*padding: 10px 20px;*/
+	color: white;
+	/*border-radius: 20px;*/
+	/*font: bold 14px "Helvetica Neue", Sans-Serif;*/
+	/*text-transform: uppercase;*/
+	/*box-shadow: 0 0 7px black;*/
+}
+.arrow {
+	width: 70px;
+	height: 16px;
+	overflow: hidden;
+	position: absolute;
+	left: 50%;
+	margin-left: -35px;
+	bottom: -16px;
+}
+.arrow.top {
+	top: -16px;
+	bottom: auto;
+}
+.arrow.left {
+	left: 20%;
+}
+.arrow:after {
+	content: "";
+	position: absolute;
+	left: 20px;
+	top: -20px;
+	width: 25px;
+	height: 25px;
+	/*box-shadow: 6px 5px 9px -9px black;*/
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.arrow.top:after {
+	bottom: -20px;
+	top: auto;
 }
