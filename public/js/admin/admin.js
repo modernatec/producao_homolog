@@ -318,20 +318,8 @@ function setupAjax(container){
             }
         });
     }else{
-        $( document ).tooltip({
-          position: {
-            my: "center bottom-20",
-            at: "center top",
-            using: function( position, feedback ) {
-              $( this ).css( position );
-              $( "<div>" )
-                .addClass( "arrow" )
-                .addClass( feedback.vertical )
-                .addClass( feedback.horizontal )
-                .appendTo( this );
-            }
-          }
-        });
+        $( document ).tooltip();
+        
         /*
         $(".workflow_tasks_header").scroll(function() {
             console.log('scroll');
