@@ -355,7 +355,9 @@ input{
 	border: 1px #69C3D1 solid !important;
 	padding:5px;
 	margin-right:5px;
-	color:#69C3D1 !important;
+	color: #fff !important;
+	/*color:#69C3D1 !important;*/
+	background: #69C3D1; 
 	position: relative;
 	cursor: pointer;
 	font-weight: normal !important;
@@ -378,8 +380,8 @@ button{
 }
 
 button, .bar_button:hover{
-	color:#69C3D1 !important;
-	background: transparent !important;
+	/*color:#69C3D1 !important;
+	background: transparent !important;*/
 }
 
 .tabs_panel{
@@ -518,10 +520,12 @@ input[type='submit'], input[type='button']{
 	border: 1px #ccc solid;
 	padding:5px;
 	/*margin-right:5px;*/
-	color:#69C3D1 !important;
+	background: #69C3D1 !important;
+	/*color:#69C3D1 !important;*/
+	color: #fff !important;
 	position: relative;
 	cursor: pointer;
-	background: none !important;
+	/*background: none !important;*/
 	line-height: normal;
 }
 
@@ -1071,7 +1075,7 @@ a.post{
 	margin: 5px 0;
 	padding: 5px;
 	color: #28A5B8;
-	border-bottom: 1px #ccc solid;
+	border-bottom: 1px #28A5B8 solid;
 }
 
 .list_item{

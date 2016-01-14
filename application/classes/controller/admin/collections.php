@@ -140,7 +140,7 @@ class Controller_Admin_Collections extends Controller_Admin_Template {
 				$starts = $this->request->post('start');
 				$ends = $this->request->post('end');
 				foreach ($objects as $key => $value) {
-					if($value != ''){
+					if($starts[$key] != '' && $ends[$key] != ''){
 						$object = ORM::factory('object', $objects[$key]);
 						$object->crono_date = $starts[$key];
 						$object->planned_date = $ends[$key];	

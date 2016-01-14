@@ -798,6 +798,7 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 
 		$objStatus = ORM::factory('objects_statu', $id);
 		$arr_objstatus = $this->setVO('objects_statu', $objStatus);
+		$obj = ORM::factory('object', $objStatus->object_id);
 
 		$view->current_auth = $this->current_auth;
 
@@ -814,6 +815,12 @@ class Controller_Admin_Objects extends Controller_Admin_Template {
 			echo json_encode(
 				array(
 					array('type'=>'msg', 'content'=> 'Ops!..<br/><br/>não terminamos todas as tarefas...'),
+				)						
+			);	
+		}elseif($obj->crono_date == ''){
+			echo json_encode(
+				array(
+					array('type'=>'msg', 'content'=> 'Ops!..<br/><br/>ainda não definimos uma data de início...'),
 				)						
 			);	
 		}else{

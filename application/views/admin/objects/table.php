@@ -41,6 +41,7 @@
 						<p>
                         <span class="subtitle"><?=$objeto->taxonomia?><br/>
                         <?=$objeto->statu_status?> | <?=$retorno?> <?=$diff?></span></p>
+                        
 					</a>
 				</div>
 			</li>
