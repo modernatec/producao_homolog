@@ -605,7 +605,7 @@ function setupAjax(container){
                 if(ul){
 
                     var status_id = $(ul).data('status');
-                    console.log(status_id)
+                    //console.log(status_id)
                     
                     $('#dropped_' + item_id +' > div.infos .info').each(function(e, ui){
                         name = $(ui).data('id');
